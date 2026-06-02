@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020510;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -12,15 +12,148 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  overflow: hidden;
 }
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Hide scrollbars globally */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Shimmer animation for card borders */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-border {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.15) 25%,
+    rgba(139, 92, 246, 0.2) 50%,
+    rgba(59, 130, 246, 0.15) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+/* Pulsing glow for the calorie ring */
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.ring-pulse {
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+/* Floating animation for star dots */
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  50% { transform: translateY(-3px) translateX(1px); opacity: 0.9; }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50% { transform: translateY(2px) translateX(-2px); opacity: 0.8; }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { transform: translateY(-2px) translateX(2px); opacity: 1; }
+}
+
+.float-1 { animation: float1 4s ease-in-out infinite; }
+.float-2 { animation: float2 5s ease-in-out infinite 0.5s; }
+.float-3 { animation: float3 6s ease-in-out infinite 1s; }
+
+/* Subtle breathing glow for cards */
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(59, 130, 246, 0.1); }
+  50% { box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(59, 130, 246, 0.2); }
+}
+
+.card-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Gradient text shimmer */
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399, #60a5fa);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textShimmer 6s ease-in-out infinite;
+}
+
+/* Progress bar gradient animation */
+@keyframes barShine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.bar-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: barShine 3s ease-in-out infinite;
+}
+
+/* Subtle wave animation */
+@keyframes waveFloat {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(5px) translateY(-2px); }
+  50% { transform: translateX(0) translateY(-4px); }
+  75% { transform: translateX(-5px) translateY(-2px); }
+}
+
+.wave-float {
+  animation: waveFloat 8s ease-in-out infinite;
+}
+
+/* Twinkling star effect */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.twinkle-1 { animation: twinkle 3s ease-in-out infinite; }
+.twinkle-2 { animation: twinkle 4s ease-in-out infinite 1s; }
+.twinkle-3 { animation: twinkle 5s ease-in-out infinite 2s; }
+.twinkle-4 { animation: twinkle 3.5s ease-in-out infinite 0.5s; }
+.twinkle-5 { animation: twinkle 4.5s ease-in-out infinite 1.5s; }
