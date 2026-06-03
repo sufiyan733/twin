@@ -116,7 +116,7 @@ export default function Page() {
   }, [messages, isLoading, isKaiOpen]);
 
   const sendMessage = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isLoading) return;
     const newMsg = { sender: "user", text: inputValue };
     setMessages(prev => [...prev, newMsg]);
     setInputValue("");
@@ -441,7 +441,7 @@ export default function Page() {
 
         {/* Kai AI Modal Overlay */}
         {isKaiOpen && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#010614]/70 backdrop-blur-[10px] px-4 transition-all animate-in fade-in duration-300">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#010614]/60 backdrop-blur-[12px] px-4 transition-all animate-in fade-in duration-300">
             {/* Click away to close */}
             <div className="absolute inset-0" onClick={() => setIsKaiOpen(false)} />
             
