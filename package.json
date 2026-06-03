@@ -6,15 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "node -e \"const fs=require('fs');const p='node_modules/better-auth/node_modules/kysely';if(fs.existsSync(p)){fs.rmSync(p,{recursive:true});console.log('Removed nested kysely (using top-level 0.28.1)');}\""
   },
   "dependencies": {
+    "better-auth": "^1.6.14",
     "framer-motion": "^12.40.0",
+    "kysely": "0.28.1",
     "lucide-react": "^1.17.0",
     "mongodb": "^7.2.0",
     "next": "16.2.7",
     "react": "19.2.4",
     "react-dom": "19.2.4"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "^1.32.0"
+  },
+  "overrides": {
+    "kysely": "0.28.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
