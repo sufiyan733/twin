@@ -144,7 +144,7 @@ export default function Page() {
         <div className="pointer-events-none absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] [background-size:20px_20px]" />
 
         {/* Header */}
-        <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-4 pb-1.5">
+        <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
           <button type="button" className="text-white/80 hover:text-white transition-colors">
             <Menu size={24} strokeWidth={1.5} />
           </button>
@@ -155,14 +155,14 @@ export default function Page() {
           </button>
         </header>
 
-        {/* Scrollable Content */}
-        <main className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden px-4 pb-16 no-scrollbar space-y-4">
+        {/* Main Content */}
+        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[70px] space-y-3">
 
           {/* Calorie Intake Card */}
-          <section className="relative overflow-hidden rounded-[20px] border border-[#00d0ff]/25 bg-[#030818] p-4 shadow-[0_0_35px_rgba(0,150,255,0.18)] backdrop-blur-xl">
+          <section className="relative shrink-0 overflow-hidden rounded-[16px] border border-[#00d0ff]/25 bg-[#030818] p-3 shadow-[0_0_35px_rgba(0,150,255,0.18)] backdrop-blur-xl">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,208,255,0.12),transparent_65%)] pointer-events-none" />
             
-            <div className="flex items-center justify-between mb-3.5 relative z-10">
+            <div className="flex items-center justify-between mb-2.5 relative z-10">
               <div className="flex items-center gap-2.5">
                 <div className="grid place-items-center h-[30px] w-[30px] rounded-full bg-[#0a1535] border border-[#00d0ff]/40 shadow-[0_0_15px_rgba(0,208,255,0.4)]">
                   <Flame size={16} className="text-[#00d0ff] fill-[#00d0ff] drop-shadow-[0_0_5px_#00d0ff]" />
@@ -176,7 +176,7 @@ export default function Page() {
 
             <div className="flex items-center justify-between relative z-10">
               {/* Circular Progress Ring */}
-              <div className="relative flex h-[125px] w-[125px] shrink-0 items-center justify-center -ml-1">
+              <div className="relative flex h-[105px] w-[105px] shrink-0 items-center justify-center -ml-1">
                 
                 {/* Outer Dashed Track (Premium Detail) */}
                 <svg className="absolute h-full w-full -rotate-90 transform opacity-10" viewBox="0 0 100 100">
@@ -215,8 +215,8 @@ export default function Page() {
                 
                 {/* Crisp Typography */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
-                  <span className="text-[26px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">1,850</span>
-                  <span className="text-[8px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">/ 2400 Kcal</span>
+                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">1,850</span>
+                  <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">/ 2400 Kcal</span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#00d0ff]/[0.1] px-2 py-0.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/20">
                     550 LEFT
                   </span>
@@ -224,7 +224,7 @@ export default function Page() {
               </div>
 
               {/* Macro Bars (Crystal Blue Theme) */}
-              <div className="flex flex-1 flex-col justify-center gap-[11px] pl-4">
+              <div className="flex flex-1 flex-col justify-center gap-2 pl-4">
                 
                 {/* Protein */}
                 <div>
@@ -295,11 +295,10 @@ export default function Page() {
           </section>
 
           {/* Daily Tasks Card */}
-          {/* Daily Tasks Card */}
-          <section className="relative overflow-hidden rounded-[20px] border border-[#00d0ff]/25 bg-[#030818] p-5 shadow-[0_0_35px_rgba(0,150,255,0.15)] backdrop-blur-xl">
+          <section className="relative flex-1 flex flex-col overflow-hidden rounded-[16px] border border-[#00d0ff]/25 bg-[#030818] p-3 shadow-[0_0_35px_rgba(0,150,255,0.15)] backdrop-blur-xl mb-1">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,208,255,0.12),transparent_70%)] pointer-events-none" />
             
-            <div className="flex items-center justify-between mb-4 relative z-10">
+            <div className="flex items-center justify-between mb-2 relative z-10 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="grid place-items-center h-[30px] w-[30px] rounded-full bg-[#0a1535] border border-[#00d0ff]/40 shadow-[0_0_15px_rgba(0,208,255,0.3)]">
                   <ClipboardList size={16} className="text-[#00d0ff] drop-shadow-[0_0_5px_#00d0ff]" />
@@ -311,13 +310,13 @@ export default function Page() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-2 relative z-10 max-h-[316px] overflow-y-auto no-scrollbar pr-1">
+            <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-hidden">
               {tasks.map(task => (
-                <div key={task.id} className="group relative flex items-center gap-3 rounded-[12px] bg-[#07112c]/60 px-3 py-3 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer">
+                <div key={task.id} className="group relative flex flex-1 min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer">
                   
                   <button 
                     onClick={() => toggleTask(task.id)} 
-                    className="relative shrink-0 grid place-items-center h-5 w-5 transition-transform active:scale-90"
+                    className="relative shrink-0 grid place-items-center h-4 w-4 transition-transform active:scale-90"
                   >
                     {task.checked ? (
                       <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#00d0ff]/20 border border-[#00d0ff] text-[#00d0ff] shadow-[0_0_12px_rgba(0,208,255,0.6)]">
@@ -328,12 +327,12 @@ export default function Page() {
                     )}
                   </button>
 
-                  <div className="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40 transition-colors">
-                    <task.icon size={15} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />
+                  <div className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40 transition-colors">
+                    <task.icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-[12px] font-semibold text-white/95 truncate tracking-wide transition-colors group-hover:text-white">{task.title}</h3>
+                    <h3 className="text-[11px] font-semibold text-white/95 truncate tracking-wide transition-colors group-hover:text-white">{task.title}</h3>
                   </div>
 
                   <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide group-hover:text-[#00d0ff] transition-colors">
