@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import GradientBlinds from "@/components/GradientBlinds";
@@ -103,6 +103,43 @@ export default function Page() {
 
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const [isKaiOpen, setIsKaiOpen] = useState(false);
+  const [messages, setMessages] = useState([{ sender: 'kai', text: "Hello! I'm Kai. How can I assist you today?" }]);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isLoading, isKaiOpen]);
+
+  const sendMessage = async () => {
+    if (!inputValue.trim()) return;
+    const newMsg = { sender: "user", text: inputValue };
+    setMessages(prev => [...prev, newMsg]);
+    setInputValue("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [...messages, newMsg] })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessages(prev => [...prev, { sender: "kai", text: data.text }]);
+      } else {
+        setMessages(prev => [...prev, { sender: "kai", text: "Sorry, I ran into an error." }]);
+      }
+    } catch (err) {
+      setMessages(prev => [...prev, { sender: "kai", text: "Sorry, network error." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Auth guard
   useEffect(() => {
@@ -369,11 +406,17 @@ export default function Page() {
           {[
             { label: 'Home', icon: Home, active: true },
             { label: 'Tasks', icon: Check, isBox: true },
-            { label: 'Diary', icon: ClipboardList },
+            { label: 'Kai', icon: Sparkles },
             { label: 'Fitness', icon: Heart },
             { label: 'Profile', icon: User },
           ].map((item, idx) => (
-            <button key={idx} className="group relative flex flex-col items-center gap-0.5">
+            <button 
+              key={idx} 
+              onClick={() => {
+                if (item.label === 'Kai') setIsKaiOpen(true);
+              }}
+              className="group relative flex flex-col items-center gap-0.5"
+            >
               {item.active ? (
                 <>
                   <item.icon size={20} className="text-[#3b82f6] fill-[#3b82f6] drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
@@ -396,6 +439,98 @@ export default function Page() {
           ))}
         </nav>
 
+        {/* Kai AI Modal Overlay */}
+        {isKaiOpen && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#010614]/70 backdrop-blur-[10px] px-4 transition-all animate-in fade-in duration-300">
+            {/* Click away to close */}
+            <div className="absolute inset-0" onClick={() => setIsKaiOpen(false)} />
+            
+            <div className="relative w-full max-w-[360px] overflow-hidden rounded-[24px] border border-[#00d0ff]/30 bg-[#030818]/95 p-5 shadow-[0_0_80px_rgba(0,208,255,0.25),inset_0_0_40px_rgba(0,208,255,0.05)] backdrop-blur-3xl animate-in zoom-in-95 duration-300">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,208,255,0.15),transparent_60%)] pointer-events-none" />
+              
+              <div className="flex items-center justify-between mb-2 relative z-10">
+                <div className="flex items-center gap-3.5">
+                  <div className="grid place-items-center h-[40px] w-[40px] rounded-[12px] bg-[#0a1535] border border-[#00d0ff]/40 shadow-[0_0_20px_rgba(0,208,255,0.4),inset_0_0_10px_rgba(0,208,255,0.2)]">
+                    <Sparkles size={20} className="text-[#00d0ff] drop-shadow-[0_0_8px_#00d0ff]" />
+                  </div>
+                  <div>
+                    <h2 className="text-[18px] font-bold text-white tracking-wide leading-tight">Kai</h2>
+                    <p className="text-[10px] font-bold text-[#00d0ff] tracking-[0.2em] uppercase mt-0.5">Assistant</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsKaiOpen(false)}
+                  className="grid place-items-center h-8 w-8 rounded-[10px] bg-white/5 border border-white/10 text-white/50 hover:bg-white/15 hover:text-white transition-colors active:scale-95"
+                >
+                  <Plus size={18} className="rotate-45" />
+                </button>
+              </div>
+
+              <div className="relative z-10 flex flex-col h-[380px]">
+                {/* Chat Display Area */}
+                <div className="flex-1 flex flex-col gap-3.5 pb-4 overflow-y-auto scrollbar-hide pr-1">
+                  {/* Spacer pushes messages to the bottom */}
+                  <div className="flex-1" />
+                  
+                  {messages.map((msg, idx) => (
+                    msg.sender === "kai" ? (
+                      <div key={idx} className="flex items-end gap-2.5 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500">
+                        <div className="shrink-0 grid place-items-center h-8 w-8 rounded-[10px] bg-[#00d0ff]/10 border border-[#00d0ff]/30 shadow-[0_0_15px_rgba(0,208,255,0.2)]">
+                           <Sparkles size={14} className="text-[#00d0ff]" />
+                        </div>
+                        <div className="rounded-t-[18px] rounded-br-[18px] rounded-bl-[6px] bg-gradient-to-b from-[#0a1535]/90 to-[#060e24]/90 border border-[#00d0ff]/20 px-4 py-3.5 backdrop-blur-md shadow-[0_8px_20px_rgba(0,0,0,0.3)]">
+                          <p className="text-[13px] font-medium text-white/90 leading-relaxed whitespace-pre-wrap">
+                            {msg.text}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div key={idx} className="flex items-end self-end gap-2.5 max-w-[85%] animate-in slide-in-from-bottom-2 fade-in duration-500">
+                        <div className="rounded-t-[18px] rounded-bl-[18px] rounded-br-[6px] bg-gradient-to-tr from-[#00d0ff]/20 to-[#00d0ff]/40 border border-[#00d0ff]/50 px-4 py-3.5 backdrop-blur-md shadow-[0_8px_20px_rgba(0,208,255,0.15)] text-white">
+                          <p className="text-[13px] font-medium text-white leading-relaxed whitespace-pre-wrap drop-shadow-md">
+                            {msg.text}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  ))}
+                  {isLoading && (
+                    <div className="flex items-end gap-2.5 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500">
+                      <div className="shrink-0 grid place-items-center h-8 w-8 rounded-[10px] bg-[#00d0ff]/10 border border-[#00d0ff]/30 shadow-[0_0_15px_rgba(0,208,255,0.2)]">
+                         <Sparkles size={14} className="text-[#00d0ff]" />
+                      </div>
+                      <div className="rounded-t-[18px] rounded-br-[18px] rounded-bl-[6px] bg-gradient-to-b from-[#0a1535]/90 to-[#060e24]/90 border border-[#00d0ff]/20 px-5 py-4 backdrop-blur-md flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.3)]">
+                        <div className="w-1.5 h-1.5 bg-[#00d0ff]/80 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-1.5 h-1.5 bg-[#00d0ff]/80 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-1.5 h-1.5 bg-[#00d0ff]/80 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Input Area */}
+                <div className="relative flex items-center mt-2 shrink-0">
+                  <input 
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder="Message Kai..."
+                    className="w-full rounded-[16px] bg-[#06112c]/80 border border-[#00d0ff]/20 pl-4 pr-14 py-4 text-[13px] text-white placeholder-white/30 outline-none focus:border-[#00d0ff]/60 focus:bg-[#071330] transition-all shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)]"
+                  />
+                  <button 
+                    onClick={sendMessage}
+                    disabled={isLoading || !inputValue.trim()}
+                    className="absolute right-1.5 grid place-items-center h-[40px] w-[40px] rounded-[12px] bg-gradient-to-tr from-[#00d0ff] to-[#38bdf8] text-[#030818] hover:shadow-[0_0_20px_rgba(0,208,255,0.6)] transition-all shadow-[0_0_15px_rgba(0,208,255,0.3)] active:scale-90 disabled:opacity-50 disabled:pointer-events-none"
+                  >
+                    <Send size={16} className="ml-0.5 drop-shadow-[0_0_2px_rgba(0,0,0,0.2)]" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
