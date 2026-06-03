@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import GradientBlinds from "@/components/GradientBlinds";
 import {
   Bell,
   Book,
@@ -140,8 +141,23 @@ export default function Page() {
       <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden bg-[#010614] shadow-[0_0_50px_rgba(0,10,40,0.5)]">
 
         {/* Background Gradients & Effects */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(37,99,235,0.15),transparent_60%),radial-gradient(ellipse_at_bottom_left,rgba(14,165,233,0.1),transparent_50%)]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] [background-size:20px_20px]" />
+        <div className="absolute inset-0 z-0">
+          <GradientBlinds
+            gradientColors={['#010614', '#0a1d47', '#00d0ff', '#010614']}
+            angle={-45}
+            noise={0.18}
+            blindCount={12}
+            blindMinWidth={25}
+            spotlightRadius={2.8}
+            spotlightSoftness={0.4}
+            spotlightOpacity={0.9}
+            mouseDampening={0.15}
+            distortAmount={0.6}
+            shineDirection="right"
+            mixBlendMode="screen"
+          />
+        </div>
+        <div className="pointer-events-none absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] [background-size:20px_20px] z-0" />
 
         {/* Header */}
         <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
