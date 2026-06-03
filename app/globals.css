@@ -157,3 +157,28 @@ body {
 .twinkle-3 { animation: twinkle 5s ease-in-out infinite 2s; }
 .twinkle-4 { animation: twinkle 3.5s ease-in-out infinite 0.5s; }
 .twinkle-5 { animation: twinkle 4.5s ease-in-out infinite 1.5s; }
+
+/* Premium Custom Scrollbar */
+.premium-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: rgba(2, 5, 18, 0.2);
+  border-radius: 4px;
+  margin-block: 4px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 208, 255, 0.25);
+  border-radius: 4px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 208, 255, 0.5);
+}
+
+.premium-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 208, 255, 0.25) rgba(2, 5, 18, 0.2);
+}
