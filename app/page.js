@@ -441,14 +441,18 @@ export default function Page() {
 
         {/* Kai AI Modal Overlay */}
         {isKaiOpen && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#010614]/60 backdrop-blur-[12px] px-4 transition-all animate-in fade-in duration-300">
-            {/* Click away to close */}
-            <div className="absolute inset-0" onClick={() => setIsKaiOpen(false)} />
+          <div className="absolute inset-0 z-50 flex flex-col justify-end">
+            {/* Click away to close Backdrop */}
+            <div className="absolute inset-0 bg-[#010614]/60 backdrop-blur-[12px] animate-in fade-in duration-300" onClick={() => setIsKaiOpen(false)} />
             
-            <div className="relative w-full max-w-[370px] overflow-hidden rounded-[32px] border border-white/[0.06] bg-[#020512]/70 p-5 shadow-[0_20px_80px_rgba(0,0,0,0.8),inset_0_0_40px_rgba(255,255,255,0.03)] backdrop-blur-[40px] animate-in zoom-in-95 duration-400 ease-out">
+            {/* Bottom Sheet Modal */}
+            <div className="relative w-full rounded-t-[36px] border-t border-white/[0.08] bg-[#020512]/80 px-5 pt-3 pb-8 shadow-[0_-20px_80px_rgba(0,0,0,0.8),inset_0_1px_40px_rgba(255,255,255,0.03)] backdrop-blur-[40px] animate-in slide-in-from-bottom-full duration-400 ease-out">
+              
+              {/* Drag Handle Indicator */}
+              <div className="mx-auto w-12 h-1.5 rounded-full bg-white/10 mb-5 shadow-inner" />
+
               {/* Premium Inner Glow */}
-              <div className="absolute -top-20 -left-20 w-48 h-48 bg-[#00d0ff]/20 rounded-full blur-[80px] pointer-events-none" />
-              <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-[#3b82f6]/20 rounded-full blur-[80px] pointer-events-none" />
+              <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-[#00d0ff]/10 to-transparent blur-[60px] pointer-events-none rounded-t-[36px]" />
               
               {/* Header */}
               <div className="flex items-center justify-between mb-4 relative z-10">
@@ -474,7 +478,7 @@ export default function Page() {
                 </button>
               </div>
 
-              <div className="relative z-10 flex flex-col h-[400px]">
+              <div className="relative z-10 flex flex-col h-[45dvh] min-h-[350px]">
                 {/* Chat Display Area */}
                 <div className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto scrollbar-hide pr-1">
                   <div className="flex-1" />
