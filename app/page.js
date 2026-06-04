@@ -232,48 +232,31 @@ export default function Page() {
       // It's past the reset time for today and we haven't reset yet
       if (now >= resetToday) {
         const dateStr = now.toISOString().split("T")[0];
-        const serialised = tasks.map(t => ({
-          ...t,
-          icon: typeof t.icon === "function" ? t.icon.displayName || t.icon.name || "ClipboardList" : (t.icon ?? "ClipboardList"),
-        }));
 
-        // 1. Archive tasks snapshot then reset tasks
+        // 1. Wipe all tasks from DB (no history kept)
+        setTasks([]);
+        setLastResetAt(now);
         fetch("/api/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tasks: serialised, date: dateStr }),
-        })
-          .then(() => {
-            setTasks(prev => prev.map(t => ({ ...t, checked: false })));
-            const now2 = new Date();
-            setLastResetAt(now2);
-            fetch("/api/tasks", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ lastResetAt: now2.toISOString() }),
-            }).catch(console.error);
-          })
-          .catch(console.error);
+          body: JSON.stringify({}),
+        }).catch(console.error);
 
-        // 2. Archive meals snapshot then reset meals
+        // 2. Archive meals to meal_history for analysis, then clear
+        setMeals([]);
+        setLastMealsResetAt(now);
         fetch("/api/meals", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ meals, date: dateStr }),
-        })
-          .then(() => {
-            setMeals([]);
-            const now3 = new Date();
-            setLastMealsResetAt(now3);
-          })
-          .catch(console.error);
+        }).catch(console.error);
       }
     };
 
     checkReset();
     const interval = setInterval(checkReset, 60 * 1000);
     return () => clearInterval(interval);
-  }, [session, tasksSynced, resetTime, lastResetAt, meals, lastMealsResetAt]);
+  }, [session, tasksSynced, resetTime, lastResetAt, lastMealsResetAt]);
 
   // ─── Calorie Target ─────────────────────────────────────────────────────────
   function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
@@ -389,166 +372,209 @@ export default function Page() {
         <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[70px] space-y-3">
 
           {/* Calorie Intake Card */}
-          <section className="relative shrink-0 overflow-hidden rounded-[16px] border border-[#00d0ff]/25 bg-[#030818] p-3 shadow-[0_0_35px_rgba(0,150,255,0.18)] backdrop-blur-xl">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,208,255,0.12),transparent_65%)] pointer-events-none" />
+          <section className="relative shrink-0 overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-br from-[#040c24] via-[#030818] to-[#020510] p-3.5 shadow-[0_4px_40px_rgba(0,120,255,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]">
+            {/* Multi-layer premium background effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,208,255,0.08),transparent_55%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.06),transparent_55%)] pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '16px 16px'}} />
+            {/* Top highlight edge */}
+            <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-[#00d0ff]/25 to-transparent pointer-events-none" />
 
-            <div className="flex items-center justify-between mb-2.5 relative z-10">
+            <div className="flex items-center justify-between mb-3 relative z-10">
               <div className="flex items-center gap-2.5">
-                <div className="grid place-items-center h-[30px] w-[30px] rounded-full bg-[#0a1535] border border-[#00d0ff]/40 shadow-[0_0_15px_rgba(0,208,255,0.4)]">
-                  <Flame size={16} className="text-[#00d0ff] fill-[#00d0ff] drop-shadow-[0_0_5px_#00d0ff]" />
+                <div className="relative grid place-items-center h-[28px] w-[28px] rounded-[10px] bg-gradient-to-br from-[#0a1535] to-[#060e28] border border-[#00d0ff]/25 shadow-[0_0_12px_rgba(0,208,255,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]">
+                  <Flame size={14} className="text-[#00d0ff] fill-[#00d0ff]/30 drop-shadow-[0_0_6px_#00d0ff]" />
                 </div>
-                <h2 className="text-[14px] font-semibold text-white tracking-wide">Calorie Intake</h2>
+                <div>
+                  <h2 className="text-[13px] font-bold text-white/95 tracking-wide leading-none">Calorie Intake</h2>
+                  <p className="text-[8px] text-white/30 font-medium tracking-[0.15em] uppercase mt-0.5">Daily Tracker</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setIsMealsManagerOpen(true)}
-                  className="flex items-center justify-center rounded-[10px] bg-[#0a1535] px-3 py-1.5 text-[10px] font-semibold text-[#00d0ff] border border-[#00d0ff]/20 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)] hover:bg-[#00d0ff]/10 hover:shadow-[0_0_15px_rgba(0,208,255,0.2)] transition-all"
+                  className="flex items-center gap-1 rounded-[8px] bg-[#00d0ff]/[0.06] px-2.5 py-1.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/15 hover:bg-[#00d0ff]/[0.12] hover:border-[#00d0ff]/30 hover:shadow-[0_0_12px_rgba(0,208,255,0.15)] transition-all duration-200 tracking-wider uppercase"
                 >
+                  <Plus size={10} strokeWidth={2.5} />
                   Meals
                 </button>
-                <div className="flex items-center gap-1 rounded-[10px] bg-[#071330] px-3 py-1.5 text-[10px] font-semibold text-white/90 border border-[#00d0ff]/10 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)]">
+                <div className="flex items-center gap-1 rounded-[8px] bg-white/[0.03] px-2.5 py-1.5 text-[9px] font-semibold text-white/50 border border-white/[0.06] tracking-wider">
                   {currentTime || "..."}
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between relative z-10">
-              {/* Circular Progress Ring */}
-              <div className="relative flex h-[105px] w-[105px] shrink-0 items-center justify-center -ml-1">
+              {/* Circular Progress Ring - Elegant Premium Edition */}
+              <div className="relative flex h-[108px] w-[108px] shrink-0 items-center justify-center -ml-0.5 group">
+                
+                {/* Subtle ambient backglow */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#00d0ff]/5 to-[#3b82f6]/5 rounded-full blur-[15px]" />
 
-                {/* Outer Dashed Track (Premium Detail) */}
-                <svg className="absolute h-full w-full -rotate-90 transform opacity-10" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="46" fill="none" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 3" />
-                </svg>
-
-                {/* Main Progress Ring — circumference 251.3, offset = (1-progress)*251.3 */}
+                {/* Main Progress Ring */}
                 {(() => {
                   const target = calorieTarget || 0;
                   const pct = target > 0 ? Math.min(consumed.calories / target, 1) : 0;
-                  const offset = Math.round(251.3 * (1 - pct));
+                  const radius = 42;
+                  const circumference = 2 * Math.PI * radius;
+                  const offset = circumference * (1 - pct);
+                  
                   return (
                     <svg className="relative h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
                       <defs>
-                        <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#00d0ff" />
-                          <stop offset="100%" stopColor="#1d4ed8" />
+                        <linearGradient id="premiumArc" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#38bdf8" />
+                          <stop offset="100%" stopColor="#818cf8" />
                         </linearGradient>
-                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                          <feGaussianBlur stdDeviation="3" result="blur" />
-                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        <filter id="premiumShadow" x="-30%" y="-30%" width="160%" height="160%">
+                          <feDropShadow dx="0" dy="4" stdDeviation="4.5" floodColor="#38bdf8" floodOpacity="0.35" />
                         </filter>
                       </defs>
-                      {/* Track Background */}
-                      <circle cx="50" cy="50" r="40" fill="none" stroke="#08102b" strokeWidth="5.5" />
-                      {/* Blurred Glow Layer */}
+
+                      {/* Deep base track */}
+                      <circle cx="50" cy="50" r={radius} fill="none" stroke="#050b1a" strokeWidth="6" />
+                      {/* Track glass overlay */}
+                      <circle cx="50" cy="50" r={radius} fill="none" stroke="#ffffff" strokeWidth="6" strokeOpacity="0.04" />
+                      {/* Inner metallic lip */}
+                      <circle cx="50" cy="50" r={radius - 3} fill="none" stroke="#ffffff" strokeWidth="0.5" strokeOpacity="0.06" />
+                      {/* Outer metallic lip */}
+                      <circle cx="50" cy="50" r={radius + 3} fill="none" stroke="#ffffff" strokeWidth="0.5" strokeOpacity="0.03" />
+
+                      {/* Main glowing progress arc */}
                       <circle
-                        cx="50" cy="50" r="40" fill="none" stroke="url(#premiumGrad)"
-                        strokeWidth="5.5" strokeLinecap="round"
-                        strokeDasharray="251.3" strokeDashoffset={offset}
-                        filter="url(#glow)"
+                        cx="50" cy="50" r={radius} fill="none" stroke="url(#premiumArc)"
+                        strokeWidth="6" strokeLinecap="round"
+                        strokeDasharray={circumference} strokeDashoffset={offset}
+                        filter="url(#premiumShadow)"
+                        style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1)' }}
                       />
-                      {/* Crisp Solid Core Layer */}
+                      
+                      {/* Crisp inner highlight for the arc (gives it a 3D glass tube feel) */}
                       <circle
-                        cx="50" cy="50" r="40" fill="none" stroke="#00f0ff"
+                        cx="50" cy="50" r={radius} fill="none" stroke="#ffffff"
                         strokeWidth="1.5" strokeLinecap="round"
-                        strokeDasharray="251.3" strokeDashoffset={offset}
+                        strokeDasharray={circumference} strokeDashoffset={offset}
+                        strokeOpacity="0.4"
+                        style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.22, 1, 0.36, 1)' }}
                       />
+
+                      {/* Elegant Endpoint Pearl */}
+                      {pct > 0 && (() => {
+                        const endAngle = (pct * 360) * Math.PI / 180;
+                        const cx = 50 + radius * Math.cos(endAngle);
+                        const cy = 50 + radius * Math.sin(endAngle);
+                        return (
+                          <g transform={`translate(${cx}, ${cy}) rotate(90)`}>
+                            <circle r="4.5" fill="#ffffff" shadow="0 2px 5px rgba(0,0,0,0.5)" />
+                            <circle r="4.5" fill="none" stroke="#38bdf8" strokeWidth="1" opacity="0.5" />
+                          </g>
+                        );
+                      })()}
                     </svg>
                   );
                 })()}
 
-                {/* Crisp Typography */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
-                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">{consumed.calories.toLocaleString()}</span>
-                  <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">
-                    / {calorieTarget ? calorieTarget.toLocaleString() : "—"} Kcal
+                {/* Center content - Sophisticated Typography */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-0.5">
+                  <span 
+                    className="text-[25px] font-semibold leading-[1] tracking-[-0.02em] text-white/95" 
+                    style={{ fontFeatureSettings: '"tnum", "cv11"' }}
+                  >
+                    {consumed.calories.toLocaleString()}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#00d0ff]/[0.1] px-2 py-0.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/20">
-                    {calorieTarget ? Math.max(0, calorieTarget - consumed.calories).toLocaleString() : "—"} LEFT
+                  <span className="text-[7.5px] text-white/40 font-medium tracking-[0.2em] uppercase mt-1.5 mb-1.5">
+                    / {calorieTarget ? calorieTarget.toLocaleString() : "—"} kcal
                   </span>
+                  
+                  {/* Minimalist Frosted Badge */}
+                  <div className="inline-flex items-center gap-1.5 rounded-[6px] bg-white/[0.04] px-2 py-[3px] border border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.2)] backdrop-blur-md">
+                    <div className="w-[4px] h-[4px] rounded-full bg-[#38bdf8] shadow-[0_0_6px_#38bdf8]" />
+                    <span className="text-[8px] font-medium text-white/75 tracking-wide">
+                      {calorieTarget ? Math.max(0, calorieTarget - consumed.calories).toLocaleString() : "—"} left
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Macro Bars (Crystal Blue Theme) */}
-              <div className="flex flex-1 flex-col justify-center gap-2 pl-4">
+              {/* Macro Breakdown */}
+              <div className="flex flex-1 flex-col justify-center gap-[7px] pl-3.5">
 
-                {/* Protein */}
-                <div>
-                  <div className="mb-1.5 flex items-center justify-between text-[10px]">
-                    <div className="flex items-center gap-2 text-white/80">
-                      <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#0a1535] border border-[#00d0ff]/30">
-                        <Dumbbell size={10} className="text-[#00d0ff] fill-[#00d0ff]/20 drop-shadow-[0_0_5px_#00d0ff]" />
+                {[
+                  {
+                    label: "Protein",
+                    icon: Dumbbell,
+                    current: consumed.protein,
+                    target: macros.protein,
+                    colors: { from: "#8b5cf6", to: "#a78bfa", bg: "rgba(139,92,246,0.06)", border: "rgba(139,92,246,0.12)", text: "#a78bfa", glow: "rgba(139,92,246,0.4)" },
+                  },
+                  {
+                    label: "Fat",
+                    icon: Droplet,
+                    current: consumed.fat,
+                    target: macros.fats,
+                    colors: { from: "#f59e0b", to: "#fbbf24", bg: "rgba(245,158,11,0.06)", border: "rgba(245,158,11,0.12)", text: "#fbbf24", glow: "rgba(245,158,11,0.4)" },
+                  },
+                  {
+                    label: "Carbs",
+                    icon: Leaf,
+                    current: consumed.carbs,
+                    target: macros.carbs,
+                    colors: { from: "#10b981", to: "#34d399", bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.12)", text: "#34d399", glow: "rgba(16,185,129,0.4)" },
+                  },
+                  {
+                    label: "Calories",
+                    icon: Flame,
+                    current: consumed.calories,
+                    target: calorieTarget,
+                    colors: { from: "#3b82f6", to: "#60a5fa", bg: "rgba(59,130,246,0.06)", border: "rgba(59,130,246,0.12)", text: "#60a5fa", glow: "rgba(59,130,246,0.4)" },
+                    isCalorie: true,
+                  },
+                ].map((macro) => {
+                  const Icon = macro.icon;
+                  const pct = macro.target ? Math.min((macro.current / macro.target) * 100, 100) : 0;
+                  return (
+                    <div key={macro.label} className="group relative">
+                      {/* Row Header */}
+                      <div className="flex items-center gap-2 mb-[3px]">
+                        <div
+                          className="grid place-items-center h-[20px] w-[20px] rounded-[7px] shrink-0 shadow-sm backdrop-blur-sm transition-colors duration-300 group-hover:bg-opacity-20"
+                          style={{ 
+                            background: macro.colors.bg, 
+                            border: `1px solid ${macro.colors.border}`,
+                            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.08), 0 2px 4px rgba(0,0,0,0.15)' 
+                          }}
+                        >
+                          <Icon size={10} strokeWidth={2.5} style={{ color: macro.colors.text }} className="drop-shadow-[0_0_3px_currentColor]" />
+                        </div>
+                        <span className="text-[10px] font-medium text-white/70 flex-1 tracking-wide">{macro.label}</span>
+                        <span className="text-[10px] font-semibold text-white/95 tabular-nums tracking-tight" style={{ fontFeatureSettings: '"tnum", "cv11"' }}>
+                          {macro.isCalorie ? macro.current.toLocaleString() : macro.current}
+                          <span className="text-white/40 font-medium text-[8px] ml-[2px] tracking-wider">
+                            / {macro.target ? (macro.isCalorie ? macro.target.toLocaleString() : `${macro.target}g`) : "—"}
+                          </span>
+                        </span>
                       </div>
-                      Protein
-                    </div>
-                    <span className="font-semibold text-white">{consumed.protein}g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
-                  </div>
-                  <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#00d0ff]/60 to-[#00d0ff] shadow-[0_0_8px_#00d0ff] transition-all duration-700"
-                      style={{ width: macros.protein ? `${Math.min((consumed.protein / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
-                    />
-                  </div>
-                </div>
-
-                {/* Fats (Azure) */}
-                <div>
-                  <div className="mb-1.5 flex items-center justify-between text-[10px]">
-                    <div className="flex items-center gap-2 text-white/80">
-                      <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#0a1535] border border-[#38bdf8]/30">
-                        <Droplet size={10} className="text-[#38bdf8] fill-[#38bdf8]/20 drop-shadow-[0_0_5px_#38bdf8]" />
+                      
+                      {/* Bar Track - Inset deep groove */}
+                      <div className="relative h-[4px] w-full rounded-full bg-[#050b1a] shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.6)] border border-white/[0.03] overflow-hidden">
+                        {/* Progress Fill - Glossy tube effect */}
+                        <div
+                          className="absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] flex justify-end"
+                          style={{
+                            width: `${pct.toFixed(1)}%`,
+                            background: `linear-gradient(90deg, ${macro.colors.from}, ${macro.colors.to})`,
+                            boxShadow: `inset 0 1px 1px rgba(255,255,255,0.25), 0 0 8px ${macro.colors.glow}`,
+                          }}
+                        >
+                          {/* Endpoint Specular Pearl */}
+                          {pct > 1 && (
+                            <div className="h-full w-[3px] bg-white opacity-80 rounded-full blur-[0.5px] shadow-[-2px_0_4px_rgba(255,255,255,0.5)] mr-[1px]" />
+                          )}
+                        </div>
                       </div>
-                      Fat
                     </div>
-                    <span className="font-semibold text-white">{consumed.fat}g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
-                  </div>
-                  <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#38bdf8]/60 to-[#38bdf8] shadow-[0_0_8px_#38bdf8] transition-all duration-700"
-                      style={{ width: macros.fats ? `${Math.min((consumed.fat / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
-                    />
-                  </div>
-                </div>
-
-                {/* Carbs (Teal) */}
-                <div>
-                  <div className="mb-1.5 flex items-center justify-between text-[10px]">
-                    <div className="flex items-center gap-2 text-white/80">
-                      <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#0a1535] border border-[#2dd4bf]/30">
-                        <Leaf size={10} className="text-[#2dd4bf] fill-[#2dd4bf]/20 drop-shadow-[0_0_5px_#2dd4bf]" />
-                      </div>
-                      Carbs
-                    </div>
-                    <span className="font-semibold text-white">{consumed.carbs}g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
-                  </div>
-                  <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#2dd4bf]/60 to-[#2dd4bf] shadow-[0_0_8px_#2dd4bf] transition-all duration-700"
-                      style={{ width: macros.carbs ? `${Math.min((consumed.carbs / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
-                    />
-                  </div>
-                </div>
-
-                {/* Calories (Deep Blue) */}
-                <div>
-                  <div className="mb-1.5 flex items-center justify-between text-[10px]">
-                    <div className="flex items-center gap-2 text-white/80">
-                      <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#0a1535] border border-[#3b82f6]/30">
-                        <Flame size={10} className="text-[#3b82f6] fill-[#3b82f6]/20 drop-shadow-[0_0_5px_#3b82f6]" />
-                      </div>
-                      Calories
-                    </div>
-                    <span className="font-semibold text-white">
-                      {consumed.calories.toLocaleString()} <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
-                    </span>
-                  </div>
-                  <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div
-                      className="h-full rounded-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6] transition-all duration-700"
-                      style={{ width: calorieTarget ? `${Math.min((consumed.calories / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
-                    />
-                  </div>
-                </div>
+                  );
+                })}
 
               </div>
             </div>
@@ -573,8 +599,8 @@ export default function Page() {
                 >
                   <ClipboardList size={13} strokeWidth={1.8} />
                 </button>
-                <button 
-                  onClick={handleAddTask} 
+                <button
+                  onClick={handleAddTask}
                   className="flex items-center gap-1.5 h-[26px] px-2.5 rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[11px] font-medium text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all drop-shadow-[0_0_8px_rgba(0,208,255,0.3)]"
                 >
                   <Plus size={12} strokeWidth={2.5} /> Add Task
@@ -762,7 +788,7 @@ export default function Page() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Right Corner Value</label>
+                  <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Target</label>
                   <input
                     type="text"
                     value={editForm.value}

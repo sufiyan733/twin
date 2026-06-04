@@ -58,38 +58,24 @@ export async function PUT(req) {
   }
 }
 
-// POST /api/tasks/archive — called BEFORE reset, saves today's snapshot to history
+// POST /api/tasks — called at reset, wipes all tasks from DB
 export async function POST(req) {
   try {
     const userId = await getUserId(req);
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const body = await req.json();
-    const { tasks, date } = body;
-
     const db = await getDb();
 
-    // Save a daily snapshot
-    await db.collection("task_history").insertOne({
-      userId,
-      date: date ?? new Date().toISOString().split("T")[0],
-      tasks,
-      archivedAt: new Date(),
-    });
-
-    // Reset all tasks to unchecked in main tasks collection
-    const existing = await db.collection("tasks").findOne({ userId });
-    if (existing?.tasks) {
-      const resetTasks = existing.tasks.map((t) => ({ ...t, checked: false }));
-      await db.collection("tasks").updateOne(
-        { userId },
-        { $set: { tasks: resetTasks, lastResetAt: new Date() } }
-      );
-    }
+    // Wipe all tasks and record reset timestamp
+    await db.collection("tasks").updateOne(
+      { userId },
+      { $set: { tasks: [], lastResetAt: new Date() } },
+      { upsert: true }
+    );
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("POST /api/tasks (archive) error:", err);
+    console.error("POST /api/tasks (reset) error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

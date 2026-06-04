@@ -122,32 +122,6 @@ function ExpandPanel({ open, children }) {
   );
 }
 
-// ── Icon selector memoized to avoid re-rendering the whole grid on every keystroke
-const IconSelector = memo(function IconSelector({ task, onUpdate }) {
-  return (
-    <div className="flex flex-wrap gap-2 mt-2">
-      {AVAILABLE_ICONS.map((iconObj, idx) => {
-        const IconComp = iconObj.component;
-        const isSelected = task.icon === IconComp;
-        return (
-          <button
-            key={idx}
-            onClick={() => onUpdate(task.id, { icon: IconComp })}
-            style={{ transition: "background 150ms ease, transform 150ms ease, box-shadow 150ms ease" }}
-            className={`p-2 rounded-xl border ${
-              isSelected
-                ? "bg-[#00d0ff]/20 border-[#00d0ff]/50 shadow-[0_0_10px_rgba(0,208,255,0.3)] scale-110"
-                : "bg-white/[0.02] border-white/10 hover:bg-white/[0.05] hover:scale-105"
-            }`}
-          >
-            <IconComp size={16} color={iconObj.color} className={isSelected ? "drop-shadow-[0_0_5px_currentColor]" : ""} />
-          </button>
-        );
-      })}
-    </div>
-  );
-});
-
 // ── Individual task row — memoized so sibling edits don't re-render it ─────────
 const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand, onUpdate, onDelete }) {
   return (
@@ -220,7 +194,7 @@ const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand,
               />
             </div>
             <div>
-              <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Text Target</label>
+              <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Target</label>
               <input
                 type="text"
                 value={task.value}
@@ -229,11 +203,6 @@ const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand,
                 style={{ transition: "border-color 150ms ease" }}
               />
             </div>
-          </div>
-
-          <div>
-            <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 block">Icon</label>
-            <IconSelector task={task} onUpdate={onUpdate} />
           </div>
 
           <div className="pt-2">
@@ -278,11 +247,11 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
   }, [setTasks]);
 
   const addNewTask = useCallback(() => {
+    const randomIcon = AVAILABLE_ICONS[Math.floor(Math.random() * AVAILABLE_ICONS.length)].component;
     const newTask = {
       id: Date.now(),
       title: "New Task",
-      desc: "Task description",
-      icon: ClipboardList,
+      icon: randomIcon,
       value: "0 / 1",
       checked: false,
     };
