@@ -8,6 +8,7 @@ import GradientBlinds from "@/components/GradientBlinds";
 import KaiAssistant from "@/components/KaiAssistant";
 import ProfileCard from "@/components/ProfileCard";
 import OnboardingModal from "@/components/OnboardingModal";
+import TasksManager from "@/components/TasksManager";
 import {
   Bell,
   Book,
@@ -31,85 +32,51 @@ import {
 } from "lucide-react";
 
 export default function Page() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Morning Workout",
-      desc: "30 min Strength Training",
-      icon: Dumbbell,
-      accent: "text-[#ff5e5e]",
-      bg: "bg-[#112a46]",
-      iconColor: "text-[#60a5fa]",
-      value: "350 kcal",
-      checked: true,
-      valIcon: Flame
-    },
-    {
-      id: 2,
-      title: "Drink 2L Water",
-      desc: "Stay Hydrated",
-      icon: Droplet,
-      accent: "text-[#60a5fa]",
-      bg: "bg-[#0b284a]",
-      iconColor: "text-[#60a5fa]",
-      value: "2 / 2 Liters",
-      checked: true,
-    },
-    {
-      id: 3,
-      title: "Read 20 Pages",
-      desc: "Self Growth",
-      icon: Book,
-      accent: "text-[#10b981]",
-      bg: "bg-[#063328]",
-      iconColor: "text-[#10b981]",
-      value: "0 / 20 Pages",
-      checked: false,
-    },
-    {
-      id: 4,
-      title: "Meditate",
-      desc: "10 min Mindfulness",
-      icon: Leaf,
-      accent: "text-[#a855f7]",
-      bg: "bg-[#2d1b4e]",
-      iconColor: "text-[#a855f7]",
-      value: "0 / 10 min",
-      checked: false,
-    },
-    {
-      id: 5,
-      title: "Take Vitamins",
-      desc: "Health First",
-      icon: Pill,
-      value: "1 / 1 Done",
-      checked: true,
-    },
-    {
-      id: 6,
-      title: "Evening Walk",
-      desc: "Relaxing Stroll",
-      icon: Zap,
-      value: "0 / 20 min",
-      checked: false,
-    },
-    {
-      id: 7,
-      title: "Stretch",
-      desc: "Mobility",
-      icon: Dumbbell,
-      value: "0 / 10 min",
-      checked: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
 
 
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [isKaiOpen, setIsKaiOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
+
+  const [editingTask, setEditingTask] = useState(null);
+  const [addingTask, setAddingTask] = useState(false);
+  const [editForm, setEditForm] = useState({ title: "", value: "" });
+
+  const handleEditTask = (task) => {
+    setEditingTask(task.id);
+    setAddingTask(false);
+    setEditForm({ title: task.title, value: task.value });
+  };
+
+  const handleAddTask = () => {
+    setAddingTask(true);
+    setEditingTask(null);
+    setEditForm({ title: "", value: "" });
+  };
+
+  const saveTask = () => {
+    if (addingTask) {
+      setTasks([...tasks, {
+        id: Date.now(),
+        title: editForm.title || "New Task",
+        desc: "Added via Quick Add",
+        icon: ClipboardList,
+        value: editForm.value || "0 / 1",
+        checked: false
+      }]);
+      setAddingTask(false);
+    } else {
+      setTasks(tasks.map(t => 
+        t.id === editingTask ? { ...t, title: editForm.title, value: editForm.value } : t
+      ));
+      setEditingTask(null);
+    }
+  };
 
   // Client-side Mifflin-St Jeor fallback (mirrors backend formula)
   function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
@@ -394,18 +361,29 @@ export default function Page() {
                 </div>
                 <h2 className="text-[14px] font-semibold text-white tracking-wide">Daily Tasks</h2>
               </div>
-              <button className="text-[11px] font-medium text-[#00d0ff] hover:text-white transition-colors flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(0,208,255,0.5)]">
+              <button onClick={handleAddTask} className="text-[11px] font-medium text-[#00d0ff] hover:text-white transition-colors flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(0,208,255,0.5)]">
                 <Plus size={12} /> Add Task
               </button>
             </div>
 
-            <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-hidden">
+            <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
               {tasks.map(task => (
-                <div key={task.id} className="group relative flex flex-1 min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer">
+                <div 
+                  key={task.id} 
+                  onClick={() => handleEditTask(task)}
+                  className={`group relative flex min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer shrink-0 overflow-hidden ${task.checked ? 'opacity-70' : ''}`}
+                >
+                  {/* Premium Strike-Through Line */}
+                  <div 
+                    className={`absolute left-[40px] right-2 top-1/2 h-[2px] -translate-y-1/2 bg-gradient-to-r from-[#00d0ff] via-[#00d0ff]/80 to-transparent shadow-[0_0_10px_#00d0ff] transition-all duration-500 ease-out z-20 pointer-events-none origin-left ${task.checked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}`} 
+                  />
 
                   <button
-                    onClick={() => toggleTask(task.id)}
-                    className="relative shrink-0 grid place-items-center h-4 w-4 transition-transform active:scale-90"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleTask(task.id);
+                    }}
+                    className="relative shrink-0 grid place-items-center h-4 w-4 transition-transform active:scale-90 z-10"
                   >
                     {task.checked ? (
                       <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#00d0ff]/20 border border-[#00d0ff] text-[#00d0ff] shadow-[0_0_12px_rgba(0,208,255,0.6)]">
@@ -416,16 +394,18 @@ export default function Page() {
                     )}
                   </button>
 
-                  <div className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40 transition-colors">
-                    <task.icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />
+                  <div className={`grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner transition-colors z-10 ${task.checked ? 'opacity-50' : 'group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40'}`}>
+                    {task.icon && <task.icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />}
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[11px] font-semibold text-white/95 truncate tracking-wide transition-colors group-hover:text-white">{task.title}</h3>
+                  <div className="flex-1 min-w-0 z-10">
+                    <h3 className={`text-[11px] font-semibold truncate tracking-wide transition-colors ${task.checked ? 'text-white/40' : 'text-white/95 group-hover:text-white'}`}>
+                      {task.title}
+                    </h3>
                   </div>
 
-                  <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide group-hover:text-[#00d0ff] transition-colors">
-                    {task.valIcon && <task.valIcon size={9} className="fill-current drop-shadow-[0_0_5px_currentColor]" />}
+                  <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide transition-colors z-10">
+                    {task.valIcon && <task.valIcon size={9} className="fill-current" />}
                     {task.value}
                   </div>
                 </div>
@@ -451,6 +431,7 @@ export default function Page() {
               onClick={() => {
                 if (item.label === 'Kai') setIsKaiOpen(true);
                 if (item.label === 'Profile') setIsProfileOpen(true);
+                if (item.label === 'Tasks') setIsTasksManagerOpen(true);
               }}
               className="group relative flex flex-col items-center gap-0.5"
             >
@@ -481,6 +462,68 @@ export default function Page() {
 
         {/* Profile Card Overlay */}
         <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+
+        {/* Tasks Manager Overlay */}
+        <TasksManager 
+          isOpen={isTasksManagerOpen} 
+          onClose={() => setIsTasksManagerOpen(false)} 
+          tasks={tasks}
+          setTasks={setTasks}
+        />
+
+        {/* Task Edit / Add Modal */}
+        {(editingTask || addingTask) && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div className="w-full max-w-sm rounded-[24px] bg-[#030818] border border-[#00d0ff]/30 p-6 shadow-[0_0_50px_rgba(0,150,255,0.15)] flex flex-col">
+              <h3 className="text-white font-bold text-lg mb-4 tracking-wide text-center drop-shadow-[0_0_8px_rgba(0,208,255,0.5)]">
+                {addingTask ? "Add New Task" : "Edit Task"}
+              </h3>
+              
+              <div className="flex flex-col gap-3 mb-6">
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Main Task</label>
+                  <input
+                    autoFocus
+                    type="text"
+                    value={editForm.title}
+                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                    className="w-full rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-[#00d0ff]/50 focus:shadow-[0_0_15px_rgba(0,208,255,0.15)] transition-all"
+                    placeholder="Enter task name"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Right Corner Value</label>
+                  <input
+                    type="text"
+                    value={editForm.value}
+                    onChange={(e) => setEditForm({ ...editForm, value: e.target.value })}
+                    className="w-full rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-[#00d0ff]/50 focus:shadow-[0_0_15px_rgba(0,208,255,0.15)] transition-all"
+                    placeholder="e.g. 1 / 2 Liters"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 mt-auto">
+                <button
+                  onClick={() => {
+                    setEditingTask(null);
+                    setAddingTask(false);
+                  }}
+                  className="flex-1 py-3 rounded-xl font-bold text-sm text-white/60 bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={saveTask}
+                  className="flex-1 py-3 rounded-xl font-bold text-sm text-[#030818] bg-gradient-to-r from-[#00d0ff] to-[#3b82f6] shadow-[0_0_20px_rgba(0,208,255,0.4)] hover:shadow-[0_0_25px_rgba(0,208,255,0.6)] transition-all"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Mandatory Onboarding Modal — shown once, no way to dismiss without completing */}
         <OnboardingModal
