@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import GradientBlinds from "@/components/GradientBlinds";
 import KaiAssistant from "@/components/KaiAssistant";
+import ProfileCard from "@/components/ProfileCard";
+import OnboardingModal from "@/components/OnboardingModal";
 import {
   Bell,
   Book,
   Check,
-  ChevronDown,
   Circle,
   Dumbbell,
   Flame,
@@ -105,6 +106,21 @@ export default function Page() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [isKaiOpen, setIsKaiOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Check if user has completed onboarding
+  useEffect(() => {
+    if (!session) return;
+    fetch("/api/profile")
+      .then(r => r.json())
+      .then(data => {
+        if (!data.profile) {
+          setShowOnboarding(true);
+        }
+      })
+      .catch(console.error);
+  }, [session]);
 
   // Auth guard
   useEffect(() => {
@@ -188,7 +204,7 @@ export default function Page() {
                 <h2 className="text-[14px] font-semibold text-white tracking-wide">Calorie Intake</h2>
               </div>
               <div className="flex items-center gap-1 rounded-[10px] bg-[#071330] px-3 py-1.5 text-[10px] font-semibold text-white/90 border border-[#00d0ff]/10 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)]">
-                {currentTime || "..."} <ChevronDown size={12} className="text-[#00d0ff]/60 ml-0.5" />
+                {currentTime || "..."}
               </div>
             </div>
 
@@ -379,6 +395,7 @@ export default function Page() {
               key={idx}
               onClick={() => {
                 if (item.label === 'Kai') setIsKaiOpen(true);
+                if (item.label === 'Profile') setIsProfileOpen(true);
               }}
               className="group relative flex flex-col items-center gap-0.5"
             >
@@ -406,6 +423,15 @@ export default function Page() {
 
         {/* Kai AI Modal Overlay */}
         <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
+
+        {/* Profile Card Overlay */}
+        <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+
+        {/* Mandatory Onboarding Modal — shown once, no way to dismiss without completing */}
+        <OnboardingModal
+          isOpen={showOnboarding}
+          onComplete={() => setShowOnboarding(false)}
+        />
       </div>
     </div>
   );

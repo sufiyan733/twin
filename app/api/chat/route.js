@@ -12,11 +12,20 @@ export async function POST(req) {
       );
     }
 
-    // Format chat logs to OpenAI style
-    const formattedMessages = [
-      {
-        role: "system",
-        content: `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app. The user is Alex Johnson.
+    // Only keep the image from the very last message to avoid token limits and payload size issues
+    const lastMessageIndex = messages.length - 1;
+    const hasImage = messages[lastMessageIndex]?.image;
+    const model = hasImage ? "meta-llama/llama-4-scout-17b-16e-instruct" : "llama-3.3-70b-versatile";
+
+    // Guard against oversized images (> 1MB base64 ≈ ~750KB actual)
+    if (hasImage && messages[lastMessageIndex].image.length > 1_100_000) {
+      return NextResponse.json(
+        { error: "Image is too large. Please use a smaller image." },
+        { status: 413 }
+      );
+    }
+
+    const systemPrompt = `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app. The user is Alex Johnson.
 Alex's goal today is to stick to 2,400 kcal (currently consumed 1,850 kcal, 550 kcal left).
 His daily tasks today include:
 - Morning Workout: 30 min Strength Training (Completed - 350 kcal burned)
@@ -25,13 +34,30 @@ His daily tasks today include:
 - Meditate: 10 min Mindfulness (Not completed - 0/10 min)
 - Take Vitamins: Health First (Completed - 1/1 Done)
 
-Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`
-      },
-      ...messages.map(msg => ({
-        role: msg.sender === "user" ? "user" : "assistant",
-        content: msg.text
-      }))
-    ];
+Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
+
+    let formattedMessages = [];
+
+    if (hasImage) {
+      const msg = messages[lastMessageIndex];
+      formattedMessages = [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: `[System Context: ${systemPrompt}]\n\nUser: ${msg.text || "Explain this image."}` },
+            { type: "image_url", image_url: { url: msg.image } }
+          ]
+        }
+      ];
+    } else {
+      formattedMessages = [
+        { role: "system", content: systemPrompt },
+        ...messages.map(msg => ({
+          role: msg.sender === "user" ? "user" : "assistant",
+          content: msg.text || "Attached an image."
+        }))
+      ];
+    }
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -40,7 +66,7 @@ Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages re
         "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: model,
         messages: formattedMessages,
         temperature: 0.7,
         max_tokens: 500
@@ -49,6 +75,7 @@ Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages re
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("Groq API Error Response:", errorText);
       return NextResponse.json(
         { error: `Groq API Error: ${errorText}` },
         { status: response.status }

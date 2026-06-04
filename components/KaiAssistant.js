@@ -1,13 +1,19 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Sparkles, Plus, Send } from "lucide-react";
+import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X } from "lucide-react";
 
 export default function KaiAssistant({ isOpen, onClose }) {
   const [messages, setMessages] = useState([{ sender: 'kai', text: "Hello! I'm Kai. How can I assist you today?" }]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [attachedImage, setAttachedImage] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -15,11 +21,83 @@ export default function KaiAssistant({ isOpen, onClose }) {
     }
   }, [messages, isLoading, isOpen]);
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img = new window.Image();
+      img.onload = () => {
+        const MAX = 512;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          if (width > height) { height = Math.round((height * MAX) / width); width = MAX; }
+          else { width = Math.round((width * MAX) / height); height = MAX; }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        setAttachedImage(canvas.toDataURL("image/jpeg", 0.7));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const toggleRecording = async () => {
+    if (isRecording) {
+      mediaRecorderRef.current?.stop();
+      setIsRecording(false);
+    } else {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunksRef.current = [];
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunksRef.current.push(e.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+          const formData = new FormData();
+          formData.append("file", audioBlob, "recording.webm");
+          
+          setIsLoading(true);
+          try {
+            const res = await fetch("/api/transcribe", {
+              method: "POST",
+              body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.text) {
+              setInputValue(prev => prev + (prev ? " " : "") + data.text);
+            }
+          } catch (err) {
+            console.error("Transcription failed", err);
+          } finally {
+            setIsLoading(false);
+          }
+          
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+        setIsRecording(true);
+      } catch (err) {
+        console.error("Error accessing microphone", err);
+      }
+    }
+  };
+
   const sendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
-    const newMsg = { sender: "user", text: inputValue };
+    if ((!inputValue.trim() && !attachedImage) || isLoading) return;
+    const newMsg = { sender: "user", text: inputValue, image: attachedImage };
     setMessages(prev => [...prev, newMsg]);
     setInputValue("");
+    setAttachedImage(null);
     setIsLoading(true);
 
     try {
@@ -32,7 +110,8 @@ export default function KaiAssistant({ isOpen, onClose }) {
       if (res.ok) {
         setMessages(prev => [...prev, { sender: "kai", text: data.text }]);
       } else {
-        setMessages(prev => [...prev, { sender: "kai", text: "Sorry, I ran into an error." }]);
+        const errMsg = data.error || "Sorry, I ran into an error.";
+        setMessages(prev => [...prev, { sender: "kai", text: errMsg }]);
       }
     } catch (err) {
       setMessages(prev => [...prev, { sender: "kai", text: "Sorry, network error." }]);
@@ -78,7 +157,7 @@ export default function KaiAssistant({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="relative z-10 flex flex-col h-[400px]">
+        <div className="relative z-10 flex flex-col h-[550px]">
           {/* Chat Display Area */}
           <div className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto premium-scrollbar pr-2 pl-1">
             <div className="flex-1" />
@@ -98,6 +177,9 @@ export default function KaiAssistant({ isOpen, onClose }) {
               ) : (
                 <div key={idx} className="flex items-end self-end gap-2.5 max-w-[85%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-out">
                   <div className="rounded-[20px] rounded-br-[6px] bg-gradient-to-br from-[#00d0ff]/90 to-[#2563eb]/90 px-4 py-3 shadow-[0_8px_20px_rgba(0,208,255,0.25)] border border-white/[0.12]">
+                    {msg.image && (
+                      <img src={msg.image} alt="Upload" className="w-full max-w-[200px] rounded-md mb-2 object-cover border border-white/10" />
+                    )}
                     <p className="text-[14.5px] font-medium text-white leading-[1.6] whitespace-pre-wrap tracking-wide drop-shadow-sm">
                       {msg.text}
                     </p>
@@ -121,21 +203,61 @@ export default function KaiAssistant({ isOpen, onClose }) {
           </div>
 
           {/* Input Area */}
-          <div className="relative flex items-center mt-2 shrink-0">
-            {/* Floating ambient glow behind input */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#00d0ff]/10 to-[#3b82f6]/10 rounded-full blur-[10px] pointer-events-none" />
+          <div className="flex flex-col gap-2 mt-2 shrink-0">
+            {/* Image Preview */}
+            {attachedImage && (
+              <div className="relative self-start ml-2">
+                <img src={attachedImage} alt="Preview" className="h-16 w-16 object-cover rounded-xl border border-[#00d0ff]/30 shadow-md" />
+                <button 
+                  onClick={() => setAttachedImage(null)}
+                  className="absolute -top-2 -right-2 grid place-items-center h-5 w-5 bg-red-500 rounded-full text-white shadow-lg"
+                >
+                  <X size={12} strokeWidth={3} />
+                </button>
+              </div>
+            )}
 
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Ask Kai..."
-              className="relative w-full rounded-full bg-[#050b1a]/60 border border-white/[0.06] pl-5 pr-14 py-4 text-[14px] text-white placeholder-white/30 outline-none focus:border-[#00d0ff]/40 focus:bg-[#050b1a]/80 transition-all backdrop-blur-xl shadow-[inset_0_2px_15px_rgba(0,0,0,0.5)]"
-            />
-            <button
-              onClick={sendMessage}
-              disabled={isLoading || !inputValue.trim()}
+            <div className="relative flex items-center">
+              {/* Floating ambient glow behind input */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00d0ff]/10 to-[#3b82f6]/10 rounded-full blur-[10px] pointer-events-none" />
+
+              <div className="absolute left-1.5 flex items-center gap-1 z-10">
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  ref={fileInputRef} 
+                  onChange={handleImageUpload} 
+                  className="hidden" 
+                />
+                <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="grid place-items-center h-[38px] w-[38px] rounded-full text-white/50 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  <ImageIcon size={18} strokeWidth={1.8} />
+                </button>
+                <button 
+                  onClick={toggleRecording}
+                  className={`grid place-items-center h-[38px] w-[38px] rounded-full transition-all ${
+                    isRecording 
+                      ? "text-red-400 bg-red-400/10 animate-pulse" 
+                      : "text-white/50 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <Mic size={18} strokeWidth={1.8} />
+                </button>
+              </div>
+
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Ask Kai..."
+                className="relative w-full rounded-full bg-[#050b1a]/60 border border-white/[0.06] pl-[96px] pr-14 py-4 text-[14px] text-white placeholder-white/30 outline-none focus:border-[#00d0ff]/40 focus:bg-[#050b1a]/80 transition-all backdrop-blur-xl shadow-[inset_0_2px_15px_rgba(0,0,0,0.5)]"
+              />
+              <button
+                onClick={sendMessage}
+                disabled={isLoading || (!inputValue.trim() && !attachedImage)}
               className="absolute right-1.5 grid place-items-center h-[38px] w-[38px] rounded-full bg-[#00d0ff] text-[#020512] hover:shadow-[0_0_20px_rgba(0,208,255,0.6)] hover:scale-105 transition-all shadow-[0_0_15px_rgba(0,208,255,0.3)] active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none"
             >
               <Send size={16} className="ml-0.5 drop-shadow-sm" strokeWidth={2} />
@@ -143,6 +265,7 @@ export default function KaiAssistant({ isOpen, onClose }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
