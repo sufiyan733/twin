@@ -45,6 +45,16 @@ export default function Page() {
   const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
+  const [consumed, setConsumed] = useState({ calories: 0, protein: 0, fat: 0, carbs: 0 });
+
+  const handleNutritionUpdate = (action) => {
+    setConsumed(prev => ({
+      calories: Math.round(prev.calories + (action.calories || 0)),
+      protein:  Math.round(prev.protein  + (action.protein  || 0)),
+      fat:      Math.round(prev.fat      + (action.fat      || 0)),
+      carbs:    Math.round(prev.carbs    + (action.carbs    || 0)),
+    }));
+  };
 
   const [editingTask, setEditingTask] = useState(null);
   const [addingTask, setAddingTask] = useState(false);
@@ -278,7 +288,6 @@ export default function Page() {
             <Menu size={24} strokeWidth={1.5} />
           </button>
 
-
           <button type="button" className="relative text-white/80 hover:text-white transition-colors">
             <Bell size={22} strokeWidth={1.5} />
             <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-[#00d0ff] shadow-[0_0_8px_#00d0ff]" />
@@ -315,9 +324,8 @@ export default function Page() {
 
                 {/* Main Progress Ring — circumference 251.3, offset = (1-progress)*251.3 */}
                 {(() => {
-                  const consumed = 0; // set to 0 to await actual implementation
                   const target = calorieTarget || 0;
-                  const pct = target > 0 ? Math.min(consumed / target, 1) : 0;
+                  const pct = target > 0 ? Math.min(consumed.calories / target, 1) : 0;
                   const offset = Math.round(251.3 * (1 - pct));
                   return (
                     <svg className="relative h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
@@ -352,12 +360,12 @@ export default function Page() {
 
                 {/* Crisp Typography */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
-                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">0</span>
+                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">{consumed.calories.toLocaleString()}</span>
                   <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">
                     / {calorieTarget ? calorieTarget.toLocaleString() : "—"} Kcal
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#00d0ff]/[0.1] px-2 py-0.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/20">
-                    {calorieTarget ? calorieTarget.toLocaleString() : "—"} LEFT
+                    {calorieTarget ? Math.max(0, calorieTarget - consumed.calories).toLocaleString() : "—"} LEFT
                   </span>
                 </div>
               </div>
@@ -374,12 +382,12 @@ export default function Page() {
                       </div>
                       Protein
                     </div>
-                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">{consumed.protein}g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#00d0ff]/60 to-[#00d0ff] shadow-[0_0_8px_#00d0ff] transition-all duration-700"
-                      style={{ width: macros.protein ? `${Math.min((0 / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.protein ? `${Math.min((consumed.protein / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -393,12 +401,12 @@ export default function Page() {
                       </div>
                       Fat
                     </div>
-                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">{consumed.fat}g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#38bdf8]/60 to-[#38bdf8] shadow-[0_0_8px_#38bdf8] transition-all duration-700"
-                      style={{ width: macros.fats ? `${Math.min((0 / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.fats ? `${Math.min((consumed.fat / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -412,12 +420,12 @@ export default function Page() {
                       </div>
                       Carbs
                     </div>
-                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">{consumed.carbs}g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#2dd4bf]/60 to-[#2dd4bf] shadow-[0_0_8px_#2dd4bf] transition-all duration-700"
-                      style={{ width: macros.carbs ? `${Math.min((0 / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.carbs ? `${Math.min((consumed.carbs / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -432,13 +440,13 @@ export default function Page() {
                       Calories
                     </div>
                     <span className="font-semibold text-white">
-                      0 <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
+                      {consumed.calories.toLocaleString()} <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
                     </span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6] transition-all duration-700"
-                      style={{ width: calorieTarget ? `${Math.min((0 / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: calorieTarget ? `${Math.min((consumed.calories / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -591,7 +599,14 @@ export default function Page() {
         </div>
 
         {/* Kai AI Modal Overlay */}
-        <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
+        <KaiAssistant
+          isOpen={isKaiOpen}
+          onClose={() => setIsKaiOpen(false)}
+          consumed={consumed}
+          calorieTarget={calorieTarget}
+          macros={macros}
+          onNutritionUpdate={handleNutritionUpdate}
+        />
 
         {/* Profile Card Overlay */}
         <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />

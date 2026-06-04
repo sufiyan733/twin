@@ -17,42 +17,54 @@ async function getUserProfile(req) {
   }
 }
 
+// Nutrition action suffix appended to every system prompt
+const NUTRITION_SUFFIX = "\n\nIMPORTANT - NUTRITION TRACKING RULES:\n" +
+  "1. Only emit the action block when the user's CURRENT message explicitly reports they are eating or drinking something NEW right now (e.g. 'I just ate...', 'I had...', 'I consumed...', 'I drank...').\n" +
+  "2. NEVER emit the action block for follow-up questions about food they already reported (e.g. 'did I get omega-3?', 'was that healthy?', 'how much protein did that have?' are NOT new consumption events).\n" +
+  "3. NEVER emit the action block for hypothetical, future, or advice-seeking messages.\n" +
+  "4. Each distinct meal/food the user reports should only be logged ONCE.\n\n" +
+  "When the user's CURRENT message IS a new food consumption report, append this block at the very end — no extra text, no markdown around it:\n\n" +
+  "<<<ACTION>>>\n" +
+  "{\"type\":\"UPDATE_NUTRITION\",\"calories\":0,\"protein\":0,\"fat\":0,\"carbs\":0}\n" +
+  "<<<END_ACTION>>>\n\n" +
+  "Replace the 0s with your best estimate of the nutritional values. If you are not adding the block, do not mention it at all.";
+
 function buildSystemPrompt(userData) {
   if (!userData || !userData.profile) {
-    // Fallback if profile isn't loaded
-    return `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.
-Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
+    return "You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.\n" +
+      "Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. " +
+      "Focus on actionable, motivational advice." +
+      NUTRITION_SUFFIX;
   }
 
   const { user, profile } = userData;
   const name = user?.name || "the user";
   const calorieTarget = profile.calorieTarget
-    ? `${profile.calorieTarget.toLocaleString()} kcal`
+    ? profile.calorieTarget.toLocaleString() + " kcal"
     : "not yet calculated";
-  const weight = profile.weight ? `${profile.weight} kg` : "not set";
-  const height = profile.height ? `${profile.height} cm` : "not set";
+  const weight = profile.weight ? profile.weight + " kg" : "not set";
+  const height = profile.height ? profile.height + " cm" : "not set";
   const age = profile.age || "unknown";
   const gender = profile.gender || "not specified";
-  const bodyFat = profile.bodyFat ? `${profile.bodyFat}%` : "not set";
+  const bodyFat = profile.bodyFat ? profile.bodyFat + "%" : "not set";
   const workoutDays = profile.workoutDays || 3;
-  const proteinBudget = profile.proteinBudget ? `${profile.proteinBudget}g/day` : "not set";
+  const proteinBudget = profile.proteinBudget ? profile.proteinBudget + "g/day" : "not set";
   const trainingField = profile.trainingField || "not set";
-  const goalWeight = profile.goalWeight ? `${profile.goalWeight} kg` : "not set";
-  const goalBodyFat = profile.goalBodyFat ? `${profile.goalBodyFat}%` : "not set";
+  const goalWeight = profile.goalWeight ? profile.goalWeight + " kg" : "not set";
+  const goalBodyFat = profile.goalBodyFat ? profile.goalBodyFat + "%" : "not set";
 
-  return `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.
-
-The user's name is ${name}. Here are their stats:
-- Age: ${age}, Gender: ${gender}
-- Weight: ${weight}, Height: ${height}, Current Body Fat: ${bodyFat}
-- Daily Calorie Target: ${calorieTarget} (auto-calculated by Kai based on their stats)
-- Protein Budget: ${proteinBudget}
-- Workout Days/week: ${workoutDays}
-- Training Focus: ${trainingField}
-- Goal Weight: ${goalWeight}, Goal Body Fat: ${goalBodyFat}
-
-Use this data to give personalised, evidence-based advice. When discussing calories, always refer to their calculated target of ${calorieTarget}. Be encouraging but honest.
-Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
+  return "You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.\n\n" +
+    "The user's name is " + name + ". Here are their stats:\n" +
+    "- Age: " + age + ", Gender: " + gender + "\n" +
+    "- Weight: " + weight + ", Height: " + height + ", Current Body Fat: " + bodyFat + "\n" +
+    "- Daily Calorie Target: " + calorieTarget + " (auto-calculated by Kai based on their stats)\n" +
+    "- Protein Budget: " + proteinBudget + "\n" +
+    "- Workout Days/week: " + workoutDays + "\n" +
+    "- Training Focus: " + trainingField + "\n" +
+    "- Goal Weight: " + goalWeight + ", Goal Body Fat: " + goalBodyFat + "\n\n" +
+    "Use this data to give personalised, evidence-based advice. When discussing calories, always refer to their calculated target of " + calorieTarget + ". Be encouraging but honest.\n" +
+    "Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice." +
+    NUTRITION_SUFFIX;
 }
 
 export async function POST(req) {
@@ -92,7 +104,7 @@ export async function POST(req) {
         {
           role: "user",
           content: [
-            { type: "text", text: `[System Context: ${systemPrompt}]\n\nUser: ${msg.text || "Explain this image."}` },
+            { type: "text", text: "[System Context: " + systemPrompt + "]\n\nUser: " + (msg.text || "Explain this image.") },
             { type: "image_url", image_url: { url: msg.image } }
           ]
         }
@@ -111,13 +123,13 @@ export async function POST(req) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
+        "Authorization": "Bearer " + apiKey
       },
       body: JSON.stringify({
         model: model,
         messages: formattedMessages,
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 600
       })
     });
 
@@ -125,7 +137,7 @@ export async function POST(req) {
       const errorText = await response.text();
       console.error("Groq API Error Response:", errorText);
       return NextResponse.json(
-        { error: `Groq API Error: ${errorText}` },
+        { error: "Groq API Error: " + errorText },
         { status: response.status }
       );
     }
