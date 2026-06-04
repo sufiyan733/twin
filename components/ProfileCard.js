@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 import {
   X, Pencil, Save, Loader2, User, Weight, Ruler, Calendar, Zap,
-  Target, Clock, Activity, Sparkles, Check, Mail, Shield, AtSign,
+  Target, Clock, Activity, Sparkles, Check, Mail, Shield, AtSign, Flame,
 } from "lucide-react";
 
 const TRAINING_OPTIONS = [
@@ -15,9 +15,155 @@ const TRAINING_OPTIONS = [
 
 const GENDER_OPTIONS = ["male", "female", "other"];
 
-// --------------------------------------------------------------------------------
-// Skeleton Loader – mimics the final layout while data is loading
-// --------------------------------------------------------------------------------
+// ─── Client-side calorie calculation (mirrors backend formula) ─────────────
+// Used as an instant fallback if the DB value is missing.
+function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
+  const w = Number(weight) || 0;
+  const h = Number(height) || 0;
+  const a = Number(age) || 0;
+  const d = Number(workoutDays) || 3;
+  if (!w || !h || !a || !gender) return null;
+
+  let bmr;
+  if (gender === "male") {
+    bmr = 10 * w + 6.25 * h - 5 * a + 5;
+  } else if (gender === "female") {
+    bmr = 10 * w + 6.25 * h - 5 * a - 161;
+  } else {
+    bmr = 10 * w + 6.25 * h - 5 * a - 78; // average of male/female
+  }
+  const multiplier = d <= 2 ? 1.375 : d <= 4 ? 1.55 : d <= 6 ? 1.725 : 1.9;
+  return Math.round(bmr * multiplier);
+}
+
+// ─── Height unit conversion helpers ───────────────────────────────────────
+function cmToFtIn(cm) {
+  const totalInches = Math.round(cm / 2.54);
+  const ft = Math.floor(totalInches / 12);
+  const inches = totalInches % 12;
+  return { ft, inches };
+}
+
+function ftInToCm(ft, inches) {
+  return Math.round((Number(ft || 0) * 12 + Number(inches || 0)) * 2.54);
+}
+
+// ─── Dual-unit Height field ────────────────────────────────────────────────
+// View: shows both cm and ft'in" on one tile.
+// Edit: two linked inputs — changing either auto-converts the other.
+function HeightField({ valueCm, onChangeCm, editing }) {
+  const cm = Number(valueCm) || 0;
+  const { ft, inches } = cm ? cmToFtIn(cm) : { ft: "", inches: "" };
+
+  // Local ft/in state so we don't snap mid-typing
+  const [localFt, setLocalFt] = useState(ft.toString());
+  const [localIn, setLocalIn] = useState(inches.toString());
+
+  // Sync local ft/in whenever cm changes from outside (e.g. on load)
+  useEffect(() => {
+    if (!cm) { setLocalFt(""); setLocalIn(""); return; }
+    const { ft: f, inches: i } = cmToFtIn(cm);
+    setLocalFt(f.toString());
+    setLocalIn(i.toString());
+  }, [cm]);
+
+  const handleCmChange = (raw) => {
+    onChangeCm(raw);             // cm → parent (source of truth)
+    if (raw) {
+      const { ft: f, inches: i } = cmToFtIn(Number(raw));
+      setLocalFt(f.toString());
+      setLocalIn(i.toString());
+    } else {
+      setLocalFt(""); setLocalIn("");
+    }
+  };
+
+  const handleFtChange = (raw) => {
+    setLocalFt(raw);
+    const newCm = ftInToCm(raw, localIn);
+    if (newCm > 0) onChangeCm(newCm.toString());
+  };
+
+  const handleInChange = (raw) => {
+    // clamp 0-11
+    const clamped = Math.min(11, Math.max(0, Number(raw) || 0));
+    setLocalIn(clamped.toString());
+    const newCm = ftInToCm(localFt, clamped);
+    if (newCm > 0) onChangeCm(newCm.toString());
+  };
+
+  if (editing) {
+    return (
+      <div className="flex flex-col gap-1.5 col-span-2">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
+        <div className="grid grid-cols-2 gap-2">
+          {/* cm input */}
+          <div className="flex items-center gap-2 rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+            <Ruler size={14} className="text-cyan-400/60 shrink-0" />
+            <input
+              type="number"
+              min={100}
+              max={250}
+              value={valueCm}
+              onChange={(e) => handleCmChange(e.target.value)}
+              className="flex-1 bg-transparent text-sm text-white placeholder-white/20 outline-none w-0"
+              placeholder="cm"
+            />
+            <span className="text-[11px] font-medium text-white/30 shrink-0">cm</span>
+          </div>
+          {/* ft + in inputs */}
+          <div className="flex items-center gap-1.5 rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+            <Ruler size={14} className="text-indigo-400/60 shrink-0" />
+            <input
+              type="number"
+              min={3}
+              max={8}
+              value={localFt}
+              onChange={(e) => handleFtChange(e.target.value)}
+              className="w-7 bg-transparent text-sm text-white placeholder-white/20 outline-none text-center"
+              placeholder="ft"
+            />
+            <span className="text-[11px] font-medium text-white/30">ft</span>
+            <input
+              type="number"
+              min={0}
+              max={11}
+              value={localIn}
+              onChange={(e) => handleInChange(e.target.value)}
+              className="w-7 bg-transparent text-sm text-white placeholder-white/20 outline-none text-center"
+              placeholder="in"
+            />
+            <span className="text-[11px] font-medium text-white/30">in</span>
+          </div>
+        </div>
+        <p className="text-[9px] text-white/20 ml-1">Editing either unit updates the other automatically</p>
+      </div>
+    );
+  }
+
+  // View mode — single tile showing both units
+  const ftInStr = cm ? `${ft}'${inches}"` : null;
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+        <Ruler size={14} className="text-cyan-400/40 shrink-0" />
+        <span className="flex-1 text-sm font-medium text-white/90">
+          {cm ? cm : <span className="text-white/20 italic">Not set</span>}
+        </span>
+        {cm ? (
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-[11px] font-medium text-white/30">cm</span>
+            <span className="text-white/10">·</span>
+            <span className="text-[11px] font-semibold text-indigo-400/60">{ftInStr}</span>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+
 function SkeletonLoader() {
   return (
     <div className="space-y-6 animate-pulse">
@@ -116,6 +262,75 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
 }
 
 // --------------------------------------------------------------------------------
+// Calorie Target Field — Auto-calculated but manually editable
+// --------------------------------------------------------------------------------
+function CalorieTargetField({ value, onChange, editing }) {
+  const hasValue = value && value > 0;
+
+  if (editing) {
+    return (
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center gap-1.5 ml-1">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-400/70">
+            Daily Calorie Target
+          </span>
+          <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full">
+            Manual Override
+          </span>
+        </div>
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/10 focus-within:border-amber-400/40 focus-within:shadow-[0_0_0_3px_rgba(251,191,36,0.12)] transition-all">
+          <Flame size={15} className="text-amber-400/60 shrink-0" />
+          <input
+            type="number"
+            min={500}
+            max={10000}
+            value={value || ""}
+            onChange={(e) => onChange(e.target.value)}
+            className="flex-1 bg-transparent text-sm text-white placeholder-white/20 outline-none font-bold"
+            placeholder="e.g. 2500"
+          />
+          <span className="text-[11px] font-medium text-white/30 shrink-0">kcal / day</span>
+        </div>
+        <p className="text-[9px] text-white/25 ml-1">
+          Set manually, or leave blank to auto-calculate based on stats
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-center gap-1.5 ml-1">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-400/70">
+          Daily Calorie Target
+        </span>
+        <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/50 bg-amber-400/10 border border-amber-400/20 px-1.5 py-0.5 rounded-full">
+          Auto
+        </span>
+      </div>
+      <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-amber-400/[0.05] border border-amber-400/20 shadow-[0_0_20px_rgba(251,191,36,0.08)]">
+        <Flame size={15} className="text-amber-400/70 shrink-0 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
+        {hasValue ? (
+          <>
+            <span className="flex-1 text-sm font-bold text-amber-300">
+              {Number(value).toLocaleString()}
+            </span>
+            <span className="text-[11px] font-semibold text-amber-400/50 shrink-0">kcal / day</span>
+          </>
+        ) : (
+          <span className="flex-1 text-sm text-white/20 italic">
+            Complete your profile to calculate
+          </span>
+        )}
+      </div>
+      <p className="text-[9px] text-white/25 ml-1">
+        Recalculates automatically when weight or body fat changes
+      </p>
+    </div>
+  );
+}
+
+// --------------------------------------------------------------------------------
 // Main Profile Card
 // --------------------------------------------------------------------------------
 export default function ProfileCard({ isOpen, onClose }) {
@@ -128,6 +343,7 @@ export default function ProfileCard({ isOpen, onClose }) {
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showDiscardDialog, setShowDiscardDialog] = useState(false);
+  const [calorieTarget, setCalorieTarget] = useState(null);
 
   // Editable form values – independent from profile until save
   const [form, setForm] = useState({
@@ -137,6 +353,7 @@ export default function ProfileCard({ isOpen, onClose }) {
     gender: "",
     weight: "",
     height: "",
+    bodyFat: "",
     workoutDays: 3,
     proteinBudget: "",
     trainingField: "",
@@ -144,6 +361,7 @@ export default function ProfileCard({ isOpen, onClose }) {
     goalBodyFat: "",
     goalPeriod: 3,
     goalPeriodUnit: "months",
+    calorieTarget: "",
   });
 
   // Store a snapshot to detect unsaved changes
@@ -167,6 +385,7 @@ export default function ProfileCard({ isOpen, onClose }) {
           gender: p?.gender || "",
           weight: p?.weight?.toString() || "",
           height: p?.height?.toString() || "",
+          bodyFat: p?.bodyFat?.toString() || "",
           workoutDays: p?.workoutDays || 3,
           proteinBudget: p?.proteinBudget?.toString() || "",
           trainingField: p?.trainingField || "",
@@ -174,8 +393,31 @@ export default function ProfileCard({ isOpen, onClose }) {
           goalBodyFat: p?.goalBodyFat?.toString() || "",
           goalPeriod: p?.goalPeriod || 3,
           goalPeriodUnit: p?.goalPeriodUnit || "months",
+          calorieTarget: "", // we populate this below
         };
         setProfile(p);
+
+        // Use DB value if present; otherwise calculate client-side as instant fallback
+        let target = p?.calorieTarget ?? null;
+        if (!target && p) {
+          target = calcCalorieTarget({
+            weight: p.weight,
+            height: p.height,
+            age: p.age,
+            gender: p.gender,
+            workoutDays: p.workoutDays,
+          });
+          // Silently persist so next load comes from DB directly
+          if (target) {
+            fetch("/api/profile", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...newForm, calorieTarget: target }),
+            }).catch(() => {});
+          }
+        }
+        setCalorieTarget(target);
+        newForm.calorieTarget = target?.toString() || "";
         setForm(newForm);
         setInitialForm(newForm);
       })
@@ -220,11 +462,18 @@ export default function ProfileCard({ isOpen, onClose }) {
         });
       }
 
-      await fetch("/api/profile", {
+      const res = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      const data = await res.json();
+
+      // Update displayed calorie target if backend returned a new one
+      if (data.calorieTarget !== undefined) {
+        setCalorieTarget(data.calorieTarget);
+      }
+
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
@@ -410,6 +659,15 @@ export default function ProfileCard({ isOpen, onClose }) {
             <SkeletonLoader />
           ) : (
             <>
+              {/* ── Calorie Target ── */}
+              <CalorieTargetField
+                value={isEditing ? form.calorieTarget : calorieTarget}
+                onChange={(v) => setForm({ ...form, calorieTarget: v })}
+                editing={isEditing}
+              />
+
+              <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
               {/* Section: Personal Information */}
               <section>
                 <div className="flex items-center gap-2 mb-3">
@@ -476,21 +734,26 @@ export default function ProfileCard({ isOpen, onClose }) {
                     unit="kg"
                     editing={isEditing}
                   />
+                  <HeightField
+                    valueCm={form.height}
+                    onChangeCm={(v) => setForm({ ...form, height: v })}
+                    editing={isEditing}
+                  />
+                  {/* Current Body Fat % */}
                   <FieldDisplay
-                    label="Height"
-                    icon={Ruler}
-                    value={form.height}
-                    onChange={(v) => setForm({ ...form, height: v })}
+                    label="Body Fat %"
+                    icon={Activity}
+                    value={form.bodyFat}
+                    onChange={(v) => setForm({ ...form, bodyFat: v })}
                     type="number"
-                    min={100}
-                    max={250}
-                    unit="cm"
+                    min={3}
+                    max={60}
+                    unit="%"
                     editing={isEditing}
                   />
                 </div>
               </section>
 
-              {/* Elegant divider */}
               <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
               {/* Section: Training & Nutrition */}

@@ -1,4 +1,59 @@
 import { NextResponse } from "next/server";
+import { getAuth } from "@/lib/auth";
+import { getDb } from "@/lib/mongodb";
+
+// Fetch the user's profile from DB to personalise Kai's system prompt
+async function getUserProfile(req) {
+  try {
+    const auth = getAuth();
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user?.id) return null;
+
+    const db = await getDb();
+    const profile = await db.collection("profiles").findOne({ userId: session.user.id });
+    return { user: session.user, profile: profile ?? null };
+  } catch {
+    return null;
+  }
+}
+
+function buildSystemPrompt(userData) {
+  if (!userData || !userData.profile) {
+    // Fallback if profile isn't loaded
+    return `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.
+Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
+  }
+
+  const { user, profile } = userData;
+  const name = user?.name || "the user";
+  const calorieTarget = profile.calorieTarget
+    ? `${profile.calorieTarget.toLocaleString()} kcal`
+    : "not yet calculated";
+  const weight = profile.weight ? `${profile.weight} kg` : "not set";
+  const height = profile.height ? `${profile.height} cm` : "not set";
+  const age = profile.age || "unknown";
+  const gender = profile.gender || "not specified";
+  const bodyFat = profile.bodyFat ? `${profile.bodyFat}%` : "not set";
+  const workoutDays = profile.workoutDays || 3;
+  const proteinBudget = profile.proteinBudget ? `${profile.proteinBudget}g/day` : "not set";
+  const trainingField = profile.trainingField || "not set";
+  const goalWeight = profile.goalWeight ? `${profile.goalWeight} kg` : "not set";
+  const goalBodyFat = profile.goalBodyFat ? `${profile.goalBodyFat}%` : "not set";
+
+  return `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app.
+
+The user's name is ${name}. Here are their stats:
+- Age: ${age}, Gender: ${gender}
+- Weight: ${weight}, Height: ${height}, Current Body Fat: ${bodyFat}
+- Daily Calorie Target: ${calorieTarget} (auto-calculated by Kai based on their stats)
+- Protein Budget: ${proteinBudget}
+- Workout Days/week: ${workoutDays}
+- Training Focus: ${trainingField}
+- Goal Weight: ${goalWeight}, Goal Body Fat: ${goalBodyFat}
+
+Use this data to give personalised, evidence-based advice. When discussing calories, always refer to their calculated target of ${calorieTarget}. Be encouraging but honest.
+Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
+}
 
 export async function POST(req) {
   try {
@@ -12,6 +67,10 @@ export async function POST(req) {
       );
     }
 
+    // Fetch real user profile to personalise the system prompt
+    const userData = await getUserProfile(req);
+    const systemPrompt = buildSystemPrompt(userData);
+
     // Only keep the image from the very last message to avoid token limits and payload size issues
     const lastMessageIndex = messages.length - 1;
     const hasImage = messages[lastMessageIndex]?.image;
@@ -24,17 +83,6 @@ export async function POST(req) {
         { status: 413 }
       );
     }
-
-    const systemPrompt = `You are Kai, a helpful, encouraging AI fitness & productivity assistant inside a mobile dashboard app. The user is Alex Johnson.
-Alex's goal today is to stick to 2,400 kcal (currently consumed 1,850 kcal, 550 kcal left).
-His daily tasks today include:
-- Morning Workout: 30 min Strength Training (Completed - 350 kcal burned)
-- Drink 2L Water: Stay Hydrated (Completed - 2/2 Liters)
-- Read 20 Pages: Self Growth (Not completed - 0/20 Pages)
-- Meditate: 10 min Mindfulness (Not completed - 0/10 min)
-- Take Vitamins: Health First (Completed - 1/1 Done)
-
-Respond concisely, in 1-2 brief paragraphs or bullet points, keeping messages readable on a small mobile device screen. Focus on actionable, motivational advice.`;
 
     let formattedMessages = [];
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import {
   ArrowRight, ArrowLeft, Loader2, User, Weight,
-  Ruler, Calendar, Zap, Target, Clock, Dumbbell, Sparkles
+  Ruler, Calendar, Zap, Target, Clock, Dumbbell, Sparkles, Activity
 } from "lucide-react";
 
 const TRAINING_OPTIONS = [
@@ -48,6 +48,7 @@ export default function OnboardingPage() {
   const [gender, setGender] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const [bodyFat, setBodyFat] = useState(""); // current body fat % (optional)
   const [workoutDays, setWorkoutDays] = useState(3);
   const [proteinBudget, setProteinBudget] = useState("");
 
@@ -90,7 +91,7 @@ export default function OnboardingPage() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          age, gender, weight, height, workoutDays, proteinBudget,
+          age, gender, weight, height, bodyFat, workoutDays, proteinBudget,
           trainingField, goalWeight, goalPeriod,
         }),
       });
@@ -203,6 +204,22 @@ export default function OnboardingPage() {
                     onChange={e => setHeight(e.target.value)}
                   />
                 </div>
+              </div>
+
+              {/* Body Fat % (optional) */}
+              <div>
+                <FieldLabel>
+                  Body Fat % <span className="text-white/20 normal-case tracking-normal">(optional — helps Kai be more accurate)</span>
+                </FieldLabel>
+                <StyledInput
+                  icon={Activity}
+                  type="number"
+                  min={3}
+                  max={60}
+                  placeholder="e.g. 18"
+                  value={bodyFat}
+                  onChange={e => setBodyFat(e.target.value)}
+                />
               </div>
 
               {/* Workout Days */}

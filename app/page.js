@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { calculateMacros } from "@/lib/macros";
 import GradientBlinds from "@/components/GradientBlinds";
 import KaiAssistant from "@/components/KaiAssistant";
 import ProfileCard from "@/components/ProfileCard";
@@ -108,8 +109,24 @@ export default function Page() {
   const [isKaiOpen, setIsKaiOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [calorieTarget, setCalorieTarget] = useState(null);
 
-  // Check if user has completed onboarding
+  // Client-side Mifflin-St Jeor fallback (mirrors backend formula)
+  function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
+    const w = Number(weight) || 0;
+    const h = Number(height) || 0;
+    const a = Number(age) || 0;
+    const d = Number(workoutDays) || 3;
+    if (!w || !h || !a || !gender) return null;
+    let bmr;
+    if (gender === "male") bmr = 10 * w + 6.25 * h - 5 * a + 5;
+    else if (gender === "female") bmr = 10 * w + 6.25 * h - 5 * a - 161;
+    else bmr = 10 * w + 6.25 * h - 5 * a - 78;
+    const mult = d <= 2 ? 1.375 : d <= 4 ? 1.55 : d <= 6 ? 1.725 : 1.9;
+    return Math.round(bmr * mult);
+  }
+
+  // Check if user has completed onboarding + grab calorie target
   useEffect(() => {
     if (!session) return;
     fetch("/api/profile")
@@ -117,10 +134,25 @@ export default function Page() {
       .then(data => {
         if (!data.profile) {
           setShowOnboarding(true);
+          return;
         }
+        const p = data.profile;
+        // Use DB value or fall back to client-side calculation
+        const target =
+          p.calorieTarget ||
+          calcCalorieTarget({
+            weight: p.weight,
+            height: p.height,
+            age: p.age,
+            gender: p.gender,
+            workoutDays: p.workoutDays,
+          });
+        setCalorieTarget(target);
       })
       .catch(console.error);
   }, [session]);
+
+  const macros = calculateMacros(calorieTarget);
 
   // Auth guard
   useEffect(() => {
@@ -217,42 +249,51 @@ export default function Page() {
                   <circle cx="50" cy="50" r="46" fill="none" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 3" />
                 </svg>
 
-                {/* Main Progress Ring */}
-                <svg className="relative h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
-                  <defs>
-                    <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#00d0ff" />
-                      <stop offset="100%" stopColor="#1d4ed8" />
-                    </linearGradient>
-                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feGaussianBlur stdDeviation="3" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                  </defs>
-
-                  {/* Track Background */}
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#08102b" strokeWidth="5.5" />
-
-                  {/* Blurred Glow Layer */}
-                  <circle
-                    cx="50" cy="50" r="40" fill="none" stroke="url(#premiumGrad)"
-                    strokeWidth="5.5" strokeLinecap="round" strokeDasharray="251.3" strokeDashoffset="55"
-                    filter="url(#glow)"
-                  />
-
-                  {/* Crisp Solid Core Layer */}
-                  <circle
-                    cx="50" cy="50" r="40" fill="none" stroke="#00f0ff"
-                    strokeWidth="1.5" strokeLinecap="round" strokeDasharray="251.3" strokeDashoffset="55"
-                  />
-                </svg>
+                {/* Main Progress Ring — circumference 251.3, offset = (1-progress)*251.3 */}
+                {(() => {
+                  const consumed = 1850; // mock consumed (no food tracking yet)
+                  const target = calorieTarget || 2000;
+                  const pct = Math.min(consumed / target, 1);
+                  const offset = Math.round(251.3 * (1 - pct));
+                  return (
+                    <svg className="relative h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
+                      <defs>
+                        <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#00d0ff" />
+                          <stop offset="100%" stopColor="#1d4ed8" />
+                        </linearGradient>
+                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur stdDeviation="3" result="blur" />
+                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                      </defs>
+                      {/* Track Background */}
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="#08102b" strokeWidth="5.5" />
+                      {/* Blurred Glow Layer */}
+                      <circle
+                        cx="50" cy="50" r="40" fill="none" stroke="url(#premiumGrad)"
+                        strokeWidth="5.5" strokeLinecap="round"
+                        strokeDasharray="251.3" strokeDashoffset={offset}
+                        filter="url(#glow)"
+                      />
+                      {/* Crisp Solid Core Layer */}
+                      <circle
+                        cx="50" cy="50" r="40" fill="none" stroke="#00f0ff"
+                        strokeWidth="1.5" strokeLinecap="round"
+                        strokeDasharray="251.3" strokeDashoffset={offset}
+                      />
+                    </svg>
+                  );
+                })()}
 
                 {/* Crisp Typography */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
                   <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">1,850</span>
-                  <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">/ 2400 Kcal</span>
+                  <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">
+                    / {calorieTarget ? calorieTarget.toLocaleString() : "—"} Kcal
+                  </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#00d0ff]/[0.1] px-2 py-0.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/20">
-                    550 LEFT
+                    {calorieTarget ? (calorieTarget - 1850).toLocaleString() : "—"} LEFT
                   </span>
                 </div>
               </div>
@@ -269,10 +310,13 @@ export default function Page() {
                       </div>
                       Protein
                     </div>
-                    <span className="font-semibold text-white">120g <span className="text-white/30 font-medium">/ 150g</span></span>
+                    <span className="font-semibold text-white">120g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div className="h-full rounded-full bg-gradient-to-r from-[#00d0ff]/60 to-[#00d0ff] shadow-[0_0_8px_#00d0ff]" style={{ width: '80%' }} />
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#00d0ff]/60 to-[#00d0ff] shadow-[0_0_8px_#00d0ff] transition-all duration-700"
+                      style={{ width: macros.protein ? `${Math.min((120 / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
+                    />
                   </div>
                 </div>
 
@@ -283,12 +327,15 @@ export default function Page() {
                       <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#0a1535] border border-[#38bdf8]/30">
                         <Droplet size={10} className="text-[#38bdf8] fill-[#38bdf8]/20 drop-shadow-[0_0_5px_#38bdf8]" />
                       </div>
-                      Fats
+                      Fat
                     </div>
-                    <span className="font-semibold text-white">60g <span className="text-white/30 font-medium">/ 80g</span></span>
+                    <span className="font-semibold text-white">60g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div className="h-full rounded-full bg-gradient-to-r from-[#38bdf8]/60 to-[#38bdf8] shadow-[0_0_8px_#38bdf8]" style={{ width: '75%' }} />
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#38bdf8]/60 to-[#38bdf8] shadow-[0_0_8px_#38bdf8] transition-all duration-700"
+                      style={{ width: macros.fats ? `${Math.min((60 / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
+                    />
                   </div>
                 </div>
 
@@ -301,10 +348,13 @@ export default function Page() {
                       </div>
                       Carbs
                     </div>
-                    <span className="font-semibold text-white">210g <span className="text-white/30 font-medium">/ 300g</span></span>
+                    <span className="font-semibold text-white">210g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div className="h-full rounded-full bg-gradient-to-r from-[#2dd4bf]/60 to-[#2dd4bf] shadow-[0_0_8px_#2dd4bf]" style={{ width: '70%' }} />
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#2dd4bf]/60 to-[#2dd4bf] shadow-[0_0_8px_#2dd4bf] transition-all duration-700"
+                      style={{ width: macros.carbs ? `${Math.min((210 / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
+                    />
                   </div>
                 </div>
 
@@ -317,10 +367,15 @@ export default function Page() {
                       </div>
                       Calories
                     </div>
-                    <span className="font-semibold text-white">1850 <span className="text-white/30 font-medium">/ 2400</span></span>
+                    <span className="font-semibold text-white">
+                      1850 <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
+                    </span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
-                    <div className="h-full rounded-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6]" style={{ width: '77%' }} />
+                    <div
+                      className="h-full rounded-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6] transition-all duration-700"
+                      style={{ width: calorieTarget ? `${Math.min((1850 / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
+                    />
                   </div>
                 </div>
 
