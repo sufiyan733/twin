@@ -74,7 +74,7 @@ export default function Page() {
       }]);
       setAddingTask(false);
     } else {
-      setTasks(tasks.map(t => 
+      setTasks(tasks.map(t =>
         t.id === editingTask ? { ...t, title: editForm.title, value: editForm.value } : t
       ));
       setEditingTask(null);
@@ -278,6 +278,7 @@ export default function Page() {
             <Menu size={24} strokeWidth={1.5} />
           </button>
 
+
           <button type="button" className="relative text-white/80 hover:text-white transition-colors">
             <Bell size={22} strokeWidth={1.5} />
             <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-[#00d0ff] shadow-[0_0_8px_#00d0ff]" />
@@ -464,14 +465,14 @@ export default function Page() {
 
             <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
               {tasks.map(task => (
-                <div 
-                  key={task.id} 
+                <div
+                  key={task.id}
                   onClick={() => handleEditTask(task)}
                   className={`group relative flex min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer shrink-0 overflow-hidden ${task.checked ? 'opacity-70' : ''}`}
                 >
                   {/* Premium Strike-Through Line */}
-                  <div 
-                    className={`absolute left-[40px] right-2 top-1/2 h-[2px] -translate-y-1/2 bg-gradient-to-r from-[#00d0ff] via-[#00d0ff]/80 to-transparent shadow-[0_0_10px_#00d0ff] transition-all duration-500 ease-out z-20 pointer-events-none origin-left ${task.checked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}`} 
+                  <div
+                    className={`absolute left-[40px] right-2 top-1/2 h-[2px] -translate-y-1/2 bg-gradient-to-r from-[#00d0ff] via-[#00d0ff]/80 to-transparent shadow-[0_0_10px_#00d0ff] transition-all duration-500 ease-out z-20 pointer-events-none origin-left ${task.checked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}`}
                   />
 
                   <button
@@ -540,20 +541,36 @@ export default function Page() {
                     <div className="absolute bottom-1.5 left-1/2 h-[4px] w-6 -translate-x-1/2 rounded-t-full bg-[#00d0ff] shadow-[0_0_10px_#00d0ff] z-10" />
                   </>
                 ) : item.isKai ? (
-                  <div className="relative flex flex-col items-center -mt-8 z-20">
-                    {/* Main Orb Container (Centered) */}
-                    <div className="relative h-[48px] w-[48px] grid place-items-center">
-                      <div className="absolute inset-0 bg-[#00d0ff]/30 blur-[15px] rounded-full pointer-events-none scale-150" />
-                      
-                      <div className="absolute inset-0 h-full w-full rounded-full border-[1.5px] border-dashed border-[#00d0ff]/70 animate-[spin_10s_linear_infinite]" />
-                      
-                      <div className="absolute h-[38px] w-[38px] rounded-full border-[1.5px] border-[#a855f7]" />
-                      
-                      <div className="relative grid place-items-center h-[32px] w-[32px] rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#a855f7] shadow-[0_0_20px_rgba(0,208,255,0.6)] transition-all group-active:scale-95 group-hover:scale-110">
-                        <item.icon size={16} className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
+                  <div className="relative flex flex-col items-center -mt-8 z-30">
+                    <div className="relative group flex items-center justify-center">
+
+                      {/* Ambient breathing glow */}
+                      <div className="absolute inset-0 bg-[#00d0ff]/20 rounded-full blur-xl scale-[1.8] animate-pulse" />
+
+                      {/* Base shadow layer for elevation */}
+                      <div className="absolute -bottom-2 w-8 h-4 bg-black/60 rounded-[100%] blur-md" />
+
+                      {/* The Button Body */}
+                      <div className="relative h-[56px] w-[56px] rounded-full p-[1px] bg-gradient-to-br from-white/30 via-white/5 to-[#00d0ff]/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 cursor-pointer">
+
+                        <div className="relative h-full w-full rounded-full bg-gradient-to-b from-[#0a1535] to-[#010614] overflow-hidden flex items-center justify-center shadow-[inset_0_2px_15px_rgba(0,208,255,0.2),inset_0_-2px_15px_rgba(168,85,247,0.15)]">
+
+                          {/* Glossy top reflection */}
+                          <div className="absolute top-0 inset-x-2 h-1/2 rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60" />
+
+                          {/* Inner glowing accent strip */}
+                          <div className="absolute top-0 w-2/3 h-[2px] bg-gradient-to-r from-transparent via-[#00d0ff]/90 to-transparent" />
+
+                          {/* Glowing Icon */}
+                          <item.icon size={22} className="relative z-10 text-white drop-shadow-[0_0_8px_rgba(0,208,255,0.8)]" />
+
+                          {/* Bottom colorful light bounce */}
+                          <div className="absolute -bottom-2 w-full h-[15px] bg-[#00d0ff]/30 blur-[6px] rounded-full" />
+                        </div>
                       </div>
                     </div>
-                    <span className="relative text-[10px] font-bold text-white tracking-widest drop-shadow-[0_0_5px_rgba(0,208,255,0.8)] mt-1.5">{item.label}</span>
+
+                    <span className="relative text-[9px] font-bold text-white tracking-[0.2em] uppercase mt-2 drop-shadow-[0_0_5px_rgba(0,208,255,0.4)]">{item.label}</span>
                   </div>
                 ) : (
                   <>
@@ -580,9 +597,9 @@ export default function Page() {
         <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
 
         {/* Tasks Manager Overlay */}
-        <TasksManager 
-          isOpen={isTasksManagerOpen} 
-          onClose={() => setIsTasksManagerOpen(false)} 
+        <TasksManager
+          isOpen={isTasksManagerOpen}
+          onClose={() => setIsTasksManagerOpen(false)}
           tasks={tasks}
           setTasks={setTasks}
           resetTime={resetTime}
@@ -596,7 +613,7 @@ export default function Page() {
               <h3 className="text-white font-bold text-lg mb-4 tracking-wide text-center drop-shadow-[0_0_8px_rgba(0,208,255,0.5)]">
                 {addingTask ? "Add New Task" : "Edit Task"}
               </h3>
-              
+
               <div className="flex flex-col gap-3 mb-6">
                 <div>
                   <label className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1 mb-1 block">Main Task</label>

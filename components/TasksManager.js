@@ -27,8 +27,46 @@ function formatTime12h(time24) {
   return `${hour}:${String(m).padStart(2, "0")} ${ampm}`;
 }
 
+function parseTime(input) {
+  const normalized = input.toLowerCase().trim().replace(/[^a-z0-9:]/g, '');
+  if (!normalized) return null;
+  let h, m, ampm;
+  
+  if (normalized.includes(':')) {
+    const parts = normalized.split(':');
+    h = parseInt(parts[0], 10);
+    const mPart = parts[1].replace(/[a-z]/g, '');
+    m = parseInt(mPart || 0, 10);
+    ampm = normalized.includes('pm') ? 'pm' : normalized.includes('am') ? 'am' : null;
+  } else {
+    ampm = normalized.includes('pm') ? 'pm' : normalized.includes('am') ? 'am' : null;
+    const digits = normalized.replace(/[a-z]/g, '');
+    if (digits.length <= 2) {
+      h = parseInt(digits || 0, 10);
+      m = 0;
+    } else if (digits.length === 3) {
+      h = parseInt(digits.substring(0, 1), 10);
+      m = parseInt(digits.substring(1), 10);
+    } else {
+      h = parseInt(digits.substring(0, 2), 10);
+      m = parseInt(digits.substring(2, 4), 10);
+    }
+  }
+
+  if (isNaN(h) || isNaN(m)) return null;
+
+  if (ampm === "pm" && h < 12) h += 12;
+  if (ampm === "am" && h === 12) h = 0;
+  
+  if (h > 23 || m > 59) return null;
+  
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
 export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTime, onResetTimeChange }) {
   const [expandedTaskId, setExpandedTaskId] = useState(null);
+  const [isEditingTime, setIsEditingTime] = useState(false);
+  const [timeInput, setTimeInput] = useState("");
 
   if (!isOpen) return null;
 
@@ -112,14 +150,41 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
             <p className="text-[10px] text-white/40">Tasks auto-reset to empty at this time</p>
           </div>
           
-          <div className="relative group">
-            <input
-              type="time"
-              value={resetTime}
-              onChange={(e) => onResetTimeChange(e.target.value)}
-              className="w-[130px] bg-white/[0.04] border border-[#00d0ff]/20 rounded-xl px-3 py-2 text-sm text-[#00d0ff] font-bold outline-none focus:border-[#00d0ff]/50 focus:shadow-[0_0_15px_rgba(0,208,255,0.2)] transition-all [color-scheme:dark] cursor-pointer"
-            />
-            <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-transparent group-hover:ring-[#00d0ff]/30 transition-all pointer-events-none" />
+          <div className="relative min-w-[130px]">
+            {isEditingTime ? (
+              <input
+                type="text"
+                autoFocus
+                value={timeInput}
+                onChange={(e) => setTimeInput(e.target.value)}
+                onBlur={() => {
+                  setIsEditingTime(false);
+                  const parsed = parseTime(timeInput);
+                  if (parsed) {
+                    onResetTimeChange(parsed);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.target.blur();
+                  }
+                }}
+                className="w-full bg-white/[0.04] border border-[#00d0ff]/50 rounded-xl px-3 py-2 text-sm text-[#00d0ff] font-bold outline-none shadow-[0_0_15px_rgba(0,208,255,0.2)] transition-all text-center"
+                placeholder="e.g. 10:30 PM"
+              />
+            ) : (
+              <button
+                onClick={() => {
+                  setTimeInput(formatTime12h(resetTime));
+                  setIsEditingTime(true);
+                }}
+                className="w-full group relative bg-white/[0.04] border border-white/10 hover:border-[#00d0ff]/40 rounded-xl px-3 py-2 text-sm text-white hover:text-[#00d0ff] font-bold transition-all text-center flex items-center justify-center gap-1.5"
+              >
+                <Clock size={14} className="text-[#00d0ff] group-hover:scale-110 transition-transform" />
+                {formatTime12h(resetTime)}
+                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-transparent group-hover:ring-[#00d0ff]/30 transition-all pointer-events-none" />
+              </button>
+            )}
           </div>
         </div>
 
