@@ -540,10 +540,10 @@ export default function Page() {
                 </div>
                 <h2 className="text-[14px] font-semibold text-white tracking-wide">Daily Tasks</h2>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <button
                   onClick={() => setIsTasksManagerOpen(true)}
-                  className="grid place-items-center h-[26px] w-[26px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
+                  className="mr-1 grid place-items-center h-[26px] w-[26px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
                   title="Open Task Manager"
                 >
                   <ClipboardList size={13} strokeWidth={1.8} />

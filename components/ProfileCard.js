@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 import {
   X, Pencil, Save, Loader2, User, Weight, Ruler, Calendar, Zap,
-  Target, Clock, Activity, Sparkles, Check, Mail, Shield, AtSign, Flame,
+  Target, Clock, Activity, Sparkles, Check, Mail, Shield, AtSign, Flame, LogOut,
 } from "lucide-react";
 
 const TRAINING_OPTIONS = [
@@ -344,6 +344,19 @@ export default function ProfileCard({ isOpen, onClose }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showDiscardDialog, setShowDiscardDialog] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await authClient.signOut();
+      onClose();
+      window.location.href = "/";
+    } catch (e) {
+      console.error(e);
+      setLoggingOut(false);
+    }
+  };
 
   // Editable form values – independent from profile until save
   const [form, setForm] = useState({
@@ -629,17 +642,8 @@ export default function ProfileCard({ isOpen, onClose }) {
               )}
             </div>
 
-            {/* Right: Edit & Close buttons */}
-            <div className="flex items-center gap-2">
-              {!isEditing && (
-                <button
-                  onClick={handleEdit}
-                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 backdrop-blur-sm hover:bg-white/10 hover:border-cyan-400/30 hover:text-cyan-300 transition-all active:scale-95"
-                >
-                  <Pencil size={13} />
-                  Edit
-                </button>
-              )}
+            {/* Right: Edit, Logout & Close buttons */}
+            <div className="flex flex-col items-end gap-2">
               <button
                 onClick={handleClose}
                 className="flex items-center justify-center h-9 w-9 rounded-full bg-white/[0.04] border border-white/[0.06] text-white/60 hover:bg-white/10 hover:text-white transition-all active:scale-90"
@@ -647,6 +651,26 @@ export default function ProfileCard({ isOpen, onClose }) {
               >
                 <X size={16} strokeWidth={1.5} />
               </button>
+              {!isEditing && (
+                <button
+                  onClick={handleEdit}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 backdrop-blur-sm hover:bg-white/10 hover:border-cyan-400/30 hover:text-cyan-300 transition-all active:scale-95"
+                >
+                  <Pencil size={13} /> Edit
+                </button>
+              )}
+              {!isEditing && (
+                <button
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  {loggingOut
+                    ? <Loader2 size={12} className="animate-spin" />
+                    : <LogOut size={12} />}
+                  {loggingOut ? "Signing out…" : "Log Out"}
+                </button>
+              )}
             </div>
           </div>
         </div>
