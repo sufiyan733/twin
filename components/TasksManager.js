@@ -5,7 +5,7 @@ import {
   X, Plus, Trash2,
   Dumbbell, Droplet,
   Book, Leaf, Pill, Zap, Heart, ClipboardList, Flame,
-  ChevronDown, Clock, RotateCcw
+  ChevronDown, Clock, RotateCcw, Target
 } from "lucide-react";
 
 const AVAILABLE_ICONS = [
@@ -222,11 +222,16 @@ const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand,
 });
 
 // ── Main component ─────────────────────────────────────────────────────────────
-export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTime, onResetTimeChange }) {
+export default function TasksManager({
+  isOpen, onClose, tasks, setTasks, resetTime, onResetTimeChange,
+  goals = [], setGoals, activeGoalId, setActiveGoalId,
+}) {
   const [expandedTaskId, setExpandedTaskId] = useState(null);
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [timeInput, setTimeInput] = useState("");
   const [visible, setVisible] = useState(false);
+  // selectedTab: null = Daily Tasks, number = goal id
+  const [selectedTab, setSelectedTab] = useState(null);
 
   // Fade-in / slide-up on open
   useEffect(() => {
@@ -237,14 +242,34 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
     }
   }, [isOpen]);
 
+  // Sync selectedTab with activeGoalId from parent whenever modal opens
+  useEffect(() => {
+    if (isOpen) setSelectedTab(activeGoalId ?? null);
+  }, [isOpen, activeGoalId]);
+
   // Stable callbacks — these must never change identity so memoized TaskRow skips re-renders
   const updateTask = useCallback((id, updates) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
-  }, [setTasks]);
+    if (selectedTab != null) {
+      // update inside a goal
+      setGoals(prev => prev.map(g =>
+        g.id === selectedTab
+          ? { ...g, tasks: g.tasks.map(t => t.id === id ? { ...t, ...updates } : t) }
+          : g
+      ));
+    } else {
+      setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    }
+  }, [setTasks, setGoals, selectedTab]);
 
   const deleteTask = useCallback((id) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
-  }, [setTasks]);
+    if (selectedTab != null) {
+      setGoals(prev => prev.map(g =>
+        g.id === selectedTab ? { ...g, tasks: g.tasks.filter(t => t.id !== id) } : g
+      ));
+    } else {
+      setTasks(prev => prev.filter(t => t.id !== id));
+    }
+  }, [setTasks, setGoals, selectedTab]);
 
   const addNewTask = useCallback(() => {
     const randomIcon = AVAILABLE_ICONS[Math.floor(Math.random() * AVAILABLE_ICONS.length)].component;
@@ -255,9 +280,21 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
       value: "0 / 1",
       checked: false,
     };
-    setTasks(prev => [...prev, newTask]);
+    if (selectedTab != null) {
+      setGoals(prev => prev.map(g =>
+        g.id === selectedTab ? { ...g, tasks: [...(g.tasks ?? []), newTask] } : g
+      ));
+    } else {
+      setTasks(prev => [...prev, newTask]);
+    }
     setExpandedTaskId(newTask.id);
-  }, [setTasks]);
+  }, [setTasks, setGoals, selectedTab]);
+
+  const deleteGoal = useCallback((goalId) => {
+    setGoals(prev => prev.filter(g => g.id !== goalId));
+    if (activeGoalId === goalId) setActiveGoalId?.(null);
+    setSelectedTab(null);
+  }, [setGoals, activeGoalId, setActiveGoalId]);
 
   const handleToggleExpand = useCallback((id) => {
     setExpandedTaskId(prev => prev === id ? null : id);
@@ -265,7 +302,12 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
 
   if (!isOpen) return null;
 
-  const completedCount = tasks.filter(t => t.checked).length;
+  // Determine active task list
+  const activeGoal = goals.find(g => g.id === selectedTab) ?? null;
+  const activeTasks = activeGoal ? (activeGoal.tasks ?? []) : tasks;
+  const completedCount = activeTasks.filter(t => t.checked).length;
+  const accentColor = activeGoal ? "#a855f7" : "#00d0ff";
+  const accentGlow = activeGoal ? "rgba(168,85,247,0.3)" : "rgba(0,208,255,0.3)";
 
   return (
     <>
@@ -308,9 +350,9 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
                 <ClipboardList className="text-[#00d0ff]" size={20} />
                 Tasks Manager
               </h2>
-              {tasks.length > 0 && (
+              {activeTasks.length > 0 && (
                 <p className="text-[10px] text-white/30 mt-0.5">
-                  {completedCount} / {tasks.length} completed today
+                  {completedCount} / {activeTasks.length} completed
                 </p>
               )}
             </div>
@@ -323,8 +365,51 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
             </button>
           </div>
 
-          {/* Daily Reset Time */}
-          <div className="px-5 py-4 border-b border-white/5 bg-[#020b1e] shrink-0 flex items-center justify-between">
+          {/* Goal Tabs */}
+          <div className="px-4 pt-3 pb-0 shrink-0 border-b border-white/5">
+            <div className="flex gap-1.5 overflow-x-auto pb-3 scrollbar-none">
+              {/* Daily Tasks tab */}
+              <button
+                onClick={() => setSelectedTab(null)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-[11px] font-semibold whitespace-nowrap border transition-all ${
+                  selectedTab === null
+                    ? "bg-[#00d0ff]/15 border-[#00d0ff]/40 text-[#00d0ff] shadow-[0_0_10px_rgba(0,208,255,0.2)]"
+                    : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/25 hover:text-white/80"
+                }`}
+              >
+                <ClipboardList size={11} />
+                Daily
+              </button>
+
+              {/* Goal tabs */}
+              {goals.map((goal) => {
+                const isActive = selectedTab === goal.id;
+                const elapsed = Math.floor((Date.now() - new Date(goal.startDate)) / 86_400_000);
+                const remaining = Math.max(0, goal.days - elapsed);
+                return (
+                  <button
+                    key={goal.id}
+                    onClick={() => setSelectedTab(goal.id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-[11px] font-semibold whitespace-nowrap border transition-all ${
+                      isActive
+                        ? "bg-[#a855f7]/15 border-[#a855f7]/40 text-[#c084fc] shadow-[0_0_10px_rgba(168,85,247,0.2)]"
+                        : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/25 hover:text-white/80"
+                    }`}
+                  >
+                    <Target size={11} />
+                    <span className="max-w-[80px] truncate">{goal.name}</span>
+                    <span className={`text-[9px] ${ isActive ? "text-[#a855f7]/70" : "text-white/25" }`}>
+                      {remaining}d
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Daily Reset Time — only shown on Daily tab */}
+          {selectedTab === null && (
+            <div className="px-5 py-4 border-b border-white/5 bg-[#020b1e] shrink-0 flex items-center justify-between">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <RotateCcw size={14} className="text-[#00d0ff]" />
@@ -362,16 +447,40 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
               )}
             </div>
           </div>
+          )}
+
+          {/* Goal info bar — shown when a goal tab is active */}
+          {selectedTab !== null && (() => {
+            const g = goals.find(x => x.id === selectedTab);
+            if (!g) return null;
+            const elapsed = Math.floor((Date.now() - new Date(g.startDate)) / 86_400_000);
+            const remaining = Math.max(0, g.days - elapsed);
+            return (
+              <div className="px-5 py-3 border-b border-white/5 bg-[#0d0520] shrink-0 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-[#c084fc]">{g.name}</p>
+                  <p className="text-[10px] text-white/30 mt-0.5">{g.days} day goal · {remaining} days remaining</p>
+                </div>
+                <button
+                  onClick={() => deleteGoal(g.id)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-red-500/10 text-red-400/70 hover:bg-red-500/20 hover:text-red-400 text-[11px] font-semibold border border-red-500/10 transition-all"
+                >
+                  <Trash2 size={12} />
+                  Delete Goal
+                </button>
+              </div>
+            );
+          })()}
 
           {/* Task List */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
-            {tasks.length === 0 ? (
+            {activeTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-32 gap-2 text-white/20">
                 <ClipboardList size={28} strokeWidth={1.2} />
-                <p className="text-sm">No tasks yet. Add one below.</p>
+                <p className="text-sm">{activeGoal ? "No tasks yet. Add one below." : "No tasks yet. Add one below."}</p>
               </div>
             ) : (
-              tasks.map((task, i) => (
+              activeTasks.map((task, i) => (
                 <TaskRow
                   key={task.id}
                   task={task}
@@ -386,8 +495,14 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks, resetTi
 
             <button
               onClick={addNewTask}
-              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl border border-dashed border-[#00d0ff]/40 text-[#00d0ff] hover:bg-[#00d0ff]/10 hover:border-[#00d0ff]/60 active:scale-[0.98] text-sm font-semibold"
-              style={{ transition: "background 150ms ease, border-color 150ms ease, transform 100ms ease" }}
+              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl border border-dashed text-sm font-semibold transition-all active:scale-[0.98]"
+              style={{
+                borderColor: `${accentColor}66`,
+                color: accentColor,
+                transition: "background 150ms ease, border-color 150ms ease, transform 100ms ease",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}18`; e.currentTarget.style.borderColor = `${accentColor}99`; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = `${accentColor}66`; }}
             >
               <Plus size={16} />
               Add New Task

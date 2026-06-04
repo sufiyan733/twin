@@ -10,6 +10,8 @@ import ProfileCard from "@/components/ProfileCard";
 import OnboardingModal from "@/components/OnboardingModal";
 import TasksManager from "@/components/TasksManager";
 import MealsManager from "@/components/MealsManager";
+import GoalDropdown from "@/components/GoalDropdown";
+import CreateGoalModal from "@/components/CreateGoalModal";
 import {
   Bell,
   Book,
@@ -62,6 +64,12 @@ export default function Page() {
   const [resetTime, setResetTime] = useState("00:00"); // HH:MM, 24h
   const [lastResetAt, setLastResetAt] = useState(null);
   const [tasksSynced, setTasksSynced] = useState(false); // prevent write before first load
+
+  // ─── Custom Goals ────────────────────────────────────────────────────────────
+  const [goals, setGoals] = useState([]);
+  const [goalsSynced, setGoalsSynced] = useState(false);
+  const [activeGoalId, setActiveGoalId] = useState(null); // null = Daily Tasks
+  const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
 
 
   const router = useRouter();
@@ -170,15 +178,13 @@ export default function Page() {
   };
 
   // ─── Load tasks from DB ─────────────────────────────────────────────────────
+  const iconMap = { Dumbbell, Droplet, Book, Leaf, Pill, Zap, Heart, Flame, ClipboardList };
+
   useEffect(() => {
     if (!session) return;
     fetch("/api/tasks")
       .then(r => r.json())
       .then(data => {
-        // Icons are stored as strings in DB, resolve them back to components
-        const iconMap = {
-          Dumbbell, Droplet, Book, Leaf, Pill, Zap, Heart, Flame: Flame, ClipboardList,
-        };
         const resolved = (data.tasks ?? []).map(t => ({
           ...t,
           icon: typeof t.icon === "string" ? (iconMap[t.icon] ?? ClipboardList) : (t.icon ?? ClipboardList),
@@ -190,6 +196,60 @@ export default function Page() {
       })
       .catch(console.error);
   }, [session]);
+
+  // ─── Load goals from DB ──────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!session) return;
+    fetch("/api/goals")
+      .then(r => r.json())
+      .then(data => {
+        // Resolve task icons inside each goal
+        const resolved = (data.goals ?? []).map(g => ({
+          ...g,
+          tasks: (g.tasks ?? []).map(t => ({
+            ...t,
+            icon: typeof t.icon === "string" ? (iconMap[t.icon] ?? ClipboardList) : (t.icon ?? ClipboardList),
+          })),
+        }));
+        setGoals(resolved);
+        setGoalsSynced(true);
+      })
+      .catch(console.error);
+  }, [session]);
+
+  // ─── Save goals to DB whenever they change ───────────────────────────────────
+  useEffect(() => {
+    if (!session || !goalsSynced) return;
+    const serialised = goals.map(g => ({
+      ...g,
+      tasks: (g.tasks ?? []).map(t => ({
+        ...t,
+        icon: typeof t.icon === "function"
+          ? (t.icon.displayName || t.icon.name || "ClipboardList")
+          : (t.icon ?? "ClipboardList"),
+      })),
+    }));
+    fetch("/api/goals", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ goals: serialised }),
+    }).catch(console.error);
+  }, [goals, session, goalsSynced]);
+
+  // ─── Handle new goal creation ────────────────────────────────────────────────
+  const handleGoalSave = async (newGoal) => {
+    const updated = [...goals, newGoal];
+    setGoals(updated);
+    // Switch to the newly created goal immediately
+    setActiveGoalId(newGoal.id);
+  };
+
+  // ─── Update tasks inside a specific goal ────────────────────────────────────
+  const setGoalTasks = (goalId, updater) => {
+    setGoals(prev => prev.map(g =>
+      g.id === goalId ? { ...g, tasks: typeof updater === "function" ? updater(g.tasks) : updater } : g
+    ));
+  };
 
   // ─── Save tasks to DB whenever they change ───────────────────────────────────
   useEffect(() => {
@@ -580,77 +640,161 @@ export default function Page() {
             </div>
           </section>
 
-          {/* Daily Tasks Card */}
-          <section className="relative flex-1 flex flex-col overflow-hidden rounded-[16px] border border-[#00d0ff]/25 bg-[#030818] p-3 shadow-[0_0_35px_rgba(0,150,255,0.15)] backdrop-blur-xl mb-1">
+          {/* Daily Tasks / Goals Card */}
+          <section className="relative flex-1 flex flex-col rounded-[16px] border border-[#00d0ff]/25 bg-[#030818] p-3 shadow-[0_0_35px_rgba(0,150,255,0.15)] backdrop-blur-xl mb-1">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,208,255,0.12),transparent_70%)] pointer-events-none" />
 
-            <div className="flex items-center justify-between mb-2 relative z-10 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="grid place-items-center h-[30px] w-[30px] rounded-full bg-[#0a1535] border border-[#00d0ff]/40 shadow-[0_0_15px_rgba(0,208,255,0.3)]">
-                  <ClipboardList size={16} className="text-[#00d0ff] drop-shadow-[0_0_5px_#00d0ff]" />
+            {/* Card header */}
+            <div className="flex items-center justify-between mb-2 relative z-50 shrink-0">
+              {/* Left: icon + goal dropdown */}
+              <div className="flex items-center gap-2 relative">
+                <div className={`grid place-items-center h-[30px] w-[30px] rounded-full border shadow-[0_0_15px_rgba(0,208,255,0.3)] shrink-0 ${
+                  activeGoalId
+                    ? "bg-[#1a0a35] border-[#a855f7]/40 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                    : "bg-[#0a1535] border-[#00d0ff]/40"
+                }`}>
+                  {activeGoalId
+                    ? <span className="text-[14px]">🎯</span>
+                    : <ClipboardList size={16} className="text-[#00d0ff] drop-shadow-[0_0_5px_#00d0ff]" />
+                  }
                 </div>
-                <h2 className="text-[14px] font-semibold text-white tracking-wide">Daily Tasks</h2>
+                <GoalDropdown
+                  goals={goals}
+                  activeGoalId={activeGoalId}
+                  onChange={setActiveGoalId}
+                  onAddGoal={() => setIsCreateGoalOpen(true)}
+                />
               </div>
-              <div className="flex items-center gap-4">
+
+              {/* Right: manager + add task (daily only) */}
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsTasksManagerOpen(true)}
-                  className="mr-1 grid place-items-center h-[26px] w-[26px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
+                  className="grid place-items-center h-[26px] w-[26px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
                   title="Open Task Manager"
                 >
                   <ClipboardList size={13} strokeWidth={1.8} />
                 </button>
-                <button
-                  onClick={handleAddTask}
-                  className="flex items-center gap-1.5 h-[26px] px-2.5 rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[11px] font-medium text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all drop-shadow-[0_0_8px_rgba(0,208,255,0.3)]"
-                >
-                  <Plus size={12} strokeWidth={2.5} /> Add Task
-                </button>
+                {!activeGoalId && (
+                  <button
+                    onClick={handleAddTask}
+                    className="flex items-center gap-1.5 h-[26px] px-2.5 rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[11px] font-medium text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all drop-shadow-[0_0_8px_rgba(0,208,255,0.3)]"
+                  >
+                    <Plus size={12} strokeWidth={2.5} /> Add Task
+                  </button>
+                )}
               </div>
             </div>
 
-            <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
-              {tasks.map(task => (
-                <div
-                  key={task.id}
-                  onClick={() => handleEditTask(task)}
-                  className={`group relative flex min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] border border-transparent hover:border-[#00d0ff]/30 cursor-pointer shrink-0 overflow-hidden ${task.checked ? 'opacity-70' : ''}`}
-                >
-                  {/* Premium Strike-Through Line */}
-                  <div
-                    className={`absolute left-[40px] right-2 top-1/2 h-[2px] -translate-y-1/2 bg-gradient-to-r from-[#00d0ff] via-[#00d0ff]/80 to-transparent shadow-[0_0_10px_#00d0ff] transition-all duration-500 ease-out z-20 pointer-events-none origin-left ${task.checked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'}`}
-                  />
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleTask(task.id);
-                    }}
-                    className="relative shrink-0 grid place-items-center h-4 w-4 transition-transform active:scale-90 z-10"
-                  >
-                    {task.checked ? (
-                      <div className="grid place-items-center h-[20px] w-[20px] rounded-full bg-[#00d0ff]/20 border border-[#00d0ff] text-[#00d0ff] shadow-[0_0_12px_rgba(0,208,255,0.6)]">
-                        <Check size={12} strokeWidth={3} className="drop-shadow-[0_0_5px_#00d0ff]" />
-                      </div>
-                    ) : (
-                      <Circle size={20} className="text-white/10 transition-colors group-hover:text-[#00d0ff]/40" strokeWidth={1.5} />
-                    )}
-                  </button>
-
-                  <div className={`grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner transition-colors z-10 ${task.checked ? 'opacity-50' : 'group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40'}`}>
-                    {(() => { const Icon = resolveIcon(task.icon); return <Icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />; })()}
-                  </div>
-
-                  <div className="flex-1 min-w-0 z-10">
-                    <h3 className={`text-[11px] font-semibold truncate tracking-wide transition-colors ${task.checked ? 'text-white/40' : 'text-white/95 group-hover:text-white'}`}>
-                      {task.title}
-                    </h3>
-                  </div>
-
-                  <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide transition-colors z-10">
-                    {task.value}
+            {/* Goal duration badge (when a custom goal is active) */}
+            {(() => {
+              const g = goals.find(x => x.id === activeGoalId);
+              if (!g) return null;
+              const elapsed = Math.floor((Date.now() - new Date(g.startDate)) / 86_400_000);
+              const remaining = Math.max(0, g.days - elapsed);
+              return (
+                <div className="mb-2 flex items-center gap-2 relative z-10 shrink-0">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] bg-[#a855f7]/10 border border-[#a855f7]/20">
+                    <span className="text-[10px] font-semibold text-[#c084fc]">{g.days}d goal</span>
+                    <span className="text-white/20 text-[10px]">·</span>
+                    <span className="text-[10px] text-white/50">{remaining}d remaining</span>
                   </div>
                 </div>
-              ))}
+              );
+            })()}
+
+            {/* Task list — daily or goal */}
+            <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
+              {(() => {
+                // Determine which task list to render
+                const activeGoal = goals.find(g => g.id === activeGoalId);
+                const displayTasks = activeGoal ? (activeGoal.tasks ?? []) : tasks;
+                const accentColor = activeGoal ? "#a855f7" : "#00d0ff";
+                const accentBg = activeGoal ? "bg-[#1a0a35]" : "bg-[#0a1535]";
+                const accentBorder = activeGoal ? "border-[#a855f7]/20" : "border-[#00d0ff]/20";
+
+                const toggleDisplayTask = (id) => {
+                  if (activeGoal) {
+                    setGoalTasks(activeGoal.id, prev =>
+                      prev.map(t => t.id === id ? { ...t, checked: !t.checked } : t)
+                    );
+                  } else {
+                    toggleTask(id);
+                  }
+                };
+
+                if (displayTasks.length === 0) {
+                  return (
+                    <div className="flex flex-col items-center justify-center flex-1 gap-2 text-white/20">
+                      <ClipboardList size={24} strokeWidth={1.2} />
+                      <p className="text-[11px]">
+                        {activeGoal ? "No tasks yet in this goal" : "No tasks yet. Add one above."}
+                      </p>
+                    </div>
+                  );
+                }
+
+                return displayTasks.map(task => (
+                  <div
+                    key={task.id}
+                    onClick={() => !activeGoal && handleEditTask(task)}
+                    className={`group relative flex min-h-[34px] items-center gap-2.5 rounded-[10px] bg-[#07112c]/60 px-3 py-1 transition-all duration-300 border border-transparent shrink-0 overflow-hidden ${
+                      task.checked ? 'opacity-70' : ''
+                    } ${
+                      activeGoal
+                        ? 'hover:bg-[#a855f7]/[0.05] hover:border-[#a855f7]/20'
+                        : 'hover:bg-[#00d0ff]/[0.05] hover:shadow-[0_0_20px_rgba(0,208,255,0.1)] hover:border-[#00d0ff]/30 cursor-pointer'
+                    }`}
+                  >
+                    {/* Strike-Through Line */}
+                    <div
+                      className={`absolute left-[40px] right-2 top-1/2 h-[2px] -translate-y-1/2 transition-all duration-500 ease-out z-20 pointer-events-none origin-left ${
+                        task.checked ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+                      }`}
+                      style={{
+                        background: `linear-gradient(to right, ${accentColor}, ${accentColor}cc, transparent)`,
+                        boxShadow: `0 0 10px ${accentColor}`,
+                      }}
+                    />
+
+                    <button
+                      onClick={(e) => { e.stopPropagation(); toggleDisplayTask(task.id); }}
+                      className="relative shrink-0 grid place-items-center h-4 w-4 transition-transform active:scale-90 z-10"
+                    >
+                      {task.checked ? (
+                        <div
+                          className="grid place-items-center h-[20px] w-[20px] rounded-full border text-white"
+                          style={{
+                            backgroundColor: `${accentColor}33`,
+                            borderColor: accentColor,
+                            boxShadow: `0 0 12px ${accentColor}99`,
+                          }}
+                        >
+                          <Check size={12} strokeWidth={3} style={{ color: accentColor }} />
+                        </div>
+                      ) : (
+                        <Circle size={20} className="text-white/10 transition-colors group-hover:text-white/30" strokeWidth={1.5} />
+                      )}
+                    </button>
+
+                    <div className={`grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] border text-white shadow-inner transition-colors z-10 ${accentBg} ${accentBorder} ${
+                      task.checked ? 'opacity-50' : ''
+                    }`}>
+                      {(() => { const Icon = resolveIcon(task.icon); return <Icon size={13} strokeWidth={1.8} style={{ color: accentColor }} className="drop-shadow" />; })()}
+                    </div>
+
+                    <div className="flex-1 min-w-0 z-10">
+                      <h3 className={`text-[11px] font-semibold truncate tracking-wide transition-colors ${task.checked ? 'text-white/40' : 'text-white/95 group-hover:text-white'}`}>
+                        {task.title}
+                      </h3>
+                    </div>
+
+                    <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide z-10">
+                      {task.value}
+                    </div>
+                  </div>
+                ));
+              })()}
             </div>
           </section>
 
@@ -764,6 +908,17 @@ export default function Page() {
           setTasks={setTasks}
           resetTime={resetTime}
           onResetTimeChange={handleResetTimeChange}
+          goals={goals}
+          setGoals={setGoals}
+          activeGoalId={activeGoalId}
+          setActiveGoalId={setActiveGoalId}
+        />
+
+        {/* Create Goal Modal */}
+        <CreateGoalModal
+          isOpen={isCreateGoalOpen}
+          onClose={() => setIsCreateGoalOpen(false)}
+          onSave={handleGoalSave}
         />
 
         {/* Task Edit / Add Modal */}
