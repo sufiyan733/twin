@@ -33,6 +33,9 @@ import {
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
+  const [resetTime, setResetTime] = useState("00:00"); // HH:MM, 24h
+  const [lastResetAt, setLastResetAt] = useState(null);
+  const [tasksSynced, setTasksSynced] = useState(false); // prevent write before first load
 
 
   const router = useRouter();
@@ -78,7 +81,100 @@ export default function Page() {
     }
   };
 
-  // Client-side Mifflin-St Jeor fallback (mirrors backend formula)
+  // ─── Load tasks from DB ─────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!session) return;
+    fetch("/api/tasks")
+      .then(r => r.json())
+      .then(data => {
+        // Icons are stored as strings in DB, resolve them back to components
+        const iconMap = {
+          Dumbbell, Droplet, Book, Leaf, Pill, Zap, Heart, Flame: Flame, ClipboardList,
+        };
+        const resolved = (data.tasks ?? []).map(t => ({
+          ...t,
+          icon: typeof t.icon === "string" ? (iconMap[t.icon] ?? ClipboardList) : (t.icon ?? ClipboardList),
+        }));
+        setTasks(resolved);
+        setResetTime(data.resetTime ?? "00:00");
+        setLastResetAt(data.lastResetAt ? new Date(data.lastResetAt) : null);
+        setTasksSynced(true);
+      })
+      .catch(console.error);
+  }, [session]);
+
+  // ─── Save tasks to DB whenever they change ───────────────────────────────────
+  useEffect(() => {
+    if (!session || !tasksSynced) return;
+    const serialised = tasks.map(t => ({
+      ...t,
+      icon: typeof t.icon === "function" ? t.icon.displayName || t.icon.name || "ClipboardList" : (t.icon ?? "ClipboardList"),
+    }));
+    fetch("/api/tasks", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tasks: serialised }),
+    }).catch(console.error);
+  }, [tasks, session, tasksSynced]);
+
+  // ─── Save resetTime to DB when it changes ────────────────────────────────────
+  const handleResetTimeChange = (newTime) => {
+    setResetTime(newTime);
+    if (!session) return;
+    fetch("/api/tasks", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resetTime: newTime }),
+    }).catch(console.error);
+  };
+
+  // ─── Daily reset check ───────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!session || !tasksSynced) return;
+
+    const checkReset = () => {
+      const now = new Date();
+      const [rh, rm] = resetTime.split(":").map(Number);
+      const resetToday = new Date();
+      resetToday.setHours(rh, rm, 0, 0);
+
+      const alreadyReset = lastResetAt && new Date(lastResetAt) >= resetToday;
+      if (alreadyReset) return;
+
+      // It's past the reset time for today and we haven't reset yet
+      if (now >= resetToday) {
+        const dateStr = now.toISOString().split("T")[0];
+        const serialised = tasks.map(t => ({
+          ...t,
+          icon: typeof t.icon === "function" ? t.icon.displayName || t.icon.name || "ClipboardList" : (t.icon ?? "ClipboardList"),
+        }));
+        // Archive today's snapshot THEN reset
+        fetch("/api/tasks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tasks: serialised, date: dateStr }),
+        })
+          .then(() => {
+            setTasks(prev => prev.map(t => ({ ...t, checked: false })));
+            const now2 = new Date();
+            setLastResetAt(now2);
+            // Persist lastResetAt
+            fetch("/api/tasks", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ lastResetAt: now2.toISOString() }),
+            }).catch(console.error);
+          })
+          .catch(console.error);
+      }
+    };
+
+    checkReset();
+    const interval = setInterval(checkReset, 60 * 1000); // check every minute
+    return () => clearInterval(interval);
+  }, [session, tasksSynced, resetTime, lastResetAt]);
+
+  // ─── Calorie Target ─────────────────────────────────────────────────────────
   function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
     const w = Number(weight) || 0;
     const h = Number(height) || 0;
@@ -218,9 +314,9 @@ export default function Page() {
 
                 {/* Main Progress Ring — circumference 251.3, offset = (1-progress)*251.3 */}
                 {(() => {
-                  const consumed = 1850; // mock consumed (no food tracking yet)
-                  const target = calorieTarget || 2000;
-                  const pct = Math.min(consumed / target, 1);
+                  const consumed = 0; // set to 0 to await actual implementation
+                  const target = calorieTarget || 0;
+                  const pct = target > 0 ? Math.min(consumed / target, 1) : 0;
                   const offset = Math.round(251.3 * (1 - pct));
                   return (
                     <svg className="relative h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
@@ -255,12 +351,12 @@ export default function Page() {
 
                 {/* Crisp Typography */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center mt-1">
-                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">1,850</span>
+                  <span className="text-[22px] font-bold leading-none tracking-tighter text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">0</span>
                   <span className="text-[7px] text-white/50 font-bold tracking-[0.2em] uppercase mt-1 mb-1.5">
                     / {calorieTarget ? calorieTarget.toLocaleString() : "—"} Kcal
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-[#00d0ff]/[0.1] px-2 py-0.5 text-[9px] font-bold text-[#00d0ff] border border-[#00d0ff]/20">
-                    {calorieTarget ? (calorieTarget - 1850).toLocaleString() : "—"} LEFT
+                    {calorieTarget ? calorieTarget.toLocaleString() : "—"} LEFT
                   </span>
                 </div>
               </div>
@@ -277,12 +373,12 @@ export default function Page() {
                       </div>
                       Protein
                     </div>
-                    <span className="font-semibold text-white">120g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.protein ? `${macros.protein}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#00d0ff]/60 to-[#00d0ff] shadow-[0_0_8px_#00d0ff] transition-all duration-700"
-                      style={{ width: macros.protein ? `${Math.min((120 / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.protein ? `${Math.min((0 / macros.protein) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -296,12 +392,12 @@ export default function Page() {
                       </div>
                       Fat
                     </div>
-                    <span className="font-semibold text-white">60g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.fats ? `${macros.fats}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#38bdf8]/60 to-[#38bdf8] shadow-[0_0_8px_#38bdf8] transition-all duration-700"
-                      style={{ width: macros.fats ? `${Math.min((60 / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.fats ? `${Math.min((0 / macros.fats) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -315,12 +411,12 @@ export default function Page() {
                       </div>
                       Carbs
                     </div>
-                    <span className="font-semibold text-white">210g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
+                    <span className="font-semibold text-white">0g <span className="text-white/30 font-medium">/ {macros.carbs ? `${macros.carbs}g` : "—"}</span></span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#2dd4bf]/60 to-[#2dd4bf] shadow-[0_0_8px_#2dd4bf] transition-all duration-700"
-                      style={{ width: macros.carbs ? `${Math.min((210 / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: macros.carbs ? `${Math.min((0 / macros.carbs) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -335,13 +431,13 @@ export default function Page() {
                       Calories
                     </div>
                     <span className="font-semibold text-white">
-                      1850 <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
+                      0 <span className="text-white/30 font-medium">/ {calorieTarget ? calorieTarget.toLocaleString() : "—"}</span>
                     </span>
                   </div>
                   <div className="h-[4px] w-full rounded-full bg-[#08102b] overflow-hidden shadow-inner">
                     <div
                       className="h-full rounded-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6] transition-all duration-700"
-                      style={{ width: calorieTarget ? `${Math.min((1850 / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
+                      style={{ width: calorieTarget ? `${Math.min((0 / calorieTarget) * 100, 100).toFixed(1)}%` : '0%' }}
                     />
                   </div>
                 </div>
@@ -418,44 +514,64 @@ export default function Page() {
         </main>
 
         {/* Bottom Navigation */}
-        <nav className="absolute bottom-0 left-0 right-0 z-20 flex h-[60px] items-start justify-between bg-[#030716]/95 px-6 pt-2 backdrop-blur-xl border-t border-[#1e3a8a]/30">
-          {[
-            { label: 'Home', icon: Home, active: true },
-            { label: 'Tasks', icon: Check, isBox: true },
-            { label: 'Kai', icon: Sparkles },
-            { label: 'Fitness', icon: Heart },
-            { label: 'Profile', icon: User },
-          ].map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                if (item.label === 'Kai') setIsKaiOpen(true);
-                if (item.label === 'Profile') setIsProfileOpen(true);
-                if (item.label === 'Tasks') setIsTasksManagerOpen(true);
-              }}
-              className="group relative flex flex-col items-center gap-0.5"
-            >
-              {item.active ? (
-                <>
-                  <item.icon size={20} className="text-[#3b82f6] fill-[#3b82f6] drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
-                  <span className="text-[8px] font-medium text-[#3b82f6]">{item.label}</span>
-                  <div className="absolute -bottom-2 left-1/2 h-[3px] w-5 -translate-x-1/2 rounded-t-full bg-[#3b82f6] shadow-[0_0_8px_#3b82f6]" />
-                </>
-              ) : (
-                <>
-                  {item.isBox ? (
-                    <div className="grid place-items-center text-white/40 h-[18px] w-[18px] border-[1.5px] border-white/40 rounded-[4px]">
-                      <Check size={10} strokeWidth={3} />
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <nav className="flex h-[68px] pb-2 items-center justify-between bg-[#030818]/95 px-6 backdrop-blur-2xl border-t border-[#1e3a8a]/40 shadow-[0_-15px_35px_rgba(0,0,0,0.5)]">
+            {[
+              { label: 'Home', icon: Home, active: true },
+              { label: 'Tasks', icon: Check, isBox: true },
+              { label: 'Kai', icon: Sparkles, isKai: true },
+              { label: 'Fitness', icon: Heart },
+              { label: 'Profile', icon: User },
+            ].map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  if (item.label === 'Kai') setIsKaiOpen(true);
+                  if (item.label === 'Profile') setIsProfileOpen(true);
+                  if (item.label === 'Tasks') setIsTasksManagerOpen(true);
+                }}
+                className="group relative flex flex-col items-center justify-center w-[52px] h-full transition-all"
+              >
+                {item.active ? (
+                  <>
+                    <div className="absolute inset-0 top-1 bottom-1 bg-[#00d0ff]/10 rounded-[16px]" />
+                    <item.icon size={22} className="text-[#00d0ff] fill-[#00d0ff] drop-shadow-[0_0_12px_rgba(0,208,255,0.6)] z-10" />
+                    <span className="text-[9px] font-bold text-[#00d0ff] z-10 mt-1">{item.label}</span>
+                    <div className="absolute bottom-1.5 left-1/2 h-[4px] w-6 -translate-x-1/2 rounded-t-full bg-[#00d0ff] shadow-[0_0_10px_#00d0ff] z-10" />
+                  </>
+                ) : item.isKai ? (
+                  <div className="relative flex flex-col items-center -mt-8 z-20">
+                    {/* Main Orb Container (Centered) */}
+                    <div className="relative h-[48px] w-[48px] grid place-items-center">
+                      <div className="absolute inset-0 bg-[#00d0ff]/30 blur-[15px] rounded-full pointer-events-none scale-150" />
+                      
+                      <div className="absolute inset-0 h-full w-full rounded-full border-[1.5px] border-dashed border-[#00d0ff]/70 animate-[spin_10s_linear_infinite]" />
+                      
+                      <div className="absolute h-[38px] w-[38px] rounded-full border-[1.5px] border-[#a855f7]" />
+                      
+                      <div className="relative grid place-items-center h-[32px] w-[32px] rounded-full bg-gradient-to-tr from-[#00d0ff] to-[#a855f7] shadow-[0_0_20px_rgba(0,208,255,0.6)] transition-all group-active:scale-95 group-hover:scale-110">
+                        <item.icon size={16} className="text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
+                      </div>
                     </div>
-                  ) : (
-                    <item.icon size={20} className="text-white/40" strokeWidth={1.8} />
-                  )}
-                  <span className="text-[8px] font-medium text-white/40">{item.label}</span>
-                </>
-              )}
-            </button>
-          ))}
-        </nav>
+                    <span className="relative text-[10px] font-bold text-white tracking-widest drop-shadow-[0_0_5px_rgba(0,208,255,0.8)] mt-1.5">{item.label}</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="absolute inset-0 top-1 bottom-1 bg-white/0 group-hover:bg-white/[0.04] rounded-[16px] transition-all" />
+                    {item.isBox ? (
+                      <div className="grid place-items-center text-white/50 h-[22px] w-[22px] border-[1.5px] border-white/30 rounded-[6px] group-hover:text-white group-hover:border-white/60 transition-all z-10">
+                        <Check size={12} strokeWidth={3} />
+                      </div>
+                    ) : (
+                      <item.icon size={22} className="text-white/40 group-hover:text-white/80 transition-colors z-10" strokeWidth={1.8} />
+                    )}
+                    <span className="text-[9px] font-medium text-white/40 group-hover:text-white/80 transition-colors z-10 mt-1">{item.label}</span>
+                  </>
+                )}
+              </button>
+            ))}
+          </nav>
+        </div>
 
         {/* Kai AI Modal Overlay */}
         <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
@@ -469,6 +585,8 @@ export default function Page() {
           onClose={() => setIsTasksManagerOpen(false)} 
           tasks={tasks}
           setTasks={setTasks}
+          resetTime={resetTime}
+          onResetTimeChange={handleResetTimeChange}
         />
 
         {/* Task Edit / Add Modal */}
