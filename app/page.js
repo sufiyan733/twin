@@ -32,6 +32,31 @@ import {
   ClipboardList
 } from "lucide-react";
 
+// ── Icon registry — all task icons must live here so we can safely render them
+// regardless of whether task.icon is a string name or a component reference.
+const ICON_MAP = {
+  Dumbbell,
+  Droplet,
+  Book,
+  Leaf,
+  Pill,
+  Zap,
+  Heart,
+  Flame,
+  ClipboardList,
+  List: ClipboardList,
+};
+
+/** Safely resolve a task icon — accepts a string key, a component fn, or null */
+function resolveIcon(icon) {
+  if (!icon) return ClipboardList;
+  if (typeof icon === "string") return ICON_MAP[icon] ?? ClipboardList;
+  if (typeof icon === "function") return icon;
+  // Lucide can export objects in some bundler configs; try .render or bail out
+  if (typeof icon === "object" && typeof icon.render === "function") return icon;
+  return ClipboardList;
+}
+
 export default function Page() {
   const [tasks, setTasks] = useState([]);
   const [resetTime, setResetTime] = useState("00:00"); // HH:MM, 24h
@@ -586,7 +611,7 @@ export default function Page() {
                   </button>
 
                   <div className={`grid h-[26px] w-[26px] shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff] shadow-inner transition-colors z-10 ${task.checked ? 'opacity-50' : 'group-hover:bg-[#00d0ff]/10 group-hover:border-[#00d0ff]/40'}`}>
-                    {task.icon && <task.icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />}
+                    {(() => { const Icon = resolveIcon(task.icon); return <Icon size={13} strokeWidth={1.8} className="drop-shadow-[0_0_5px_rgba(0,208,255,0.5)]" />; })()}
                   </div>
 
                   <div className="flex-1 min-w-0 z-10">
@@ -596,7 +621,6 @@ export default function Page() {
                   </div>
 
                   <div className="shrink-0 flex items-center gap-1.5 text-[9px] font-semibold text-white/40 tracking-wide transition-colors z-10">
-                    {task.valIcon && <task.valIcon size={9} className="fill-current" />}
                     {task.value}
                   </div>
                 </div>
