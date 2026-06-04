@@ -9,6 +9,7 @@ import KaiAssistant from "@/components/KaiAssistant";
 import ProfileCard from "@/components/ProfileCard";
 import OnboardingModal from "@/components/OnboardingModal";
 import TasksManager from "@/components/TasksManager";
+import MealsManager from "@/components/MealsManager";
 import {
   Bell,
   Book,
@@ -45,16 +46,68 @@ export default function Page() {
   const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
-  const [consumed, setConsumed] = useState({ calories: 0, protein: 0, fat: 0, carbs: 0 });
+
+  const [meals, setMeals] = useState([]);
+  const [isMealsManagerOpen, setIsMealsManagerOpen] = useState(false);
+  const [mealsSynced, setMealsSynced] = useState(false);
+  const [lastMealsResetAt, setLastMealsResetAt] = useState(null);
+
+  const consumed = {
+    calories: meals.reduce((sum, m) => sum + (m.calories || 0), 0),
+    protein: meals.reduce((sum, m) => sum + (m.protein || 0), 0),
+    fat: meals.reduce((sum, m) => sum + (m.fat || 0), 0),
+    carbs: meals.reduce((sum, m) => sum + (m.carbs || 0), 0),
+  };
+
+  const saveMealsToDb = async (newMeals) => {
+    if (!session) return;
+    try {
+      await fetch("/api/meals", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ meals: newMeals })
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleNutritionUpdate = (action) => {
-    setConsumed(prev => ({
-      calories: Math.round(prev.calories + (action.calories || 0)),
-      protein:  Math.round(prev.protein  + (action.protein  || 0)),
-      fat:      Math.round(prev.fat      + (action.fat      || 0)),
-      carbs:    Math.round(prev.carbs    + (action.carbs    || 0)),
-    }));
+    const newMeal = {
+      id: Date.now(),
+      name: "Logged via Kai",
+      calories: action.calories || 0,
+      protein: action.protein || 0,
+      fat: action.fat || 0,
+      carbs: action.carbs || 0,
+    };
+    const updatedMeals = [...meals, newMeal];
+    setMeals(updatedMeals);
+    saveMealsToDb(updatedMeals);
   };
+
+  // ─── Load meals from DB ─────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!session) return;
+    fetch("/api/meals")
+      .then(r => r.json())
+      .then(data => {
+        setMeals(data.meals ?? []);
+        setLastMealsResetAt(data.lastResetAt ? new Date(data.lastResetAt) : null);
+        setMealsSynced(true);
+      })
+      .catch(console.error);
+  }, [session]);
+
+  // ─── Save meals to DB whenever they change ──────────────────────────────────
+  useEffect(() => {
+    if (!session || !mealsSynced) return;
+    fetch("/api/meals", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ meals }),
+    }).catch(console.error);
+  }, [meals, session, mealsSynced]);
 
   const [editingTask, setEditingTask] = useState(null);
   const [addingTask, setAddingTask] = useState(false);
@@ -158,7 +211,8 @@ export default function Page() {
           ...t,
           icon: typeof t.icon === "function" ? t.icon.displayName || t.icon.name || "ClipboardList" : (t.icon ?? "ClipboardList"),
         }));
-        // Archive today's snapshot THEN reset
+
+        // 1. Archive tasks snapshot then reset tasks
         fetch("/api/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -168,7 +222,6 @@ export default function Page() {
             setTasks(prev => prev.map(t => ({ ...t, checked: false })));
             const now2 = new Date();
             setLastResetAt(now2);
-            // Persist lastResetAt
             fetch("/api/tasks", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
@@ -176,13 +229,26 @@ export default function Page() {
             }).catch(console.error);
           })
           .catch(console.error);
+
+        // 2. Archive meals snapshot then reset meals
+        fetch("/api/meals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ meals, date: dateStr }),
+        })
+          .then(() => {
+            setMeals([]);
+            const now3 = new Date();
+            setLastMealsResetAt(now3);
+          })
+          .catch(console.error);
       }
     };
 
     checkReset();
-    const interval = setInterval(checkReset, 60 * 1000); // check every minute
+    const interval = setInterval(checkReset, 60 * 1000);
     return () => clearInterval(interval);
-  }, [session, tasksSynced, resetTime, lastResetAt]);
+  }, [session, tasksSynced, resetTime, lastResetAt, meals, lastMealsResetAt]);
 
   // ─── Calorie Target ─────────────────────────────────────────────────────────
   function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
@@ -308,8 +374,16 @@ export default function Page() {
                 </div>
                 <h2 className="text-[14px] font-semibold text-white tracking-wide">Calorie Intake</h2>
               </div>
-              <div className="flex items-center gap-1 rounded-[10px] bg-[#071330] px-3 py-1.5 text-[10px] font-semibold text-white/90 border border-[#00d0ff]/10 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)]">
-                {currentTime || "..."}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsMealsManagerOpen(true)}
+                  className="flex items-center justify-center rounded-[10px] bg-[#0a1535] px-3 py-1.5 text-[10px] font-semibold text-[#00d0ff] border border-[#00d0ff]/20 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)] hover:bg-[#00d0ff]/10 hover:shadow-[0_0_15px_rgba(0,208,255,0.2)] transition-all"
+                >
+                  Meals
+                </button>
+                <div className="flex items-center gap-1 rounded-[10px] bg-[#071330] px-3 py-1.5 text-[10px] font-semibold text-white/90 border border-[#00d0ff]/10 shadow-[inset_0_0_8px_rgba(0,208,255,0.1)]">
+                  {currentTime || "..."}
+                </div>
               </div>
             </div>
 
@@ -466,9 +540,21 @@ export default function Page() {
                 </div>
                 <h2 className="text-[14px] font-semibold text-white tracking-wide">Daily Tasks</h2>
               </div>
-              <button onClick={handleAddTask} className="text-[11px] font-medium text-[#00d0ff] hover:text-white transition-colors flex items-center gap-1.5 drop-shadow-[0_0_8px_rgba(0,208,255,0.5)]">
-                <Plus size={12} /> Add Task
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsTasksManagerOpen(true)}
+                  className="grid place-items-center h-[26px] w-[26px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
+                  title="Open Task Manager"
+                >
+                  <ClipboardList size={13} strokeWidth={1.8} />
+                </button>
+                <button 
+                  onClick={handleAddTask} 
+                  className="flex items-center gap-1.5 h-[26px] px-2.5 rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[11px] font-medium text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all drop-shadow-[0_0_8px_rgba(0,208,255,0.3)]"
+                >
+                  <Plus size={12} strokeWidth={2.5} /> Add Task
+                </button>
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5 relative z-10 flex-1 overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
@@ -527,7 +613,7 @@ export default function Page() {
           <nav className="flex h-[68px] pb-2 items-center justify-between bg-[#030818]/95 px-6 backdrop-blur-2xl border-t border-[#1e3a8a]/40 shadow-[0_-15px_35px_rgba(0,0,0,0.5)]">
             {[
               { label: 'Home', icon: Home, active: true },
-              { label: 'Tasks', icon: Check, isBox: true },
+              { label: 'Goals', icon: Zap },
               { label: 'Kai', icon: Sparkles, isKai: true },
               { label: 'Fitness', icon: Heart },
               { label: 'Profile', icon: User },
@@ -610,6 +696,15 @@ export default function Page() {
 
         {/* Profile Card Overlay */}
         <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+
+        {/* Meals Manager Overlay */}
+        <MealsManager
+          isOpen={isMealsManagerOpen}
+          onClose={() => setIsMealsManagerOpen(false)}
+          meals={meals}
+          setMeals={setMeals}
+          saveMealsToDb={saveMealsToDb}
+        />
 
         {/* Tasks Manager Overlay */}
         <TasksManager

@@ -20,14 +20,32 @@ async function getUserProfile(req) {
 // Nutrition action suffix appended to every system prompt
 const NUTRITION_SUFFIX = "\n\nIMPORTANT - NUTRITION TRACKING RULES:\n" +
   "1. Only emit the action block when the user's CURRENT message explicitly reports they are eating or drinking something NEW right now (e.g. 'I just ate...', 'I had...', 'I consumed...', 'I drank...').\n" +
-  "2. NEVER emit the action block for follow-up questions about food they already reported (e.g. 'did I get omega-3?', 'was that healthy?', 'how much protein did that have?' are NOT new consumption events).\n" +
+  "2. NEVER emit the action block for follow-up questions about food they already reported.\n" +
   "3. NEVER emit the action block for hypothetical, future, or advice-seeking messages.\n" +
   "4. Each distinct meal/food the user reports should only be logged ONCE.\n\n" +
+  "USE THESE ACCURATE PER-100g REFERENCE VALUES for common foods (scale by actual weight):\n" +
+  "- White rice (cooked): 130 kcal, 2.7g protein, 0.3g fat, 28g carbs\n" +
+  "- Brown rice (cooked): 122 kcal, 2.6g protein, 0.9g fat, 26g carbs\n" +
+  "- Soya chunks (dry/raw): 336 kcal, 52g protein, 0.5g fat, 33g carbs\n" +
+  "- Soya chunks (cooked/rehydrated): 112 kcal, 17g protein, 0.2g fat, 11g carbs\n" +
+  "- Whole egg (1 large = 50g): 72 kcal, 6g protein, 5g fat, 0.4g carbs\n" +
+  "- Chicken breast (cooked): 165 kcal, 31g protein, 3.6g fat, 0g carbs\n" +
+  "- Oats (dry): 389 kcal, 17g protein, 7g fat, 66g carbs\n" +
+  "- Whole milk (100ml): 61 kcal, 3.2g protein, 3.3g fat, 4.8g carbs\n" +
+  "- Banana (medium 120g): 107 kcal, 1.3g protein, 0.4g fat, 27g carbs\n" +
+  "- Chapati/roti (1 medium 40g): 120 kcal, 3g protein, 3g fat, 20g carbs\n" +
+  "- Paneer (100g): 265 kcal, 18g protein, 20g fat, 3g carbs\n" +
+  "- Dal (cooked, 100g): 116 kcal, 9g protein, 0.4g fat, 20g carbs\n\n" +
+  "RULES for estimation:\n" +
+  "- Always scale by the ACTUAL quantity the user mentions.\n" +
+  "- Add up each food item separately then sum for the total.\n" +
+  "- Round to nearest whole number.\n" +
+  "- If a food is not in the list, use your best knowledge from nutritional databases.\n\n" +
   "When the user's CURRENT message IS a new food consumption report, append this block at the very end — no extra text, no markdown around it:\n\n" +
   "<<<ACTION>>>\n" +
   "{\"type\":\"UPDATE_NUTRITION\",\"calories\":0,\"protein\":0,\"fat\":0,\"carbs\":0}\n" +
   "<<<END_ACTION>>>\n\n" +
-  "Replace the 0s with your best estimate of the nutritional values. If you are not adding the block, do not mention it at all.";
+  "Replace the 0s with your calculated totals. If you are not adding the block, do not mention it at all.";
 
 function buildSystemPrompt(userData) {
   if (!userData || !userData.profile) {
