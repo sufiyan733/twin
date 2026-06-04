@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Twin",
   description: "Your personal wellness companion for daily health tracking.",
-  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     title: "Twin",
@@ -41,6 +40,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" crossOrigin="use-credentials" />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
         <InstallAppPrompt />
