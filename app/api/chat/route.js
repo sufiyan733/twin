@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuth } from "@/lib/auth";
 import { getDb } from "@/lib/mongodb";
+import { buildFoodReferenceBlock } from "@/lib/food-lookup";
 
 // Fetch the user's profile from DB to personalise Kai's system prompt
 async function getUserProfile(req) {
@@ -23,24 +24,12 @@ const NUTRITION_SUFFIX = "\n\nIMPORTANT - NUTRITION TRACKING RULES:\n" +
   "2. NEVER emit the action block for follow-up questions about food they already reported.\n" +
   "3. NEVER emit the action block for hypothetical, future, or advice-seeking messages.\n" +
   "4. Each distinct meal/food the user reports should only be logged ONCE.\n\n" +
-  "USE THESE ACCURATE PER-100g REFERENCE VALUES for common foods (scale by actual weight):\n" +
-  "- White rice (cooked): 130 kcal, 2.7g protein, 0.3g fat, 28g carbs\n" +
-  "- Brown rice (cooked): 122 kcal, 2.6g protein, 0.9g fat, 26g carbs\n" +
-  "- Soya chunks (dry/raw): 336 kcal, 52g protein, 0.5g fat, 33g carbs\n" +
-  "- Soya chunks (cooked/rehydrated): 112 kcal, 17g protein, 0.2g fat, 11g carbs\n" +
-  "- Whole egg (1 large = 50g): 72 kcal, 6g protein, 5g fat, 0.4g carbs\n" +
-  "- Chicken breast (cooked): 165 kcal, 31g protein, 3.6g fat, 0g carbs\n" +
-  "- Oats (dry): 389 kcal, 17g protein, 7g fat, 66g carbs\n" +
-  "- Whole milk (100ml): 61 kcal, 3.2g protein, 3.3g fat, 4.8g carbs\n" +
-  "- Banana (medium 120g): 107 kcal, 1.3g protein, 0.4g fat, 27g carbs\n" +
-  "- Chapati/roti (1 medium 40g): 120 kcal, 3g protein, 3g fat, 20g carbs\n" +
-  "- Paneer (100g): 265 kcal, 18g protein, 20g fat, 3g carbs\n" +
-  "- Dal (cooked, 100g): 116 kcal, 9g protein, 0.4g fat, 20g carbs\n\n" +
   "RULES for estimation:\n" +
   "- Always scale by the ACTUAL quantity the user mentions.\n" +
   "- Add up each food item separately then sum for the total.\n" +
   "- Round to nearest whole number.\n" +
-  "- If a food is not in the list, use your best knowledge from nutritional databases.\n\n" +
+  "- If a food is detected in the DETECTED FOOD REFERENCE block, use ONLY those values — do not guess.\n" +
+  "- If a food is NOT in the reference block, use your best knowledge from nutritional databases.\n\n" +
   "When the user's CURRENT message IS a new food consumption report, append this block at the very end — no extra text, no markdown around it:\n\n" +
   "<<<ACTION>>>\n" +
   "{\"type\":\"UPDATE_NUTRITION\",\"calories\":0,\"protein\":0,\"fat\":0,\"carbs\":0}\n" +
@@ -99,7 +88,13 @@ export async function POST(req) {
 
     // Fetch real user profile to personalise the system prompt
     const userData = await getUserProfile(req);
-    const systemPrompt = buildSystemPrompt(userData);
+
+    // Detect any Indian food items mentioned in the last user message
+    // and dynamically inject their exact reference values into the prompt
+    const lastUserMsg = messages.filter(m => m.sender === "user").at(-1)?.text ?? "";
+    const foodRef = buildFoodReferenceBlock(lastUserMsg);
+
+    const systemPrompt = buildSystemPrompt(userData) + foodRef;
 
     // Only keep the image from the very last message to avoid token limits and payload size issues
     const lastMessageIndex = messages.length - 1;
