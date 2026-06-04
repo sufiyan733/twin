@@ -71,7 +71,7 @@ export default function TasksManager({ isOpen, onClose, tasks, setTasks }) {
 
   return (
     <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-[90%] h-[90%] max-h-[800px] flex flex-col rounded-[24px] bg-[#030818] border border-[#00d0ff]/30 shadow-[0_0_50px_rgba(0,150,255,0.15)] overflow-hidden">
+      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#030818] border border-[#00d0ff]/30 shadow-[0_0_50px_rgba(0,150,255,0.15)] overflow-hidden">
         {/* Header */}
       <div className="flex items-center justify-between p-5 pb-3 border-b border-white/5 bg-[#030818]">
         <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
