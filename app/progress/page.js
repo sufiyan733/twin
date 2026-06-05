@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     LineChart,
     Line,
@@ -117,10 +117,25 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle }) {
 function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel }) {
     const uid = title.replace(/\s+/g, "-");
     const [activeIndex, setActiveIndex] = useState(null);
+    const timeoutRef = useRef(null);
 
     function handleToggle(index) {
-        setActiveIndex((prev) => (prev === index ? null : index));
+        setActiveIndex((prev) => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            if (prev === index) return null;
+            
+            timeoutRef.current = setTimeout(() => {
+                setActiveIndex(null);
+            }, 1000);
+            return index;
+        });
     }
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, []);
 
     return (
         <div className="chart-card" onClick={() => setActiveIndex(null)}>
@@ -301,10 +316,9 @@ export default function PerformancePage() {
             <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet" />
             <style>{`
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         style { display: none !important; }
 
-        :root {
+        .progress-page {
           --bg:           #030d1a;
           --surface:      #061422;
           --surface-2:    #091c30;
@@ -317,20 +331,20 @@ export default function PerformancePage() {
           --text-muted:   #3d6a9a;
           --font-ui:      'Rajdhani', sans-serif;
           --font-display: 'Orbitron', sans-serif;
-        }
-
-        html, body {
+          
           background: var(--bg);
           color: var(--text);
           font-family: var(--font-ui);
-          height: 100dvh;
-          max-height: 100dvh;
-          overflow: hidden;
           -webkit-font-smoothing: antialiased;
         }
 
+        .progress-page * {
+          outline: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+
         /* ── PAGE ─────────────── */
-        .page {
+        .progress-page.page {
           width: 100vw;
           max-width: 100vw;
           height: 100dvh;
@@ -640,10 +654,11 @@ export default function PerformancePage() {
 
         /* recharts */
         .recharts-cartesian-axis-tick-value { user-select: none; }
-        .recharts-wrapper .recharts-surface { overflow: visible; }
+        .recharts-wrapper, .recharts-surface { overflow: visible; outline: none !important; }
+        .recharts-surface:focus, .recharts-wrapper:focus { outline: none !important; }
       `}</style>
 
-            <div className="page">
+            <div className="page progress-page">
                 {/* BODY PARTS */}
                 <div className="body-scroller">
                     {bodyParts.map((part) => (
