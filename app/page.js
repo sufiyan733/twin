@@ -28,7 +28,8 @@ import {
   Zap,
   Droplet,
   ClipboardList,
-  Clock
+  Clock,
+  NotebookText
 } from "lucide-react";
 
 // ── Icon registry — all task icons must live here so we can safely render them
@@ -437,9 +438,13 @@ export default function Page() {
             <Menu size={24} strokeWidth={1.5} />
           </button>
 
-          <button type="button" className="relative text-white/80 hover:text-white transition-colors">
-            <Bell size={22} strokeWidth={1.5} />
-            <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-[#00d0ff] shadow-[0_0_8px_#00d0ff]" />
+          <button 
+            type="button" 
+            onClick={() => router.push('/notes')}
+            className="relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] bg-[#00d0ff]/[0.06] border border-[#00d0ff]/20 text-[#00d0ff]/80 hover:bg-[#00d0ff]/[0.12] hover:border-[#00d0ff]/40 hover:text-[#00d0ff] hover:shadow-[0_0_12px_rgba(0,208,255,0.15)] transition-all duration-200"
+          >
+            <NotebookText size={12} strokeWidth={2.2} />
+            <span className="text-[9px] font-bold tracking-wider uppercase mt-[1px]">Notes</span>
           </button>
         </header>
 

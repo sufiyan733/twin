@@ -4,17 +4,17 @@ import { usePathname } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 
 // Routes where the bottom nav must NOT appear
-const AUTH_ROUTES = ["/login", "/onboarding"];
+const HIDDEN_ROUTES = ["/login", "/onboarding", "/notes"];
 
 export default function NavShell() {
   const pathname = usePathname();
 
-  // Hide on auth routes (exact match or sub-paths)
-  const isAuthRoute = AUTH_ROUTES.some(
+  // Hide on certain routes (exact match or sub-paths)
+  const isHiddenRoute = HIDDEN_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
-  if (isAuthRoute) return null;
+  if (isHiddenRoute) return null;
 
   return <BottomNav />;
 }

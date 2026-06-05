@@ -7,9 +7,13 @@ import { useRouter } from "next/navigation";
 ═══════════════════════════════════════════════════════════ */
 const GLOBAL_STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
-  *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
 
-  :root {
+  .workout-page, .workout-page * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .workout-page {
     --c-bg: #04060d;
     --c-surface: #090e1a;
     --c-surface2: #0e1623;
@@ -30,9 +34,10 @@ const GLOBAL_STYLES = `
     --r-xl: 26px;
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    font-family: var(--font-body);
+    background: var(--c-bg);
+    color: var(--c-text);
   }
-
-  body { font-family: var(--font-body); background: var(--c-bg); color: var(--c-text); }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(14px); }
@@ -1663,7 +1668,7 @@ export default function WorkoutPage() {
   return (
     <>
       <style>{GLOBAL_STYLES}</style>
-      <div style={{ height: "100dvh", width: "100%", background: "var(--c-bg)", fontFamily: "var(--font-body)", color: "var(--c-text)", display: "flex", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+      <div className="workout-page" style={{ height: "100dvh", width: "100%", background: "var(--c-bg)", fontFamily: "var(--font-body)", color: "var(--c-text)", display: "flex", justifyContent: "center", overflow: "hidden", position: "relative" }}>
         {/* ambient blobs */}
         <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "320px", height: "320px", borderRadius: "50%", background: "radial-gradient(circle,rgba(79,142,247,0.07) 0%,transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "100px", left: "-60px", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle,rgba(168,85,247,0.05) 0%,transparent 70%)", pointerEvents: "none" }} />
