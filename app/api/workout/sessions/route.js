@@ -119,7 +119,7 @@ export async function POST(req) {
 
     const session = {
       userId,
-      date: date || now.toISOString().split("T")[0],
+      date: date || new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(now),
       startedAt: sessionStarted,
       finishedAt: now,
       durationMs: Math.max(0, durationMs),
@@ -136,11 +136,30 @@ export async function POST(req) {
     const db = await getDb();
     const result = await db.collection("workout_sessions").insertOne(session);
 
+    // ── Update per-user exercise catalog (efficient O(1) lookup for /progress) ──
+    // Group new exercise names by muscle and add them to the catalog set.
+    const catalogSetOps = {};
+    for (const ex of processedExercises) {
+      const muscle = ex.muscle || "unknown";
+      if (!catalogSetOps[`exercises.${muscle}`]) {
+        catalogSetOps[`exercises.${muscle}`] = { $each: [] };
+      }
+      catalogSetOps[`exercises.${muscle}`].$each.push(ex.name);
+    }
+    if (Object.keys(catalogSetOps).length > 0) {
+      await db.collection("user_exercise_catalog").updateOne(
+        { userId },
+        { $addToSet: catalogSetOps, $set: { updatedAt: now } },
+        { upsert: true }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       sessionId: result.insertedId,
       summary: session.summary,
     });
+
   } catch (err) {
     console.error("POST /api/workout/sessions error:", err);
     return NextResponse.json(

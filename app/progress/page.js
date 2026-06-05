@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
     LineChart,
     Line,
@@ -11,74 +11,30 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-// X-axis = date labels, Y-axis = weight (kg), label = reps at that session
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
 
-const bodyParts = [
-    { id: "chest", label: "CHEST" },
-    { id: "back", label: "BACK" },
+const BODY_PARTS = [
+    { id: "chest",     label: "CHEST" },
+    { id: "back",      label: "BACK" },
     { id: "shoulders", label: "SHOULDERS" },
-    { id: "arms", label: "ARMS" },
-    { id: "legs", label: "LEGS" },
-    { id: "core", label: "CORE" },
+    { id: "arms",      label: "ARMS" },
+    { id: "legs",      label: "LEGS" },
+    { id: "core",      label: "CORE" },
 ];
 
-const exercisesByPart = {
-    chest: ["Bench Press", "Incline Press", "Cable Fly", "Dips"],
-    back: ["Deadlift", "Pull-Up", "Barbell Row", "Lat Pulldown"],
-    shoulders: ["Overhead Press", "Lateral Raise", "Face Pull", "Shrug"],
-    arms: ["Barbell Curl", "Tricep Dip", "Hammer Curl", "Skull Crusher"],
-    legs: ["Squat", "Leg Press", "Romanian Deadlift", "Leg Curl"],
-    core: ["Plank", "Hanging Knee Raise", "Cable Crunch", "Ab Wheel"],
-};
+// ─── CUSTOM DOT ──────────────────────────────────────────────────────────────
 
-const analyticsData = {
-    "Bench Press": {
-        pr: [
-            { date: "APR 10", weight: 100, reps: 8 },
-            { date: "APR 24", weight: 120, reps: 8 },
-            { date: "MAY 08", weight: 140, reps: 6 },
-            { date: "MAY 22", weight: 160, reps: 5 },
-            { date: "JUN 05", weight: 175, reps: 3 },
-            { date: "JUN 19", weight: 185, reps: 2 },
-        ],
-        avg: [
-            { date: "APR 10", weight: 80, reps: 10 },
-            { date: "APR 24", weight: 95, reps: 10 },
-            { date: "MAY 08", weight: 110, reps: 9 },
-            { date: "MAY 22", weight: 125, reps: 8 },
-            { date: "JUN 05", weight: 135, reps: 7 },
-            { date: "JUN 19", weight: 145, reps: 6 },
-        ],
-    },
-};
-
-function generateData(seed) {
-    const dates = ["APR 10", "APR 24", "MAY 08", "MAY 22", "JUN 05", "JUN 19"];
-    const pr = dates.map((d, i) => ({ date: d, weight: 80 + i * 18 + seed, reps: 10 - i }));
-    const avg = dates.map((d, i) => ({ date: d, weight: 65 + i * 15 + seed, reps: 12 - i }));
-    return { pr, avg };
-}
-
-function getAnalytics(exercise) {
-    return analyticsData[exercise] || generateData(exercise.length % 10);
-}
-
-// ─── CUSTOM DOT ───────────────────────────────────────────────────────────────
-
-function GlowDot({ cx, cy, payload, index, activeIndex, onToggle }) {
+function GlowDot({ cx, cy, payload, index, activeIndex, onToggle, fadingIndex }) {
     if (cx == null || cy == null) return null;
     const isActive = activeIndex === index;
+    const isFading = fadingIndex === index;
     return (
         <g>
-            {/* outer pulse ring */}
             <circle cx={cx} cy={cy} r={10} fill="none" stroke="#1a6fff" strokeOpacity={isActive ? 0.35 : 0.18} strokeWidth={5} />
-            {/* mid ring */}
-            <circle cx={cx} cy={cy} r={6} fill="none" stroke="#3d8fff" strokeOpacity={isActive ? 0.6 : 0.35} strokeWidth={2} />
-            {/* solid dot */}
-            <circle cx={cx} cy={cy} r={4} fill={isActive ? "#2f8bff" : "#1a6fff"} stroke="#7dc8ff" strokeWidth={1.5} />
-            {/* label pill — only when tapped */}
-            {isActive && (
+            <circle cx={cx} cy={cy} r={6}  fill="none" stroke="#3d8fff" strokeOpacity={isActive ? 0.6 : 0.35} strokeWidth={2} />
+            <circle cx={cx} cy={cy} r={4}  fill={isActive ? "#2f8bff" : "#1a6fff"} stroke="#7dc8ff" strokeWidth={1.5} />
+
+            {(isActive || isFading) && (
                 <foreignObject x={cx - 40} y={cy - 52} width={82} height={44}>
                     <div
                         xmlns="http://www.w3.org/1999/xhtml"
@@ -94,6 +50,8 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle }) {
                             letterSpacing: "0.04em",
                             fontFamily: "'Rajdhani', sans-serif",
                             lineHeight: 1.25,
+                            opacity: isFading && !isActive ? 0 : 1,
+                            transition: "opacity 0.4s ease",
                         }}
                     >
                         <div style={{ color: "#7dc8ff", fontSize: "11px" }}>{payload?.weight} KG</div>
@@ -101,7 +59,7 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle }) {
                     </div>
                 </foreignObject>
             )}
-            {/* invisible large tap target */}
+
             <circle
                 cx={cx} cy={cy} r={18}
                 fill="transparent"
@@ -112,33 +70,42 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle }) {
     );
 }
 
-// ─── CHART ────────────────────────────────────────────────────────────────────
+// ─── CHART ───────────────────────────────────────────────────────────────────
 
-function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel }) {
+function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading }) {
     const uid = title.replace(/\s+/g, "-");
     const [activeIndex, setActiveIndex] = useState(null);
+    const [fadingIndex, setFadingIndex] = useState(null);
     const timeoutRef = useRef(null);
+    const fadeRef = useRef(null);
 
     function handleToggle(index) {
-        setActiveIndex((prev) => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            if (prev === index) return null;
-            
-            timeoutRef.current = setTimeout(() => {
-                setActiveIndex(null);
-            }, 1000);
-            return index;
-        });
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        if (fadeRef.current) clearTimeout(fadeRef.current);
+
+        if (activeIndex === index) {
+            setActiveIndex(null);
+            setFadingIndex(null);
+            return;
+        }
+
+        setActiveIndex(index);
+        setFadingIndex(null);
+
+        timeoutRef.current = setTimeout(() => {
+            setFadingIndex(index);
+            setActiveIndex(null);
+            fadeRef.current = setTimeout(() => setFadingIndex(null), 400);
+        }, 1000);
     }
 
-    useEffect(() => {
-        return () => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        };
+    useEffect(() => () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        if (fadeRef.current) clearTimeout(fadeRef.current);
     }, []);
 
     return (
-        <div className="chart-card" onClick={() => setActiveIndex(null)}>
+        <div className="chart-card" onClick={() => { setActiveIndex(null); setFadingIndex(null); }}>
             {/* header */}
             <div className="chart-header" onClick={(e) => e.stopPropagation()}>
                 <div className="chart-title-group">
@@ -158,84 +125,96 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel }) {
                 </button>
             </div>
 
-            {/* y-axis label outside chart */}
             <div className="y-label">{yLabel}</div>
 
-            {/* chart */}
-            <div style={{ flex: 1, minHeight: 0 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data} margin={{ top: 22, right: 10, left: 0, bottom: 16 }}>
-                        <defs>
-                            <linearGradient id={`lg-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#1a6fff" stopOpacity={0.8} />
-                                <stop offset="60%" stopColor="#2f8bff" stopOpacity={1} />
-                                <stop offset="100%" stopColor="#1a6fff" stopOpacity={0.9} />
-                            </linearGradient>
-                            <filter id={`glow-${uid}`} x="-30%" y="-30%" width="160%" height="160%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                        </defs>
+            {loading ? (
+                <div className="chart-skeleton">
+                    <div className="skel-line" style={{ width: "100%", height: "100%" }} />
+                </div>
+            ) : !data || data.length === 0 ? (
+                <div className="chart-empty">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(29,106,255,0.3)" strokeWidth="1.5">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>
+                    <span>No data yet</span>
+                </div>
+            ) : (
+                <div style={{ flex: 1, minHeight: 0 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={data} margin={{ top: 22, right: 10, left: 0, bottom: 16 }}>
+                            <defs>
+                                <linearGradient id={`lg-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%"   stopColor="#1a6fff" stopOpacity={0.8} />
+                                    <stop offset="60%"  stopColor="#2f8bff" stopOpacity={1} />
+                                    <stop offset="100%" stopColor="#1a6fff" stopOpacity={0.9} />
+                                </linearGradient>
+                                <filter id={`glow-${uid}`} x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="4" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
 
-                        <CartesianGrid
-                            strokeDasharray="2 4"
-                            stroke="rgba(29,106,255,0.10)"
-                            vertical={true}
-                            horizontal={true}
-                        />
+                            <CartesianGrid
+                                strokeDasharray="2 4"
+                                stroke="rgba(29,106,255,0.10)"
+                                vertical={true}
+                                horizontal={true}
+                            />
 
-                        <XAxis
-                            dataKey="date"
-                            tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, letterSpacing: "0.02em" }}
-                            tickLine={false}
-                            axisLine={{ stroke: "rgba(29,106,255,0.15)", strokeWidth: 1 }}
-                            interval={0}
-                        />
+                            <XAxis
+                                dataKey="date"
+                                tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, letterSpacing: "0.02em" }}
+                                tickLine={false}
+                                axisLine={{ stroke: "rgba(29,106,255,0.15)", strokeWidth: 1 }}
+                                interval={0}
+                            />
 
-                        <YAxis
-                            dataKey="weight"
-                            tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600 }}
-                            tickLine={false}
-                            axisLine={false}
-                            width={32}
-                        />
+                            <YAxis
+                                dataKey="weight"
+                                tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600 }}
+                                tickLine={false}
+                                axisLine={false}
+                                width={32}
+                            />
 
-                        <Tooltip active={false} content={() => null} />
+                            <Tooltip active={false} content={() => null} />
 
-                        <Line
-                            type="monotoneX"
-                            dataKey="weight"
-                            stroke={`url(#lg-${uid})`}
-                            strokeWidth={2.8}
-                            dot={(props) => (
-                                <GlowDot
-                                    {...props}
-                                    activeIndex={activeIndex}
-                                    onToggle={handleToggle}
-                                />
-                            )}
-                            activeDot={false}
-                            filter={`url(#glow-${uid})`}
-                            isAnimationActive={true}
-                            animationDuration={1000}
-                            animationEasing="ease-out"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
+                            <Line
+                                type="monotoneX"
+                                dataKey="weight"
+                                stroke={`url(#lg-${uid})`}
+                                strokeWidth={2.8}
+                                dot={(props) => (
+                                    <GlowDot
+                                        {...props}
+                                        activeIndex={activeIndex}
+                                        fadingIndex={fadingIndex}
+                                        onToggle={handleToggle}
+                                    />
+                                )}
+                                activeDot={false}
+                                filter={`url(#glow-${uid})`}
+                                isAnimationActive={true}
+                                animationDuration={1000}
+                                animationEasing="ease-out"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+            )}
         </div>
     );
 }
 
-// ─── BODY PART CARD ───────────────────────────────────────────────────────────
+// ─── BODY PART CARD ──────────────────────────────────────────────────────────
 
-function BodyPartCard({ part, active, onClick }) {
+function BodyPartCard({ part, active, onClick, hasData }) {
     return (
         <button
-            className={`body-card ${active ? "body-card--active" : ""}`}
+            className={`body-card ${active ? "body-card--active" : ""} ${!hasData ? "body-card--empty" : ""}`}
             onClick={() => onClick(part.id)}
             aria-label={part.label}
         >
@@ -244,20 +223,55 @@ function BodyPartCard({ part, active, onClick }) {
                     src={`/${part.id}.png`}
                     alt={part.label}
                     className="body-img"
-                    onError={(e) => { e.currentTarget.style.opacity = "0.2"; }}
+                    onError={(e) => { e.currentTarget.style.opacity = "0.15"; }}
                 />
                 {active && <div className="body-img-glow" />}
             </div>
             <span className="body-label">{part.label}</span>
+            {!hasData && <span className="body-no-data">—</span>}
             {active && <div className="body-underline" />}
         </button>
     );
 }
 
-// ─── EXERCISE DROPDOWN ────────────────────────────────────────────────────────
+// ─── EXERCISE DROPDOWN ───────────────────────────────────────────────────────
 
-function ExerciseDropdown({ exercises, selected, onSelect }) {
+function ExerciseDropdown({ exercises, selected, onSelect, loading }) {
     const [open, setOpen] = useState(false);
+
+    // Close when exercises list changes (bodypart switched)
+    useEffect(() => setOpen(false), [exercises]);
+
+    if (loading) {
+        return (
+            <div className="exercise-wrap">
+                <div className="exercise-btn exercise-btn--skel">
+                    <div className="skel-text" style={{ width: 140, height: 16 }} />
+                </div>
+            </div>
+        );
+    }
+
+    if (!exercises || exercises.length === 0) {
+        return (
+            <div className="exercise-wrap">
+                <div className="exercise-btn exercise-btn--disabled">
+                    <div className="exercise-left">
+                        <div className="exercise-icon-box">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3d6a9a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M6.5 6.5h11M6.5 17.5h11M3 12h18M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3" />
+                            </svg>
+                        </div>
+                        <div className="exercise-text">
+                            <span className="exercise-sub">NO DATA</span>
+                            <span className="exercise-name" style={{ color: "var(--text-muted)", fontSize: 14 }}>Log a workout first</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="exercise-wrap">
             <button className="exercise-btn" onClick={() => setOpen((o) => !o)}>
@@ -296,18 +310,82 @@ function ExerciseDropdown({ exercises, selected, onSelect }) {
     );
 }
 
+// ─── EMPTY STATE ─────────────────────────────────────────────────────────────
+
+function EmptyState() {
+    return (
+        <div className="empty-state">
+            <div className="empty-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(29,106,255,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+            </div>
+            <div className="empty-title">No workouts logged yet</div>
+            <div className="empty-sub">Complete a workout session to see your progress charts here.</div>
+        </div>
+    );
+}
+
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
 
 export default function PerformancePage() {
-    const [activePart, setActivePart] = useState("chest");
-    const [selectedExercise, setSelectedExercise] = useState("Bench Press");
+    const [activePart, setActivePart]         = useState("chest");
+    const [selectedExercise, setSelectedExercise] = useState(null);
 
+    // catalog: { chest: [...], back: [...], ... }
+    const [catalog, setCatalog]       = useState(null);
+    const [catalogLoading, setCatalogLoading] = useState(true);
+    const [catalogError, setCatalogError]     = useState(false);
+
+    // analytics: { pr: [...], avg: [...] }
+    const [analytics, setAnalytics]       = useState(null);
+    const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+    // ── Fetch catalog on mount ──────────────────────────────────────────────
+    useEffect(() => {
+        setCatalogLoading(true);
+        setCatalogError(false);
+        fetch("/api/progress/catalog", { credentials: "include" })
+            .then((r) => {
+                if (!r.ok) throw new Error("Failed");
+                return r.json();
+            })
+            .then((data) => {
+                setCatalog(data.catalog);
+                // Pick a default part that has data
+                const firstWithData = BODY_PARTS.find((p) => (data.catalog[p.id] || []).length > 0);
+                if (firstWithData) {
+                    setActivePart(firstWithData.id);
+                    setSelectedExercise(data.catalog[firstWithData.id][0]);
+                }
+            })
+            .catch(() => setCatalogError(true))
+            .finally(() => setCatalogLoading(false));
+    }, []);
+
+    // ── When bodypart changes, pick first exercise in that part ────────────
     function handlePartChange(partId) {
         setActivePart(partId);
-        setSelectedExercise(exercisesByPart[partId][0]);
+        const exercises = catalog?.[partId] ?? [];
+        setSelectedExercise(exercises.length > 0 ? exercises[0] : null);
     }
 
-    const analytics = getAnalytics(selectedExercise);
+    // ── Fetch analytics whenever exercise changes ───────────────────────────
+    useEffect(() => {
+        if (!selectedExercise) {
+            setAnalytics(null);
+            return;
+        }
+        setAnalyticsLoading(true);
+        fetch(`/api/progress/analytics?exercise=${encodeURIComponent(selectedExercise)}`, { credentials: "include" })
+            .then((r) => r.json())
+            .then((data) => setAnalytics(data))
+            .catch(() => setAnalytics(null))
+            .finally(() => setAnalyticsLoading(false));
+    }, [selectedExercise]);
+
+    const exercises = catalog?.[activePart] ?? [];
+    const hasAnyData = catalog ? BODY_PARTS.some((p) => (catalog[p.id] || []).length > 0) : false;
 
     return (
         <>
@@ -331,7 +409,7 @@ export default function PerformancePage() {
           --text-muted:   #3d6a9a;
           --font-ui:      'Rajdhani', sans-serif;
           --font-display: 'Orbitron', sans-serif;
-          
+
           background: var(--bg);
           color: var(--text);
           font-family: var(--font-ui);
@@ -389,6 +467,9 @@ export default function PerformancePage() {
           background: rgba(29,106,255,0.08);
         }
 
+        .body-card--empty { opacity: 0.45; }
+        .body-card--empty .body-label { color: var(--text-muted); }
+
         .body-card--active .body-label { color: var(--cyan-label); }
 
         .body-img-wrap {
@@ -433,6 +514,13 @@ export default function PerformancePage() {
           max-width: 100%;
         }
 
+        .body-no-data {
+          font-family: var(--font-ui);
+          font-size: 7px;
+          color: var(--text-muted);
+          opacity: 0.5;
+        }
+
         .body-underline {
           position: absolute;
           bottom: 0; left: 8px; right: 8px;
@@ -463,7 +551,17 @@ export default function PerformancePage() {
           transition: border-color 0.2s, background 0.2s;
         }
 
-        .exercise-btn:hover {
+        .exercise-btn--disabled {
+          cursor: default;
+          opacity: 0.6;
+        }
+
+        .exercise-btn--skel {
+          height: 52px;
+          cursor: default;
+        }
+
+        .exercise-btn:not(.exercise-btn--disabled):not(.exercise-btn--skel):hover {
           border-color: var(--border-hi);
           background: var(--surface-2);
         }
@@ -519,6 +617,8 @@ export default function PerformancePage() {
           z-index: 100;
           box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(29,106,255,0.08);
           animation: dropIn 0.16s ease;
+          max-height: 220px;
+          overflow-y: auto;
         }
 
         @keyframes dropIn {
@@ -571,9 +671,7 @@ export default function PerformancePage() {
           flex-direction: column;
         }
 
-        .chart-card:last-child {
-          margin-bottom: 6px;
-        }
+        .chart-card:last-child { margin-bottom: 6px; }
 
         .chart-card::before {
           content: '';
@@ -652,6 +750,107 @@ export default function PerformancePage() {
           flex-shrink: 0;
         }
 
+        /* ── SKELETON ─────────── */
+        .skel-line {
+          border-radius: 6px;
+          background: linear-gradient(90deg, rgba(29,106,255,0.05) 25%, rgba(29,106,255,0.12) 50%, rgba(29,106,255,0.05) 75%);
+          background-size: 200% 100%;
+          animation: skel-shimmer 1.6s ease-in-out infinite;
+        }
+
+        @keyframes skel-shimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+
+        .skel-text {
+          height: 12px;
+          border-radius: 4px;
+          background: linear-gradient(90deg, rgba(29,106,255,0.05) 25%, rgba(29,106,255,0.12) 50%, rgba(29,106,255,0.05) 75%);
+          background-size: 200% 100%;
+          animation: skel-shimmer 1.6s ease-in-out infinite;
+        }
+
+        .chart-skeleton {
+          flex: 1 1 0;
+          min-height: 0;
+          padding: 8px 4px 12px 0;
+          display: flex;
+          align-items: stretch;
+        }
+
+        /* ── EMPTY / NO DATA ──── */
+        .chart-empty {
+          flex: 1 1 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          color: var(--text-muted);
+          font-family: var(--font-display);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          opacity: 0.7;
+        }
+
+        /* ── GLOBAL EMPTY STATE ─ */
+        .empty-state {
+          flex: 1 1 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 24px 32px;
+          text-align: center;
+        }
+
+        .empty-icon {
+          width: 64px;
+          height: 64px;
+          border-radius: 18px;
+          background: rgba(29,106,255,0.06);
+          border: 1px solid rgba(29,106,255,0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .empty-title {
+          font-family: var(--font-display);
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          color: var(--text);
+        }
+
+        .empty-sub {
+          font-family: var(--font-ui);
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--text-muted);
+          line-height: 1.5;
+          max-width: 260px;
+        }
+
+        /* ── ERROR ────────────── */
+        .error-banner {
+          margin: 8px 10px;
+          padding: 10px 14px;
+          background: rgba(248,113,113,0.07);
+          border: 1px solid rgba(248,113,113,0.2);
+          border-radius: 10px;
+          font-family: var(--font-ui);
+          font-size: 12px;
+          font-weight: 600;
+          color: #f87171;
+          text-align: center;
+          flex-shrink: 0;
+        }
+
         /* recharts */
         .recharts-cartesian-axis-tick-value { user-select: none; }
         .recharts-wrapper, .recharts-surface { overflow: visible; outline: none !important; }
@@ -661,41 +860,58 @@ export default function PerformancePage() {
             <div className="page progress-page">
                 {/* BODY PARTS */}
                 <div className="body-scroller">
-                    {bodyParts.map((part) => (
+                    {BODY_PARTS.map((part) => (
                         <BodyPartCard
                             key={part.id}
                             part={part}
                             active={activePart === part.id}
                             onClick={handlePartChange}
+                            hasData={(catalog?.[part.id] ?? []).length > 0}
                         />
                     ))}
                 </div>
 
-                {/* EXERCISE */}
+                {/* ERROR */}
+                {catalogError && (
+                    <div className="error-banner">
+                        Could not load your exercise history. Check your connection and try refreshing.
+                    </div>
+                )}
+
+                {/* EXERCISE DROPDOWN */}
                 <ExerciseDropdown
-                    exercises={exercisesByPart[activePart]}
+                    exercises={exercises}
                     selected={selectedExercise}
                     onSelect={setSelectedExercise}
+                    loading={catalogLoading}
                 />
 
-                {/* CHARTS */}
+                {/* CHARTS or EMPTY STATE */}
                 <div className="charts-area">
-                    <AnalyticsChart
-                        title="PR ANALYTICS"
-                        icon="👑"
-                        subtitle="Best performance at each date"
-                        yLabel="WEIGHT (KG)"
-                        btnLabel="WEIGHT OVER TIME"
-                        data={analytics.pr}
-                    />
-                    <AnalyticsChart
-                        title="AVG ANALYTICS"
-                        icon="🎯"
-                        subtitle="Average weight lifted at each date"
-                        yLabel="AVG WEIGHT (KG)"
-                        btnLabel="WEIGHT OVER TIME"
-                        data={analytics.avg}
-                    />
+                    {!catalogLoading && !catalogError && !hasAnyData ? (
+                        <EmptyState />
+                    ) : (
+                        <>
+                            <AnalyticsChart
+                                title="PR ANALYTICS"
+                                icon="👑"
+                                subtitle="Best performance at each date"
+                                yLabel="WEIGHT (KG)"
+                                btnLabel="WEIGHT OVER TIME"
+                                data={analytics?.pr ?? null}
+                                loading={analyticsLoading || catalogLoading}
+                            />
+                            <AnalyticsChart
+                                title="AVG ANALYTICS"
+                                icon="🎯"
+                                subtitle="Average weight lifted at each date"
+                                yLabel="AVG WEIGHT (KG)"
+                                btnLabel="WEIGHT OVER TIME"
+                                data={analytics?.avg ?? null}
+                                loading={analyticsLoading || catalogLoading}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
         </>

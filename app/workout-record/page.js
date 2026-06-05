@@ -1560,7 +1560,7 @@ export default function WorkoutLogger() {
         body: JSON.stringify({
           exercises: completedExercises,
           startedAt: sessionStartRef.current,
-          date: new Date().toISOString().split("T")[0],
+          date: new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date()),
         }),
       });
 
