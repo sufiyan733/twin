@@ -1374,18 +1374,24 @@ const CSS = `
     --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
   }
 
-  html, body { background: var(--bg); height: 100%; }
+  html, body {
+    background: var(--bg);
+    height: 100%;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 
   .wl-app {
     background: var(--bg);
     min-height: 100dvh;
     font-family: var(--body);
     color: var(--text);
+    width: 100%;
     max-width: 430px;
     margin: 0 auto;
     position: relative;
     overflow-x: hidden;
-    padding-bottom: 20px;
+    padding-bottom: 100px;
     background-image: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.06) 0%, transparent 60%);
   }
 
