@@ -1394,6 +1394,8 @@ export default function WorkoutLogger() {
   const [openGroups, setOpenGroups] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const sessionStartRef = useRef(new Date().toISOString());
 
   const showToast = (msg) => {
     setToast({ show: true, msg });
@@ -1518,14 +1520,73 @@ export default function WorkoutLogger() {
     showToast(`✨ Added "${exerciseName}" to ${equipmentType}`);
   };
 
-  const handleFinish = () => {
-    setCelebrating(true);
-    setShowCelebration(true);
-    showToast(`🔥 ${lockedSets} sets logged!`);
-    setTimeout(() => {
-      setCelebrating(false);
-      setShowCelebration(false);
-    }, 2800);
+  const handleFinish = async () => {
+    // Collect all completed exercises across every muscle group
+    const completedExercises = [];
+
+    for (const muscleId of Object.keys(EQUIPMENT_GROUPS)) {
+      const groups = EQUIPMENT_GROUPS[muscleId] || [];
+      for (const grp of groups) {
+        const exercises = data[muscleId]?.[grp.group] || [];
+        for (const ex of exercises) {
+          const lockedSetsForEx = ex.sets.filter((s) => s.locked);
+          if (lockedSetsForEx.length === 0) continue;
+
+          completedExercises.push({
+            name: ex.name,
+            muscle: muscleId,
+            equipment: grp.group,
+            sets: lockedSetsForEx.map((s) => ({
+              weight: s.weight,
+              reps: s.reps,
+            })),
+          });
+        }
+      }
+    }
+
+    if (completedExercises.length === 0) {
+      showToast("⚠️ No completed sets to save");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const res = await fetch("/api/workout/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          exercises: completedExercises,
+          startedAt: sessionStartRef.current,
+          date: new Date().toISOString().split("T")[0],
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Failed to save workout");
+      }
+
+      const result = await res.json();
+
+      // Success — celebrate
+      setCelebrating(true);
+      setShowCelebration(true);
+      showToast(`🔥 ${result.summary?.totalSets || lockedSets} sets logged!`);
+
+      setTimeout(() => {
+        setCelebrating(false);
+        setShowCelebration(false);
+        router.push("/");
+      }, 2800);
+    } catch (err) {
+      console.error("Failed to save workout:", err);
+      showToast(`❌ ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   // ─────────────────────────────────────────────
@@ -1567,8 +1628,9 @@ export default function WorkoutLogger() {
               <button
                 className={`wl-finish-header-btn${celebrating ? " celebrating" : ""}`}
                 onClick={handleFinish}
+                disabled={saving}
               >
-                Finish
+                {saving ? "Saving…" : "Finish"}
               </button>
             </div>
           </div>
