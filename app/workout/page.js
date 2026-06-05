@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
    GLOBAL STYLES — injected once at root
@@ -244,7 +245,7 @@ const TAG_META = {
 const WORKOUT_PLANS = [
   {
     id: "hybrid-ppl",
-    name: "Hybrid Push Pull Legs",
+    name: "Super Split",
     tagline: "Legs First, Balanced Upper",
     days: 6,
     level: "Intermediate",
@@ -1115,7 +1116,7 @@ const WorkoutRow = ({ exercise, idx }) => (
   }}>
     <div style={{
       width: "26px", height: "26px", borderRadius: "8px", flexShrink: 0,
-      background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01))", 
+      background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01))",
       border: "1px solid rgba(255,255,255,0.06)",
       borderTop: "1px solid rgba(255,255,255,0.15)",
       boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 6px rgba(0,0,0,0.2)",
@@ -1213,17 +1214,17 @@ const PlanDetailCTA = ({ plan, onClose }) => {
           background: saved
             ? "linear-gradient(135deg,#16a34a,#166534)"
             : error
-            ? "linear-gradient(135deg,#7f1d1d,#450a0a)"
-            : saving
-            ? `${plan.accent}55`
-            : `linear-gradient(135deg, ${plan.accent}cc, ${plan.accent}88)`,
+              ? "linear-gradient(135deg,#7f1d1d,#450a0a)"
+              : saving
+                ? `${plan.accent}55`
+                : `linear-gradient(135deg, ${plan.accent}cc, ${plan.accent}88)`,
           color: "#fff", fontSize: "14px", fontWeight: 700, letterSpacing: "-0.01em",
           cursor: saving || saved ? "default" : "pointer", touchAction: "manipulation",
           boxShadow: saved
             ? "0 0 28px rgba(22,163,74,0.4)"
             : error
-            ? "0 0 20px rgba(239,68,68,0.3)"
-            : `0 0 28px ${plan.accent}40`,
+              ? "0 0 20px rgba(239,68,68,0.3)"
+              : `0 0 28px ${plan.accent}40`,
           transition: "background 0.3s, box-shadow 0.3s",
           animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none",
         }}
@@ -1321,7 +1322,7 @@ const PlanDetailCard = ({ plan, onClose }) => {
                 ].map((s, i) => (
                   <div key={i} style={{
                     padding: "10px 4px", borderRadius: "12px",
-                    background: "rgba(255,255,255,0.02)", 
+                    background: "rgba(255,255,255,0.02)",
                     border: "1px solid rgba(148,163,184,0.08)",
                     borderTop: "1px solid rgba(255,255,255,0.06)",
                     display: "flex", flexDirection: "column", alignItems: "center", gap: "3px",
@@ -1369,11 +1370,11 @@ const PlanDetailCard = ({ plan, onClose }) => {
               </div>
               <div style={{ padding: "16px", borderRadius: "16px", background: "#0a0c10", border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
                 {[
-                  { label: "Weekly Volume", val: plan.volume, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg> },
-                  { label: "Frequency", val: plan.freq, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg> },
-                  { label: "Rest Days", val: plan.rest, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> },
-                  { label: "Best For", val: plan.goal, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> },
-                  { label: "Level", val: plan.level, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> },
+                  { label: "Weekly Volume", val: plan.volume, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18" /><rect x="10" y="8" width="4" height="13" /><rect x="2" y="13" width="4" height="8" /></svg> },
+                  { label: "Frequency", val: plan.freq, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4" /><path d="M3 11v-1a4 4 0 0 1 4-4h14" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> },
+                  { label: "Rest Days", val: plan.rest, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg> },
+                  { label: "Best For", val: plan.goal, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg> },
+                  { label: "Level", val: plan.level, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg> },
                 ].map((r, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "24px", height: "24px", borderRadius: "6px", background: "rgba(255,255,255,0.04)", color: plan.accent, flexShrink: 0 }}>
@@ -1650,6 +1651,7 @@ const ActionCard = ({ icon, title, subtitle, delay, mounted, onClick, premium })
    MAIN PAGE
 ═══════════════════════════════════════════════════════════ */
 export default function WorkoutPage() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [splitOpen, setSplitOpen] = useState(false);
   const [exerciseOpen, setExerciseOpen] = useState(false);
@@ -1726,6 +1728,7 @@ export default function WorkoutPage() {
               <div style={{ flex: 1, height: "1px", background: "var(--c-border)" }} />
             </div>
             <button
+              onClick={() => router.push("/workout-record")}
               onMouseDown={() => setCtaDown(true)} onMouseUp={() => setCtaDown(false)}
               onMouseLeave={() => setCtaDown(false)} onTouchStart={() => setCtaDown(true)} onTouchEnd={() => setCtaDown(false)}
               style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", boxSizing: "border-box", background: "rgba(79,142,247,0.13)", border: "1px solid rgba(79,142,247,0.32)", borderRadius: "var(--r-xl)", padding: "20px 20px 20px 24px", cursor: "pointer", overflow: "hidden", position: "relative", transform: ctaDown ? "scale(0.97)" : "scale(1)", transition: "transform 0.15s var(--ease-spring)", boxShadow: "0 0 40px rgba(79,142,247,0.10)", touchAction: "manipulation" }}
