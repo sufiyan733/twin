@@ -6,7 +6,6 @@ import { authClient } from "@/lib/auth-client";
 import { calculateMacros } from "@/lib/macros";
 import GradientBlinds from "@/components/GradientBlinds";
 import KaiAssistant from "@/components/KaiAssistant";
-import ProfileCard from "@/components/ProfileCard";
 import OnboardingModal from "@/components/OnboardingModal";
 import TasksManager from "@/components/TasksManager";
 import MealsManager from "@/components/MealsManager";
@@ -20,18 +19,16 @@ import {
   Dumbbell,
   Flame,
   Heart,
-  Home,
   Leaf,
   Loader2,
   Menu,
   Pill,
   Plus,
   Send,
-  Sparkles,
-  User,
   Zap,
   Droplet,
-  ClipboardList
+  ClipboardList,
+  Clock
 } from "lucide-react";
 
 // ── Icon registry — all task icons must live here so we can safely render them
@@ -75,10 +72,13 @@ export default function Page() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [isKaiOpen, setIsKaiOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
+  // Ensures the profile check runs exactly once per mount — prevents better-auth
+  // session token refreshes (which change the session object reference) from
+  // re-triggering the effect and re-showing the onboarding modal.
+  const profileFetchedRef = useRef(false);
 
   const [meals, setMeals] = useState([]);
   const [isMealsManagerOpen, setIsMealsManagerOpen] = useState(false);
@@ -333,9 +333,12 @@ export default function Page() {
     return Math.round(bmr * mult);
   }
 
-  // Check if user has completed onboarding + grab calorie target
+  // Check if user has completed onboarding + grab calorie target.
+  // profileFetchedRef ensures this runs exactly ONCE per mount regardless of
+  // how many times better-auth refreshes the session object reference.
   useEffect(() => {
-    if (!session) return;
+    if (!session || profileFetchedRef.current) return;
+    profileFetchedRef.current = true;
     fetch("/api/profile")
       .then(r => r.json())
       .then(data => {
@@ -356,7 +359,11 @@ export default function Page() {
           });
         setCalorieTarget(target);
       })
-      .catch(console.error);
+      .catch(err => {
+        // On error allow a retry next session tick
+        profileFetchedRef.current = false;
+        console.error(err);
+      });
   }, [session]);
 
   const macros = calculateMacros(calorieTarget);
@@ -367,6 +374,14 @@ export default function Page() {
       router.replace("/login");
     }
   }, [session, isPending, router]);
+
+  // Listen for the global nav's Kai button — BottomNav dispatches this event
+  // so the home page can open Kai with full nutrition context.
+  useEffect(() => {
+    const handler = () => setIsKaiOpen(true);
+    window.addEventListener("twin:open-kai", handler);
+    return () => window.removeEventListener("twin:open-kai", handler);
+  }, []);
 
   const [currentTime, setCurrentTime] = useState("");
 
@@ -429,7 +444,7 @@ export default function Page() {
         </header>
 
         {/* Main Content */}
-        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[70px] space-y-3">
+        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[84px] space-y-3">
 
           {/* Calorie Intake Card */}
           <section className="relative shrink-0 overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-br from-[#040c24] via-[#030818] to-[#020510] p-3.5 shadow-[0_4px_40px_rgba(0,120,255,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]">
@@ -458,8 +473,13 @@ export default function Page() {
                   <Plus size={10} strokeWidth={2.5} />
                   Meals
                 </button>
-                <div className="flex items-center gap-1 rounded-[8px] bg-white/[0.03] px-2.5 py-1.5 text-[9px] font-semibold text-white/50 border border-white/[0.06] tracking-wider">
-                  {currentTime || "..."}
+                <div className="flex items-center gap-1.5 rounded-[8px] bg-[#00d0ff]/[0.03] px-2.5 py-1.5 border border-[#00d0ff]/[0.15] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_2px_8px_rgba(0,0,0,0.2)] backdrop-blur-md">
+                  <div className="relative grid place-items-center h-[18px] w-[18px] rounded-full bg-[#00d0ff]/10 border border-[#00d0ff]/20 shadow-[inset_0_1px_2px_rgba(0,208,255,0.2)]">
+                    <Clock size={10} className="text-[#00d0ff] drop-shadow-[0_0_5px_rgba(0,208,255,0.8)]" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-[10px] font-bold text-[#00d0ff]/90 tabular-nums tracking-wider uppercase mt-[1px]" style={{ fontFeatureSettings: '"tnum"' }}>
+                    {currentTime || "..."}
+                  </span>
                 </div>
               </div>
             </div>
@@ -797,88 +817,10 @@ export default function Page() {
               })()}
             </div>
           </section>
-
-
-
         </main>
 
-        {/* Bottom Navigation */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
-          <nav className="flex h-[68px] pb-2 items-center justify-between bg-[#030818]/95 px-6 backdrop-blur-2xl border-t border-[#1e3a8a]/40 shadow-[0_-15px_35px_rgba(0,0,0,0.5)]">
-            {[
-              { label: 'Home', icon: Home, active: true },
-              { label: 'Goals', icon: Zap },
-              { label: 'Kai', icon: Sparkles, isKai: true },
-              { label: 'Fitness', icon: Heart },
-              { label: 'Profile', icon: User },
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  if (item.label === 'Kai') setIsKaiOpen(true);
-                  if (item.label === 'Profile') setIsProfileOpen(true);
-                  if (item.label === 'Tasks') setIsTasksManagerOpen(true);
-                }}
-                className="group relative flex flex-col items-center justify-center w-[52px] h-full transition-all"
-              >
-                {item.active ? (
-                  <>
-                    <div className="absolute inset-0 top-1 bottom-1 bg-[#00d0ff]/10 rounded-[16px]" />
-                    <item.icon size={22} className="text-[#00d0ff] fill-[#00d0ff] drop-shadow-[0_0_12px_rgba(0,208,255,0.6)] z-10" />
-                    <span className="text-[9px] font-bold text-[#00d0ff] z-10 mt-1">{item.label}</span>
-                    <div className="absolute bottom-1.5 left-1/2 h-[4px] w-6 -translate-x-1/2 rounded-t-full bg-[#00d0ff] shadow-[0_0_10px_#00d0ff] z-10" />
-                  </>
-                ) : item.isKai ? (
-                  <div className="relative flex flex-col items-center -mt-8 z-30">
-                    <div className="relative group flex items-center justify-center">
 
-                      {/* Ambient breathing glow */}
-                      <div className="absolute inset-0 bg-[#00d0ff]/20 rounded-full blur-xl scale-[1.8] animate-pulse" />
-
-                      {/* Base shadow layer for elevation */}
-                      <div className="absolute -bottom-2 w-8 h-4 bg-black/60 rounded-[100%] blur-md" />
-
-                      {/* The Button Body */}
-                      <div className="relative h-[56px] w-[56px] rounded-full p-[1px] bg-gradient-to-br from-white/30 via-white/5 to-[#00d0ff]/20 shadow-[0_10px_25px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 cursor-pointer">
-
-                        <div className="relative h-full w-full rounded-full bg-gradient-to-b from-[#0a1535] to-[#010614] overflow-hidden flex items-center justify-center shadow-[inset_0_2px_15px_rgba(0,208,255,0.2),inset_0_-2px_15px_rgba(168,85,247,0.15)]">
-
-                          {/* Glossy top reflection */}
-                          <div className="absolute top-0 inset-x-2 h-1/2 rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60" />
-
-                          {/* Inner glowing accent strip */}
-                          <div className="absolute top-0 w-2/3 h-[2px] bg-gradient-to-r from-transparent via-[#00d0ff]/90 to-transparent" />
-
-                          {/* Glowing Icon */}
-                          <item.icon size={22} className="relative z-10 text-white drop-shadow-[0_0_8px_rgba(0,208,255,0.8)]" />
-
-                          {/* Bottom colorful light bounce */}
-                          <div className="absolute -bottom-2 w-full h-[15px] bg-[#00d0ff]/30 blur-[6px] rounded-full" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <span className="relative text-[9px] font-bold text-white tracking-[0.2em] uppercase mt-2 drop-shadow-[0_0_5px_rgba(0,208,255,0.4)]">{item.label}</span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="absolute inset-0 top-1 bottom-1 bg-white/0 group-hover:bg-white/[0.04] rounded-[16px] transition-all" />
-                    {item.isBox ? (
-                      <div className="grid place-items-center text-white/50 h-[22px] w-[22px] border-[1.5px] border-white/30 rounded-[6px] group-hover:text-white group-hover:border-white/60 transition-all z-10">
-                        <Check size={12} strokeWidth={3} />
-                      </div>
-                    ) : (
-                      <item.icon size={22} className="text-white/40 group-hover:text-white/80 transition-colors z-10" strokeWidth={1.8} />
-                    )}
-                    <span className="text-[9px] font-medium text-white/40 group-hover:text-white/80 transition-colors z-10 mt-1">{item.label}</span>
-                  </>
-                )}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Kai AI Modal Overlay */}
+        {/* Kai AI Modal Overlay — opened via twin:open-kai event from BottomNav */}
         <KaiAssistant
           isOpen={isKaiOpen}
           onClose={() => setIsKaiOpen(false)}
@@ -887,9 +829,6 @@ export default function Page() {
           macros={macros}
           onNutritionUpdate={handleNutritionUpdate}
         />
-
-        {/* Profile Card Overlay */}
-        <ProfileCard isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
 
         {/* Meals Manager Overlay */}
         <MealsManager
@@ -978,7 +917,27 @@ export default function Page() {
         {/* Mandatory Onboarding Modal — shown once, no way to dismiss without completing */}
         <OnboardingModal
           isOpen={showOnboarding}
-          onComplete={() => setShowOnboarding(false)}
+          onComplete={() => {
+            setShowOnboarding(false);
+            // Hydrate calorie target immediately after onboarding saves
+            fetch("/api/profile")
+              .then(r => r.json())
+              .then(data => {
+                if (!data.profile) return;
+                const p = data.profile;
+                const target =
+                  p.calorieTarget ||
+                  calcCalorieTarget({
+                    weight: p.weight,
+                    height: p.height,
+                    age: p.age,
+                    gender: p.gender,
+                    workoutDays: p.workoutDays,
+                  });
+                setCalorieTarget(target);
+              })
+              .catch(console.error);
+          }}
         />
       </div>
     </div>
