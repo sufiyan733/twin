@@ -1108,25 +1108,28 @@ const PlanDayPill = ({ day, label, color, isRest }) => (
 
 const WorkoutRow = ({ exercise, idx }) => (
   <div style={{
-    display: "flex", alignItems: "flex-start", gap: "10px",
-    padding: "9px 0",
+    display: "flex", alignItems: "flex-start", gap: "14px",
+    padding: "12px 0",
     borderBottom: "1px solid rgba(255,255,255,0.04)",
     animation: `exRowSlide 0.28s ease ${idx * 40}ms both`,
   }}>
     <div style={{
-      width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-      background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
+      width: "26px", height: "26px", borderRadius: "8px", flexShrink: 0,
+      background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01))", 
+      border: "1px solid rgba(255,255,255,0.06)",
+      borderTop: "1px solid rgba(255,255,255,0.15)",
+      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 6px rgba(0,0,0,0.2)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontSize: "9px", fontWeight: 800, color: "var(--c-muted)", fontFamily: "var(--font-display)",
+      fontSize: "11px", fontWeight: 800, color: "#cbd5e1", fontFamily: "var(--font-display)",
       letterSpacing: "0.04em",
     }}>{String(idx + 1).padStart(2, "0")}</div>
-    <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ fontSize: "12px", fontWeight: 600, color: "#d8e4f5", letterSpacing: "-0.01em", marginBottom: "2px", lineHeight: 1.2 }}>{exercise.name}</div>
-      <div style={{ fontSize: "10px", color: "var(--c-muted)", fontWeight: 400 }}>{exercise.note}</div>
+    <div style={{ flex: 1, minWidth: 0, paddingTop: "1px" }}>
+      <div style={{ fontSize: "14px", fontWeight: 700, color: "#ffffff", letterSpacing: "-0.01em", marginBottom: "4px", lineHeight: 1.2 }}>{exercise.name}</div>
+      <div style={{ fontSize: "12px", color: "#64748b", fontWeight: 500 }}>{exercise.note}</div>
     </div>
     <div style={{
-      flexShrink: 0, fontSize: "10px", fontWeight: 700, letterSpacing: "0.02em",
-      color: "#4a6d94", whiteSpace: "nowrap", paddingTop: "2px",
+      flexShrink: 0, fontSize: "12px", fontWeight: 700, letterSpacing: "0.02em",
+      color: "#94a3b8", whiteSpace: "nowrap", paddingTop: "2px",
     }}>{exercise.sets}</div>
   </div>
 );
@@ -1135,23 +1138,24 @@ const WorkoutSectionCard = ({ workout, accent }) => {
   const [open, setOpen] = useState(false);
   return (
     <div style={{
-      border: `1px solid ${accent}22`, borderRadius: "12px",
-      background: `${accent}07`, marginBottom: "8px", overflow: "hidden",
+      border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)",
+      borderRadius: "16px", background: "#0a0c10", marginBottom: "8px", overflow: "hidden",
+      boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
     }}>
       <button onClick={() => setOpen(v => !v)} style={{
-        all: "unset", display: "flex", alignItems: "center", gap: "10px",
-        width: "100%", padding: "11px 13px", cursor: "pointer", boxSizing: "border-box",
+        all: "unset", display: "flex", alignItems: "center", gap: "12px",
+        width: "100%", padding: "14px 16px", cursor: "pointer", boxSizing: "border-box",
         touchAction: "manipulation",
       }}>
-        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: accent, flexShrink: 0, boxShadow: `0 0 8px ${accent}60` }} />
-        <div style={{ flex: 1, fontSize: "12px", fontWeight: 700, color: "#c8d8f0", letterSpacing: "-0.01em" }}>{workout.label}</div>
-        <div style={{ fontSize: "10px", color: `${accent}80`, fontWeight: 600, marginRight: "4px" }}>{workout.exercises.length} ex</div>
+        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: accent, flexShrink: 0, boxShadow: `0 0 10px ${accent}80` }} />
+        <div style={{ flex: 1, fontSize: "13px", fontWeight: 700, color: "#f8fafc", letterSpacing: "-0.01em" }}>{workout.label}</div>
+        <div style={{ fontSize: "11px", color: "var(--c-muted)", fontWeight: 600, marginRight: "4px" }}>{workout.exercises.length} ex</div>
         <div style={{ color: open ? accent : "var(--c-muted)", transition: "transform 0.22s var(--ease-spring), color 0.18s", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
         </div>
       </button>
       {open && (
-        <div style={{ padding: "0 13px 12px", borderTop: `1px solid ${accent}18` }}>
+        <div style={{ padding: "0 16px 16px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
           {workout.exercises.map((ex, i) => <WorkoutRow key={i} exercise={ex} idx={i} />)}
         </div>
       )}
@@ -1308,20 +1312,22 @@ const PlanDetailCard = ({ plan, onClose }) => {
                 </button>
               </div>
               {/* stats row */}
-              <div style={{ display: "flex", gap: "6px", marginTop: "14px", flexWrap: "wrap" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", marginTop: "16px" }}>
                 {[
                   { label: "Days/wk", value: `${plan.days}` },
                   { label: "Level", value: plan.level.split("–")[0] },
-                  { label: "Frequency", value: plan.freq },
+                  { label: "Freq", value: plan.freq.replace("per muscle", "").trim() },
                   { label: "Goal", value: plan.goal.split(" · ")[0] },
                 ].map((s, i) => (
                   <div key={i} style={{
-                    padding: "5px 10px", borderRadius: "8px",
-                    background: `${plan.accent}0d`, border: `1px solid ${plan.accent}22`,
-                    display: "flex", flexDirection: "column", gap: "1px",
+                    padding: "10px 4px", borderRadius: "12px",
+                    background: "rgba(255,255,255,0.02)", 
+                    border: "1px solid rgba(148,163,184,0.08)",
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: "3px",
                   }}>
-                    <div style={{ fontSize: "8px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: `${plan.accent}80` }}>{s.label}</div>
-                    <div style={{ fontSize: "11px", fontWeight: 700, color: plan.accent }}>{s.value}</div>
+                    <div style={{ fontSize: "8px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: `${plan.accent}90` }}>{s.label}</div>
+                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#f8fafc", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "100%" }}>{s.value}</div>
                   </div>
                 ))}
               </div>
@@ -1361,30 +1367,32 @@ const PlanDetailCard = ({ plan, onClose }) => {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
                 Volume & Science
               </div>
-              <div style={{ padding: "13px 14px", borderRadius: "12px", background: `${plan.accent}08`, border: `1px solid ${plan.accent}20`, display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ padding: "16px", borderRadius: "16px", background: "#0a0c10", border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
                 {[
-                  { label: "Weekly Volume", val: plan.volume, icon: "📊" },
-                  { label: "Frequency", val: plan.freq, icon: "🔁" },
-                  { label: "Rest Days", val: plan.rest, icon: "😴" },
-                  { label: "Best For", val: plan.goal, icon: "🎯" },
-                  { label: "Level", val: plan.level, icon: "⚡" },
+                  { label: "Weekly Volume", val: plan.volume, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg> },
+                  { label: "Frequency", val: plan.freq, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg> },
+                  { label: "Rest Days", val: plan.rest, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> },
+                  { label: "Best For", val: plan.goal, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> },
+                  { label: "Level", val: plan.level, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> },
                 ].map((r, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-                    <span style={{ fontSize: "13px", flexShrink: 0 }}>{r.icon}</span>
-                    <span style={{ fontSize: "11px", color: "var(--c-muted)", fontWeight: 500, flex: 1 }}>{r.label}</span>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#c8d8f0" }}>{r.val}</span>
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "24px", height: "24px", borderRadius: "6px", background: "rgba(255,255,255,0.04)", color: plan.accent, flexShrink: 0 }}>
+                      {r.icon}
+                    </div>
+                    <span style={{ fontSize: "12px", color: "var(--c-muted)", fontWeight: 500, flex: 1 }}>{r.label}</span>
+                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#e2e8f0" }}>{r.val}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Science Note */}
-            <div style={{ padding: "12px 14px", borderRadius: "12px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: "16px" }}>
-              <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", color: "var(--c-muted)", marginBottom: "7px", display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
+            <div style={{ padding: "16px", borderRadius: "16px", background: "#0a0c10", border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "16px", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
+              <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--c-muted)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
                 Evidence-Based Note
               </div>
-              <div style={{ fontSize: "11.5px", color: "#5d7a9a", fontWeight: 400, lineHeight: 1.6 }}>{plan.scienceNote}</div>
+              <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 400, lineHeight: 1.6 }}>{plan.scienceNote}</div>
             </div>
 
             <div style={{ height: "8px" }} />
