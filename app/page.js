@@ -70,14 +70,14 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: "#050505",
-  card: "#111111",
-  cardAlt: "#1a1a1a",
-  border: "rgba(255,255,255,0.08)",
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E"), radial-gradient(140% 140% at 50% 0%, #222224 0%, #080808 40%, #000000 100%)`,
+  card: "linear-gradient(180deg, #141414 0%, #080808 100%)",
+  cardAlt: "linear-gradient(180deg, #1e1e1e 0%, #111111 100%)",
+  border: "rgba(255,255,255,0.06)",
   accent: "#00d0ff",
-  textPrimary: "#fafafa",
-  textMuted: "#a3a3a3",
-  textFaint: "#525252",
+  textPrimary: "#ffffff",
+  textMuted: "#999999",
+  textFaint: "#555555",
 };
 
 export default function Page() {
