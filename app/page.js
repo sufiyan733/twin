@@ -70,7 +70,7 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.35'/%3E%3C/svg%3E"), conic-gradient(from 180deg at 50% -10%, transparent 0deg, rgba(255,255,255,0.3) 30deg, rgba(255,255,255,0.8) 45deg, rgba(255,255,255,0.3) 60deg, transparent 90deg, transparent 270deg, rgba(255,255,255,0.3) 300deg, rgba(255,255,255,0.8) 315deg, rgba(255,255,255,0.3) 330deg, transparent 360deg), linear-gradient(110deg, transparent 15%, rgba(255, 255, 255, 0.7) 20%, rgba(255, 255, 255, 0.2) 23%, transparent 35%, transparent 60%, rgba(255, 255, 255, 0.5) 65%, transparent 70%), linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.4) 45%, transparent 50%), radial-gradient(150% 120% at 50% -10%, rgba(200, 220, 255, 0.5) 0%, transparent 60%), linear-gradient(180deg, #202635 0%, #0a0d14 30%, #000000 31%, #040508 33%, #000000 100%)`,
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"), linear-gradient(110deg, transparent 15%, rgba(255, 255, 255, 0.1) 20%, rgba(255, 255, 255, 0.02) 23%, transparent 35%, transparent 60%, rgba(255, 255, 255, 0.06) 65%, transparent 70%), radial-gradient(150% 120% at 50% -10%, rgba(200, 215, 230, 0.15) 0%, transparent 45%), linear-gradient(180deg, #0a0b0f 0%, #020203 25%, #000000 100%)`,
   card: `linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 10%, transparent 35%), linear-gradient(180deg, rgba(60,70,85,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
   cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 15%, transparent 35%), linear-gradient(180deg, rgba(70,80,95,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
   border: "rgba(255,255,255,0.4)",
@@ -431,8 +431,12 @@ export default function Page() {
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
         <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
-          <button type="button" className="transition-colors" style={{ color: "rgba(240,244,255,0.5)" }}>
-            <Menu size={22} strokeWidth={1.5} />
+          <button 
+            type="button" 
+            className="grid place-items-center h-9 w-9 rounded-xl shadow-lg transition-transform active:scale-[0.97]" 
+            style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+          >
+            <Menu size={18} strokeWidth={2} style={{ color: T.textPrimary }} />
           </button>
 
           <button
