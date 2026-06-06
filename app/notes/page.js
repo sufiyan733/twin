@@ -247,7 +247,7 @@ export default function NotesApp() {
         /* ── Drawer overlay ── */
         .drawer-overlay {
           position: fixed; inset: 0;
-          background: rgba(4, 7, 18, 0.72);
+          background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(8px);
           -webkit-backdrop-filter: blur(8px);
           z-index: 40; opacity: 0; pointer-events: none;
@@ -259,12 +259,8 @@ export default function NotesApp() {
         .drawer-panel {
           position: fixed; top: 0; left: 0; bottom: 0;
           width: min(82vw, 300px);
-          background: linear-gradient(180deg,
-            rgba(10,15,30,0.98) 0%,
-            rgba(9,13,26,0.99) 60%,
-            rgba(8,11,22,1) 100%
-          );
-          border-right: 1px solid rgba(59,140,248,0.18);
+          background: #f8fafc;
+          border-right: 1px solid rgba(0,0,0,0.06);
           z-index: 50;
           transform: translateX(-100%);
           transition: transform 0.38s var(--ease-out);
@@ -272,9 +268,9 @@ export default function NotesApp() {
           display: flex;
           flex-direction: column;
           box-shadow:
-            6px 0 48px rgba(0,0,0,0.7),
-            1px 0 0 rgba(59,140,248,0.08),
-            inset -1px 0 0 rgba(255,255,255,0.03);
+            6px 0 48px rgba(0,0,0,0.08),
+            1px 0 0 rgba(0,0,0,0.02),
+            inset -1px 0 0 rgba(255,255,255,0.5);
         }
         .drawer-panel.open { transform: translateX(0); }
 
@@ -286,8 +282,8 @@ export default function NotesApp() {
             0deg,
             transparent,
             transparent 2px,
-            rgba(0,0,0,0.08) 2px,
-            rgba(0,0,0,0.08) 4px
+            rgba(0,0,0,0.02) 2px,
+            rgba(0,0,0,0.02) 4px
           );
           pointer-events: none;
           z-index: 0;
@@ -300,8 +296,8 @@ export default function NotesApp() {
           height: 1px;
           background: linear-gradient(90deg,
             transparent 0%,
-            rgba(59,140,248,0.5) 40%,
-            rgba(96,165,250,0.3) 70%,
+            rgba(0,0,0,0.05) 40%,
+            rgba(0,0,0,0.03) 70%,
             transparent 100%
           );
           z-index: 2;
@@ -319,7 +315,7 @@ export default function NotesApp() {
         .drawer-scroll::-webkit-scrollbar { width: 2px; }
         .drawer-scroll::-webkit-scrollbar-track { background: transparent; }
         .drawer-scroll::-webkit-scrollbar-thumb {
-          background: rgba(59,140,248,0.2);
+          background: rgba(0,0,0,0.1);
           border-radius: 2px;
         }
 
@@ -328,11 +324,8 @@ export default function NotesApp() {
           position: relative;
           z-index: 1;
           padding: 52px 18px 20px;
-          border-bottom: 1px solid rgba(59,140,248,0.10);
-          background: linear-gradient(180deg,
-            rgba(37,99,235,0.07) 0%,
-            transparent 100%
-          );
+          border-bottom: 1px solid rgba(0,0,0,0.05);
+          background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, transparent 100%);
           overflow: hidden;
           flex-shrink: 0;
         }
@@ -341,7 +334,7 @@ export default function NotesApp() {
           position: absolute;
           top: -60px; left: -40px;
           width: 200px; height: 200px;
-          background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 65%);
+          background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 65%);
           pointer-events: none;
         }
 
@@ -353,8 +346,8 @@ export default function NotesApp() {
           margin-bottom: 18px;
           padding: 12px 14px;
           border-radius: var(--radius-lg);
-          background: rgba(59,140,248,0.06);
-          border: 1px solid rgba(59,140,248,0.12);
+          background: rgba(0,0,0,0.02);
+          border: 1px solid rgba(0,0,0,0.06);
           position: relative;
           overflow: hidden;
         }
@@ -363,18 +356,18 @@ export default function NotesApp() {
           position: absolute;
           top: 0; right: 0;
           width: 60px; height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(59,140,248,0.04));
+          background: linear-gradient(90deg, transparent, rgba(0,0,0,0.02));
           pointer-events: none;
         }
 
         .avatar-ring {
           width: 42px; height: 42px;
           border-radius: 50%;
-          background: linear-gradient(135deg, rgba(37,99,235,0.5), rgba(59,140,248,0.2));
-          border: 1.5px solid rgba(59,140,248,0.40);
+          background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.05));
+          border: 1.5px solid rgba(0,0,0,0.1);
           display: flex; align-items: center; justify-content: center;
           flex-shrink: 0;
-          box-shadow: 0 0 14px rgba(59,140,248,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+          box-shadow: 0 0 14px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
           animation: pulse-ring 3s ease-out infinite;
         }
 
@@ -383,27 +376,27 @@ export default function NotesApp() {
           width: 100%;
           padding: 11px 16px;
           border-radius: var(--radius-md);
-          background: linear-gradient(135deg, rgba(37,99,235,0.30) 0%, rgba(59,140,248,0.16) 100%);
-          border: 1px solid rgba(59,140,248,0.28);
-          color: var(--blue-bright);
+          background: rgba(15,23,42,1);
+          border: 1px solid rgba(0,0,0,0.2);
+          color: #ffffff;
           font-family: var(--font-body);
           font-size: 13px; font-weight: 700;
           letter-spacing: 0.10em; text-transform: uppercase;
           display: flex; align-items: center; justify-content: center; gap: 8px;
           position: relative; overflow: hidden;
           transition: all 0.2s var(--ease-smooth);
-          box-shadow: 0 2px 12px rgba(37,99,235,0.15), inset 0 1px 0 rgba(255,255,255,0.06);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
         }
         .new-note-btn::before {
           content: '';
           position: absolute; inset: 0;
-          background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+          background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
           pointer-events: none;
         }
         .new-note-btn:hover {
-          background: linear-gradient(135deg, rgba(37,99,235,0.48) 0%, rgba(59,140,248,0.28) 100%);
-          border-color: rgba(59,140,248,0.50);
-          box-shadow: 0 0 20px rgba(59,140,248,0.28), 0 2px 12px rgba(0,0,0,0.3);
+          background: rgba(15,23,42,0.9);
+          border-color: rgba(0,0,0,0.3);
+          box-shadow: 0 6px 16px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
           transform: translateY(-1px);
         }
         .new-note-btn:active { transform: scale(0.97) translateY(0); }
@@ -413,7 +406,7 @@ export default function NotesApp() {
           font-family: var(--font-mono);
           font-size: 9px; font-weight: 500;
           letter-spacing: 0.18em; text-transform: uppercase;
-          color: rgba(59,140,248,0.55);
+          color: rgba(0,0,0,0.4);
           padding: 20px 18px 8px;
           display: flex; align-items: center; gap: 8px;
           position: relative; z-index: 1;
@@ -422,7 +415,7 @@ export default function NotesApp() {
           content: '';
           flex: 1;
           height: 1px;
-          background: linear-gradient(90deg, rgba(59,140,248,0.15), transparent);
+          background: linear-gradient(90deg, rgba(0,0,0,0.06), transparent);
         }
 
         /* ── Note list items ── */
@@ -444,28 +437,28 @@ export default function NotesApp() {
           left: 0; top: 20%; bottom: 20%;
           width: 2px;
           border-radius: 0 2px 2px 0;
-          background: rgba(59,140,248,0.0);
+          background: transparent;
           transition: background 0.2s, top 0.2s, bottom 0.2s;
         }
         .note-item:hover {
-          background: rgba(59,140,248,0.07);
-          border-color: rgba(59,140,248,0.12);
+          background: rgba(0,0,0,0.03);
+          border-color: rgba(0,0,0,0.05);
           transform: translateX(2px);
         }
         .note-item:hover::before {
-          background: rgba(59,140,248,0.35);
+          background: rgba(0,0,0,0.2);
           top: 25%; bottom: 25%;
         }
         .note-item.active {
-          background: linear-gradient(135deg, rgba(37,99,235,0.14) 0%, rgba(59,140,248,0.07) 100%);
-          border-color: rgba(59,140,248,0.28);
+          background: #ffffff;
+          border-color: rgba(0,0,0,0.08);
           transform: translateX(3px);
-          box-shadow: inset 0 0 16px rgba(37,99,235,0.05), 0 2px 8px rgba(0,0,0,0.2);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .note-item.active::before {
-          background: linear-gradient(180deg, #60a5fa, #3b8cf8);
+          background: #0f172a;
           top: 15%; bottom: 15%;
-          box-shadow: 0 0 8px rgba(59,140,248,0.6);
+          box-shadow: 0 0 8px rgba(0,0,0,0.1);
         }
 
         /* shimmer on active */
@@ -493,8 +486,8 @@ export default function NotesApp() {
         .drawer-footer {
           position: absolute; bottom: 0; left: 0; right: 0;
           padding: 16px 20px;
-          background: linear-gradient(180deg, rgba(8,11,22,0.6) 0%, rgba(8,11,22,1) 30%);
-          border-top: 1px solid rgba(59,140,248,0.15);
+          background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,1) 30%);
+          border-top: 1px solid rgba(0,0,0,0.05);
           z-index: 2;
           backdrop-filter: blur(8px);
         }
@@ -503,18 +496,18 @@ export default function NotesApp() {
           display: flex; align-items: center; justify-content: center; gap: 10px;
           padding: 14px 16px;
           border-radius: var(--radius-md);
-          background: rgba(59,140,248,0.05);
-          border: 1px solid rgba(59,140,248,0.15);
-          color: var(--blue-bright);
+          background: rgba(0,0,0,0.03);
+          border: 1px solid rgba(0,0,0,0.06);
+          color: #0f172a;
           font-family: var(--font-body);
           font-size: 13px; font-weight: 600;
           letter-spacing: 0.05em; text-transform: uppercase;
           transition: all 0.2s var(--ease-spring);
         }
         .settings-btn:hover {
-          background: rgba(59,140,248,0.12);
-          border-color: rgba(59,140,248,0.3);
-          box-shadow: 0 4px 12px rgba(59,140,248,0.15);
+          background: rgba(0,0,0,0.06);
+          border-color: rgba(0,0,0,0.1);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.04);
           transform: translateY(-2px);
         }
         .settings-btn:active {
@@ -562,17 +555,15 @@ export default function NotesApp() {
           right: 22px;
           width: 54px; height: 54px;
           border-radius: var(--radius-full);
-          border: 1px solid var(--blue-strong);
-          background: linear-gradient(135deg, rgba(37,99,235,0.35) 0%, rgba(59,140,248,0.20) 100%);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          box-shadow: 0 0 28px rgba(59,140,248,0.25), 0 4px 20px rgba(0,0,0,0.5);
+          border: 1px solid rgba(0,0,0,0.1);
+          background: #ffffff;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
           display: flex; align-items: center; justify-content: center;
-          color: var(--blue-bright);
+          color: #0f172a;
           z-index: 30;
           transition: transform 0.2s var(--ease-spring), box-shadow 0.2s, background 0.2s;
         }
-        .fab:hover { background: linear-gradient(135deg, rgba(37,99,235,0.50) 0%, rgba(59,140,248,0.35) 100%); transform: scale(1.06); box-shadow: 0 0 36px rgba(59,140,248,0.35), 0 6px 24px rgba(0,0,0,0.5); }
+        .fab:hover { transform: scale(1.06); box-shadow: 0 6px 24px rgba(0,0,0,0.15); }
         .fab:active { transform: scale(0.88); }
 
         /* ── Search bar ── */
@@ -715,14 +706,34 @@ export default function NotesApp() {
           bottom: -30%; right: -10%; width: 60%; height: 60%;
           background: radial-gradient(ellipse, rgba(59,140,248,0.07) 0%, transparent 70%);
         }
+        /* ── Premium Light Theme Overrides ── */
+        .notes-light-theme {
+          --bg-base: #f8fafc;
+          --bg-deep: #ffffff;
+          --bg-surface: rgba(255, 255, 255, 0.85);
+          --bg-card: #f1f5f9;
+          --bg-card-hover: #e2e8f0;
+          --text-primary: #0f172a;
+          --text-secondary: #334155;
+          --text-muted: #64748b;
+          --text-accent: #0f172a;
+          --border-faint: rgba(0, 0, 0, 0.04);
+          --border-subtle: rgba(0, 0, 0, 0.08);
+          --border-mid: rgba(0, 0, 0, 0.12);
+          --blue-bright: #0f172a;
+          --blue-border: rgba(0, 0, 0, 0.1);
+          --blue-dim: rgba(0, 0, 0, 0.04);
+          --shadow-card: 0 4px 12px rgba(0,0,0,0.04);
+          --shadow-glow: 0 0 20px rgba(0,0,0,0.03);
+        }
       `}</style>
 
             {/* root shell */}
-            <div style={{ height: "100dvh", display: "flex", flexDirection: "column", background: "var(--bg-deep)", overflow: "hidden", position: "relative" }}>
+            <div className="notes-light-theme" style={{ height: "100dvh", display: "flex", flexDirection: "column", background: "var(--bg-deep)", overflow: "hidden", position: "relative" }}>
 
                 {/* ambient glow orbs */}
-                <div style={{ position: "fixed", top: "-15%", left: "-10%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
-                <div style={{ position: "fixed", bottom: "20%", right: "-15%", width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,140,248,0.06) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+                <div style={{ position: "fixed", top: "-15%", left: "-10%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+                <div style={{ position: "fixed", bottom: "20%", right: "-15%", width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
 
                 {/* ── Drawer Overlay ── */}
                 <div className={`drawer-overlay ${drawerOpen ? "open" : ""}`} onClick={() => setDrawerOpen(false)} />
@@ -823,8 +834,8 @@ export default function NotesApp() {
 
                     {/* Center: App name */}
                     <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", pointerEvents: "none" }}>
-                        <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--text-primary)", lineHeight: 1 }}>
-                            Notes
+                        <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 18, letterSpacing: "0.4em", textTransform: "uppercase", color: "var(--text-primary)", lineHeight: 1, marginLeft: "0.4em" }}>
+                            NOTES
                         </span>
                         {saving && (
                             <span style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 3 }}>
@@ -983,19 +994,7 @@ function EmptyState({ hasNotes, searchActive, onCreate }) {
         );
     }
 
-    if (hasNotes) {
-        return (
-            <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "calc(100dvh - 124px)", padding: "40px 32px", textAlign: "center" }}>
-                <div className="float" style={{ marginBottom: 24, width: 76, height: 76, borderRadius: "var(--radius-xl)", background: "var(--blue-dim)", border: "1px solid var(--blue-border)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-glow)" }}>
-                    <FileText size={32} color="var(--blue-bright)" strokeWidth={1.2} />
-                </div>
-                <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-primary)", marginBottom: 10 }}>Select a Note</div>
-                <div style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.7, maxWidth: 240 }}>
-                    Pick from the sidebar or start something new
-                </div>
-            </div>
-        );
-    }
+    // Removed hasNotes block to enforce 'Ready to Write?' as the primary empty state
 
     return (
         <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "calc(100dvh - 124px)", padding: "40px 28px", textAlign: "center", position: "relative" }}>
@@ -1004,56 +1003,56 @@ function EmptyState({ hasNotes, searchActive, onCreate }) {
                 <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stopColor="rgba(59,140,248,0.12)" />
-                            <stop offset="100%" stopColor="rgba(59,140,248,0)" />
+                            <stop offset="0%" stopColor="rgba(0,0,0,0.04)" />
+                            <stop offset="100%" stopColor="rgba(0,0,0,0)" />
                         </radialGradient>
                         <linearGradient id="pageGrad" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor="rgba(59,140,248,0.18)" />
-                            <stop offset="100%" stopColor="rgba(37,99,235,0.06)" />
+                            <stop offset="0%" stopColor="rgba(0,0,0,0.06)" />
+                            <stop offset="100%" stopColor="rgba(0,0,0,0.01)" />
                         </linearGradient>
                     </defs>
                     <circle cx="65" cy="65" r="62" fill="url(#bgGlow)" />
                     {/* stacked pages */}
-                    <rect x="44" y="48" width="46" height="56" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                    <rect x="38" y="42" width="46" height="56" rx="6" fill="rgba(59,140,248,0.05)" stroke="rgba(59,140,248,0.12)" strokeWidth="1" />
-                    <rect x="32" y="36" width="46" height="56" rx="6" fill="url(#pageGrad)" stroke="rgba(59,140,248,0.28)" strokeWidth="1" />
+                    <rect x="44" y="48" width="46" height="56" rx="6" fill="rgba(0,0,0,0.01)" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
+                    <rect x="38" y="42" width="46" height="56" rx="6" fill="rgba(0,0,0,0.02)" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
+                    <rect x="32" y="36" width="46" height="56" rx="6" fill="url(#pageGrad)" stroke="rgba(0,0,0,0.15)" strokeWidth="1" />
                     {/* lines */}
-                    <line x1="41" y1="50" x2="69" y2="50" stroke="rgba(59,140,248,0.50)" strokeWidth="1.5" strokeLinecap="round" />
-                    <line x1="41" y1="60" x2="65" y2="60" stroke="rgba(255,255,255,0.10)" strokeWidth="1" strokeLinecap="round" />
-                    <line x1="41" y1="69" x2="68" y2="69" stroke="rgba(255,255,255,0.07)" strokeWidth="1" strokeLinecap="round" />
-                    <line x1="41" y1="78" x2="59" y2="78" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeLinecap="round" />
+                    <line x1="41" y1="50" x2="69" y2="50" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5" strokeLinecap="round" />
+                    <line x1="41" y1="60" x2="65" y2="60" stroke="rgba(0,0,0,0.10)" strokeWidth="1" strokeLinecap="round" />
+                    <line x1="41" y1="69" x2="68" y2="69" stroke="rgba(0,0,0,0.07)" strokeWidth="1" strokeLinecap="round" />
+                    <line x1="41" y1="78" x2="59" y2="78" stroke="rgba(0,0,0,0.05)" strokeWidth="1" strokeLinecap="round" />
                     {/* pen */}
-                    <path d="M78 24 C83 18, 93 19, 96 25 C91 33, 82 39, 76 50 L73 46 C78 37, 83 28, 78 24Z" fill="rgba(59,140,248,0.22)" stroke="rgba(96,165,250,0.60)" strokeWidth="1" />
-                    <line x1="76" y1="50" x2="70" y2="68" stroke="rgba(96,165,250,0.45)" strokeWidth="1.2" strokeLinecap="round" />
+                    <path d="M78 24 C83 18, 93 19, 96 25 C91 33, 82 39, 76 50 L73 46 C78 37, 83 28, 78 24Z" fill="rgba(0,0,0,0.03)" stroke="rgba(15,23,42,0.6)" strokeWidth="1" />
+                    <line x1="76" y1="50" x2="70" y2="68" stroke="rgba(15,23,42,0.4)" strokeWidth="1.2" strokeLinecap="round" />
                     {/* sparkle */}
-                    <circle cx="99" cy="44" r="3" fill="rgba(96,165,250,0.6)" />
-                    <circle cx="28" cy="76" r="2" fill="rgba(59,140,248,0.4)" />
-                    <circle cx="105" cy="72" r="1.5" fill="rgba(96,165,250,0.3)" />
+                    <circle cx="99" cy="44" r="3" fill="rgba(15,23,42,0.5)" />
+                    <circle cx="28" cy="76" r="2" fill="rgba(0,0,0,0.2)" />
+                    <circle cx="105" cy="72" r="1.5" fill="rgba(15,23,42,0.3)" />
                 </svg>
             </div>
 
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 28, textTransform: "uppercase", letterSpacing: "0.16em", color: "var(--text-primary)", marginBottom: 12, lineHeight: 1.1 }}>
-                Ready to<br />
-                <span style={{ background: "linear-gradient(90deg, #3b8cf8, #60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Write?</span>
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: 34, textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--text-primary)", marginBottom: 16, lineHeight: 1.15 }}>
+                READY TO<br />
+                <span style={{ color: "#0f172a" }}>WRITE?</span>
             </div>
-            <div style={{ fontSize: 14, color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.72, maxWidth: 260, marginBottom: 36 }}>
-                Capture ideas, track goals, build your thoughts — all in one place.
+            <div style={{ fontSize: 14.5, color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.8, maxWidth: 320, marginBottom: 42 }}>
+                Capture ideas, track goals, build your<br />thoughts — all in one place.
             </div>
 
             {/* CTA */}
-            <button onClick={onCreate} style={{ display: "flex", alignItems: "center", gap: 9, padding: "13px 28px", borderRadius: "var(--radius-full)", background: "linear-gradient(135deg, rgba(37,99,235,0.35) 0%, rgba(59,140,248,0.20) 100%)", border: "1px solid var(--blue-border)", color: "var(--blue-bright)", fontSize: 13, fontWeight: 700, fontFamily: "var(--font-body)", letterSpacing: "0.10em", textTransform: "uppercase", boxShadow: "0 0 24px rgba(59,140,248,0.20)", transition: "all 0.2s var(--ease-spring)" }}
-                onMouseEnter={e => { e.currentTarget.style.background = "linear-gradient(135deg, rgba(37,99,235,0.55) 0%, rgba(59,140,248,0.35) 100%)"; e.currentTarget.style.boxShadow = "0 0 36px rgba(59,140,248,0.35)"; e.currentTarget.style.transform = "scale(1.04)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "linear-gradient(135deg, rgba(37,99,235,0.35) 0%, rgba(59,140,248,0.20) 100%)"; e.currentTarget.style.boxShadow = "0 0 24px rgba(59,140,248,0.20)"; e.currentTarget.style.transform = "scale(1)"; }}
+            <button onClick={onCreate} style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: "var(--radius-full)", background: "rgba(15,23,42,1)", border: "1px solid rgba(0,0,0,0.2)", color: "#ffffff", fontSize: 13, fontWeight: 700, fontFamily: "var(--font-body)", letterSpacing: "0.12em", textTransform: "uppercase", boxShadow: "0 4px 16px rgba(0,0,0,0.15)", transition: "all 0.2s var(--ease-spring)" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.04)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.15)"; }}
                 onMouseDown={e => e.currentTarget.style.transform = "scale(0.95)"}
                 onMouseUp={e => e.currentTarget.style.transform = "scale(1.04)"}
             >
-                <Feather size={14} strokeWidth={2} />
-                Create First Note
+                <Feather size={15} strokeWidth={2} />
+                CREATE FIRST NOTE
             </button>
 
             {/* ambient */}
-            <div style={{ position: "absolute", bottom: 80, left: "5%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: 60, right: "5%", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,140,248,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: 80, left: "5%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: 60, right: "5%", width: 140, height: 140, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,0,0,0.015) 0%, transparent 70%)", pointerEvents: "none" }} />
         </div>
     );
 }
