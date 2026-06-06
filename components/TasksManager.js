@@ -12,7 +12,7 @@ const AVAILABLE_ICONS = [
   { name: "Dumbbell",  component: Dumbbell,      color: "#60a5fa" },
   { name: "Droplet",   component: Droplet,       color: "#60a5fa" },
   { name: "Book",      component: Book,          color: "#10b981" },
-  { name: "Leaf",      component: Leaf,          color: "#a855f7" },
+  { name: "Leaf",      component: Leaf,          color: "#00d0ff" },
   { name: "Pill",      component: Pill,          color: "#f472b6" },
   { name: "Zap",       component: Zap,           color: "#fbbf24" },
   { name: "Heart",     component: Heart,         color: "#f87171" },
@@ -126,8 +126,8 @@ function ExpandPanel({ open, children }) {
 const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand, onUpdate, onDelete }) {
   return (
     <div
-      className={`rounded-[16px] border bg-[#07112c]/60 overflow-hidden ${
-        task.checked ? "border-[#00d0ff]/10 opacity-60" : "border-[#00d0ff]/20 hover:border-[#00d0ff]/40"
+      className={`rounded-[16px] border bg-[#1a1a1a] overflow-hidden ${
+        task.checked ? "border-white/10 opacity-60" : "border-white/10 hover:border-white/20"
       } ${isExpanded ? "shadow-[0_0_25px_rgba(0,208,255,0.08)]" : ""}`}
       style={{
         animation: `tmFadeSlideUp 280ms ${index * 35}ms both ease-out`,
@@ -142,7 +142,7 @@ const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand,
         onClick={onToggleExpand}
       >
         <div
-          className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#0a1535] border border-[#00d0ff]/20 shadow-inner ${
+          className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/[0.04] border border-white/10 shadow-inner ${
             task.checked ? "opacity-50 scale-90" : "scale-100"
           }`}
           style={{ transition: "opacity 200ms ease, transform 200ms ease" }}
@@ -169,7 +169,7 @@ const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand,
         )}
 
         <div
-          className="text-[#00d0ff] opacity-60 shrink-0"
+          className="text-white/60 shrink-0"
           style={{
             transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 280ms cubic-bezier(0.4,0,0.2,1)",
@@ -306,8 +306,8 @@ export default function TasksManager({
   const activeGoal = goals.find(g => g.id === selectedTab) ?? null;
   const activeTasks = activeGoal ? (activeGoal.tasks ?? []) : tasks;
   const completedCount = activeTasks.filter(t => t.checked).length;
-  const accentColor = activeGoal ? "#a855f7" : "#00d0ff";
-  const accentGlow = activeGoal ? "rgba(168,85,247,0.3)" : "rgba(0,208,255,0.3)";
+  const accentColor = activeGoal ? "#00d0ff" : "#00d0ff";
+  const accentGlow = activeGoal ? "rgba(0,208,255,0.3)" : "rgba(0,208,255,0.3)";
 
   return (
     <>
@@ -335,7 +335,7 @@ export default function TasksManager({
         }}
       >
         <div
-          className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#030818] border border-[#00d0ff]/30 shadow-[0_0_50px_rgba(0,150,255,0.15)] overflow-hidden"
+          className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#111111] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -344,7 +344,7 @@ export default function TasksManager({
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#030818] shrink-0">
+          <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#111111] shrink-0">
             <div>
               <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
                 <ClipboardList className="text-[#00d0ff]" size={20} />
@@ -392,13 +392,13 @@ export default function TasksManager({
                     onClick={() => setSelectedTab(goal.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-[11px] font-semibold whitespace-nowrap border transition-all ${
                       isActive
-                        ? "bg-[#a855f7]/15 border-[#a855f7]/40 text-[#c084fc] shadow-[0_0_10px_rgba(168,85,247,0.2)]"
+                        ? "bg-[#00d0ff]/15 border-[#00d0ff]/40 text-[#00d0ff] shadow-[0_0_10px_rgba(0,208,255,0.2)]"
                         : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/25 hover:text-white/80"
                     }`}
                   >
                     <Target size={11} />
                     <span className="max-w-[80px] truncate">{goal.name}</span>
-                    <span className={`text-[9px] ${ isActive ? "text-[#a855f7]/70" : "text-white/25" }`}>
+                    <span className={`text-[9px] ${ isActive ? "text-[#00d0ff]/70" : "text-white/25" }`}>
                       {remaining}d
                     </span>
                   </button>
@@ -409,7 +409,7 @@ export default function TasksManager({
 
           {/* Daily Reset Time — only shown on Daily tab */}
           {selectedTab === null && (
-            <div className="px-5 py-4 border-b border-white/5 bg-[#020b1e] shrink-0 flex items-center justify-between">
+            <div className="px-5 py-4 border-b border-white/5 bg-[#111111] shrink-0 flex items-center justify-between">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <RotateCcw size={14} className="text-[#00d0ff]" />
@@ -456,9 +456,9 @@ export default function TasksManager({
             const elapsed = Math.floor((Date.now() - new Date(g.startDate)) / 86_400_000);
             const remaining = Math.max(0, g.days - elapsed);
             return (
-              <div className="px-5 py-3 border-b border-white/5 bg-[#0d0520] shrink-0 flex items-center justify-between">
+              <div className="px-5 py-3 border-b border-white/5 bg-[#111111] shrink-0 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-[#c084fc]">{g.name}</p>
+                  <p className="text-sm font-semibold text-[#00d0ff]">{g.name}</p>
                   <p className="text-[10px] text-white/30 mt-0.5">{g.days} day goal · {remaining} days remaining</p>
                 </div>
                 <button
@@ -473,7 +473,7 @@ export default function TasksManager({
           })()}
 
           {/* Task List */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
             {activeTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-32 gap-2 text-white/20">
                 <ClipboardList size={28} strokeWidth={1.2} />

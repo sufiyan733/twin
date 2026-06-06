@@ -70,11 +70,11 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: "#000000",
-  card: "#0a0a0a",
-  cardAlt: "#121212",
+  bg: "#050505",
+  card: "#111111",
+  cardAlt: "#1a1a1a",
   border: "rgba(255,255,255,0.08)",
-  accent: "#6ee7b7",
+  accent: "#00d0ff",
   textPrimary: "#fafafa",
   textMuted: "#a3a3a3",
   textFaint: "#525252",
@@ -503,53 +503,71 @@ export default function Page() {
 
             {/* Circular ring + macros */}
             <div className="flex items-center justify-between">
-              {/* Progress Ring */}
-              <div className="relative flex h-[130px] w-[130px] shrink-0 items-center justify-center">
-                <svg className="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
-                  {/* Track */}
-                  <circle cx="50" cy="50" r="44" fill="none" stroke={T.cardAlt} strokeWidth="5.5" />
-                  {/* Progress arc */}
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="44"
-                    fill="none"
-                    stroke={T.accent}
-                    strokeWidth="5.5"
-                    strokeLinecap="round"
-                    strokeDasharray={2 * Math.PI * 44}
-                    strokeDashoffset={
-                      2 * Math.PI * 44 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
-                    }
-                    style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)" }}
-                  />
-                  {consumed.calories > 0 && (
-                    <circle cx="92" cy="50" r="3" fill={T.textPrimary} />
+              {/* Left Column: Progress Ring & Status Pill */}
+              <div className="flex flex-col items-center gap-4 shrink-0">
+                <div className="relative flex h-[130px] w-[130px] items-center justify-center">
+                  {/* Glow behind the ring if completed */}
+                  {consumed.calories >= (calorieTarget || 1) && (
+                    <div 
+                      className="absolute inset-0 rounded-full animate-pulse" 
+                      style={{ 
+                        boxShadow: "0 0 20px rgba(0,208,255,0.15), 0 0 40px rgba(0,208,255,0.08)",
+                        transform: "scale(0.85)"
+                      }} 
+                    />
                   )}
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-bold tracking-tight" style={{ color: T.textPrimary }}>
-                    {consumed.calories}
-                  </span>
-                  <span className="text-[9px] font-medium" style={{ color: T.textMuted }}>
-                    / {calorieTarget ?? "—"} KCAL
-                  </span>
-                  <div
-                    className="mt-1.5 flex items-center gap-1.5 rounded-md px-2.5 py-0.5"
-                    style={{ background: "rgba(0,0,0,0.35)", border: `1px solid ${T.border}` }}
-                  >
-                    <Flame size={9} style={{ color: "#f59e0b" }} />
-                    <span className="text-[9px] font-medium" style={{ color: T.textMuted }}>
-                      {calorieTarget ? Math.max(0, calorieTarget - consumed.calories) : "—"} left
+                  <svg className="relative h-full w-full -rotate-90 drop-shadow-md" viewBox="0 0 120 120">
+                    {/* Track */}
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+                    {/* Progress arc */}
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="54"
+                      fill="none"
+                      stroke={T.accent}
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeDasharray={2 * Math.PI * 54}
+                      strokeDashoffset={
+                        2 * Math.PI * 54 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
+                      }
+                      style={{ 
+                        transition: "stroke-dashoffset 600ms ease-out",
+                        filter: consumed.calories > 0 ? "drop-shadow(0 0 4px rgba(0,208,255,0.3))" : "none"
+                      }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
+                    <span className="text-[34px] leading-none font-bold tracking-tight tabular-nums" style={{ color: T.textPrimary }}>
+                      {consumed.calories}
+                    </span>
+                    <span className="text-[9px] font-bold mt-1.5 uppercase tracking-[0.15em]" style={{ color: T.textMuted }}>
+                      / {calorieTarget ?? "—"} kcal
                     </span>
                   </div>
+                </div>
+
+                {/* Left/Over Pill */}
+                <div
+                  className="flex items-center gap-1.5 rounded-full px-3 py-1.5 shadow-sm"
+                  style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+                >
+                  <Flame size={11} style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#f59e0b" }} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted }}>
+                    {calorieTarget 
+                      ? (consumed.calories > calorieTarget 
+                          ? `${consumed.calories - calorieTarget} over` 
+                          : `${Math.max(0, calorieTarget - consumed.calories)} left`)
+                      : "—"}
+                  </span>
                 </div>
               </div>
 
               {/* Macro rows — goal image shows icon in coloured pill */}
-              <div className="flex flex-1 flex-col justify-center gap-3 pl-4">
+              <div className="flex flex-1 flex-col justify-center gap-3.5 pl-6">
                 {[
-                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#6ee7b7", bg: "rgba(110,231,183,0.12)" },
+                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#00d0ff", bg: "rgba(0,208,255,0.12)" },
                   { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f43f5e", bg: "rgba(244,63,94,0.12)" },
                   { label: "Carbs", icon: Leaf, current: consumed.carbs, target: macros.carbs, color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
                   { label: "Calories", icon: Droplet, current: consumed.calories, target: calorieTarget, color: "#60a5fa", bg: "rgba(96,165,250,0.12)", isCalorie: true },
@@ -647,9 +665,9 @@ export default function Page() {
                 <div className="mb-2 flex items-center gap-2 shrink-0">
                   <div
                     className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md"
-                    style={{ background: "rgba(110,231,183,0.10)", border: "1px solid rgba(110,231,183,0.20)" }}
+                    style={{ background: "rgba(0,208,255,0.10)", border: "1px solid rgba(0,208,255,0.20)" }}
                   >
-                    <span className="text-[9px] font-semibold" style={{ color: "#6ee7b7" }}>
+                    <span className="text-[9px] font-semibold" style={{ color: "#00d0ff" }}>
                       {g.days}d goal
                     </span>
                     <span className="text-[9px]" style={{ color: T.textFaint }}>·</span>
@@ -684,7 +702,7 @@ export default function Page() {
                         {/* Subtle glow behind empty-state icon */}
                         <div
                           className="absolute inset-0 blur-2xl rounded-full"
-                          style={{ background: "rgba(110,231,183,0.08)" }}
+                          style={{ background: "rgba(0,208,255,0.08)" }}
                         />
                         <div
                           className="relative grid place-items-center h-16 w-16 rounded-2xl"
@@ -692,10 +710,10 @@ export default function Page() {
                         >
                           <ClipboardList size={30} strokeWidth={1.2} style={{ color: T.textFaint }} />
                           <div className="absolute -right-2 -top-2">
-                            <Sparkles size={13} style={{ color: "rgba(110,231,183,0.5)" }} />
+                            <Sparkles size={13} style={{ color: "rgba(0,208,255,0.5)" }} />
                           </div>
                           <div className="absolute -left-2 -bottom-2">
-                            <Sparkles size={9} style={{ color: "rgba(110,231,183,0.35)" }} />
+                            <Sparkles size={9} style={{ color: "rgba(0,208,255,0.35)" }} />
                           </div>
                         </div>
                       </div>
@@ -744,7 +762,7 @@ export default function Page() {
                     {/* Icon */}
                     <div
                       className="grid h-7 w-7 shrink-0 place-items-center rounded-lg"
-                      style={{ background: "rgba(110,231,183,0.08)", border: `1px solid ${T.border}` }}
+                      style={{ background: "rgba(0,208,255,0.08)", border: `1px solid ${T.border}` }}
                     >
                       {(() => {
                         const Icon = resolveIcon(task.icon);

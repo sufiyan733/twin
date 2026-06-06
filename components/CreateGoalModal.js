@@ -10,7 +10,7 @@ const AVAILABLE_ICONS = [
   { name: "Dumbbell",  component: Dumbbell,      color: "#60a5fa" },
   { name: "Droplet",   component: Droplet,        color: "#60a5fa" },
   { name: "Book",      component: Book,           color: "#10b981" },
-  { name: "Leaf",      component: Leaf,           color: "#a855f7" },
+  { name: "Leaf",      component: Leaf,           color: "#00d0ff" },
   { name: "Pill",      component: Pill,           color: "#f472b6" },
   { name: "Zap",       component: Zap,            color: "#fbbf24" },
   { name: "Heart",     component: Heart,          color: "#f87171" },
@@ -160,7 +160,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
       >
         {/* Card */}
         <div
-          className="w-full max-w-[360px] flex flex-col rounded-[24px] bg-[#030c1f] border border-[#00d0ff]/25 shadow-[0_0_60px_rgba(0,150,255,0.2),inset_0_1px_0_rgba(255,255,255,0.04)] overflow-hidden"
+          className="w-full max-w-[360px] flex flex-col rounded-[24px] bg-[#111111] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
           style={{ animation: "cgmCard 260ms cubic-bezier(0.34,1.56,0.64,1) both", maxHeight: "88dvh" }}
         >
           {/* ── Top gradient accent */}
@@ -169,7 +169,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
           {/* ── Header */}
           <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="grid place-items-center h-9 w-9 rounded-[12px] bg-gradient-to-br from-[#0a1535] to-[#060e28] border border-[#00d0ff]/30 shadow-[0_0_14px_rgba(0,208,255,0.2)]">
+              <div className="grid place-items-center h-9 w-9 rounded-[12px] bg-white/[0.04] border border-white/10 shadow-inner">
                 <Target size={17} className="text-[#00d0ff] drop-shadow-[0_0_6px_#00d0ff]" />
               </div>
               <div>
@@ -270,8 +270,8 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
                   const Icon = typeof task.icon === "function" ? task.icon : ClipboardList;
                   return (
                     <AnimatedTask key={task.id} style={{ animationDelay: `${i * 25}ms` }}>
-                      <div className="flex items-center gap-2 rounded-[12px] bg-[#07112c]/80 border border-[#00d0ff]/15 px-3 py-2.5 group hover:border-[#00d0ff]/30 transition-all">
-                        <div className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20">
+                      <div className="flex items-center gap-2 rounded-[12px] bg-[#1a1a1a] border border-white/10 px-3 py-2.5 group hover:border-white/20 transition-all">
+                        <div className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-white/[0.04] border border-white/10">
                           <Icon size={13} className="text-[#00d0ff]" />
                         </div>
                         <input
@@ -316,7 +316,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* ── Footer */}
-          <div className="shrink-0 px-5 pt-3 pb-5 border-t border-white/5 bg-[#020a1c]">
+          <div className="shrink-0 px-5 pt-3 pb-5 border-t border-white/5 bg-[#111111]">
             <div className="flex gap-2.5">
               <button
                 onClick={onClose}

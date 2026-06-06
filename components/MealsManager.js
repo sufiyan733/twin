@@ -98,10 +98,10 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
   return (
     <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#030818] border border-[#00d0ff]/30 shadow-[0_0_50px_rgba(0,150,255,0.15)] overflow-hidden">
+      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#0a0a0a] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#030818] shrink-0">
+        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#0a0a0a] shrink-0">
           <div>
             <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
               <Utensils className="text-[#00d0ff]" size={20} />
@@ -121,7 +121,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
         {/* Add Meal Button */}
         {!addingMeal && (
-          <div className="px-5 py-3 border-b border-white/5 bg-[#020b1e] shrink-0">
+          <div className="px-5 py-3 border-b border-white/5 bg-[#0a0a0a] shrink-0">
             <button
               onClick={() => setAddingMeal(true)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#fafafa]/10 border border-[#fafafa]/20 text-[#fafafa] hover:bg-[#fafafa]/20 hover:shadow-[0_0_15px_rgba(250,250,250,0.1)] transition-all text-sm font-semibold"
@@ -134,7 +134,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
         {/* Inline Add Meal Form */}
         {addingMeal && (
-          <div className="p-5 border-b border-[#00d0ff]/30 bg-[#07112c]/80 shrink-0 shadow-lg">
+          <div className="p-5 border-b border-white/10 bg-[#121212] shrink-0 shadow-lg">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-bold text-white tracking-wide">New Meal</h3>
               <button onClick={() => { setAddingMeal(false); setNewMeal({ name: "", calories: "", protein: "", fat: "", carbs: "" }); }} className="text-white/40 hover:text-white transition-colors">
@@ -162,25 +162,25 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                 </div>
                 {/* Fat */}
                 <div>
-                  <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#38bdf8] mb-1 block flex items-center gap-0.5"><Droplet size={9} /> Fat</label>
-                  <input type="number" value={newMeal.fat} onChange={(e) => setNewMeal({ ...newMeal, fat: e.target.value })} placeholder="g" className="w-full rounded-xl bg-white/[0.04] border border-white/10 px-2 py-2 text-xs text-white text-center outline-none focus:border-[#38bdf8]/50 transition-all" />
+                  <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#f43f5e] mb-1 block flex items-center gap-0.5"><Flame size={9} /> Fat</label>
+                  <input type="number" value={newMeal.fat} onChange={(e) => setNewMeal({ ...newMeal, fat: e.target.value })} placeholder="g" className="w-full rounded-xl bg-white/[0.04] border border-white/10 px-2 py-2 text-xs text-white text-center outline-none focus:border-[#f43f5e]/50 transition-all" />
                 </div>
                 {/* Carbs */}
                 <div>
-                  <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#2dd4bf] mb-1 block flex items-center gap-0.5"><Leaf size={9} /> Carbs</label>
-                  <input type="number" value={newMeal.carbs} onChange={(e) => setNewMeal({ ...newMeal, carbs: e.target.value })} placeholder="g" className="w-full rounded-xl bg-white/[0.04] border border-white/10 px-2 py-2 text-xs text-white text-center outline-none focus:border-[#2dd4bf]/50 transition-all" />
+                  <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#fbbf24] mb-1 block flex items-center gap-0.5"><Leaf size={9} /> Carbs</label>
+                  <input type="number" value={newMeal.carbs} onChange={(e) => setNewMeal({ ...newMeal, carbs: e.target.value })} placeholder="g" className="w-full rounded-xl bg-white/[0.04] border border-white/10 px-2 py-2 text-xs text-white text-center outline-none focus:border-[#fbbf24]/50 transition-all" />
                 </div>
                 {/* Calories */}
                 <div>
-                  <label className={`text-[9px] font-semibold uppercase tracking-[0.1em] mb-1 block flex items-center gap-0.5 ${newCalTooLow ? "text-red-400" : "text-[#fb923c]"}`}>
-                    <Flame size={9} /> Kcal
+                  <label className={`text-[9px] font-semibold uppercase tracking-[0.1em] mb-1 block flex items-center gap-0.5 ${newCalTooLow ? "text-red-400" : "text-[#60a5fa]"}`}>
+                    <Droplet size={9} /> Kcal
                   </label>
                   <input
                     type="number"
                     value={newMeal.calories}
                     onChange={(e) => setNewMeal({ ...newMeal, calories: e.target.value })}
                     placeholder={newMealMinCal > 0 ? String(newMealMinCal) : "kcal"}
-                    className={`w-full rounded-xl bg-white/[0.04] border px-2 py-2 text-xs text-white text-center outline-none transition-all ${newCalTooLow ? "border-red-500/60 focus:border-red-400" : "border-white/10 focus:border-[#fb923c]/50"}`}
+                    className={`w-full rounded-xl bg-white/[0.04] border px-2 py-2 text-xs text-white text-center outline-none transition-all ${newCalTooLow ? "border-red-500/60 focus:border-red-400" : "border-white/10 focus:border-[#60a5fa]/50"}`}
                   />
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                 </p>
               )}
 
-              <div className="flex items-center justify-end pt-2 mt-1 border-t border-[#00d0ff]/10">
+              <div className="flex items-center justify-end pt-2 mt-1 border-t border-white/10">
                 <button 
                   onClick={() => { setAddingMeal(false); setNewMeal({ name: "", calories: "", protein: "", fat: "", carbs: "" }); }} 
                   className="px-4 py-2 rounded-xl font-bold text-xs text-white/50 hover:text-white hover:bg-white/5 transition-all mr-2"
@@ -214,7 +214,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
         )}
 
         {/* Meal List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-[#00d0ff]/20 scrollbar-track-transparent">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           {meals.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-32 gap-2 text-white/20">
               <Utensils size={28} strokeWidth={1.2} />
@@ -226,24 +226,24 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
               const isExpanded = expandedMealId === meal.id;
 
               return (
-                <div key={meal.id} className={`rounded-[16px] border bg-[#07112c]/60 overflow-hidden transition-all ${isEditing ? "border-[#00d0ff]/60 shadow-[0_0_20px_rgba(0,208,255,0.12)]" : "border-[#00d0ff]/20 hover:border-[#00d0ff]/40"}`}>
+                <div key={meal.id} className={`rounded-[16px] border bg-[#121212] overflow-hidden transition-all ${isEditing ? "border-[#00d0ff]/60 shadow-[0_0_20px_rgba(0,208,255,0.12)]" : "border-white/10 hover:border-white/20"}`}>
 
                   {/* Summary Row — always clickable to expand/collapse */}
                   <div
                     className="flex items-center gap-3 p-3 cursor-pointer hover:bg-white/[0.02] transition-colors"
                     onClick={() => !isEditing && setExpandedMealId(isExpanded ? null : meal.id)}
                   >
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#0a1535] border border-[#00d0ff]/20 shadow-inner">
-                      <Flame size={18} className="text-[#fb923c] drop-shadow-[0_0_5px_rgba(251,146,60,0.5)]" />
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/[0.04] border border-white/10 shadow-inner">
+                      <Droplet size={18} className="text-[#60a5fa] drop-shadow-[0_0_5px_rgba(96,165,250,0.5)]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-white truncate tracking-wide">{meal.name}</h3>
                       <div className="flex items-center gap-2 mt-0.5 text-[10px] font-medium text-white/50">
-                        <span className="text-[#fb923c] font-bold">{meal.calories} kcal</span>
+                        <span className="text-[#60a5fa] font-bold">{meal.calories} kcal</span>
                         <span>·</span>
                         <span className="text-[#00d0ff]">{meal.protein}P</span>
-                        <span className="text-[#38bdf8]">{meal.fat}F</span>
-                        <span className="text-[#2dd4bf]">{meal.carbs}C</span>
+                        <span className="text-[#f43f5e]">{meal.fat}F</span>
+                        <span className="text-[#fbbf24]">{meal.carbs}C</span>
                       </div>
                     </div>
                     {/* Edit / Done / Expand buttons */}
@@ -252,12 +252,12 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                         <>
                           <button
                             onClick={(e) => { startEdit(meal, e); setExpandedMealId(meal.id); }}
-                            className="flex items-center justify-center h-7 w-7 rounded-lg bg-white/[0.04] border border-white/10 text-white/40 hover:text-[#00d0ff] hover:border-[#00d0ff]/40 hover:bg-[#00d0ff]/10 transition-all"
+                            className="flex items-center justify-center h-7 w-7 rounded-lg bg-white/[0.04] border border-white/10 text-white/40 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
                             title="Edit meal"
                           >
                             <Pencil size={13} strokeWidth={1.8} />
                           </button>
-                          <div className="text-[#00d0ff]/40">
+                          <div className="text-white/40">
                             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                           </div>
                         </>
@@ -289,22 +289,22 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                                 className={`${editCell} focus:border-[#00d0ff]/50`} />
                             </div>
                             <div>
-                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#38bdf8] mb-1 block">Fat</label>
+                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#f43f5e] mb-1 block">Fat</label>
                               <input type="number" value={editDraft.fat}
                                 onChange={(e) => setEditDraft({ ...editDraft, fat: e.target.value })}
-                                className={`${editCell} focus:border-[#38bdf8]/50`} />
+                                className={`${editCell} focus:border-[#f43f5e]/50`} />
                             </div>
                             <div>
-                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#2dd4bf] mb-1 block">Carbs</label>
+                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#fbbf24] mb-1 block">Carbs</label>
                               <input type="number" value={editDraft.carbs}
                                 onChange={(e) => setEditDraft({ ...editDraft, carbs: e.target.value })}
-                                className={`${editCell} focus:border-[#2dd4bf]/50`} />
+                                className={`${editCell} focus:border-[#fbbf24]/50`} />
                             </div>
                             <div>
-                              <label className={`text-[9px] font-semibold uppercase tracking-[0.1em] mb-1 block ${draftCalTooLow ? "text-red-400" : "text-[#fb923c]"}`}>Kcal</label>
+                              <label className={`text-[9px] font-semibold uppercase tracking-[0.1em] mb-1 block ${draftCalTooLow ? "text-red-400" : "text-[#60a5fa]"}`}>Kcal</label>
                               <input type="number" value={editDraft.calories}
                                 onChange={(e) => setEditDraft({ ...editDraft, calories: e.target.value })}
-                                className={`${editCell} ${draftCalTooLow ? "border-red-500/60 focus:border-red-400" : "border-white/10 focus:border-[#fb923c]/50"}`} />
+                                className={`${editCell} ${draftCalTooLow ? "border-red-500/60 focus:border-red-400" : "border-white/10 focus:border-[#60a5fa]/50"}`} />
                             </div>
                           </div>
 
@@ -354,16 +354,16 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                               <p className={`${readonlyCell} text-white/70`}>{meal.protein}g</p>
                             </div>
                             <div className="text-center">
-                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#38bdf8] mb-1 block">Fat</label>
+                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#f43f5e] mb-1 block">Fat</label>
                               <p className={`${readonlyCell} text-white/70`}>{meal.fat}g</p>
                             </div>
                             <div className="text-center">
-                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#2dd4bf] mb-1 block">Carbs</label>
+                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#fbbf24] mb-1 block">Carbs</label>
                               <p className={`${readonlyCell} text-white/70`}>{meal.carbs}g</p>
                             </div>
                             <div className="text-center">
-                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#fb923c] mb-1 block">Kcal</label>
-                              <p className={`${readonlyCell} text-[#fb923c] font-bold`}>{meal.calories}</p>
+                              <label className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#60a5fa] mb-1 block">Kcal</label>
+                              <p className={`${readonlyCell} text-[#60a5fa] font-bold`}>{meal.calories}</p>
                             </div>
                           </div>
                           <p className="text-[10px] text-white/20 ml-1">Tap the ✏ pencil icon to make edits.</p>
