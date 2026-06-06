@@ -70,7 +70,7 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"), conic-gradient(from 225deg at -10% -10%, transparent 0deg, rgba(255, 255, 255, 0.05) 45deg, rgba(255, 255, 255, 0.15) 90deg, transparent 180deg), conic-gradient(from 135deg at 110% -10%, transparent 0deg, rgba(110, 231, 183, 0.05) 270deg, rgba(110, 231, 183, 0.15) 315deg, transparent 360deg), radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 50%), linear-gradient(180deg, #050505 0%, #000000 50%, #000000 100%)`,
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E"), linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 30%), radial-gradient(ellipse 150% 120% at 50% -10%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 40%, transparent 80%), radial-gradient(ellipse 100% 100% at 50% 110%, rgba(110,231,183,0.08) 0%, transparent 50%), #000000`,
   card: `linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 10%, transparent 35%), linear-gradient(180deg, rgba(60,70,85,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
   cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 15%, transparent 35%), linear-gradient(180deg, rgba(70,80,95,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
   border: "rgba(255,255,255,0.4)",
@@ -450,8 +450,13 @@ export default function Page() {
           </button>
         </header>
 
+        {/* ── Divider ─────────────────────────────────────────────────────────── */}
+        <div className="px-5 mb-1">
+          <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
+        </div>
+
         {/* ── Main Content ────────────────────────────────────────────────────── */}
-        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[92px] gap-3">
+        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[92px] gap-3 mt-1">
 
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
