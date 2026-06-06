@@ -78,30 +78,29 @@ export default function InstallAppPrompt() {
   return (
     <div className="fixed inset-x-0 bottom-4 z-[60] flex justify-center px-4 pointer-events-none sm:bottom-6">
       <section
-        className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-[24px] bg-[#0f172a]/90 p-5 text-[#f1f5f9] backdrop-blur-[24px]"
+        className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-[24px] bg-white/95 p-5 text-black backdrop-blur-[24px]"
         style={{
-          border: "1px solid rgba(148,163,184,0.12)",
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 20px 40px -10px rgba(0,0,0,0.8)"
+          border: "1px solid rgba(0,0,0,0.08)",
+          boxShadow: "0 20px 40px -10px rgba(0,0,0,0.15)"
         }}
         role="dialog"
         aria-label="Install app"
       >
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03),transparent_65%)]" />
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,rgba(0,0,0,0.02),transparent_65%)]" />
 
         <div className="relative flex items-start gap-4">
           <div 
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#1e293b] shadow-inner"
-            style={{ border: "1px solid rgba(148,163,184,0.12)" }}
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-slate-100 shadow-sm"
+            style={{ border: "1px solid rgba(0,0,0,0.05)" }}
           >
-            <Download size={20} className="text-[#f1f5f9]" />
+            <Download size={20} className="text-black" />
           </div>
 
           <div className="min-w-0 flex-1 pt-0.5">
-            <h2 className="text-[16px] font-bold tracking-tight text-[#f1f5f9]">
+            <h2 className="text-[16px] font-bold tracking-tight text-black">
               Install Twin
             </h2>
-            <p className="mt-1 text-[13px] leading-relaxed text-[#94a3b8]">
+            <p className="mt-1 text-[13px] leading-relaxed text-slate-500">
               Add the app to your device for a faster, immersive full-screen experience.
             </p>
           </div>
@@ -109,7 +108,7 @@ export default function InstallAppPrompt() {
           <button
             type="button"
             onClick={handleCancel}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-[#94a3b8] transition-colors hover:bg-white/5 hover:text-white"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-black/40 transition-colors hover:bg-black/5 hover:text-black"
             aria-label="Cancel install prompt"
           >
             <X size={18} />
@@ -121,9 +120,9 @@ export default function InstallAppPrompt() {
             type="button"
             onClick={handleInstall}
             disabled={isInstalling}
-            className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[14px] bg-[#6ee7b7] px-4 text-[14px] font-bold text-[#020617] transition-all hover:bg-[#34d399] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[14px] bg-black px-4 text-[14px] font-bold text-white transition-all hover:bg-black/80 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70"
             style={{
-              boxShadow: "0 0 20px rgba(110,231,183,0.15), 0 0 40px rgba(110,231,183,0.08)"
+              boxShadow: "0 10px 20px -5px rgba(0,0,0,0.2)"
             }}
           >
             <Download size={16} />
@@ -132,10 +131,10 @@ export default function InstallAppPrompt() {
           <button
             type="button"
             onClick={handleCancel}
-            className="h-[48px] rounded-[14px] border px-5 text-[14px] font-semibold text-[#f1f5f9] transition-colors hover:bg-white/5"
+            className="h-[48px] rounded-[14px] border px-5 text-[14px] font-semibold text-slate-700 transition-colors hover:bg-black/5"
             style={{
-              border: "1px solid rgba(148,163,184,0.12)",
-              backgroundColor: "rgba(30,41,59,0.5)"
+              border: "1px solid rgba(0,0,0,0.1)",
+              backgroundColor: "rgba(0,0,0,0.02)"
             }}
           >
             Not Now
