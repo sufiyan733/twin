@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, X, Sparkles, Brain, ListTodo, Calendar, BarChart2, Star, ShieldCheck } from "lucide-react";
+import { Download, X, Sparkles, Brain, ListTodo, Calendar, BarChart2, Star, ShieldCheck, Dumbbell } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const DISMISSED_KEY = "twin-install-prompt-dismissed";
@@ -147,10 +147,10 @@ export default function InstallAppPrompt() {
            </div>
            {/* Item 3 */}
            <div className="flex flex-col gap-1 px-1.5">
-              <Calendar size={14} className="text-black drop-shadow-[0_0_5px_rgba(0,0,0,0.1)]" />
+              <Dumbbell size={14} className="text-black drop-shadow-[0_0_5px_rgba(0,0,0,0.1)]" />
               <div className="flex flex-col">
-                <p className="text-[9px] font-bold text-black leading-tight">Schedule</p>
-                <p className="text-[7px] text-black/60 leading-tight mt-0.5">Intelligent calendar</p>
+                <p className="text-[9px] font-bold text-black leading-tight">Workout</p>
+                <p className="text-[7px] text-black/60 leading-tight mt-0.5">Plan and record</p>
               </div>
            </div>
            {/* Item 4 */}

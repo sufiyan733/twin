@@ -71,8 +71,8 @@ function resolveIcon(icon) {
 // ── Theme tokens (goal image palette)
 const T = {
   bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
-  card: `linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 10%, transparent 35%), linear-gradient(180deg, rgba(60,70,85,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
-  cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 15%, transparent 35%), linear-gradient(180deg, rgba(70,80,95,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
+  card: `linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 10%, transparent 35%), linear-gradient(180deg, rgba(45,55,70,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
+  cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 15%, transparent 35%), linear-gradient(180deg, rgba(50,60,75,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
   border: "rgba(255,255,255,0.4)",
   accent: "#00d0ff",
   textPrimary: "#ffffff",
@@ -471,10 +471,10 @@ export default function Page() {
               </div>
             </section>
             {/* Daily Tasks / Goals Card Skeleton */}
-            <section 
-              className="relative flex-1 flex flex-col min-h-0 rounded-2xl p-4 overflow-hidden" 
-              style={{ 
-                background: T.card, 
+            <section
+              className="relative flex-1 flex flex-col min-h-0 rounded-2xl p-4 overflow-hidden"
+              style={{
+                background: T.card,
                 border: `1px solid ${T.border}`,
                 borderTop: "1px solid rgba(255,255,255,0.06)",
                 boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
@@ -511,9 +511,9 @@ export default function Page() {
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
         <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
-          <button 
-            type="button" 
-            className="grid place-items-center h-9 w-9 rounded-xl shadow-lg transition-transform active:scale-[0.97]" 
+          <button
+            type="button"
+            className="grid place-items-center h-9 w-9 rounded-xl shadow-lg transition-transform active:scale-[0.97]"
             style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
           >
             <Menu size={18} strokeWidth={2} style={{ color: T.textPrimary }} />
@@ -539,6 +539,7 @@ export default function Page() {
         <main className="relative z-10 flex-1 flex flex-col min-h-0 overflow-hidden px-4 pb-[92px] gap-3 mt-1">
 
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
+          {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
             className="relative shrink-0 overflow-hidden rounded-2xl p-5"
             style={{
@@ -551,17 +552,17 @@ export default function Page() {
             }}
           >
             {/* Card Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                {/* Flame icon container — matches goal image: orange tint */}
+            <div className="flex items-center justify-between mb-4 -mx-1">
+              <div className="flex items-center gap-2">
+                {/* Flame icon container */}
                 <div
-                  className="grid place-items-center h-9 w-9 rounded-xl"
+                  className="grid place-items-center h-8 w-8 rounded-xl"
                   style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}
                 >
-                  <Flame size={18} style={{ color: "#60a5fa" }} />
+                  <Flame size={15} style={{ color: "#60a5fa" }} />
                 </div>
                 <div>
-                  <h2 className="text-[16px] font-bold tracking-tight" style={{ color: T.textPrimary }}>
+                  <h2 className="text-[14px] font-bold tracking-tight leading-tight" style={{ color: T.textPrimary }}>
                     Calorie Intake
                   </h2>
                   <p className="text-[8px] font-semibold tracking-[0.2em] uppercase" style={{ color: T.textFaint }}>
@@ -593,59 +594,82 @@ export default function Page() {
             </div>
 
             {/* Circular ring + macros */}
-            <div className="flex items-center justify-between">
+            <div className="relative flex items-center justify-between">
               {/* Left Column: Progress Ring & Status Pill */}
               <div className="flex flex-col items-center gap-4 shrink-0">
                 <div className="relative flex h-[130px] w-[130px] items-center justify-center">
-                  {/* Glow behind the ring if completed */}
+                  {/* Subtle glass orb behind text */}
+                  <div className="absolute inset-0 m-auto h-[80px] w-[80px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+                  
+                  {/* Pulse behind ring if goal hit */}
                   {consumed.calories >= (calorieTarget || 1) && (
                     <div
                       className="absolute inset-0 rounded-full animate-pulse"
                       style={{
-                        boxShadow: "0 0 20px rgba(0,208,255,0.15), 0 0 40px rgba(0,208,255,0.08)",
+                        boxShadow: `0 0 25px ${T.accent}40, 0 0 45px ${T.accent}1A`,
                         transform: "scale(0.85)"
                       }}
                     />
                   )}
-                  <svg className="relative h-full w-full -rotate-90 drop-shadow-md" viewBox="0 0 120 120">
-                    {/* Track */}
-                    <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+
+                  <svg className="relative h-full w-full -rotate-90" viewBox="0 0 140 140">
+                    {/* Glassy Track - pure frosted dark ring */}
+                    <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+
                     {/* Progress arc */}
                     <circle
-                      cx="60"
-                      cy="60"
-                      r="54"
+                      cx="70"
+                      cy="70"
+                      r="58"
                       fill="none"
                       stroke={T.accent}
-                      strokeWidth="6"
+                      strokeWidth="10"
                       strokeLinecap="round"
-                      strokeDasharray={2 * Math.PI * 54}
+                      strokeDasharray={2 * Math.PI * 58}
                       strokeDashoffset={
-                        2 * Math.PI * 54 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
+                        2 * Math.PI * 58 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
                       }
                       style={{
-                        transition: "stroke-dashoffset 600ms ease-out",
-                        filter: consumed.calories > 0 ? "drop-shadow(0 0 4px rgba(0,208,255,0.3))" : "none"
+                        transition: "stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                        filter: consumed.calories > 0 ? `drop-shadow(0 0 8px ${T.accent}66)` : "none"
                       }}
                     />
                   </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
-                    <span className="text-[34px] leading-none font-bold tracking-tight tabular-nums" style={{ color: T.textPrimary }}>
+
+                  {/* Core Typography */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
+                    <span 
+                      className="text-[32px] leading-none font-bold tracking-tight tabular-nums" 
+                      style={{ color: T.textPrimary }}
+                    >
                       {consumed.calories}
                     </span>
-                    <span className="text-[9px] font-bold mt-1.5 uppercase tracking-[0.15em]" style={{ color: T.textMuted }}>
-                      / {calorieTarget ?? "—"} kcal
+                    <span className="text-[11px] font-semibold tracking-wide tabular-nums mt-1.5" style={{ color: T.textMuted }}>
+                      / {calorieTarget ?? "—"} <span className="text-[9px] uppercase tracking-widest ml-0.5" style={{ color: T.textFaint }}>kcal</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Left/Over Pill */}
                 <div
-                  className="flex items-center gap-1.5 rounded-full px-3 py-1.5 shadow-sm"
-                  style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+                  className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5"
+                  style={{ 
+                    background: consumed.calories >= (calorieTarget || 1) 
+                      ? `linear-gradient(135deg, ${T.accent}26 0%, ${T.accent}0D 100%)` 
+                      : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${consumed.calories >= (calorieTarget || 1) ? `${T.accent}4D` : "rgba(255,255,255,0.05)"}`,
+                    boxShadow: consumed.calories >= (calorieTarget || 1) 
+                      ? `0 0 15px ${T.accent}26, inset 0 1px 0 rgba(255,255,255,0.1)` 
+                      : "inset 0 1px 0 rgba(255,255,255,0.05)"
+                  }}
                 >
-                  <Flame size={11} style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#f59e0b" }} />
-                  <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted }}>
+                  <Flame size={11} style={{ 
+                    color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#fbbf24",
+                    filter: consumed.calories >= (calorieTarget || 1) ? `drop-shadow(0 0 4px ${T.accent})` : "none"
+                  }} />
+                  <span className="text-[9.5px] font-black uppercase tracking-wider" style={{ 
+                    color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted
+                  }}>
                     {calorieTarget
                       ? (consumed.calories > calorieTarget
                         ? `${consumed.calories - calorieTarget} over`
@@ -655,49 +679,52 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Macro rows — goal image shows icon in coloured pill */}
-              <div className="flex flex-1 flex-col justify-center gap-3.5 pl-6">
+              {/* Right Column: Macro rows */}
+              <div className="flex flex-1 flex-col justify-center gap-4 pl-7 pr-1">
                 {[
-                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#00d0ff", bg: "rgba(0,208,255,0.12)" },
-                  { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f43f5e", bg: "rgba(244,63,94,0.12)" },
-                  { label: "Carbs", icon: Leaf, current: consumed.carbs, target: macros.carbs, color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
-                  { label: "Calories", icon: Droplet, current: consumed.calories, target: calorieTarget, color: "#60a5fa", bg: "rgba(96,165,250,0.12)", isCalorie: true },
+                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#10b981" },
+                  { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f43f5e" },
+                  { label: "Carbs", icon: Leaf, current: consumed.carbs, target: macros.carbs, color: "#f59e0b" },
+                  { label: "Calories", icon: Droplet, current: consumed.calories, target: calorieTarget, color: "#60a5fa", isCalorie: true },
                 ].map((macro) => {
                   const Icon = macro.icon;
                   const pct = macro.target ? Math.min((macro.current / macro.target) * 100, 100) : 0;
                   return (
-                    <div key={macro.label} className="flex flex-col gap-1">
+                    <div key={macro.label} className="flex flex-col gap-1.5">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          {/* Coloured icon pill — key visual from goal image */}
+                        <div className="flex items-center gap-2">
                           <div
-                            className="h-5 w-5 rounded-lg flex items-center justify-center"
-                            style={{ background: macro.bg }}
+                            className="h-[22px] w-[22px] rounded-lg flex items-center justify-center shadow-inner"
+                            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
                           >
-                            <Icon size={10} style={{ color: macro.color }} />
+                            <Icon size={12} style={{ color: macro.color, filter: `drop-shadow(0 0 4px ${macro.color}80)` }} />
                           </div>
-                          <span className="text-[10px] font-medium" style={{ color: T.textMuted }}>
+                          <span className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: T.textMuted }}>
                             {macro.label}
                           </span>
                         </div>
-                        <span className="text-[10px] font-semibold tabular-nums" style={{ color: T.textPrimary }}>
-                          {macro.current}
-                          <span className="text-[8px] ml-0.5" style={{ color: T.textFaint }}>
+                        <div className="flex items-baseline gap-0.5">
+                          <span className="text-[12px] font-bold tabular-nums" style={{ color: T.textPrimary }}>
+                            {macro.current}
+                          </span>
+                          <span className="text-[10px] font-medium" style={{ color: T.textFaint }}>
                             / {macro.target ? (macro.isCalorie ? macro.target : `${macro.target}g`) : "—"}
                           </span>
-                        </span>
+                        </div>
                       </div>
-                      {/* Progress bar */}
+                      
+                      {/* Premium Segmented Progress bar */}
                       <div
-                        className="h-[3px] w-full rounded-full overflow-hidden"
-                        style={{ background: "rgba(255,255,255,0.06)" }}
+                        className="relative h-[5px] w-full rounded-full overflow-hidden"
+                        style={{ background: "rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}
                       >
                         <div
-                          className="h-full rounded-full transition-all duration-700"
+                          className="absolute top-0 left-0 h-full rounded-full transition-all duration-1000"
                           style={{
                             width: `${pct}%`,
-                            background: macro.color,
-                            boxShadow: `0 0 6px ${macro.color}55`,
+                            background: `linear-gradient(90deg, ${macro.color}20 0%, ${macro.color} 85%, #ffffff 100%)`,
+                            boxShadow: `0 0 10px ${macro.color}`,
+                            transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)"
                           }}
                         />
                       </div>
