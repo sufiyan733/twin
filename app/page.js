@@ -70,14 +70,14 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: "#0d1117",          // deep navy-black page background
-  card: "#161b26",        // card surface
-  cardAlt: "#1c2333",     // slightly lighter card variant
-  border: "rgba(255,255,255,0.07)",
-  accent: "#8b5cf6",      // purple accent (unchanged)
-  textPrimary: "#f0f4ff",
-  textMuted: "rgba(240,244,255,0.45)",
-  textFaint: "rgba(240,244,255,0.22)",
+  bg: "#000000",
+  card: "#0a0a0a",
+  cardAlt: "#121212",
+  border: "rgba(255,255,255,0.08)",
+  accent: "#6ee7b7",
+  textPrimary: "#fafafa",
+  textMuted: "#a3a3a3",
+  textFaint: "#525252",
 };
 
 export default function Page() {
@@ -426,7 +426,7 @@ export default function Page() {
   };
 
   return (
-    <div className="h-[100dvh] w-full overflow-hidden font-sans text-white selection:bg-violet-600/30" style={{ background: T.bg }}>
+    <div className="h-[100dvh] w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
       <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
@@ -438,7 +438,7 @@ export default function Page() {
           <button
             type="button"
             onClick={() => router.push("/notes")}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-xl shadow-lg transition-all hover:opacity-90"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-xl shadow-lg transition-transform active:scale-[0.97]"
             style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
           >
             <NotebookText size={14} strokeWidth={2} style={{ color: T.textPrimary }} />
@@ -451,8 +451,13 @@ export default function Page() {
 
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
-            className="relative shrink-0 overflow-hidden rounded-2xl p-5 shadow-xl"
-            style={{ background: T.card, border: `1px solid ${T.border}` }}
+            className="relative shrink-0 overflow-hidden rounded-2xl p-5"
+            style={{ 
+              background: T.card, 
+              border: `1px solid ${T.border}`, 
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)"
+            }}
           >
             {/* Card Header */}
             <div className="flex items-center justify-between mb-4">
@@ -460,9 +465,9 @@ export default function Page() {
                 {/* Flame icon container — matches goal image: orange tint */}
                 <div
                   className="grid place-items-center h-9 w-9 rounded-xl"
-                  style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.22)" }}
+                  style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}
                 >
-                  <Flame size={18} style={{ color: "#f87171" }} />
+                  <Flame size={18} style={{ color: "#60a5fa" }} />
                 </div>
                 <div>
                   <h2 className="text-[16px] font-bold tracking-tight" style={{ color: T.textPrimary }}>
@@ -478,8 +483,8 @@ export default function Page() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsMealsManagerOpen(true)}
-                  className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[10px] font-bold shadow-md transition-all hover:opacity-90"
-                  style={{ background: T.textPrimary, color: "#0d1117" }}
+                  className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[10px] font-bold shadow-md transition-transform active:scale-[0.97]"
+                  style={{ background: T.textPrimary, color: "#000000" }}
                 >
                   <Plus size={12} strokeWidth={2.5} />
                   MEALS
@@ -544,10 +549,10 @@ export default function Page() {
               {/* Macro rows — goal image shows icon in coloured pill */}
               <div className="flex flex-1 flex-col justify-center gap-3 pl-4">
                 {[
-                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
-                  { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f59e0b", bg: "rgba(245,158,11,0.12)" },
-                  { label: "Carbs", icon: Leaf, current: consumed.carbs, target: macros.carbs, color: "#34d399", bg: "rgba(52,211,153,0.12)" },
-                  { label: "Calories", icon: Droplet, current: consumed.calories, target: calorieTarget, color: "#38bdf8", bg: "rgba(56,189,248,0.12)", isCalorie: true },
+                  { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#6ee7b7", bg: "rgba(110,231,183,0.12)" },
+                  { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f43f5e", bg: "rgba(244,63,94,0.12)" },
+                  { label: "Carbs", icon: Leaf, current: consumed.carbs, target: macros.carbs, color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
+                  { label: "Calories", icon: Droplet, current: consumed.calories, target: calorieTarget, color: "#60a5fa", bg: "rgba(96,165,250,0.12)", isCalorie: true },
                 ].map((macro) => {
                   const Icon = macro.icon;
                   const pct = macro.target ? Math.min((macro.current / macro.target) * 100, 100) : 0;
@@ -596,17 +601,22 @@ export default function Page() {
 
           {/* ── Daily Tasks / Goals Card ────────────────────────────────────── */}
           <section
-            className="relative flex-1 flex flex-col rounded-2xl p-4 shadow-xl overflow-hidden"
-            style={{ background: T.card, border: `1px solid ${T.border}` }}
+            className="relative flex-1 flex flex-col rounded-2xl p-4 overflow-hidden"
+            style={{ 
+              background: T.card, 
+              border: `1px solid ${T.border}`, 
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)"
+            }}
           >
             {/* Tasks header */}
             <div className="flex items-center justify-between mb-3 shrink-0">
               <div className="flex items-center gap-2">
                 <div
                   className="grid place-items-center h-8 w-8 rounded-xl"
-                  style={{ background: "rgba(139,92,246,0.10)", border: "1px solid rgba(139,92,246,0.18)" }}
+                  style={{ background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.2)" }}
                 >
-                  <ClipboardList size={15} style={{ color: T.accent }} />
+                  <ClipboardList size={15} style={{ color: "#3b82f6" }} />
                 </div>
                 <GoalDropdown
                   goals={goals}
@@ -617,39 +627,13 @@ export default function Page() {
               </div>
 
               <div className="flex items-center gap-2">
-                {/* Layout list icon button */}
                 <button
                   onClick={() => setIsTasksManagerOpen(true)}
-                  className="grid place-items-center h-8 w-8 rounded-xl transition-all hover:opacity-100"
-                  style={{
-                    background: T.cardAlt,
-                    border: `1px solid ${T.border}`,
-                    color: T.textMuted,
-                  }}
+                  className="flex items-center gap-1.5 h-8 px-3 rounded-xl text-[10px] font-bold shadow-md transition-transform active:scale-[0.97]"
+                  style={{ background: T.textPrimary, color: "#000000" }}
                 >
-                  <LayoutList size={14} strokeWidth={1.8} />
+                  <Plus size={13} strokeWidth={2.5} /> Add Task
                 </button>
-
-                {/* + button (goal image shows a standalone +) */}
-                {!activeGoalId && (
-                  <button
-                    onClick={handleAddTask}
-                    className="grid place-items-center h-8 w-8 rounded-xl transition-all hover:opacity-80"
-                    style={{ background: T.cardAlt, border: `1px solid ${T.border}`, color: T.textPrimary }}
-                  >
-                    <Plus size={16} strokeWidth={2} />
-                  </button>
-                )}
-
-                {!activeGoalId && (
-                  <button
-                    onClick={handleAddTask}
-                    className="flex items-center gap-1.5 h-8 px-3 rounded-xl text-[10px] font-bold shadow-md transition-all hover:opacity-90"
-                    style={{ background: T.textPrimary, color: "#0d1117" }}
-                  >
-                    <Plus size={13} strokeWidth={2.5} /> Add Task
-                  </button>
-                )}
               </div>
             </div>
 
@@ -663,9 +647,9 @@ export default function Page() {
                 <div className="mb-2 flex items-center gap-2 shrink-0">
                   <div
                     className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md"
-                    style={{ background: "rgba(139,92,246,0.10)", border: "1px solid rgba(139,92,246,0.18)" }}
+                    style={{ background: "rgba(110,231,183,0.10)", border: "1px solid rgba(110,231,183,0.20)" }}
                   >
-                    <span className="text-[9px] font-semibold" style={{ color: "#c4b5fd" }}>
+                    <span className="text-[9px] font-semibold" style={{ color: "#6ee7b7" }}>
                       {g.days}d goal
                     </span>
                     <span className="text-[9px]" style={{ color: T.textFaint }}>·</span>
@@ -700,7 +684,7 @@ export default function Page() {
                         {/* Subtle glow behind empty-state icon */}
                         <div
                           className="absolute inset-0 blur-2xl rounded-full"
-                          style={{ background: "rgba(139,92,246,0.08)" }}
+                          style={{ background: "rgba(110,231,183,0.08)" }}
                         />
                         <div
                           className="relative grid place-items-center h-16 w-16 rounded-2xl"
@@ -708,10 +692,10 @@ export default function Page() {
                         >
                           <ClipboardList size={30} strokeWidth={1.2} style={{ color: T.textFaint }} />
                           <div className="absolute -right-2 -top-2">
-                            <Sparkles size={13} style={{ color: "rgba(139,92,246,0.5)" }} />
+                            <Sparkles size={13} style={{ color: "rgba(110,231,183,0.5)" }} />
                           </div>
                           <div className="absolute -left-2 -bottom-2">
-                            <Sparkles size={9} style={{ color: "rgba(139,92,246,0.35)" }} />
+                            <Sparkles size={9} style={{ color: "rgba(110,231,183,0.35)" }} />
                           </div>
                         </div>
                       </div>
@@ -760,7 +744,7 @@ export default function Page() {
                     {/* Icon */}
                     <div
                       className="grid h-7 w-7 shrink-0 place-items-center rounded-lg"
-                      style={{ background: "rgba(139,92,246,0.08)", border: `1px solid ${T.border}` }}
+                      style={{ background: "rgba(110,231,183,0.08)", border: `1px solid ${T.border}` }}
                     >
                       {(() => {
                         const Icon = resolveIcon(task.icon);
@@ -793,7 +777,9 @@ export default function Page() {
         <nav
           className="absolute bottom-0 left-0 right-0 z-20 px-3 pb-4 pt-2"
           style={{
-            background: T.card,
+            background: "rgba(0, 0, 0, 0.85)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
             borderTop: `1px solid ${T.border}`,
           }}
         >
@@ -823,19 +809,19 @@ export default function Page() {
               <span className="text-[9px] font-medium" style={{ color: T.textPrimary }}>Workout</span>
             </button>
 
-            {/* KAI — floating white circle */}
+            {/* KAI — floating emerald circle spotlight */}
             <button
               onClick={() => setIsKaiOpen(true)}
-              className="flex flex-col items-center gap-0 flex-1 -mt-7"
+              className="flex flex-col items-center gap-0 flex-1 -mt-7 active:scale-[0.97] transition-transform"
             >
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+                className="w-14 h-14 rounded-full flex items-center justify-center"
                 style={{
                   background: T.textPrimary,
-                  boxShadow: "0 4px 24px rgba(240,244,255,0.20)",
+                  boxShadow: "0 0 20px rgba(250,250,250,0.15), 0 0 40px rgba(250,250,250,0.08)",
                 }}
               >
-                <Sparkles size={24} strokeWidth={2} style={{ color: "#0d1117" }} />
+                <Sparkles size={24} strokeWidth={2} style={{ color: "#000000" }} />
               </div>
               <span
                 className="text-[9px] font-bold mt-0.5 tracking-widest uppercase"
@@ -957,8 +943,8 @@ export default function Page() {
                 </button>
                 <button
                   onClick={saveTask}
-                  className="flex-1 py-3 rounded-xl font-bold text-sm transition-all shadow-md"
-                  style={{ background: T.textPrimary, color: "#0d1117" }}
+                  className="flex-1 py-3 rounded-xl font-bold text-sm transition-transform active:scale-[0.97] shadow-md"
+                  style={{ background: T.textPrimary, color: "#000000" }}
                 >
                   Save Changes
                 </button>

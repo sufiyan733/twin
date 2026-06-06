@@ -124,7 +124,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
           <div className="px-5 py-3 border-b border-white/5 bg-[#020b1e] shrink-0">
             <button
               onClick={() => setAddingMeal(true)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-[#00d0ff]/20 to-[#3b82f6]/20 border border-[#00d0ff]/40 text-[#00d0ff] hover:bg-[#00d0ff]/30 hover:shadow-[0_0_15px_rgba(0,208,255,0.2)] transition-all text-sm font-semibold"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#fafafa]/10 border border-[#fafafa]/20 text-[#fafafa] hover:bg-[#fafafa]/20 hover:shadow-[0_0_15px_rgba(250,250,250,0.1)] transition-all text-sm font-semibold"
             >
               <Plus size={16} />
               Add Meal
@@ -204,7 +204,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                 <button
                   onClick={handleAddMeal}
                   disabled={!newMeal.name.trim() || newCalTooLow}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-xl font-bold text-xs text-[#030818] bg-gradient-to-r from-[#00d0ff] to-[#3b82f6] shadow-[0_0_15px_rgba(0,208,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
+                  className="flex items-center gap-1.5 px-5 py-2 rounded-xl font-bold text-xs text-[#000000] bg-[#fafafa] shadow-[0_0_15px_rgba(250,250,250,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
                 >
                   <Check size={14} strokeWidth={2.5} /> Save Meal
                 </button>
@@ -334,7 +334,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
                               <button
                                 onClick={saveEdit}
                                 disabled={draftCalTooLow}
-                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs text-[#030818] bg-gradient-to-r from-[#00d0ff] to-[#3b82f6] shadow-[0_0_15px_rgba(0,208,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
+                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs text-[#000000] bg-[#fafafa] shadow-[0_0_15px_rgba(250,250,250,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
                               >
                                 <Check size={14} strokeWidth={2.5} /> Save Changes
                               </button>

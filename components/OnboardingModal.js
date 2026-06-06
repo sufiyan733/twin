@@ -112,7 +112,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
 
       {/* Animated glow orbs */}
       <div className="pointer-events-none absolute top-1/4 left-1/4 h-48 w-48 rounded-full bg-[#00d0ff]/8 blur-[80px]" />
-      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#3b82f6]/8 blur-[80px]" />
+      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-[#fafafa]/5 blur-[80px]" />
 
       {/* Modal card */}
       <div className="relative w-full max-w-[340px] rounded-[24px] border border-white/[0.09] bg-[#020512]/95 px-5 pt-5 pb-4 shadow-[0_24px_90px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-[40px] animate-in zoom-in-95 fade-in duration-500 ease-out">
@@ -122,7 +122,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
 
         {/* Header */}
         <div className="text-center mb-3.5 relative z-10">
-          <div className="inline-flex items-center justify-center h-[38px] w-[38px] rounded-[12px] bg-gradient-to-br from-[#00d0ff]/20 to-[#3b82f6]/10 border border-[#00d0ff]/30 shadow-[0_0_24px_rgba(0,208,255,0.22)] mb-2">
+          <div className="inline-flex items-center justify-center h-[38px] w-[38px] rounded-[12px] bg-[#fafafa]/10 border border-[#fafafa]/20 shadow-[0_0_24px_rgba(250,250,250,0.15)] mb-2">
             <Sparkles size={18} className="text-[#00d0ff] drop-shadow-[0_0_8px_#00d0ff]" />
           </div>
           <h2 className="text-[17px] font-bold tracking-tight text-white mb-0.5">

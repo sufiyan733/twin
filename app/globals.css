@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020510;
-  --foreground: #ededed;
+  --background: #000000;
+  --foreground: #fafafa;
 }
 
 @theme inline {
@@ -46,9 +46,9 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(59, 130, 246, 0.15) 25%,
-    rgba(139, 92, 246, 0.2) 50%,
-    rgba(59, 130, 246, 0.15) 75%,
+    rgba(110, 231, 183, 0.10) 25%,
+    rgba(110, 231, 183, 0.20) 50%,
+    rgba(110, 231, 183, 0.10) 75%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -87,8 +87,8 @@ body {
 
 /* Subtle breathing glow for cards */
 @keyframes breathe {
-  0%, 100% { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(59, 130, 246, 0.1); }
-  50% { box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(59, 130, 246, 0.2); }
+  0%, 100% { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(110, 231, 183, 0.08); }
+  50% { box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(110, 231, 183, 0.20); }
 }
 
 .card-breathe {
@@ -103,7 +103,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399, #60a5fa);
+  background: linear-gradient(90deg, #f1f5f9, #6ee7b7, #34d399, #f1f5f9);
   background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -166,21 +166,21 @@ body {
 }
 
 .premium-scrollbar::-webkit-scrollbar-track {
-  background: rgba(2, 5, 18, 0.2);
+  background: rgba(2, 6, 23, 0.2);
   border-radius: 4px;
   margin-block: 4px;
 }
 
 .premium-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 208, 255, 0.25);
+  background: rgba(110, 231, 183, 0.25);
   border-radius: 4px;
 }
 
 .premium-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 208, 255, 0.5);
+  background: rgba(110, 231, 183, 0.5);
 }
 
 .premium-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 208, 255, 0.25) rgba(2, 5, 18, 0.2);
+  scrollbar-color: rgba(110, 231, 183, 0.25) rgba(2, 6, 23, 0.2);
 }

@@ -33,13 +33,13 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
       {/* Dropdown trigger */}
       <button
         onClick={() => setOpen(v => !v)}
-        className="relative flex items-center gap-1.5 rounded-[10px] bg-[#0a1535] border border-[#00d0ff]/20 px-2.5 py-1.5 text-[12px] font-semibold text-white hover:border-[#00d0ff]/50 hover:text-[#00d0ff] transition-all max-w-[140px]"
+        className="relative flex items-center gap-1.5 rounded-[10px] bg-[#fafafa]/5 border border-[#fafafa]/10 px-2.5 py-1.5 text-[12px] font-semibold text-white hover:border-[#fafafa]/30 hover:text-[#fafafa] transition-all max-w-[140px]"
         style={{ transition: "border-color 150ms ease, color 150ms ease" }}
       >
         {activeGoal ? (
-          <Target size={12} className="text-[#a855f7] shrink-0" />
+          <Target size={12} className="text-[#fafafa] shrink-0" />
         ) : (
-          <ClipboardList size={12} className="text-[#00d0ff] shrink-0" />
+          <ClipboardList size={12} className="text-[#fafafa] shrink-0" />
         )}
         <span className="truncate">{label}</span>
         <ChevronDown
@@ -55,7 +55,7 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
       {/* + button */}
       <button
         onClick={onAddGoal}
-        className="grid place-items-center h-[30px] w-[30px] rounded-[8px] bg-[#0a1535] border border-[#00d0ff]/20 text-[#00d0ff]/60 hover:text-[#00d0ff] hover:border-[#00d0ff]/50 hover:bg-[#00d0ff]/10 hover:shadow-[0_0_10px_rgba(0,208,255,0.2)] transition-all"
+        className="grid place-items-center h-[30px] w-[30px] rounded-[8px] bg-[#fafafa]/5 border border-[#fafafa]/10 text-[#fafafa]/60 hover:text-[#fafafa] hover:border-[#fafafa]/30 hover:bg-[#fafafa]/10 hover:shadow-[0_0_10px_rgba(250,250,250,0.1)] transition-all"
         title="Create new goal"
       >
         <Plus size={13} strokeWidth={2.5} />
@@ -64,7 +64,7 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
       {/* Dropdown list */}
       {open && (
         <div
-          className="absolute left-3 top-[calc(100%+6px)] z-[300] w-[220px] rounded-[14px] bg-[#030c20] border border-[#00d0ff]/20 shadow-[0_8px_40px_rgba(0,150,255,0.2)] overflow-hidden"
+          className="absolute left-3 top-[calc(100%+6px)] z-[300] w-[220px] rounded-[14px] bg-[#0a0a0a] border border-[#fafafa]/10 shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden"
           style={{ animation: "gdOpen 180ms cubic-bezier(0.4,0,0.2,1) both" }}
         >
           <style>{`
@@ -79,14 +79,14 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
             onClick={() => select(null)}
             className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left text-[12px] font-semibold transition-all ${
               activeGoalId === null
-                ? "text-[#00d0ff] bg-[#00d0ff]/10"
+                ? "text-[#fafafa] bg-[#fafafa]/10"
                 : "text-white/70 hover:bg-white/[0.04] hover:text-white"
             }`}
           >
-            <ClipboardList size={13} className="text-[#00d0ff] shrink-0" />
+            <ClipboardList size={13} className="text-[#fafafa] shrink-0" />
             Daily Tasks
             {activeGoalId === null && (
-              <span className="ml-auto text-[9px] font-bold text-[#00d0ff]/60 bg-[#00d0ff]/10 border border-[#00d0ff]/20 px-1.5 py-0.5 rounded-full">
+              <span className="ml-auto text-[9px] font-bold text-[#fafafa]/60 bg-[#fafafa]/10 border border-[#fafafa]/20 px-1.5 py-0.5 rounded-full">
                 Active
               </span>
             )}
@@ -107,13 +107,13 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
                 onClick={() => select(goal.id)}
                 className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left transition-all ${
                   isActive
-                    ? "bg-[#a855f7]/10"
+                    ? "bg-[#fafafa]/10"
                     : "hover:bg-white/[0.04]"
                 }`}
               >
-                <Target size={13} className="text-[#a855f7] shrink-0 mt-[1px]" />
+                <Target size={13} className="text-[#fafafa] shrink-0 mt-[1px]" />
                 <div className="flex-1 min-w-0">
-                  <p className={`text-[12px] font-semibold truncate ${isActive ? "text-[#c084fc]" : "text-white/70"}`}>
+                  <p className={`text-[12px] font-semibold truncate ${isActive ? "text-[#fafafa]" : "text-white/70"}`}>
                     {goal.name}
                   </p>
                   <p className="text-[9px] text-white/30 mt-0.5">
@@ -121,7 +121,7 @@ export default function GoalDropdown({ goals = [], activeGoalId, onChange, onAdd
                   </p>
                 </div>
                 {isActive && (
-                  <span className="text-[9px] font-bold text-[#a855f7]/70 bg-[#a855f7]/10 border border-[#a855f7]/20 px-1.5 py-0.5 rounded-full shrink-0">
+                  <span className="text-[9px] font-bold text-[#fafafa]/70 bg-[#fafafa]/10 border border-[#fafafa]/20 px-1.5 py-0.5 rounded-full shrink-0">
                     Active
                   </span>
                 )}

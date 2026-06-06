@@ -327,7 +327,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
               <button
                 onClick={handleSave}
                 disabled={!canSave || saving}
-                className="flex-2 flex-grow-[2] py-3 rounded-[12px] text-[13px] font-bold text-[#030818] bg-gradient-to-r from-[#00d0ff] to-[#3b82f6] shadow-[0_0_20px_rgba(0,208,255,0.35)] hover:shadow-[0_0_30px_rgba(0,208,255,0.5)] disabled:opacity-35 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
+                className="flex-2 flex-grow-[2] py-3 rounded-[12px] text-[13px] font-bold text-[#000000] bg-[#fafafa] shadow-[0_0_20px_rgba(250,250,250,0.2)] hover:shadow-[0_0_30px_rgba(250,250,250,0.4)] disabled:opacity-35 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
               >
                 {saving ? "Saving…" : label ? `Create · ${label}` : "Create Goal"}
               </button>

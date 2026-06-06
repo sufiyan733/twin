@@ -203,7 +203,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
         {/* Header */}
         <div className="flex items-center justify-between mb-4 relative z-10">
           <div className="flex items-center gap-3.5">
-            <div className="relative grid place-items-center h-[38px] w-[38px] rounded-[14px] bg-gradient-to-br from-[#00d0ff]/20 to-[#3b82f6]/10 border border-[#00d0ff]/20 shadow-[0_0_20px_rgba(0,208,255,0.15)]">
+            <div className="relative grid place-items-center h-[38px] w-[38px] rounded-[14px] bg-[#fafafa]/10 border border-[#fafafa]/20 shadow-[0_0_20px_rgba(250,250,250,0.1)]">
               <Sparkles size={18} className="text-[#00d0ff]" strokeWidth={1.5} />
               {/* Glowing status dot on the icon */}
               <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
@@ -335,7 +335,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
               <div className={`absolute inset-0 rounded-full blur-[10px] pointer-events-none transition-all duration-300 ${
                 trackFood
                   ? "bg-gradient-to-r from-emerald-500/15 to-emerald-400/10"
-                  : "bg-gradient-to-r from-[#00d0ff]/10 to-[#3b82f6]/10"
+                  : "bg-[#fafafa]/5"
               }`} />
 
               <div className="absolute left-1.5 flex items-center gap-0.5 z-10">
