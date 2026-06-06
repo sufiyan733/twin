@@ -68,16 +68,16 @@ function resolveIcon(icon) {
   return ClipboardList;
 }
 
-// ── Theme tokens (true premium metallic black)
+// ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.05) 0%, transparent 40%), radial-gradient(100% 100% at 100% 100%, rgba(110, 231, 183, 0.03) 0%, transparent 50%), linear-gradient(145deg, #222222 0%, #0d0d0d 40%, #030303 75%, #000000 100%)`,
-  card: "linear-gradient(180deg, rgba(38,38,38,0.4) 0%, rgba(10,10,10,0.7) 100%)",
-  cardAlt: "linear-gradient(180deg, rgba(46,46,46,0.25) 0%, rgba(15,15,15,0.45) 100%)",
-  border: "rgba(255,255,255,0.08)",
-  accent: "#6ee7b7",
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 100%), linear-gradient(170deg, #111114 0%, #09090b 40%, #000000 100%)`,
+  card: "linear-gradient(180deg, rgba(20,20,22,0.4) 0%, rgba(10,10,12,0.6) 100%)",
+  cardAlt: "linear-gradient(180deg, rgba(30,30,32,0.3) 0%, rgba(15,15,18,0.5) 100%)",
+  border: "rgba(255,255,255,0.06)",
+  accent: "#00d0ff",
   textPrimary: "#ffffff",
-  textMuted: "#a3a3a3",
-  textFaint: "#525252",
+  textMuted: "#999999",
+  textFaint: "#555555",
 };
 
 export default function Page() {
