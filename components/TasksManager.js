@@ -126,7 +126,7 @@ function ExpandPanel({ open, children }) {
 const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand, onUpdate, onDelete }) {
   return (
     <div
-      className={`rounded-[16px] border bg-gradient-to-b from-[#1e1e1e] to-[#111111] overflow-hidden ${
+      className={`rounded-[16px] border bg-white/[0.03] backdrop-blur-xl border border-white/[0.04] overflow-hidden ${
         task.checked ? "border-white/10 opacity-60" : "border-white/10 hover:border-white/20"
       } ${isExpanded ? "shadow-[0_0_25px_rgba(0,208,255,0.08)]" : ""}`}
       style={{
@@ -335,7 +335,7 @@ export default function TasksManager({
         }}
       >
         <div
-          className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#141414] to-[#080808] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
+          className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -344,7 +344,7 @@ export default function TasksManager({
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#141414] to-[#080808] shrink-0">
+          <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] shrink-0">
             <div>
               <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
                 <ClipboardList className="text-[#00d0ff]" size={20} />
@@ -409,7 +409,7 @@ export default function TasksManager({
 
           {/* Daily Reset Time — only shown on Daily tab */}
           {selectedTab === null && (
-            <div className="px-5 py-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#141414] to-[#080808] shrink-0 flex items-center justify-between">
+            <div className="px-5 py-4 border-b border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] shrink-0 flex items-center justify-between">
             <div className="flex flex-col">
               <div className="flex items-center gap-2 mb-1">
                 <RotateCcw size={14} className="text-[#00d0ff]" />
@@ -456,7 +456,7 @@ export default function TasksManager({
             const elapsed = Math.floor((Date.now() - new Date(g.startDate)) / 86_400_000);
             const remaining = Math.max(0, g.days - elapsed);
             return (
-              <div className="px-5 py-3 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#141414] to-[#080808] shrink-0 flex items-center justify-between">
+              <div className="px-5 py-3 border-b border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] shrink-0 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-[#00d0ff]">{g.name}</p>
                   <p className="text-[10px] text-white/30 mt-0.5">{g.days} day goal · {remaining} days remaining</p>
