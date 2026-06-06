@@ -276,31 +276,12 @@ export default function NotesApp() {
 
         /* scanline texture overlay */
         .drawer-panel::before {
-          content: '';
-          position: absolute; inset: 0;
-          background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0,0,0,0.02) 2px,
-            rgba(0,0,0,0.02) 4px
-          );
-          pointer-events: none;
-          z-index: 0;
+          content: none;
         }
 
         /* top edge glow */
         .drawer-panel::after {
-          content: '';
-          position: absolute; top: 0; left: 0; right: 0;
-          height: 1px;
-          background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(0,0,0,0.05) 40%,
-            rgba(0,0,0,0.03) 70%,
-            transparent 100%
-          );
-          z-index: 2;
+          content: none;
         }
 
         /* drawer scroll area */
@@ -605,7 +586,7 @@ export default function NotesApp() {
           font-family: var(--font-body);
           font-size: 15.5px; font-weight: 300;
           line-height: 1.76;
-          color: rgba(232,237,248,0.78);
+          color: var(--text-primary);
           letter-spacing: 0.01em;
           min-height: 180px;
         }
@@ -625,9 +606,9 @@ export default function NotesApp() {
         .float { animation: float 3.6s ease-in-out infinite; }
 
         @keyframes pulse-ring {
-          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59,140,248,0.3); }
-          70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(59,140,248,0); }
-          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59,140,248,0); }
+          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,0,0,0.08); }
+          70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0,0,0,0); }
+          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
         }
 
         @keyframes blink-dot {
