@@ -21,10 +21,6 @@ export const metadata = {
     title: "Twin",
     statusBarStyle: "black-translucent",
   },
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-  },
 };
 
 export const viewport = {
