@@ -415,8 +415,8 @@ export default function Page() {
 
   if (isPending || !session) {
     return (
-      <div className="h-[100dvh] w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
-        <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
+      <div className="fixed inset-0 w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
+        <div className="relative mx-auto flex h-full w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
           {/* Header Skeleton */}
           <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
             <div className="h-9 w-9 rounded-xl animate-pulse shadow-lg" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }} />
@@ -429,7 +429,7 @@ export default function Page() {
           <main className="relative z-10 flex-1 flex flex-col min-h-0 overflow-hidden px-4 pb-[92px] gap-3 mt-1">
             {/* Calorie Intake Card Skeleton */}
             <section
-              className="relative shrink-0 overflow-hidden rounded-2xl p-5"
+              className="relative shrink-0 overflow-hidden rounded-2xl p-4"
               style={{
                 background: T.card,
                 border: `1px solid ${T.border}`,
@@ -439,32 +439,37 @@ export default function Page() {
                 WebkitBackdropFilter: "blur(24px)"
               }}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+              <div className="flex items-center justify-between mb-3 -mx-1">
+                <div className="flex items-center gap-2">
+                  <div className="h-7 w-7 rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
                   <div className="flex flex-col gap-1.5">
-                    <div className="h-4 w-24 rounded-md animate-pulse" style={{ background: T.cardAlt }} />
-                    <div className="h-2 w-16 rounded-sm animate-pulse" style={{ background: T.border }} />
+                    <div className="h-3.5 w-20 rounded-md animate-pulse" style={{ background: T.cardAlt }} />
+                    <div className="h-2 w-12 rounded-sm animate-pulse" style={{ background: T.border }} />
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <div className="h-[24px] w-[56px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
-                  <div className="h-[24px] w-[46px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                <div className="flex items-center gap-2">
+                  <div className="h-[20px] w-[46px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="h-[20px] w-[40px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex flex-col items-center gap-4 shrink-0">
-                  <div className="h-[120px] w-[120px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
-                  <div className="h-[24px] w-[74px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
+                <div className="flex flex-col items-center gap-3 shrink-0">
+                  <div className="h-[100px] w-[100px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="h-[20px] w-[60px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
                 </div>
-                <div className="flex flex-1 flex-col justify-center gap-3.5 pl-6">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full animate-pulse shrink-0" style={{ background: T.cardAlt }} />
-                      <div className="flex flex-col gap-1.5 flex-1">
-                        <div className="h-2.5 w-12 rounded-sm animate-pulse" style={{ background: T.border }} />
-                        <div className="h-3.5 w-16 rounded-sm animate-pulse" style={{ background: T.cardAlt }} />
+                <div className="flex flex-1 flex-col justify-center gap-2.5 pl-6 pr-1">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="h-[18px] w-[18px] rounded-[6px] animate-pulse shrink-0" style={{ background: T.cardAlt }} />
+                          <div className="h-2 w-10 rounded-sm animate-pulse" style={{ background: T.border }} />
+                        </div>
+                        <div className="flex items-baseline gap-0.5">
+                          <div className="h-2.5 w-12 rounded-sm animate-pulse" style={{ background: T.cardAlt }} />
+                        </div>
                       </div>
+                      <div className="h-[4px] w-full rounded-full animate-pulse" style={{ background: T.cardAlt }} />
                     </div>
                   ))}
                 </div>
@@ -506,8 +511,8 @@ export default function Page() {
   };
 
   return (
-    <div className="h-[100dvh] w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
-      <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
+    <div className="fixed inset-0 w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
+      <div className="relative mx-auto flex h-full w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
         <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
