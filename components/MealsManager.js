@@ -98,10 +98,10 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
   return (
     <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
+      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] shrink-0">
+        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
           <div>
             <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
               <Utensils className="text-[#00d0ff]" size={20} />
@@ -121,7 +121,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
         {/* Add Meal Button */}
         {!addingMeal && (
-          <div className="px-5 py-3 border-b border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] shrink-0">
+          <div className="px-5 py-3 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
             <button
               onClick={() => setAddingMeal(true)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#fafafa]/10 border border-[#fafafa]/20 text-[#fafafa] hover:bg-[#fafafa]/20 hover:shadow-[0_0_15px_rgba(250,250,250,0.1)] transition-all text-sm font-semibold"
@@ -134,7 +134,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
         {/* Inline Add Meal Form */}
         {addingMeal && (
-          <div className="p-5 border-b border-white/10 bg-white/[0.03] backdrop-blur-xl border border-white/[0.04] shrink-0 shadow-lg">
+          <div className="p-5 border-b border-white/10 bg-gradient-to-b from-[#222224] to-[#161618] border border-white/[0.04] shrink-0 shadow-lg">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-bold text-white tracking-wide">New Meal</h3>
               <button onClick={() => { setAddingMeal(false); setNewMeal({ name: "", calories: "", protein: "", fat: "", carbs: "" }); }} className="text-white/40 hover:text-white transition-colors">
@@ -226,7 +226,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
               const isExpanded = expandedMealId === meal.id;
 
               return (
-                <div key={meal.id} className={`rounded-[16px] border bg-white/[0.03] backdrop-blur-xl border border-white/[0.04] overflow-hidden transition-all ${isEditing ? "border-[#00d0ff]/60 shadow-[0_0_20px_rgba(0,208,255,0.12)]" : "border-white/10 hover:border-white/20"}`}>
+                <div key={meal.id} className={`rounded-[16px] border bg-gradient-to-b from-[#222224] to-[#161618] border border-white/[0.04] overflow-hidden transition-all ${isEditing ? "border-[#00d0ff]/60 shadow-[0_0_20px_rgba(0,208,255,0.12)]" : "border-white/10 hover:border-white/20"}`}>
 
                   {/* Summary Row — always clickable to expand/collapse */}
                   <div

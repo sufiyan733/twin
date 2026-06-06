@@ -70,7 +70,7 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E"), radial-gradient(140% 140% at 50% 0%, rgba(0, 208, 255, 0.04) 0%, #080808 30%, #000000 100%)`,
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 100%), linear-gradient(170deg, #111114 0%, #09090b 40%, #000000 100%)`,
   card: "linear-gradient(180deg, rgba(20,20,22,0.4) 0%, rgba(10,10,12,0.6) 100%)",
   cardAlt: "linear-gradient(180deg, rgba(30,30,32,0.3) 0%, rgba(15,15,18,0.5) 100%)",
   border: "rgba(255,255,255,0.06)",

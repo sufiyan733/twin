@@ -160,7 +160,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
       >
         {/* Card */}
         <div
-          className="w-full max-w-[360px] flex flex-col rounded-[24px] bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
+          className="w-full max-w-[360px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
           style={{ animation: "cgmCard 260ms cubic-bezier(0.34,1.56,0.64,1) both", maxHeight: "88dvh" }}
         >
           {/* ── Top gradient accent */}
@@ -270,7 +270,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
                   const Icon = typeof task.icon === "function" ? task.icon : ClipboardList;
                   return (
                     <AnimatedTask key={task.id} style={{ animationDelay: `${i * 25}ms` }}>
-                      <div className="flex items-center gap-2 rounded-[12px] bg-white/[0.03] backdrop-blur-xl border border-white/[0.04] border border-white/10 px-3 py-2.5 group hover:border-white/20 transition-all">
+                      <div className="flex items-center gap-2 rounded-[12px] bg-gradient-to-b from-[#222224] to-[#161618] border border-white/[0.04] border border-white/10 px-3 py-2.5 group hover:border-white/20 transition-all">
                         <div className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] bg-white/[0.04] border border-white/10">
                           <Icon size={13} className="text-[#00d0ff]" />
                         </div>
@@ -316,7 +316,7 @@ export default function CreateGoalModal({ isOpen, onClose, onSave }) {
           </div>
 
           {/* ── Footer */}
-          <div className="shrink-0 px-5 pt-3 pb-5 border-t border-white/5 bg-[#000000]/60 bg-gradient-to-b from-white/[0.06] to-black/80 backdrop-blur-[24px]">
+          <div className="shrink-0 px-5 pt-3 pb-5 border-t border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10]">
             <div className="flex gap-2.5">
               <button
                 onClick={onClose}
