@@ -70,10 +70,10 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E"), linear-gradient(105deg, transparent 15%, rgba(255, 255, 255, 0.05) 20%, transparent 25%, transparent 45%, rgba(255, 255, 255, 0.03) 50%, transparent 55%, rgba(255, 255, 255, 0.06) 80%, transparent 85%), radial-gradient(120% 100% at 50% -10%, rgba(190, 200, 215, 0.1) 0%, transparent 40%), linear-gradient(180deg, #090a0d 0%, #020202 30%, #000000 100%)`,
-  card: `linear-gradient(145deg, rgba(255,255,255,0.06) 0%, transparent 35%), linear-gradient(180deg, rgba(20,22,26,0.6) 0%, rgba(0,0,0,0.85) 100%)`,
-  cardAlt: `linear-gradient(145deg, rgba(255,255,255,0.04) 0%, transparent 35%), linear-gradient(180deg, rgba(26,28,32,0.4) 0%, rgba(5,5,5,0.6) 100%)`,
-  border: "rgba(255,255,255,0.06)",
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"), linear-gradient(110deg, transparent 18%, rgba(255, 255, 255, 0.12) 20%, rgba(255, 255, 255, 0.02) 22%, transparent 28%, transparent 60%, rgba(255, 255, 255, 0.08) 62%, transparent 66%), linear-gradient(70deg, transparent 35%, rgba(255, 255, 255, 0.06) 40%, transparent 45%), radial-gradient(150% 120% at 50% -10%, rgba(180, 195, 220, 0.15) 0%, transparent 45%), linear-gradient(180deg, #0b0d12 0%, #020203 35%, #000000 100%)`,
+  card: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 20%, transparent 40%), linear-gradient(180deg, rgba(24,26,30,0.65) 0%, rgba(5,5,5,0.9) 100%)`,
+  cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 20%, transparent 40%), linear-gradient(180deg, rgba(30,32,38,0.45) 0%, rgba(8,8,8,0.7) 100%)`,
+  border: "rgba(255,255,255,0.08)",
   accent: "#00d0ff",
   textPrimary: "#ffffff",
   textMuted: "#999999",
