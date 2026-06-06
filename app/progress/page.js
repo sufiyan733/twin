@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import KaiAssistant from "@/components/KaiAssistant";
 import {
     LineChart,
     Line,
@@ -340,6 +341,14 @@ export default function PerformancePage() {
     // analytics: { pr: [...], avg: [...] }
     const [analytics, setAnalytics]       = useState(null);
     const [analyticsLoading, setAnalyticsLoading] = useState(false);
+
+    const [isKaiOpen, setIsKaiOpen] = useState(false);
+
+    useEffect(() => {
+        const handler = () => setIsKaiOpen(true);
+        window.addEventListener("twin:open-kai", handler);
+        return () => window.removeEventListener("twin:open-kai", handler);
+    }, []);
 
     // ── Fetch catalog on mount ──────────────────────────────────────────────
     useEffect(() => {
@@ -914,6 +923,7 @@ export default function PerformancePage() {
                     )}
                 </div>
             </div>
+            <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
         </>
     );
 }

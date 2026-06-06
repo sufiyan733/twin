@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import KaiAssistant from "@/components/KaiAssistant";
 
 // ─────────────────────────────────────────────
 // DATA — grouped by equipment type (new order: Machine → Dumbbell → Cable → Barbell → Bodyweight)
@@ -1377,6 +1378,7 @@ function AddExerciseModal({ isOpen, onClose, onAdd, currentMuscle }) {
           </div>
         </form>
       </div>
+      <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
     </div>
   );
 }
@@ -1392,6 +1394,15 @@ export default function WorkoutLogger() {
   const [toast, setToast] = useState({ show: false, msg: "" });
   const [showCelebration, setShowCelebration] = useState(false);
   const [openGroups, setOpenGroups] = useState({});
+  const [mounted, setMounted] = useState(false);
+  const [isKaiOpen, setIsKaiOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsKaiOpen(true);
+    window.addEventListener("twin:open-kai", handler);
+    return () => window.removeEventListener("twin:open-kai", handler);
+  }, []);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const [saving, setSaving] = useState(false);

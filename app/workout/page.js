@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
-
+import KaiAssistant from "@/components/KaiAssistant";
 /* ═══════════════════════════════════════════════════════════
    GLOBAL STYLES — injected once at root
 ═══════════════════════════════════════════════════════════ */
@@ -1662,6 +1662,13 @@ export default function WorkoutPage() {
   const [exerciseOpen, setExerciseOpen] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
   const [ctaDown, setCtaDown] = useState(false);
+  const [isKaiOpen, setIsKaiOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsKaiOpen(true);
+    window.addEventListener("twin:open-kai", handler);
+    return () => window.removeEventListener("twin:open-kai", handler);
+  }, []);
 
   useEffect(() => { const t = setTimeout(() => setMounted(true), 40); return () => clearTimeout(t); }, []);
 
@@ -1755,6 +1762,7 @@ export default function WorkoutPage() {
       {splitOpen && <WorkoutSplitModal onClose={() => setSplitOpen(false)} />}
       {exerciseOpen && <PlanExerciseModal onClose={() => setExerciseOpen(false)} />}
       {plansOpen && <BestPlansModal onClose={() => setPlansOpen(false)} />}
+      <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
     </>
   );
 }
