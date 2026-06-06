@@ -70,7 +70,7 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E"), linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 30%), radial-gradient(ellipse 150% 120% at 50% -10%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 40%, transparent 80%), radial-gradient(ellipse 100% 100% at 50% 110%, rgba(110,231,183,0.08) 0%, transparent 50%), #000000`,
+  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
   card: `linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 10%, transparent 35%), linear-gradient(180deg, rgba(60,70,85,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
   cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 15%, transparent 35%), linear-gradient(180deg, rgba(70,80,95,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
   border: "rgba(255,255,255,0.4)",
@@ -430,7 +430,7 @@ export default function Page() {
       <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
-        <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
+        <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
           <button 
             type="button" 
             className="grid place-items-center h-9 w-9 rounded-xl shadow-lg transition-transform active:scale-[0.97]" 
