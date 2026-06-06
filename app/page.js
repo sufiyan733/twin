@@ -415,8 +415,91 @@ export default function Page() {
 
   if (isPending || !session) {
     return (
-      <div className="h-[100dvh] w-full flex items-center justify-center" style={{ background: T.bg }}>
-        <Loader2 className="animate-spin" style={{ color: T.accent }} size={32} />
+      <div className="h-[100dvh] w-full overflow-hidden font-sans text-white selection:bg-emerald-500/30" style={{ background: T.bg }}>
+        <div className="relative mx-auto flex h-[100dvh] w-full max-w-[400px] flex-col overflow-hidden" style={{ background: T.bg }}>
+          {/* Header Skeleton */}
+          <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
+            <div className="h-9 w-9 rounded-xl animate-pulse shadow-lg" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }} />
+            <div className="h-[28px] w-[74px] rounded-xl animate-pulse shadow-lg" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }} />
+          </header>
+          <div className="px-5 mb-1">
+            <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
+          </div>
+          {/* Main Content Skeleton */}
+          <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[92px] gap-3 mt-1">
+            {/* Calorie Intake Card Skeleton */}
+            <section
+              className="relative shrink-0 overflow-hidden rounded-2xl p-5"
+              style={{
+                background: T.card,
+                border: `1px solid ${T.border}`,
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)"
+              }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="flex flex-col gap-1.5">
+                    <div className="h-4 w-24 rounded-md animate-pulse" style={{ background: T.cardAlt }} />
+                    <div className="h-2 w-16 rounded-sm animate-pulse" style={{ background: T.border }} />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-[24px] w-[56px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="h-[24px] w-[46px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col items-center gap-4 shrink-0">
+                  <div className="h-[120px] w-[120px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="h-[24px] w-[74px] rounded-full animate-pulse" style={{ background: T.cardAlt }} />
+                </div>
+                <div className="flex flex-1 flex-col justify-center gap-3.5 pl-6">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-full animate-pulse shrink-0" style={{ background: T.cardAlt }} />
+                      <div className="flex flex-col gap-1.5 flex-1">
+                        <div className="h-2.5 w-12 rounded-sm animate-pulse" style={{ background: T.border }} />
+                        <div className="h-3.5 w-16 rounded-sm animate-pulse" style={{ background: T.cardAlt }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+            
+            {/* Quick Actions Skeleton */}
+            <section className="flex gap-3 shrink-0">
+              <div className="flex-1 h-[90px] rounded-2xl animate-pulse" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)" }} />
+              <div className="flex-1 h-[90px] rounded-2xl animate-pulse" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)" }} />
+            </section>
+            
+            {/* Daily Focus Skeleton */}
+            <section 
+              className="flex-1 flex flex-col min-h-0 rounded-2xl p-5 mb-4 relative overflow-hidden" 
+              style={{ 
+                background: T.card, 
+                border: `1px solid ${T.border}`,
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)"
+              }}
+            >
+              <div className="flex items-center gap-2 shrink-0 mb-4">
+                <div className="h-[22px] w-[86px] rounded-md animate-pulse" style={{ background: T.cardAlt }} />
+              </div>
+              <div className="flex-1 overflow-hidden space-y-3 mt-1">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="h-14 w-full rounded-2xl animate-pulse shrink-0" style={{ background: T.cardAlt }} />
+                ))}
+              </div>
+            </section>
+          </main>
+        </div>
       </div>
     );
   }
