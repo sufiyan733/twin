@@ -617,7 +617,7 @@ export default function Page() {
                     />
                   )}
 
-                  <svg className="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
+                  <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
                     {/* Glassy Track - pure frosted dark ring */}
                     <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
 
