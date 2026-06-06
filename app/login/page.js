@@ -5,6 +5,18 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { User, Lock, ArrowRight, UserPlus, LogIn, Loader2, Eye, EyeOff } from "lucide-react";
 
+// ── Theme tokens (Premium Black Theme)
+const T = {
+  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
+  card: "linear-gradient(180deg, #0f0f0f 0%, #050505 100%)",
+  cardAlt: "#111111",
+  border: "rgba(255,255,255,0.08)",
+  accent: "#ffffff",
+  textPrimary: "#ffffff",
+  textMuted: "#888888",
+  textFaint: "#444444",
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
@@ -88,56 +100,69 @@ export default function LoginPage() {
 
   if (isPending) {
     return (
-      <div className="h-[100dvh] w-full flex items-center justify-center bg-[#020617]">
-        <Loader2 className="text-[#00d0ff] animate-spin" size={32} />
+      <div className="h-[100dvh] w-full flex items-center justify-center" style={{ background: T.bg }}>
+        <Loader2 className="animate-spin" size={32} style={{ color: T.accent }} />
       </div>
     );
   }
 
   return (
-    <div className="h-[100dvh] w-full overflow-hidden bg-[#020617] font-sans text-white flex items-center justify-center">
-      {/* Background */}
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(37,99,235,0.2),transparent_60%),radial-gradient(ellipse_at_bottom_left,rgba(0,208,255,0.12),transparent_50%)]" />
-      <div className="pointer-events-none fixed inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] [background-size:24px_24px]" />
-
-      <div className="relative w-full max-w-[360px] mx-4">
+    <div className="h-[100dvh] w-full overflow-hidden font-sans text-white flex items-center justify-center selection:bg-emerald-500/30" style={{ background: T.bg }}>
+      <div className="relative w-full max-w-[360px] mx-4 z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center h-[56px] w-[56px] rounded-[18px] bg-[#030818] border border-[#00d0ff]/30 shadow-[0_0_30px_rgba(0,208,255,0.3)] mb-4 mx-auto">
+          <div 
+            className="inline-flex items-center justify-center h-[56px] w-[56px] rounded-2xl mb-4 mx-auto shadow-lg"
+            style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+          >
             {mode === "signin"
-              ? <LogIn size={26} className="text-[#00d0ff] drop-shadow-[0_0_8px_#00d0ff]" />
-              : <UserPlus size={26} className="text-[#00d0ff] drop-shadow-[0_0_8px_#00d0ff]" />
+              ? <LogIn size={26} style={{ color: T.accent }} />
+              : <UserPlus size={26} style={{ color: T.accent }} />
             }
           </div>
-          <h1 className="text-[24px] font-bold tracking-tight text-white mb-1">
+          <h1 className="text-[24px] font-bold tracking-tight mb-1" style={{ color: T.textPrimary }}>
             {mode === "signin" ? "Welcome back" : "Create account"}
           </h1>
-          <p className="text-[13px] text-white/40">
+          <p className="text-[13px]" style={{ color: T.textMuted }}>
             {mode === "signin" ? "Sign in to your Twin account" : "Set up your personal Twin profile"}
           </p>
         </div>
 
         {/* Card */}
-        <div className="relative overflow-hidden rounded-[24px] border border-[#00d0ff]/20 bg-[#030818] p-6 shadow-[0_0_50px_rgba(0,150,255,0.15)] backdrop-blur-xl">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,208,255,0.08),transparent_65%)] pointer-events-none" />
+        <div 
+          className="relative overflow-hidden rounded-3xl p-6"
+          style={{
+            background: T.card,
+            border: `1px solid ${T.border}`,
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)"
+          }}
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.04),transparent_65%)] pointer-events-none" />
 
           <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
             
             {/* Display Name (sign up only) */}
             {mode === "signup" && (
               <div>
-                <label className="block text-[10px] font-bold text-white/40 tracking-widest uppercase mb-1.5">
+                <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
                   Display Name
                 </label>
-                <div className="flex items-center gap-2.5 rounded-[14px] bg-[#07112c] border border-[#00d0ff]/15 px-4 py-3 focus-within:border-[#00d0ff]/50 focus-within:shadow-[0_0_20px_rgba(0,208,255,0.12)] transition-all duration-300">
-                  <UserPlus size={15} className="text-[#00d0ff]/60 shrink-0" />
+                <div 
+                  className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                  style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+                >
+                  <UserPlus size={15} className="shrink-0" style={{ color: T.textMuted }} />
                   <input
                     id="name-input"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="Alex Johnson"
-                    className="flex-1 bg-transparent text-[14px] text-white placeholder:text-white/20 outline-none"
+                    className="flex-1 bg-transparent text-[14px] outline-none"
+                    style={{ color: T.textPrimary }}
                     autoFocus
                   />
                 </div>
@@ -146,62 +171,71 @@ export default function LoginPage() {
 
             {/* Username */}
             <div>
-              <label className="block text-[10px] font-bold text-white/40 tracking-widest uppercase mb-1.5">
+              <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
                 Username
               </label>
-              <div className="flex items-center gap-2.5 rounded-[14px] bg-[#07112c] border border-[#00d0ff]/15 px-4 py-3 focus-within:border-[#00d0ff]/50 focus-within:shadow-[0_0_20px_rgba(0,208,255,0.12)] transition-all duration-300">
-                <User size={15} className="text-[#00d0ff]/60 shrink-0" />
-                <span className="text-[13px] text-white/30">@</span>
+              <div 
+                className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+              >
+                <User size={15} className="shrink-0" style={{ color: T.textMuted }} />
+                <span className="text-[13px]" style={{ color: T.textFaint }}>@</span>
                 <input
                   id="username-input"
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
                   placeholder="yourname"
-                  className="flex-1 bg-transparent text-[14px] text-white placeholder:text-white/20 outline-none"
+                  className="flex-1 bg-transparent text-[14px] outline-none"
+                  style={{ color: T.textPrimary }}
                   autoFocus={mode === "signin"}
                   autoComplete="username"
                   maxLength={20}
                 />
               </div>
               {mode === "signup" && (
-                <p className="text-[10px] text-white/25 mt-1 ml-1">Letters, numbers and underscores only</p>
+                <p className="text-[10px] mt-1 ml-1" style={{ color: T.textFaint }}>Letters, numbers and underscores only</p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-[10px] font-bold text-white/40 tracking-widest uppercase mb-1.5">
+              <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
                 Password
               </label>
-              <div className="flex items-center gap-2.5 rounded-[14px] bg-[#07112c] border border-[#00d0ff]/15 px-4 py-3 focus-within:border-[#00d0ff]/50 focus-within:shadow-[0_0_20px_rgba(0,208,255,0.12)] transition-all duration-300">
-                <Lock size={15} className="text-[#00d0ff]/60 shrink-0" />
+              <div 
+                className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+              >
+                <Lock size={15} className="shrink-0" style={{ color: T.textMuted }} />
                 <input
                   id="password-input"
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="flex-1 bg-transparent text-[14px] text-white placeholder:text-white/20 outline-none"
+                  className="flex-1 bg-transparent text-[14px] outline-none"
+                  style={{ color: T.textPrimary }}
                   autoComplete={mode === "signin" ? "current-password" : "new-password"}
                   minLength={8}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(v => !v)}
-                  className="text-white/25 hover:text-white/60 transition-colors shrink-0"
+                  className="transition-colors shrink-0"
+                  style={{ color: T.textMuted }}
                 >
                   {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
               {mode === "signup" && (
-                <p className="text-[10px] text-white/25 mt-1 ml-1">Minimum 8 characters</p>
+                <p className="text-[10px] mt-1 ml-1" style={{ color: T.textFaint }}>Minimum 8 characters</p>
               )}
             </div>
 
             {/* Error */}
             {error && (
-              <p className="text-[12px] text-red-400 bg-red-400/10 border border-red-400/20 rounded-[10px] px-3 py-2">
+              <p className="text-[12px] text-red-400 bg-red-400/10 border border-red-400/20 rounded-xl px-3 py-2">
                 {error}
               </p>
             )}
@@ -211,7 +245,8 @@ export default function LoginPage() {
               id="submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 rounded-[14px] bg-[#00d0ff] text-[#020617] text-[14px] font-bold py-3.5 mt-2 shadow-[0_0_25px_rgba(0,208,255,0.4)] hover:shadow-[0_0_35px_rgba(0,208,255,0.65)] transition-all duration-300 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl text-[14px] font-bold py-3.5 mt-4 shadow-lg transition-transform active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{ background: T.accent, color: "#000000" }}
             >
               {loading
                 ? <Loader2 size={18} className="animate-spin" />
@@ -224,21 +259,22 @@ export default function LoginPage() {
 
           {/* Switch mode */}
           <div className="relative z-10 text-center mt-5">
-            <span className="text-[12px] text-white/30">
+            <span className="text-[12px]" style={{ color: T.textMuted }}>
               {mode === "signin" ? "Don't have an account? " : "Already have an account? "}
             </span>
             <button
               id="switch-mode-btn"
               type="button"
               onClick={switchMode}
-              className="text-[12px] font-semibold text-[#00d0ff] hover:text-white transition-colors drop-shadow-[0_0_6px_rgba(0,208,255,0.5)]"
+              className="text-[12px] font-semibold transition-colors"
+              style={{ color: T.accent }}
             >
               {mode === "signin" ? "Sign Up" : "Sign In"}
             </button>
           </div>
         </div>
 
-        <p className="text-center text-[11px] text-white/15 mt-6">
+        <p className="text-center text-[11px] mt-6" style={{ color: T.textFaint }}>
           Twin — Your Personal Wellness Companion
         </p>
       </div>
