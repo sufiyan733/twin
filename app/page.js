@@ -541,7 +541,7 @@ export default function Page() {
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
-            className="relative shrink-0 overflow-hidden rounded-2xl p-5"
+            className="relative shrink-0 overflow-hidden rounded-2xl p-4"
             style={{
               background: T.card,
               border: `1px solid ${T.border}`,
@@ -552,20 +552,20 @@ export default function Page() {
             }}
           >
             {/* Card Header */}
-            <div className="flex items-center justify-between mb-4 -mx-1">
+            <div className="flex items-center justify-between mb-3 -mx-1">
               <div className="flex items-center gap-2">
                 {/* Flame icon container */}
                 <div
-                  className="grid place-items-center h-8 w-8 rounded-xl"
+                  className="grid place-items-center h-7 w-7 rounded-xl"
                   style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}
                 >
-                  <Flame size={15} style={{ color: "#60a5fa" }} />
+                  <Flame size={13} style={{ color: "#60a5fa" }} />
                 </div>
                 <div>
-                  <h2 className="text-[14px] font-bold tracking-tight leading-tight" style={{ color: T.textPrimary }}>
+                  <h2 className="text-[13px] font-bold tracking-tight leading-tight" style={{ color: T.textPrimary }}>
                     Calorie Intake
                   </h2>
-                  <p className="text-[8px] font-semibold tracking-[0.2em] uppercase" style={{ color: T.textFaint }}>
+                  <p className="text-[7px] font-semibold tracking-[0.2em] uppercase" style={{ color: T.textFaint }}>
                     Daily Tracker
                   </p>
                 </div>
@@ -575,18 +575,18 @@ export default function Page() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setIsMealsManagerOpen(true)}
-                  className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[10px] font-bold shadow-md transition-transform active:scale-[0.97]"
+                  className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[9px] font-bold shadow-md transition-transform active:scale-[0.97]"
                   style={{ background: T.textPrimary, color: "#000000" }}
                 >
-                  <Plus size={12} strokeWidth={2.5} />
+                  <Plus size={10} strokeWidth={2.5} />
                   MEALS
                 </button>
                 <div
-                  className="flex items-center gap-1.5 rounded-xl px-3 py-1.5"
+                  className="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5"
                   style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
                 >
-                  <Clock size={12} style={{ color: T.textMuted }} />
-                  <span className="text-[10px] font-semibold tabular-nums" style={{ color: T.textPrimary }}>
+                  <Clock size={10} style={{ color: T.textMuted }} />
+                  <span className="text-[9px] font-semibold tabular-nums" style={{ color: T.textPrimary }}>
                     {currentTime || "..."}
                   </span>
                 </div>
@@ -596,42 +596,42 @@ export default function Page() {
             {/* Circular ring + macros */}
             <div className="relative flex items-center justify-between">
               {/* Left Column: Progress Ring & Status Pill */}
-              <div className="flex flex-col items-center gap-4 shrink-0">
-                <div className="relative flex h-[130px] w-[130px] items-center justify-center">
+              <div className="flex flex-col items-center gap-3 shrink-0">
+                <div className="relative flex h-[100px] w-[100px] items-center justify-center">
                   {/* Subtle glass orb behind text */}
-                  <div className="absolute inset-0 m-auto h-[80px] w-[80px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+                  <div className="absolute inset-0 m-auto h-[60px] w-[60px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
                   
                   {/* Pulse behind ring if goal hit */}
                   {consumed.calories >= (calorieTarget || 1) && (
                     <div
                       className="absolute inset-0 rounded-full animate-pulse"
                       style={{
-                        boxShadow: `0 0 25px ${T.accent}40, 0 0 45px ${T.accent}1A`,
+                        boxShadow: `0 0 20px ${T.accent}40, 0 0 35px ${T.accent}1A`,
                         transform: "scale(0.85)"
                       }}
                     />
                   )}
 
-                  <svg className="relative h-full w-full -rotate-90" viewBox="0 0 140 140">
+                  <svg className="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
                     {/* Glassy Track - pure frosted dark ring */}
-                    <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+                    <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
 
                     {/* Progress arc */}
                     <circle
-                      cx="70"
-                      cy="70"
-                      r="58"
+                      cx="50"
+                      cy="50"
+                      r="44"
                       fill="none"
                       stroke={T.accent}
-                      strokeWidth="10"
+                      strokeWidth="8"
                       strokeLinecap="round"
-                      strokeDasharray={2 * Math.PI * 58}
+                      strokeDasharray={2 * Math.PI * 44}
                       strokeDashoffset={
-                        2 * Math.PI * 58 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
+                        2 * Math.PI * 44 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
                       }
                       style={{
                         transition: "stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                        filter: consumed.calories > 0 ? `drop-shadow(0 0 8px ${T.accent}66)` : "none"
+                        filter: consumed.calories > 0 ? `drop-shadow(0 0 6px ${T.accent}66)` : "none"
                       }}
                     />
                   </svg>
@@ -639,35 +639,35 @@ export default function Page() {
                   {/* Core Typography */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
                     <span 
-                      className="text-[32px] leading-none font-bold tracking-tight tabular-nums" 
+                      className="text-[24px] leading-none font-bold tracking-tight tabular-nums" 
                       style={{ color: T.textPrimary }}
                     >
                       {consumed.calories}
                     </span>
-                    <span className="text-[11px] font-semibold tracking-wide tabular-nums mt-1.5" style={{ color: T.textMuted }}>
-                      / {calorieTarget ?? "—"} <span className="text-[9px] uppercase tracking-widest ml-0.5" style={{ color: T.textFaint }}>kcal</span>
+                    <span className="text-[9px] font-semibold tracking-wide tabular-nums mt-1" style={{ color: T.textMuted }}>
+                      / {calorieTarget ?? "—"} <span className="text-[8px] uppercase tracking-widest ml-0.5" style={{ color: T.textFaint }}>kcal</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Left/Over Pill */}
                 <div
-                  className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5"
+                  className="flex items-center gap-1 rounded-full px-3 py-1"
                   style={{ 
                     background: consumed.calories >= (calorieTarget || 1) 
                       ? `linear-gradient(135deg, ${T.accent}26 0%, ${T.accent}0D 100%)` 
                       : "rgba(255,255,255,0.03)",
                     border: `1px solid ${consumed.calories >= (calorieTarget || 1) ? `${T.accent}4D` : "rgba(255,255,255,0.05)"}`,
                     boxShadow: consumed.calories >= (calorieTarget || 1) 
-                      ? `0 0 15px ${T.accent}26, inset 0 1px 0 rgba(255,255,255,0.1)` 
+                      ? `0 0 10px ${T.accent}26, inset 0 1px 0 rgba(255,255,255,0.1)` 
                       : "inset 0 1px 0 rgba(255,255,255,0.05)"
                   }}
                 >
-                  <Flame size={11} style={{ 
+                  <Flame size={9} style={{ 
                     color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#fbbf24",
-                    filter: consumed.calories >= (calorieTarget || 1) ? `drop-shadow(0 0 4px ${T.accent})` : "none"
+                    filter: consumed.calories >= (calorieTarget || 1) ? `drop-shadow(0 0 3px ${T.accent})` : "none"
                   }} />
-                  <span className="text-[9.5px] font-black uppercase tracking-wider" style={{ 
+                  <span className="text-[8.5px] font-black uppercase tracking-wider" style={{ 
                     color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted
                   }}>
                     {calorieTarget
@@ -680,7 +680,7 @@ export default function Page() {
               </div>
 
               {/* Right Column: Macro rows */}
-              <div className="flex flex-1 flex-col justify-center gap-4 pl-7 pr-1">
+              <div className="flex flex-1 flex-col justify-center gap-2.5 pl-6 pr-1">
                 {[
                   { label: "Protein", icon: Dumbbell, current: consumed.protein, target: macros.protein, color: "#10b981" },
                   { label: "Fat", icon: Flame, current: consumed.fat, target: macros.fats, color: "#f43f5e" },
@@ -694,20 +694,20 @@ export default function Page() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div
-                            className="h-[22px] w-[22px] rounded-lg flex items-center justify-center shadow-inner"
+                            className="h-[18px] w-[18px] rounded-[6px] flex items-center justify-center shadow-inner"
                             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
                           >
-                            <Icon size={12} style={{ color: macro.color, filter: `drop-shadow(0 0 4px ${macro.color}80)` }} />
+                            <Icon size={10} style={{ color: macro.color, filter: `drop-shadow(0 0 3px ${macro.color}80)` }} />
                           </div>
-                          <span className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: T.textMuted }}>
+                          <span className="text-[10px] font-semibold tracking-[0.08em] uppercase" style={{ color: T.textMuted }}>
                             {macro.label}
                           </span>
                         </div>
                         <div className="flex items-baseline gap-0.5">
-                          <span className="text-[12px] font-bold tabular-nums" style={{ color: T.textPrimary }}>
+                          <span className="text-[11px] font-bold tabular-nums" style={{ color: T.textPrimary }}>
                             {macro.current}
                           </span>
-                          <span className="text-[10px] font-medium" style={{ color: T.textFaint }}>
+                          <span className="text-[9px] font-medium" style={{ color: T.textFaint }}>
                             / {macro.target ? (macro.isCalorie ? macro.target : `${macro.target}g`) : "—"}
                           </span>
                         </div>
@@ -715,7 +715,7 @@ export default function Page() {
                       
                       {/* Premium Segmented Progress bar */}
                       <div
-                        className="relative h-[5px] w-full rounded-full overflow-hidden"
+                        className="relative h-[4px] w-full rounded-full overflow-hidden"
                         style={{ background: "rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}
                       >
                         <div
@@ -723,7 +723,7 @@ export default function Page() {
                           style={{
                             width: `${pct}%`,
                             background: `linear-gradient(90deg, ${macro.color}20 0%, ${macro.color} 85%, #ffffff 100%)`,
-                            boxShadow: `0 0 10px ${macro.color}`,
+                            boxShadow: `0 0 8px ${macro.color}`,
                             transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)"
                           }}
                         />
