@@ -470,16 +470,9 @@ export default function Page() {
                 </div>
               </div>
             </section>
-            
-            {/* Quick Actions Skeleton */}
-            <section className="flex gap-3 shrink-0">
-              <div className="flex-1 h-[90px] rounded-2xl animate-pulse" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)" }} />
-              <div className="flex-1 h-[90px] rounded-2xl animate-pulse" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)" }} />
-            </section>
-            
-            {/* Daily Focus Skeleton */}
+            {/* Daily Tasks / Goals Card Skeleton */}
             <section 
-              className="flex-1 flex flex-col min-h-0 rounded-2xl p-5 mb-4 relative overflow-hidden" 
+              className="relative flex-1 flex flex-col min-h-0 rounded-2xl p-4 overflow-hidden" 
               style={{ 
                 background: T.card, 
                 border: `1px solid ${T.border}`,
@@ -489,12 +482,16 @@ export default function Page() {
                 WebkitBackdropFilter: "blur(24px)"
               }}
             >
-              <div className="flex items-center gap-2 shrink-0 mb-4">
-                <div className="h-[22px] w-[86px] rounded-md animate-pulse" style={{ background: T.cardAlt }} />
+              <div className="flex items-center justify-between mb-3 shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
+                  <div className="h-8 w-[100px] rounded-lg animate-pulse" style={{ background: T.cardAlt }} />
+                </div>
+                <div className="h-8 w-[80px] rounded-xl animate-pulse" style={{ background: T.cardAlt }} />
               </div>
-              <div className="flex-1 overflow-hidden space-y-3 mt-1">
+              <div className="flex-1 overflow-hidden space-y-2.5 mt-1">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="h-14 w-full rounded-2xl animate-pulse shrink-0" style={{ background: T.cardAlt }} />
+                  <div key={i} className="h-[52px] w-full rounded-[14px] animate-pulse shrink-0" style={{ background: T.cardAlt }} />
                 ))}
               </div>
             </section>
@@ -713,7 +710,7 @@ export default function Page() {
 
           {/* ── Daily Tasks / Goals Card ────────────────────────────────────── */}
           <section
-            className="relative flex-1 flex flex-col rounded-2xl p-4 overflow-hidden"
+            className="relative flex-1 flex flex-col min-h-0 rounded-2xl p-4 overflow-hidden"
             style={{
               background: T.card,
               border: `1px solid ${T.border}`,
