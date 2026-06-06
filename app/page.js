@@ -70,9 +70,9 @@ function resolveIcon(icon) {
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 100%), linear-gradient(170deg, #111114 0%, #09090b 40%, #000000 100%)`,
-  card: "linear-gradient(180deg, rgba(20,20,22,0.4) 0%, rgba(10,10,12,0.6) 100%)",
-  cardAlt: "linear-gradient(180deg, rgba(30,30,32,0.3) 0%, rgba(15,15,18,0.5) 100%)",
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E"), linear-gradient(105deg, transparent 15%, rgba(255, 255, 255, 0.05) 20%, transparent 25%, transparent 45%, rgba(255, 255, 255, 0.03) 50%, transparent 55%, rgba(255, 255, 255, 0.06) 80%, transparent 85%), radial-gradient(120% 100% at 50% -10%, rgba(190, 200, 215, 0.1) 0%, transparent 40%), linear-gradient(180deg, #090a0d 0%, #020202 30%, #000000 100%)`,
+  card: `linear-gradient(145deg, rgba(255,255,255,0.06) 0%, transparent 35%), linear-gradient(180deg, rgba(20,22,26,0.6) 0%, rgba(0,0,0,0.85) 100%)`,
+  cardAlt: `linear-gradient(145deg, rgba(255,255,255,0.04) 0%, transparent 35%), linear-gradient(180deg, rgba(26,28,32,0.4) 0%, rgba(5,5,5,0.6) 100%)`,
   border: "rgba(255,255,255,0.06)",
   accent: "#00d0ff",
   textPrimary: "#ffffff",
