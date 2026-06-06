@@ -426,7 +426,7 @@ export default function Page() {
             <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
           </div>
           {/* Main Content Skeleton */}
-          <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[116px] gap-3 mt-1">
+          <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[92px] gap-3 mt-1">
             {/* Calorie Intake Card Skeleton */}
             <section
               className="relative shrink-0 overflow-hidden rounded-2xl p-5"
@@ -539,7 +539,7 @@ export default function Page() {
         </div>
 
         {/* ── Main Content ────────────────────────────────────────────────────── */}
-        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[116px] gap-3 mt-1">
+        <main className="relative z-10 flex-1 flex flex-col overflow-hidden px-4 pb-[92px] gap-3 mt-1">
 
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
