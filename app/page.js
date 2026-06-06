@@ -68,16 +68,16 @@ function resolveIcon(icon) {
   return ClipboardList;
 }
 
-// ── Theme tokens (goal image palette)
+// ── Theme tokens (true premium metallic black)
 const T = {
-  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 100%), linear-gradient(170deg, #111114 0%, #09090b 40%, #000000 100%)`,
-  card: "linear-gradient(180deg, rgba(20,20,22,0.4) 0%, rgba(10,10,12,0.6) 100%)",
-  cardAlt: "linear-gradient(180deg, rgba(30,30,32,0.3) 0%, rgba(15,15,18,0.5) 100%)",
-  border: "rgba(255,255,255,0.06)",
-  accent: "#00d0ff",
+  bg: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"), radial-gradient(120% 120% at 50% -10%, rgba(255, 255, 255, 0.05) 0%, transparent 40%), radial-gradient(100% 100% at 100% 100%, rgba(110, 231, 183, 0.03) 0%, transparent 50%), linear-gradient(145deg, #222222 0%, #0d0d0d 40%, #030303 75%, #000000 100%)`,
+  card: "linear-gradient(180deg, rgba(38,38,38,0.4) 0%, rgba(10,10,10,0.7) 100%)",
+  cardAlt: "linear-gradient(180deg, rgba(46,46,46,0.25) 0%, rgba(15,15,15,0.45) 100%)",
+  border: "rgba(255,255,255,0.08)",
+  accent: "#6ee7b7",
   textPrimary: "#ffffff",
-  textMuted: "#999999",
-  textFaint: "#555555",
+  textMuted: "#a3a3a3",
+  textFaint: "#525252",
 };
 
 export default function Page() {
@@ -452,9 +452,9 @@ export default function Page() {
           {/* ── Calorie Intake Card ─────────────────────────────────────────── */}
           <section
             className="relative shrink-0 overflow-hidden rounded-2xl p-5"
-            style={{ 
-              background: T.card, 
-              border: `1px solid ${T.border}`, 
+            style={{
+              background: T.card,
+              border: `1px solid ${T.border}`,
               borderTop: "1px solid rgba(255,255,255,0.06)",
               boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
               backdropFilter: "blur(24px)",
@@ -510,12 +510,12 @@ export default function Page() {
                 <div className="relative flex h-[130px] w-[130px] items-center justify-center">
                   {/* Glow behind the ring if completed */}
                   {consumed.calories >= (calorieTarget || 1) && (
-                    <div 
-                      className="absolute inset-0 rounded-full animate-pulse" 
-                      style={{ 
+                    <div
+                      className="absolute inset-0 rounded-full animate-pulse"
+                      style={{
                         boxShadow: "0 0 20px rgba(0,208,255,0.15), 0 0 40px rgba(0,208,255,0.08)",
                         transform: "scale(0.85)"
-                      }} 
+                      }}
                     />
                   )}
                   <svg className="relative h-full w-full -rotate-90 drop-shadow-md" viewBox="0 0 120 120">
@@ -534,7 +534,7 @@ export default function Page() {
                       strokeDashoffset={
                         2 * Math.PI * 54 * (1 - Math.min(consumed.calories / (calorieTarget || 1), 1))
                       }
-                      style={{ 
+                      style={{
                         transition: "stroke-dashoffset 600ms ease-out",
                         filter: consumed.calories > 0 ? "drop-shadow(0 0 4px rgba(0,208,255,0.3))" : "none"
                       }}
@@ -557,10 +557,10 @@ export default function Page() {
                 >
                   <Flame size={11} style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#f59e0b" }} />
                   <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted }}>
-                    {calorieTarget 
-                      ? (consumed.calories > calorieTarget 
-                          ? `${consumed.calories - calorieTarget} over` 
-                          : `${Math.max(0, calorieTarget - consumed.calories)} left`)
+                    {calorieTarget
+                      ? (consumed.calories > calorieTarget
+                        ? `${consumed.calories - calorieTarget} over`
+                        : `${Math.max(0, calorieTarget - consumed.calories)} left`)
                       : "—"}
                   </span>
                 </div>
@@ -622,9 +622,9 @@ export default function Page() {
           {/* ── Daily Tasks / Goals Card ────────────────────────────────────── */}
           <section
             className="relative flex-1 flex flex-col rounded-2xl p-4 overflow-hidden"
-            style={{ 
-              background: T.card, 
-              border: `1px solid ${T.border}`, 
+            style={{
+              background: T.card,
+              border: `1px solid ${T.border}`,
               borderTop: "1px solid rgba(255,255,255,0.06)",
               boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
               backdropFilter: "blur(24px)",
