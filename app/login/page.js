@@ -7,14 +7,14 @@ import { User, Lock, ArrowRight, UserPlus, LogIn, Loader2, Eye, EyeOff } from "l
 
 // ── Theme tokens (Premium Black Theme)
 const T = {
-  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
-  card: "linear-gradient(180deg, #0f0f0f 0%, #050505 100%)",
-  cardAlt: "#111111",
-  border: "rgba(255,255,255,0.08)",
+  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.18) 0%, transparent 5%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.12) 0%, transparent 4%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.15) 30.5%, rgba(255,255,255,0.03) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.12) 60.5%, rgba(255,255,255,0.03) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.1) 75.5%, rgba(255,255,255,0.02) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.08) 40.5%, rgba(255,255,255,0.02) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.05) 0deg, transparent 45deg, rgba(255,255,255,0.04) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.05) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #222222 0deg, #0a0a0a 30deg, #2a2a2a 90deg, #0a0a0a 150deg, #222222 200deg, #0a0a0a 260deg, #2a2a2a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #2a2a2a 0deg, #0a0a0a 40deg, #1c1c1c 90deg, #0a0a0a 150deg, #2c2c2c 200deg, #0a0a0a 260deg, #15241b 300deg, #181818 320deg, #2a2a2a 360deg)`,
+  card: "linear-gradient(180deg, #1a1a1a 0%, #0c0c0c 100%)",
+  cardAlt: "#1f1f1f",
+  border: "rgba(255,255,255,0.12)",
   accent: "#ffffff",
   textPrimary: "#ffffff",
-  textMuted: "#888888",
-  textFaint: "#444444",
+  textMuted: "#a3a3a3",
+  textFaint: "#555555",
 };
 
 export default function LoginPage() {
