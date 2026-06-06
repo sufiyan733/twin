@@ -78,52 +78,67 @@ export default function InstallAppPrompt() {
   return (
     <div className="fixed inset-x-0 bottom-4 z-[60] flex justify-center px-4 pointer-events-none sm:bottom-6">
       <section
-        className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-[18px] border border-[#00d0ff]/30 bg-[#030818]/95 p-4 text-white shadow-[0_0_40px_rgba(0,208,255,0.26)] backdrop-blur-xl"
+        className="pointer-events-auto relative w-full max-w-[360px] overflow-hidden rounded-[24px] bg-[#0f172a]/90 p-5 text-[#f1f5f9] backdrop-blur-[24px]"
+        style={{
+          border: "1px solid rgba(148,163,184,0.12)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 20px 40px -10px rgba(0,0,0,0.8)"
+        }}
         role="dialog"
         aria-label="Install app"
       >
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,rgba(0,208,255,0.12),transparent_65%)]" />
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03),transparent_65%)]" />
 
-        <div className="relative flex items-start gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] border border-[#00d0ff]/35 bg-[#07112c] shadow-[0_0_16px_rgba(0,208,255,0.28)]">
-            <Download size={18} className="text-[#00d0ff]" />
+        <div className="relative flex items-start gap-4">
+          <div 
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#1e293b] shadow-inner"
+            style={{ border: "1px solid rgba(148,163,184,0.12)" }}
+          >
+            <Download size={20} className="text-[#f1f5f9]" />
           </div>
 
-          <div className="min-w-0 flex-1">
-            <h2 className="text-[14px] font-bold leading-tight tracking-wide">
+          <div className="min-w-0 flex-1 pt-0.5">
+            <h2 className="text-[16px] font-bold tracking-tight text-[#f1f5f9]">
               Install Twin
             </h2>
-            <p className="mt-1 text-[12px] leading-5 text-white/58">
-              Add the app to your device for a faster full-screen experience.
+            <p className="mt-1 text-[13px] leading-relaxed text-[#94a3b8]">
+              Add the app to your device for a faster, immersive full-screen experience.
             </p>
           </div>
 
           <button
             type="button"
             onClick={handleCancel}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-white/45 transition-colors hover:bg-white/5 hover:text-white"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-[#94a3b8] transition-colors hover:bg-white/5 hover:text-white"
             aria-label="Cancel install prompt"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
 
-        <div className="relative mt-4 grid grid-cols-[1fr_auto] gap-2">
+        <div className="relative mt-6 grid grid-cols-[1fr_auto] gap-3">
           <button
             type="button"
             onClick={handleInstall}
             disabled={isInstalling}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-[12px] bg-[#00d0ff] px-4 text-[13px] font-bold text-[#020617] shadow-[0_0_24px_rgba(0,208,255,0.38)] transition-all hover:shadow-[0_0_32px_rgba(0,208,255,0.58)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[14px] bg-[#6ee7b7] px-4 text-[14px] font-bold text-[#020617] transition-all hover:bg-[#34d399] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70"
+            style={{
+              boxShadow: "0 0 20px rgba(110,231,183,0.15), 0 0 40px rgba(110,231,183,0.08)"
+            }}
           >
-            <Download size={15} />
-            {isInstalling ? "Opening..." : "Install"}
+            <Download size={16} />
+            {isInstalling ? "Opening..." : "Install App"}
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="h-10 rounded-[12px] border border-white/10 px-4 text-[13px] font-semibold text-white/65 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white"
+            className="h-[48px] rounded-[14px] border px-5 text-[14px] font-semibold text-[#f1f5f9] transition-colors hover:bg-white/5"
+            style={{
+              border: "1px solid rgba(148,163,184,0.12)",
+              backgroundColor: "rgba(30,41,59,0.5)"
+            }}
           >
-            Cancel
+            Not Now
           </button>
         </div>
       </section>

@@ -110,20 +110,23 @@ export default function LoginPage() {
     <div className="h-[100dvh] w-full overflow-hidden font-sans text-white flex items-center justify-center selection:bg-emerald-500/30" style={{ background: T.bg }}>
       <div className="relative w-full max-w-[360px] mx-4 z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div 
-            className="inline-flex items-center justify-center h-[56px] w-[56px] rounded-2xl mb-4 mx-auto shadow-lg"
-            style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
-          >
-            {mode === "signin"
-              ? <LogIn size={26} style={{ color: T.accent }} />
-              : <UserPlus size={26} style={{ color: T.accent }} />
-            }
+        <div className="text-center mb-10">
+          <div className="relative inline-block mb-5 mx-auto">
+            <div className="absolute inset-0 bg-white/10 blur-xl rounded-full" />
+            <div 
+              className="relative flex items-center justify-center h-[60px] w-[60px] rounded-[20px] shadow-2xl"
+              style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
+            >
+              {mode === "signin"
+                ? <LogIn size={26} style={{ color: T.accent }} />
+                : <UserPlus size={26} style={{ color: T.accent }} />
+              }
+            </div>
           </div>
-          <h1 className="text-[24px] font-bold tracking-tight mb-1" style={{ color: T.textPrimary }}>
+          <h1 className="text-[28px] font-bold tracking-tight mb-1.5" style={{ color: T.textPrimary }}>
             {mode === "signin" ? "Welcome back" : "Create account"}
           </h1>
-          <p className="text-[13px]" style={{ color: T.textMuted }}>
+          <p className="text-[14px]" style={{ color: T.textMuted }}>
             {mode === "signin" ? "Sign in to your Twin account" : "Set up your personal Twin profile"}
           </p>
         </div>
@@ -147,21 +150,21 @@ export default function LoginPage() {
             {/* Display Name (sign up only) */}
             {mode === "signup" && (
               <div>
-                <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
+                <label className="block text-[11px] font-semibold tracking-[0.08em] uppercase mb-2" style={{ color: T.textMuted }}>
                   Display Name
                 </label>
                 <div 
-                  className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                  className="flex items-center h-[52px] gap-3 rounded-2xl px-4 transition-all duration-300 shadow-sm focus-within:border-white/30 focus-within:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
                   style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
                 >
-                  <UserPlus size={15} className="shrink-0" style={{ color: T.textMuted }} />
+                  <UserPlus size={16} className="shrink-0" style={{ color: T.textMuted }} />
                   <input
                     id="name-input"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="Alex Johnson"
-                    className="flex-1 bg-transparent text-[14px] outline-none"
+                    className="flex-1 bg-transparent text-[16px] outline-none h-full placeholder:text-white/20"
                     style={{ color: T.textPrimary }}
                     autoFocus
                   />
@@ -171,22 +174,22 @@ export default function LoginPage() {
 
             {/* Username */}
             <div>
-              <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
+              <label className="block text-[11px] font-semibold tracking-[0.08em] uppercase mb-2" style={{ color: T.textMuted }}>
                 Username
               </label>
               <div 
-                className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                className="flex items-center h-[52px] gap-3 rounded-2xl px-4 transition-all duration-300 shadow-sm focus-within:border-white/30 focus-within:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
                 style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
               >
-                <User size={15} className="shrink-0" style={{ color: T.textMuted }} />
-                <span className="text-[13px]" style={{ color: T.textFaint }}>@</span>
+                <User size={16} className="shrink-0" style={{ color: T.textMuted }} />
+                <span className="text-[14px] -mr-1" style={{ color: T.textFaint }}>@</span>
                 <input
                   id="username-input"
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
                   placeholder="yourname"
-                  className="flex-1 bg-transparent text-[14px] outline-none"
+                  className="flex-1 bg-transparent text-[16px] outline-none h-full placeholder:text-white/20"
                   style={{ color: T.textPrimary }}
                   autoFocus={mode === "signin"}
                   autoComplete="username"
@@ -194,27 +197,27 @@ export default function LoginPage() {
                 />
               </div>
               {mode === "signup" && (
-                <p className="text-[10px] mt-1 ml-1" style={{ color: T.textFaint }}>Letters, numbers and underscores only</p>
+                <p className="text-[11px] mt-1.5 ml-1" style={{ color: T.textFaint }}>Letters, numbers and underscores only</p>
               )}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-[10px] font-bold tracking-widest uppercase mb-1.5" style={{ color: T.textMuted }}>
+              <label className="block text-[11px] font-semibold tracking-[0.08em] uppercase mb-2" style={{ color: T.textMuted }}>
                 Password
               </label>
               <div 
-                className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all duration-300 shadow-sm"
+                className="flex items-center h-[52px] gap-3 rounded-2xl px-4 transition-all duration-300 shadow-sm focus-within:border-white/30 focus-within:shadow-[0_0_20px_rgba(255,255,255,0.08)]"
                 style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
               >
-                <Lock size={15} className="shrink-0" style={{ color: T.textMuted }} />
+                <Lock size={16} className="shrink-0" style={{ color: T.textMuted }} />
                 <input
                   id="password-input"
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="flex-1 bg-transparent text-[14px] outline-none"
+                  className="flex-1 bg-transparent text-[16px] outline-none h-full placeholder:text-white/20"
                   style={{ color: T.textPrimary }}
                   autoComplete={mode === "signin" ? "current-password" : "new-password"}
                   minLength={8}
@@ -222,14 +225,14 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPass(v => !v)}
-                  className="transition-colors shrink-0"
+                  className="transition-colors shrink-0 p-2 -mr-2"
                   style={{ color: T.textMuted }}
                 >
-                  {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {mode === "signup" && (
-                <p className="text-[10px] mt-1 ml-1" style={{ color: T.textFaint }}>Minimum 8 characters</p>
+                <p className="text-[11px] mt-1.5 ml-1" style={{ color: T.textFaint }}>Minimum 8 characters</p>
               )}
             </div>
 
@@ -245,7 +248,7 @@ export default function LoginPage() {
               id="submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl text-[14px] font-bold py-3.5 mt-4 shadow-lg transition-transform active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center h-[52px] gap-2 rounded-2xl text-[15px] font-bold mt-6 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] transition-all duration-300 active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ background: T.accent, color: "#000000" }}
             >
               {loading
