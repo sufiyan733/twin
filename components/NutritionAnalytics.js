@@ -77,11 +77,12 @@ function GlowDot({ cx, cy, payload, value, index, activeIndex, fadingIndex, onTo
                             flexDirection: "column",
                             alignItems: "center",
                             justifyContent: "center",
-                            background: "#1e293b",
-                            border: "1px solid rgba(148,163,184,0.12)",
+                            background: "rgba(15,23,42,0.85)",
+                            backdropFilter: "blur(12px)",
+                            border: "1px solid rgba(255,255,255,0.1)",
                             borderRadius: "12px",
                             padding: "8px 12px",
-                            boxShadow: "0 10px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.1)",
+                            boxShadow: "0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2)",
                             opacity: isActive ? 1 : 0,
                             transform: isActive ? "translateY(0) scale(1)" : `translateY(${isNearTop ? -8 : 8}px) scale(0.95)`,
                             transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
@@ -141,14 +142,13 @@ export default function NutritionAnalytics() {
 
     return (
         <section
-            className="relative shrink-0 overflow-visible rounded-2xl p-5"
+            className="relative shrink-0 overflow-visible rounded-[32px] p-6"
             style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 15%, transparent 35%), linear-gradient(180deg, rgba(25,35,50,0.95) 0%, rgba(10,12,15,0.98) 100%)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderTop: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "0 20px 40px -10px rgba(0,0,0,0.6)",
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)"
+                background: "radial-gradient(120% 100% at 50% 100%, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.95) 100%)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                boxShadow: "0 24px 48px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15)",
+                backdropFilter: "blur(48px)",
+                WebkitBackdropFilter: "blur(48px)"
             }}
             onClick={() => { setActiveIndex(null); setFadingIndex(null); setIsDropdownOpen(false); }}
         >
@@ -176,11 +176,11 @@ export default function NutritionAnalytics() {
 
                     {isDropdownOpen && (
                         <div
-                            className="absolute right-0 top-full mt-2 w-[140px] rounded-[16px] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                            className="absolute right-0 top-full mt-2 w-[140px] rounded-[20px] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200"
                             style={{
-                                background: "rgba(10,12,18,0.95)",
-                                border: "1px solid rgba(255,255,255,0.08)",
-                                boxShadow: "0 16px 40px rgba(0,0,0,0.8)",
+                                background: "rgba(15,23,42,0.85)",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                boxShadow: "0 24px 48px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1)",
                                 backdropFilter: "blur(32px)"
                             }}
                         >
@@ -213,15 +213,15 @@ export default function NutritionAnalytics() {
                     >
                         <defs>
                             <linearGradient id={`fill-${uid}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.15} />
-                                <stop offset="60%" stopColor="#ffffff" stopOpacity={0.03} />
-                                <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
+                                <stop offset="0%" stopColor={selectedMetric.color} stopOpacity={0.3} />
+                                <stop offset="60%" stopColor={selectedMetric.color} stopOpacity={0.05} />
+                                <stop offset="100%" stopColor={selectedMetric.color} stopOpacity={0} />
                             </linearGradient>
                             <linearGradient id={`line-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.3} />
-                                <stop offset="20%" stopColor="#ffffff" stopOpacity={1} />
-                                <stop offset="80%" stopColor="#ffffff" stopOpacity={1} />
-                                <stop offset="100%" stopColor="#ffffff" stopOpacity={0.3} />
+                                <stop offset="0%" stopColor={selectedMetric.color} stopOpacity={0.3} />
+                                <stop offset="20%" stopColor={selectedMetric.color} stopOpacity={1} />
+                                <stop offset="80%" stopColor={selectedMetric.color} stopOpacity={1} />
+                                <stop offset="100%" stopColor={selectedMetric.color} stopOpacity={0.3} />
                             </linearGradient>
                             <filter id={`glow-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
                                 <feGaussianBlur stdDeviation="2.5" result="blur" />
