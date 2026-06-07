@@ -85,6 +85,51 @@ const T = {
   textFaint: "#475569",
 };
 
+const RESET_CHECK_INTERVAL_MS = 60 * 1000;
+const HOURS_PER_DAY = 24;
+const MINUTES_PER_HOUR = 60;
+
+function parseResetTimeParts(value) {
+  const [rawHours, rawMinutes] = String(value || "00:00").split(":").map(Number);
+  const hours = Number.isInteger(rawHours) && rawHours >= 0 && rawHours < HOURS_PER_DAY ? rawHours : 0;
+  const minutes = Number.isInteger(rawMinutes) && rawMinutes >= 0 && rawMinutes < MINUTES_PER_HOUR ? rawMinutes : 0;
+  return { hours, minutes };
+}
+
+function getResetBoundary(now, resetTime) {
+  const { hours, minutes } = parseResetTimeParts(resetTime);
+  const boundary = new Date(now);
+  boundary.setHours(hours, minutes, 0, 0);
+  return boundary;
+}
+
+function getMostRecentResetBoundary(now, resetTime) {
+  const boundary = getResetBoundary(now, resetTime);
+  if (now < boundary) boundary.setDate(boundary.getDate() - 1);
+  return boundary;
+}
+
+function getDueResetBoundary(now, resetTime, lastResetAt) {
+  if (!lastResetAt) return null;
+  const boundary = getResetBoundary(now, resetTime);
+  if (now < boundary) return null;
+
+  const lastReset = new Date(lastResetAt);
+  if (Number.isNaN(lastReset.getTime())) return null;
+  return lastReset < boundary ? boundary : null;
+}
+
+function formatLocalDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getArchiveDate(resetBoundary) {
+  return formatLocalDate(new Date(resetBoundary.getTime() - 1));
+}
+
 export default function Page() {
   const [tasks, setTasks] = useState([]);
   const [resetTime, setResetTime] = useState("00:00");
@@ -110,6 +155,9 @@ export default function Page() {
   const [isMealsManagerOpen, setIsMealsManagerOpen] = useState(false);
   const [mealsSynced, setMealsSynced] = useState(false);
   const [lastMealsResetAt, setLastMealsResetAt] = useState(null);
+  const latestMealsRef = useRef([]);
+  const resetInFlightRef = useRef(false);
+  const baselineInFlightRef = useRef(false);
 
   const consumed = {
     calories: meals.reduce((sum, m) => sum + (m.calories || 0), 0),
@@ -117,6 +165,10 @@ export default function Page() {
     fat: meals.reduce((sum, m) => sum + (m.fat || 0), 0),
     carbs: meals.reduce((sum, m) => sum + (m.carbs || 0), 0),
   };
+
+  useEffect(() => {
+    latestMealsRef.current = meals;
+  }, [meals]);
 
   const saveMealsToDb = async (newMeals) => {
     if (!session) return;
@@ -304,52 +356,113 @@ export default function Page() {
 
   // ─── Save resetTime to DB when it changes ────────────────────────────────────
   const handleResetTimeChange = (newTime) => {
+    const baseline = getMostRecentResetBoundary(new Date(), newTime);
+    const baselineIso = baseline.toISOString();
+
     setResetTime(newTime);
+    setLastResetAt(baseline);
+    setLastMealsResetAt(baseline);
+
     if (!session) return;
     fetch("/api/tasks", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ resetTime: newTime }),
+      body: JSON.stringify({ resetTime: newTime, lastResetAt: baselineIso }),
+    }).catch(console.error);
+    fetch("/api/meals", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lastResetAt: baselineIso }),
     }).catch(console.error);
   };
 
+  // ─── Establish reset baseline for legacy/new users ──────────────────────────
+  useEffect(() => {
+    if (!session || !tasksSynced || !mealsSynced) return;
+    if (lastResetAt && lastMealsResetAt) return;
+    if (baselineInFlightRef.current) return;
+
+    baselineInFlightRef.current = true;
+    const baseline = getMostRecentResetBoundary(new Date(), resetTime);
+    const baselineIso = baseline.toISOString();
+
+    queueMicrotask(() => {
+      if (!lastResetAt) setLastResetAt(baseline);
+      if (!lastMealsResetAt) setLastMealsResetAt(baseline);
+    });
+
+    Promise.all([
+      !lastResetAt
+        ? fetch("/api/tasks", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lastResetAt: baselineIso }),
+          })
+        : Promise.resolve(),
+      !lastMealsResetAt
+        ? fetch("/api/meals", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lastResetAt: baselineIso }),
+          })
+        : Promise.resolve(),
+    ])
+      .catch(console.error)
+      .finally(() => {
+        baselineInFlightRef.current = false;
+      });
+  }, [session, tasksSynced, mealsSynced, resetTime, lastResetAt, lastMealsResetAt]);
+
   // ─── Daily reset check ───────────────────────────────────────────────────────
   useEffect(() => {
-    if (!session || !tasksSynced) return;
+    if (!session || !tasksSynced || !mealsSynced || !lastResetAt || !lastMealsResetAt) return;
 
-    const checkReset = () => {
+    const checkReset = async () => {
+      if (resetInFlightRef.current) return;
       const now = new Date();
-      const [rh, rm] = resetTime.split(":").map(Number);
-      const resetToday = new Date();
-      resetToday.setHours(rh, rm, 0, 0);
+      const tasksBoundary = getDueResetBoundary(now, resetTime, lastResetAt);
+      const mealsBoundary = getDueResetBoundary(now, resetTime, lastMealsResetAt);
+      if (!tasksBoundary && !mealsBoundary) return;
 
-      const alreadyReset = lastResetAt && new Date(lastResetAt) >= resetToday;
-      if (alreadyReset) return;
+      resetInFlightRef.current = true;
+      const resetAt = new Date();
+      const resetAtIso = resetAt.toISOString();
+      const resetBoundary = mealsBoundary || tasksBoundary;
 
-      if (now >= resetToday) {
-        const dateStr = now.toISOString().split("T")[0];
-        setTasks([]);
-        setLastResetAt(now);
-        fetch("/api/tasks", {
+      try {
+        const response = await fetch("/api/daily-reset", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
-        }).catch(console.error);
+          body: JSON.stringify({
+            meals: latestMealsRef.current,
+            date: getArchiveDate(resetBoundary),
+            resetAt: resetAtIso,
+            resetTasks: Boolean(tasksBoundary),
+            resetMeals: Boolean(mealsBoundary),
+          }),
+        });
 
-        setMeals([]);
-        setLastMealsResetAt(now);
-        fetch("/api/meals", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ meals, date: dateStr }),
-        }).catch(console.error);
+        if (!response.ok) throw new Error(`Daily reset failed with status ${response.status}`);
+
+        if (tasksBoundary) {
+          setTasks([]);
+          setLastResetAt(resetAt);
+        }
+        if (mealsBoundary) {
+          setMeals([]);
+          setLastMealsResetAt(resetAt);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        resetInFlightRef.current = false;
       }
     };
 
     checkReset();
-    const interval = setInterval(checkReset, 60 * 1000);
+    const interval = setInterval(checkReset, RESET_CHECK_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [session, tasksSynced, resetTime, lastResetAt, lastMealsResetAt]);
+  }, [session, tasksSynced, mealsSynced, resetTime, lastResetAt, lastMealsResetAt]);
 
   // ─── Calorie Target ─────────────────────────────────────────────────────────
   function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
