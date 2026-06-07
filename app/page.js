@@ -1138,7 +1138,7 @@ export default function Page() {
             }}
           >
             <div 
-              className="w-full max-w-[400px] h-full flex flex-col px-6 pt-6 pb-6 overflow-y-auto"
+              className="w-full max-w-[400px] h-[100dvh] flex flex-col px-6 pt-6 pb-6 overflow-hidden"
               style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
             >
               <div className="relative z-10 flex justify-end mb-2 shrink-0">
@@ -1152,14 +1152,14 @@ export default function Page() {
             </div>
 
             {/* Friends List Parent Card - Sleek 20/10 UI */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both shrink-0">
+            <div className="relative z-10 w-full flex-1 min-h-[140px] max-h-[320px] flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
               <div style={{
                 borderRadius: "24px",
                 background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.9) 100%)",
                 boxShadow: "0 32px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
                 backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
                 padding: "16px 14px", display: "flex", flexDirection: "column", gap: "6px",
-                position: "relative", overflow: "hidden"
+                position: "relative", overflow: "hidden", flex: 1, minHeight: 0
               }}>
                 {/* Subtle top edge glow */}
                 <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)" }} />
@@ -1182,9 +1182,8 @@ export default function Page() {
                 </div>
 
                 <div 
-                  className="flex flex-col gap-[6px] overflow-y-auto" 
+                  className="flex flex-col gap-[6px] overflow-y-auto flex-1 min-h-0 relative z-10" 
                   style={{ 
-                    maxHeight: "220px",
                     msOverflowStyle: "none",
                     scrollbarWidth: "none"
                   }}
