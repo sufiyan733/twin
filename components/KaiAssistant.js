@@ -30,6 +30,14 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
   const fileInputRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '56px';
+      textareaRef.current.style.height = Math.min(Math.max(textareaRef.current.scrollHeight, 56), 168) + 'px';
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -361,8 +369,8 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </span>
                 </button>
               </div>
-              <div className="relative flex items-center">
-                <div className="absolute left-2 flex items-center gap-1 z-10">
+              <div className="relative flex items-end">
+                <div className="absolute left-2 bottom-[10px] flex items-center gap-1 z-10">
                   <input
                     type="file"
                     accept="image/*"
@@ -386,14 +394,20 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </button>
                 </div>
 
-                  <input
-                  type="text"
+                  <textarea
+                  ref={textareaRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      sendMessage();
+                    }
+                  }}
                   placeholder={trackFood ? "Tell Kai what you ate..." : "Ask Kai..."}
-                  className="w-full h-[56px] rounded-[20px] pl-[96px] pr-14 text-[16px] outline-none transition-all duration-300 placeholder:text-white/40"
+                  className="w-full rounded-[20px] pl-[96px] pr-14 py-[16px] text-[16px] outline-none transition-all duration-100 placeholder:text-white/40 resize-none overflow-y-auto custom-scrollbar"
                   style={{ 
+                    height: "56px",
                     background: "rgba(0,0,0,0.3)",
                     color: "#ffffff",
                     boxShadow: trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"
@@ -404,7 +418,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || (!inputValue.trim() && !attachedImage)}
-                  className="absolute right-2.5 grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
+                  className="absolute right-2.5 bottom-[8px] grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
                   style={{ background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", color: "#020617", boxShadow: (isLoading || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)" }}
                 >
                   <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"}`} strokeWidth={2.5} />
