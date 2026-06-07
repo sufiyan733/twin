@@ -13,7 +13,6 @@ import MealsManager from "@/components/MealsManager";
 import GoalDropdown from "@/components/GoalDropdown";
 import CreateGoalModal from "@/components/CreateGoalModal";
 import NutritionAnalytics from "@/components/NutritionAnalytics";
-import ProgressPhotoCard from "@/components/ProgressPhotoCard";
 import {
   Bell,
   Book,
@@ -26,6 +25,7 @@ import {
   Loader2,
   LogOut,
   Menu,
+  MessageCircle,
   Pill,
   Plus,
   Send,
@@ -41,6 +41,7 @@ import {
   Sparkles,
   LayoutList,
   ChevronDown,
+  Search,
 } from "lucide-react";
 
 // ── Icon registry
@@ -1129,13 +1130,13 @@ export default function Page() {
         {/* ── Fullscreen Menu Overlay ────────────────────────────────────── */}
         {isMenuOpen && typeof document !== 'undefined' && createPortal(
           <div 
-            className="fixed inset-0 z-[99999] flex flex-col p-6 animate-in fade-in zoom-in-95 duration-300"
+            className="fixed inset-0 z-[99999] flex flex-col p-6 animate-in fade-in zoom-in-95 duration-300 overflow-hidden"
             style={{
               background: "#111318",
               backgroundImage: "radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%)"
             }}
           >
-            <div className="relative z-10 flex justify-end mb-8">
+            <div className="relative z-10 flex justify-end mb-2">
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
@@ -1145,18 +1146,141 @@ export default function Page() {
               </button>
             </div>
 
-            {/* Progress Photo Card */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both mb-6">
-              <ProgressPhotoCard />
+            {/* Friends List Parent Card - Sleek 20/10 UI */}
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both shrink-0">
+              <div style={{
+                borderRadius: "24px",
+                background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.9) 100%)",
+                boxShadow: "0 32px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
+                padding: "16px 14px", display: "flex", flexDirection: "column", gap: "6px",
+                position: "relative", overflow: "hidden"
+              }}>
+                {/* Subtle top edge glow */}
+                <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)" }} />
+
+                <div style={{ position: "relative", marginBottom: "4px" }}>
+                  <div style={{ position: "absolute", left: "12px", top: "0", bottom: "0", display: "flex", alignItems: "center", pointerEvents: "none", color: "rgba(255,255,255,0.5)" }}>
+                    <Search size={14} strokeWidth={2.5} />
+                  </div>
+                  <input 
+                    type="text" 
+                    placeholder="Search friends..." 
+                    style={{ 
+                      width: "100%", height: "36px", paddingLeft: "34px", paddingRight: "14px",
+                      background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "12px", color: "#ffffff", fontSize: "14px", outline: "none",
+                      boxShadow: "inset 0 2px 8px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05)", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                    }} 
+                    className="focus:border-white/30 focus:bg-black/60 placeholder:text-white/40"
+                  />
+                </div>
+
+                <div 
+                  className="flex flex-col gap-[6px] overflow-y-auto" 
+                  style={{ 
+                    maxHeight: "220px",
+                    msOverflowStyle: "none",
+                    scrollbarWidth: "none"
+                  }}
+                >
+                  {/* Friend Card 1 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Alex Chen</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+
+                  {/* Friend Card 2 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Sarah Miller</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+                  
+                  {/* Friend Card 3 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Mike Ross</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+
+                  {/* Friend Card 4 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Emma Stone</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+
+                  {/* Friend Card 5 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Liam Smith</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+
+                  {/* Friend Card 6 */}
+                  <button className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                      <User size={16} strokeWidth={2.5} />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Olivia Davis</div>
+                    </div>
+                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                      View Profile
+                    </div>
+                  </button>
+                </div>
+              </div>
             </div>
 
+            {/* Dynamic Spacer to perfectly pin content to 100vh bottom */}
+            <div className="flex-1 min-h-0"></div>
+
             {/* Premium Analytics Card inside Menu */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both mt-auto">
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both shrink-0">
               <NutritionAnalytics />
             </div>
 
             {/* Ultra-Premium Profile Pill Docked to Bottom */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-6 duration-500 delay-200 fill-mode-both mt-4">
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-6 duration-500 delay-200 fill-mode-both mt-4 shrink-0">
               <div style={{
                 borderRadius: "32px",
                 background: "radial-gradient(120% 100% at 50% 100%, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.95) 100%)",

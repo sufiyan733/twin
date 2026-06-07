@@ -3,9 +3,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X, Utensils } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget, macros, onNutritionUpdate }) {
-  const [messages, setMessages] = useState([{ sender: 'kai', text: "Hello! I'm Kai. How can I assist you today?" }]);
+  const { data: session } = authClient.useSession();
+  const userName = session?.user?.name?.split(" ")[0] || "there";
+
+  const [messages, setMessages] = useState([{ sender: 'kai', text: `${userName} wassup` }]);
+
+  useEffect(() => {
+    if (session?.user?.name && messages.length === 1 && messages[0].sender === 'kai') {
+      setMessages([{ sender: 'kai', text: `${session.user.name.split(" ")[0]} wassup` }]);
+    }
+  }, [session?.user?.name]);
+
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [attachedImage, setAttachedImage] = useState(null);

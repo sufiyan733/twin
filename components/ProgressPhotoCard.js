@@ -66,7 +66,7 @@ export default function ProgressPhotoCard() {
         boxShadow: "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 0 0 1px rgba(255,255,255,0.03)",
         backdropFilter: "blur(32px)",
         WebkitBackdropFilter: "blur(32px)",
-        minHeight: photo ? "200px" : "140px",
+        minHeight: photo ? "auto" : "140px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -87,12 +87,14 @@ export default function ProgressPhotoCard() {
             src={photo}
             alt="Progress"
             style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
+              maxHeight: "350px",
+              maxWidth: "100%",
+              width: "auto",
+              height: "auto",
+              display: "block",
+              margin: "0 auto",
               zIndex: 0,
+              borderRadius: "16px",
             }}
           />
           {/* Subtle gradient overlay to make buttons visible */}
