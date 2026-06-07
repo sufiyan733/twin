@@ -15,7 +15,7 @@ Before generating or modifying code:
 5. If documentation conflicts with training knowledge, documentation wins.
 
 ## Identity
-Twin is a premium mobile-first wellness OS. Fitness tracking + lightweight task management as one unified experience.
+Twin is a premium mobile wellness OS. Fitness tracking + lightweight task management as one unified experience.
 
 It must feel like: a product crafted by Apple designers with Linear's engineering precision.
 A screen is not done until:
@@ -45,8 +45,6 @@ Next.js (JS) · Tailwind CSS · React hooks · Mobile-first PWA · Dark by defau
 
 ## Design System
 **Surfaces:** `#020617` base → `#0f172a` cards → `#1e293b` overlays → `#0a1628` inputs
-
-**Brand:** Emerald only. `#6ee7b7` primary · `#34d399` hover. No second accent. Ever.
 
 **Text:** `#f1f5f9` primary · `#94a3b8` secondary · `#475569` muted
 

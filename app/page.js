@@ -1414,7 +1414,7 @@ export default function Page() {
                 <div className="flex items-center gap-3.5 mb-8 relative z-10">
                   <div className="grid place-items-center h-10 w-10 rounded-[12px] shrink-0 relative overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0.05) 100%)", border: "1px solid rgba(56,189,248,0.3)", borderTop: "1px solid rgba(56,189,248,0.6)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.3), 0 4px 12px rgba(56,189,248,0.2)" }}>
                     {/* Inner flame core glow */}
-                    <div className="absolute inset-0 m-auto w-6 h-6 rounded-full" style={{ background: "radial-gradient(circle, rgba(125,211,252,0.4) 0%, transparent 70%)", filter: "blur(4px)" }} />
+                    <div className="absolute inset-0 m-auto w-6 h-6 rounded-full animate-[pulse_3s_ease-in-out_infinite]" style={{ background: "radial-gradient(circle, rgba(125,211,252,0.4) 0%, transparent 70%)", filter: "blur(4px)" }} />
                     <Flame size={20} strokeWidth={2.5} className="relative z-10" style={{ color: "#bae6fd", filter: "drop-shadow(0 0 6px rgba(56,189,248,0.9)) drop-shadow(0 2px 2px rgba(0,0,0,0.5))" }} />
                   </div>
                   <div className="flex flex-col justify-center">
@@ -1427,8 +1427,10 @@ export default function Page() {
                 </div>
 
                 <div className="flex items-center justify-between gap-4 relative z-10">
-                  {/* Massive 130px Ring - True Hero Metric */}
-                  <div className="relative flex h-[130px] w-[130px] items-center justify-center shrink-0">
+                  {/* Ring Column */}
+                  <div className="flex flex-col items-center justify-center gap-3 shrink-0">
+                    {/* Massive 130px Ring - True Hero Metric */}
+                    <div className="relative flex h-[130px] w-[130px] items-center justify-center">
                     {/* Radar Scan Holographic Core */}
                     <div className="absolute inset-0 m-auto h-[92px] w-[92px] rounded-full" style={{ background: "conic-gradient(from 145deg at 50% 50%, rgba(16,185,129,0) 0deg, rgba(16,185,129,0.02) 280deg, rgba(16,185,129,0.2) 360deg)", filter: "blur(2px)", border: "1px solid rgba(16,185,129,0.15)" }} />
                     <div className="absolute inset-0 m-auto h-[100px] w-[100px] rounded-full" style={{ background: "radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 60%)" }} />
@@ -1479,8 +1481,11 @@ export default function Page() {
                       </span>
                     </div>
                   </div>
+                  {/* Calorie Label Below Circle */}
+                  <div className="text-[11px] font-black tracking-[0.25em] uppercase" style={{ background: "linear-gradient(180deg, #f8fafc 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}>Calories</div>
+                </div>
 
-                  {/* Horizontal Bars with Glass Housing */}
+                {/* Horizontal Bars with Glass Housing */}
                   <div className="flex flex-1 flex-col justify-center gap-5 pr-1 pl-4 py-4 rounded-[20px] relative">
                     {/* Glass Housing Background */}
                     <div className="absolute inset-0 pointer-events-none rounded-[20px]" style={{ background: "rgba(2,6,23,0.3)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05)" }} />
