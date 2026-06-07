@@ -1353,11 +1353,13 @@ export default function Page() {
             }}>
               {/* Subtle ambient shadow behind the card */}
               <div className="absolute inset-0 rounded-[32px] bg-[#020617] blur-2xl translate-y-4 opacity-50 pointer-events-none" />
+              {/* Physical Noise Texture */}
+              <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.02] mix-blend-overlay rounded-[32px]" style={{ backgroundImage: "url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }} />
 
               {/* Header: Avatar + Name + Close */}
               <div className="relative z-10 flex items-center justify-between">
-                <div className="flex items-center gap-3.5">
-                  <div
+                <div className="flex items-center gap-4">
+                  <div 
                     className="relative grid place-items-center shrink-0 overflow-hidden"
                     style={{
                       width: "48px", height: "48px",
@@ -1369,10 +1371,12 @@ export default function Page() {
                     }}
                   >
                     <div className="absolute inset-0 rounded-[16px] pointer-events-none" style={{ border: "1px solid rgba(0,0,0,0.5)", mixBlendMode: "overlay" }} />
+                    <div className="absolute inset-0 rounded-[16px] pointer-events-none" style={{ border: "1px solid rgba(56,189,248,0.2)", boxShadow: "0 0 12px rgba(56,189,248,0.15)" }} />
                     <User size={22} strokeWidth={2} style={{ color: "#f8fafc", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }} />
                   </div>
-                  <div>
-                    <h2 className="text-[18px] font-bold tracking-tight leading-tight" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{viewingProfile.name}</h2>
+                  <div className="flex flex-col justify-center">
+                    <h2 className="text-[18px] font-bold tracking-tight leading-none" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{viewingProfile.name}</h2>
+                    <div className="text-[9px] font-black tracking-[0.2em] uppercase mt-1.5 px-2 py-0.5 rounded-full inline-block self-start" style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.05))", color: "#fcd34d", border: "1px solid rgba(245,158,11,0.25)", boxShadow: "0 2px 8px rgba(245,158,11,0.1)" }}>PRO MEMBER</div>
                   </div>
                 </div>
                 <button
@@ -1397,8 +1401,10 @@ export default function Page() {
                 borderTop: "1px solid rgba(255,255,255,0.12)",
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.02), 0 20px 40px -10px rgba(0,0,0,0.7)"
               }}>
+                {/* Diagonal Glass Reflection */}
+                <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 35%, transparent 65%, rgba(255,255,255,0.02) 100%)" }} />
                 {/* Top ambient bleed */}
-                <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)" }} />
+                <div className="absolute top-0 left-0 right-0 h-px z-0" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)" }} />
 
                 <div className="flex items-center gap-3.5 mb-8 relative z-10">
                   <div className="grid place-items-center h-10 w-10 rounded-[12px] shrink-0" style={{ background: "linear-gradient(180deg, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0.05) 100%)", border: "1px solid rgba(56,189,248,0.3)", borderTop: "1px solid rgba(56,189,248,0.6)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.3), 0 4px 12px rgba(56,189,248,0.2)" }}>
@@ -1414,10 +1420,13 @@ export default function Page() {
                   {/* Massive 130px Ring - True Hero Metric */}
                   <div className="relative flex h-[130px] w-[130px] items-center justify-center shrink-0">
                     <div className="absolute inset-0 m-auto h-[100px] w-[100px] rounded-full" style={{ background: "radial-gradient(circle, rgba(110,231,183,0.12) 0%, transparent 60%)", filter: "blur(8px)" }} />
-                    <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 130 130">
+                    <svg className="absolute overflow-visible pointer-events-none" style={{ width: "160px", height: "160px", top: "50%", left: "50%", transform: "translate(-50%, -50%) rotate(-90deg)" }} viewBox="0 0 160 160">
                       {/* Background Track */}
-                      <circle cx="65" cy="65" r="58" fill="none" stroke="rgba(15,23,42,0.9)" strokeWidth="12" />
-                      <circle cx="65" cy="65" r="58" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12" style={{ boxShadow: "inset 0 2px 6px rgba(0,0,0,1)" }} />
+                      <circle cx="80" cy="80" r="58" fill="none" stroke="rgba(15,23,42,0.9)" strokeWidth="12" />
+                      <circle cx="80" cy="80" r="58" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12" style={{ boxShadow: "inset 0 2px 6px rgba(0,0,0,1)" }} />
+                      
+                      {/* Precision Inner Gauge */}
+                      <circle cx="80" cy="80" r="46" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4" strokeDasharray="1 4" />
 
                       {/* Foreground Track */}
                       <defs>
@@ -1425,19 +1434,20 @@ export default function Page() {
                           <stop offset="0%" stopColor="#6ee7b7" />
                           <stop offset="100%" stopColor="#059669" />
                         </linearGradient>
-                        <filter id="glow-drop">
+                        {/* Expanded filter bounds to prevent clipping! */}
+                        <filter id="glow-drop" x="-20%" y="-20%" width="140%" height="140%">
                           <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#10b981" floodOpacity="0.5" />
                         </filter>
                       </defs>
-                      <circle cx="65" cy="65" r="58" fill="none" stroke="url(#emerald-gradient-ring)" strokeWidth="12" strokeLinecap="round"
+                      <circle cx="80" cy="80" r="58" fill="none" stroke="url(#emerald-gradient-ring)" strokeWidth="12" strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 58}
                         strokeDashoffset={2 * Math.PI * 58 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
                         filter="url(#glow-drop)"
                       />
 
                       {/* Glowing Leading Edge Dot (The Thumb) */}
-                      <g style={{ transformOrigin: "65px 65px", transform: `rotate(${Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1) * 360}deg)`, transition: "transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <circle cx="65" cy="7" r="4.5" fill="#ffffff" style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 8px #6ee7b7)" }} />
+                      <g style={{ transformOrigin: "80px 80px", transform: `rotate(${Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1) * 360}deg)`, transition: "transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <circle cx="80" cy="22" r="4.5" fill="#ffffff" style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 8px #6ee7b7)" }} />
                       </g>
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
@@ -1469,8 +1479,10 @@ export default function Page() {
                           </div>
                           {/* Deep etched track */}
                           <div className="h-[8px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(2,6,23,0.8)", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.9)" }}>
+                            {/* Precision Tick Marks */}
+                            <div className="absolute inset-0 pointer-events-none z-0" style={{ background: "repeating-linear-gradient(90deg, transparent, transparent calc(25% - 1px), rgba(255,255,255,0.08) 25%)" }} />
                             {/* Physical glass bar */}
-                            <div className="absolute top-0 bottom-0 left-0 rounded-full" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
+                            <div className="absolute top-0 bottom-0 left-0 rounded-full z-10" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
                               {/* Glass edge highlight spanning the whole bar */}
                               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)" }} />
 
@@ -1490,12 +1502,14 @@ export default function Page() {
                 style={{
                   background: "linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,1) 100%)",
                   border: "1px solid rgba(255,255,255,0.06)",
-                  borderTop: "1px solid rgba(255,255,255,0.2)",
+                  borderTop: "1px solid rgba(255,255,255,0.25)",
                   boxShadow: "0 16px 32px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.02), inset 0 -4px 16px rgba(0,0,0,0.9)"
                 }}>
                 {/* Ultra subtle specular top edge */}
-                <div className="absolute top-0 left-8 right-8 h-px bg-white/30 blur-[1px]" />
-
+                <div className="absolute top-0 left-8 right-8 h-px bg-white/40 blur-[1px]" />
+                {/* Inner radial glow behind text */}
+                <div className="absolute inset-0 m-auto w-[60%] h-full rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)" }} />
+                
                 <MessageCircle size={22} strokeWidth={2.5} className="text-[#f8fafc] relative z-10" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} />
                 <span className="text-[17px] font-bold tracking-[0.05em] text-[#f8fafc] relative z-10" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.6)" }}>Message</span>
               </button>
