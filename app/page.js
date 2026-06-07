@@ -1354,7 +1354,7 @@ export default function Page() {
               {/* Subtle ambient shadow behind the card */}
               <div className="absolute inset-0 rounded-[32px] bg-[#020617] blur-2xl translate-y-4 opacity-50 pointer-events-none" />
               {/* Internal Core Light Bloom */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)", filter: "blur(30px)" }} />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 60%)", filter: "blur(40px)" }} />
               {/* Physical Noise Texture */}
               <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.02] mix-blend-overlay rounded-[32px]" style={{ backgroundImage: "url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }} />
 
@@ -1397,7 +1397,7 @@ export default function Page() {
 
               {/* The Ultimate 100/10 Calorie Card with Machined Double-Bezel */}
               <div className="relative z-10 overflow-hidden" style={{
-                background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%)",
+                background: "linear-gradient(180deg, rgba(28,33,45,0.7) 0%, rgba(10,14,20,0.95) 100%)",
                 borderRadius: "28px", padding: "24px",
                 border: "1px solid rgba(148,163,184,0.12)",
                 borderTop: "1px solid rgba(255,255,255,0.2)",
@@ -1457,7 +1457,8 @@ export default function Page() {
                           <stop offset="100%" stopColor="#059669" />
                         </linearGradient>
                         <filter id="glow-drop" x="-20%" y="-20%" width="140%" height="140%">
-                          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#10b981" floodOpacity="0.5" />
+                          <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="#10b981" floodOpacity="0.8" />
+                          <feDropShadow dx="0" dy="6" stdDeviation="12" floodColor="#10b981" floodOpacity="0.4" />
                         </filter>
                       </defs>
                       <circle cx="80" cy="80" r="58" fill="none" stroke="url(#emerald-gradient-ring)" strokeWidth="12" strokeLinecap="round"
@@ -1468,17 +1469,17 @@ export default function Page() {
                       
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center pt-1 z-10">
-                      <span className="text-[36px] leading-none font-bold tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 4px 12px rgba(0,0,0,0.8)" }}>
+                      <span className="text-[38px] leading-none font-black tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255,255,255,0.2)" }}>
                         {viewingProfile.consumed.calories}
                       </span>
-                      <span className="text-[10px] font-bold tracking-widest uppercase mt-1.5 opacity-80" style={{ color: "#94a3b8" }}>
+                      <span className="text-[11px] font-bold tracking-[0.15em] uppercase mt-1.5" style={{ color: "#94a3b8" }}>
                         / {viewingProfile.calorieTarget}
                       </span>
                     </div>
                   </div>
                   {/* Calorie Label Below Circle */}
-                  <div className="mt-1 px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-                    <div className="text-[10px] font-black tracking-[0.2em] uppercase" style={{ background: "linear-gradient(180deg, #f8fafc 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}>Calories</div>
+                  <div className="mt-2 px-3.5 py-1.5 rounded-full bg-[rgba(2,6,23,0.6)] border border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_4px_8px_rgba(0,0,0,0.5)]">
+                    <div className="text-[9px] font-black tracking-[0.25em] uppercase" style={{ background: "linear-gradient(180deg, #ffffff 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.8))" }}>Calories</div>
                   </div>
                 </div>
 
@@ -1496,17 +1497,17 @@ export default function Page() {
                       const pct = Math.min((macro.current / macro.target) * 100, 100);
                       return (
                         <div key={macro.label} className="flex flex-col gap-2 relative">
-                          <div className="flex items-end justify-between leading-none relative z-10">
-                            <span className="text-[10px] font-black uppercase tracking-[0.15em]" style={{ color: "#94a3b8", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>{macro.label}</span>
-                            <div className="flex items-baseline gap-[1px]">
-                              <span className="text-[15px] font-black tabular-nums leading-none" style={{ color: "#f8fafc", textShadow: "0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.1)" }}>{macro.current}</span>
-                              <span className="text-[9px] font-bold tabular-nums tracking-wider uppercase" style={{ color: "#64748b" }}> / {macro.target}g</span>
+                          <div className="flex items-center justify-between leading-none relative z-10">
+                            <span className="text-[10px] font-black uppercase tracking-[0.12em]" style={{ color: "#94a3b8", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>{macro.label}</span>
+                            <div className="flex items-baseline gap-[2px]">
+                              <span className="text-[16px] font-black tabular-nums leading-none" style={{ color: "#ffffff", textShadow: "0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.15)" }}>{macro.current}</span>
+                              <span className="text-[9px] font-bold tabular-nums tracking-[0.1em] uppercase" style={{ color: "#64748b" }}>/ {macro.target}g</span>
                             </div>
                           </div>
                           {/* 3D Deep Canyon Track */}
-                          <div className="h-[10px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(2,6,23,0.9)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 4px 6px rgba(0,0,0,1), inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.08)" }}>
+                          <div className="h-[10px] w-full rounded-full overflow-hidden relative mt-1" style={{ background: "rgba(0,0,0,0.8)", border: "1px solid rgba(255,255,255,0.02)", boxShadow: "inset 0 4px 8px rgba(0,0,0,1), 0 1px 1px rgba(255,255,255,0.05)" }}>
                             {/* Precision Segment Dividers */}
-                            <div className="absolute inset-0 pointer-events-none z-20" style={{ background: "repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(0,0,0,0.6) 6px, rgba(0,0,0,0.6) 8px)" }} />
+                            <div className="absolute inset-0 pointer-events-none z-20" style={{ background: "repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.85) 4px, rgba(0,0,0,0.85) 6px)" }} />
                             
                             {/* Physical glass bar */}
                             <div className="absolute top-0 bottom-0 left-0 z-10" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
