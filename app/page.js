@@ -1375,6 +1375,7 @@ export default function Page() {
                     <div className="absolute inset-0 rounded-[16px] pointer-events-none" style={{ border: "1px solid rgba(0,0,0,0.5)", mixBlendMode: "overlay" }} />
                     <div className="absolute inset-0 rounded-[16px] pointer-events-none" style={{ border: "1px solid rgba(56,189,248,0.2)", boxShadow: "0 0 12px rgba(56,189,248,0.15)" }} />
                     <User size={22} strokeWidth={2} style={{ color: "#f8fafc", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }} />
+                    <div className="absolute bottom-2 right-2 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-[#020617] shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
                   </div>
                   <div className="flex flex-col justify-center">
                     <h2 className="text-[18px] font-bold tracking-tight leading-tight" style={{ background: "linear-gradient(180deg, #f8fafc 0%, #cbd5e1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>{viewingProfile.name}</h2>
@@ -1465,12 +1466,6 @@ export default function Page() {
                         filter="url(#glow-drop)"
                       />
                       
-                      {/* 3D Multi-layer Glass Bead Thumb */}
-                      <g style={{ transformOrigin: "80px 80px", transform: `rotate(${Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1) * 360}deg)`, transition: "transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <circle cx="80" cy="22" r="10" fill="url(#emerald-gradient-ring)" opacity="0.5" style={{ filter: "blur(3px)" }} />
-                        <circle cx="80" cy="22" r="5" fill="#ffffff" style={{ filter: "drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 10px #6ee7b7)" }} />
-                        <circle cx="80" cy="21.5" r="2.5" fill="#e2e8f0" />
-                      </g>
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center pt-1 z-10">
                       <span className="text-[36px] leading-none font-bold tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 4px 12px rgba(0,0,0,0.8)" }}>
@@ -1482,13 +1477,17 @@ export default function Page() {
                     </div>
                   </div>
                   {/* Calorie Label Below Circle */}
-                  <div className="text-[11px] font-black tracking-[0.25em] uppercase" style={{ background: "linear-gradient(180deg, #f8fafc 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}>Calories</div>
+                  <div className="mt-1 px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+                    <div className="text-[10px] font-black tracking-[0.2em] uppercase" style={{ background: "linear-gradient(180deg, #f8fafc 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}>Calories</div>
+                  </div>
                 </div>
 
                 {/* Horizontal Bars with Glass Housing */}
-                  <div className="flex flex-1 flex-col justify-center gap-5 pr-1 pl-4 py-4 rounded-[20px] relative">
-                    {/* Glass Housing Background */}
-                    <div className="absolute inset-0 pointer-events-none rounded-[20px]" style={{ background: "rgba(2,6,23,0.3)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05)" }} />
+                  <div className="flex flex-1 flex-col justify-center gap-5 px-4 py-5 rounded-[24px] relative">
+                    {/* Glass Housing Background with Carbon/Dot Matrix Texture */}
+                    <div className="absolute inset-0 pointer-events-none rounded-[24px] overflow-hidden" style={{ background: "rgba(2,6,23,0.4)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05), inset 0 0 20px rgba(0,0,0,0.8)" }}>
+                      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px)", backgroundSize: "4px 4px" }} />
+                    </div>
                     {[
                       { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color1: "#6ee7b7", color2: "#059669", glow: "rgba(16,185,129,0.5)" },
                       { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color1: "#fcd34d", color2: "#d97706", glow: "rgba(245,158,11,0.5)" },
@@ -1497,24 +1496,25 @@ export default function Page() {
                       const pct = Math.min((macro.current / macro.target) * 100, 100);
                       return (
                         <div key={macro.label} className="flex flex-col gap-2 relative">
-                          <div className="flex items-end justify-between leading-none">
-                            <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
-                            <div className="flex items-baseline gap-0.5">
-                              <span className="text-[15px] font-bold tabular-nums leading-none" style={{ color: "#ffffff", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>{macro.current}</span>
-                              <span className="text-[11px] font-semibold tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
+                          <div className="flex items-end justify-between leading-none relative z-10">
+                            <span className="text-[10px] font-black uppercase tracking-[0.15em]" style={{ color: "#94a3b8", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>{macro.label}</span>
+                            <div className="flex items-baseline gap-[1px]">
+                              <span className="text-[15px] font-black tabular-nums leading-none" style={{ color: "#f8fafc", textShadow: "0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.1)" }}>{macro.current}</span>
+                              <span className="text-[9px] font-bold tabular-nums tracking-wider uppercase" style={{ color: "#64748b" }}> / {macro.target}g</span>
                             </div>
                           </div>
                           {/* 3D Deep Canyon Track */}
-                          <div className="h-[8px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(2,6,23,0.9)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 4px 6px rgba(0,0,0,1), inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.08)" }}>
-                            {/* Precision Tick Marks */}
-                            <div className="absolute inset-0 pointer-events-none z-0" style={{ background: "repeating-linear-gradient(90deg, transparent, transparent calc(25% - 1px), rgba(255,255,255,0.08) 25%)" }} />
+                          <div className="h-[10px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(2,6,23,0.9)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 4px 6px rgba(0,0,0,1), inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.08)" }}>
+                            {/* Precision Segment Dividers */}
+                            <div className="absolute inset-0 pointer-events-none z-20" style={{ background: "repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(0,0,0,0.6) 6px, rgba(0,0,0,0.6) 8px)" }} />
+                            
                             {/* Physical glass bar */}
-                            <div className="absolute top-0 bottom-0 left-0 rounded-full z-10" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
+                            <div className="absolute top-0 bottom-0 left-0 z-10" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
                               {/* Glass edge highlight spanning the whole bar */}
-                              <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)" }} />
+                              <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 100%)" }} />
 
                               {/* Glowing Bright Head at the leading edge */}
-                              <div className="absolute right-0 top-0 bottom-0 w-[5px] bg-white rounded-full" style={{ filter: "blur(0.5px)", boxShadow: "0 0 8px rgba(255,255,255,0.9)" }} />
+                              <div className="absolute right-0 top-0 bottom-0 w-[6px] bg-white" style={{ filter: "blur(0.5px)", boxShadow: "0 0 10px rgba(255,255,255,1)" }} />
                             </div>
                           </div>
                         </div>
