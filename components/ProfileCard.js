@@ -439,7 +439,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...newForm, calorieTarget: target }),
-            }).catch(() => {});
+            }).catch(() => { });
           }
         }
         setCalorieTarget(target);
@@ -557,7 +557,7 @@ export default function ProfileCard({ isOpen, onClose }) {
       <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl shadow-[0_40px_100px_-10px_rgba(0,0,0,1)] backdrop-blur-[24px] overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.12)" }}>
 
         {/* Premium Noise Texture Overlay */}
-        <div 
+        <div
           className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.15]"
           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
         />
@@ -988,7 +988,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       </div>
                     </>
                   ) : (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl  ">
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
                       <Clock size={14} className="text-white/40 shrink-0" />
                       <span className="text-sm font-medium text-white/90">
                         {form.goalPeriod} {currLimit.label}

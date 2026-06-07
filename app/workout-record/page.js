@@ -308,10 +308,30 @@ const CSS = `
   }
 
   html, body {
-    background: radial-gradient(circle at 15% 0%, #1c1f26 0%, #06070a 100%);
+    background: #020305;
     height: 100%;
     overflow-x: hidden;
     max-width: 100vw;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.06) 0%, transparent 60%),
+      radial-gradient(circle at 120% 80%, rgba(255,255,255,0.02) 0%, transparent 50%),
+      radial-gradient(circle at -20% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    z-index: -1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
   }
 
   .wl-app {
@@ -896,58 +916,64 @@ const CSS = `
   }
 /* ── ADD EXERCISE MODAL ── */
 .wl-modal-overlay {
-  position:fixed; inset:0; z-index:500;
-  display:flex; align-items:center; justify-content:center;
-  padding:20px;
-  background: rgba(2, 6, 23, 0.80);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  animation: wl-fadeIn 0.25s ease-out;
+  position: fixed; inset: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  /* Deep obsidian blur with vignette */
+  background: radial-gradient(circle at 50% 50%, rgba(6,7,10,0.4) 0%, rgba(0,0,0,0.95) 100%);
+  backdrop-filter: blur(32px) saturate(120%);
+  -webkit-backdrop-filter: blur(32px) saturate(120%);
+  animation: wl-fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.wl-modal-overlay::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: -1;
 }
 @keyframes wl-fadeIn {
-  from{opacity:0; backdrop-filter:blur(0px);}
-  to{opacity:1; backdrop-filter:blur(24px);}
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(32px); }
 }
 
 .wl-modal-card {
   position: relative;
-  background: #0b1120;
+  /* Anodized Titanium Background */
+  background: linear-gradient(160deg, #15171d 0%, #06070a 100%);
   border-radius: 28px;
-  padding: 32px;
+  padding: 36px 32px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 32px 64px -16px rgba(0,0,0,0.8);
-  animation: wl-modalIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 420px;
+  border: none;
+  /* Physical Bevel: Inner top highlight, outer dark rim, outer bright hairline */
+  box-shadow: 
+    inset 0 1px 1px rgba(255,255,255,0.15),
+    inset 0 0 40px rgba(255,255,255,0.02),
+    0 40px 80px -20px rgba(0,0,0,1),
+    0 0 0 1px rgba(255,255,255,0.05);
+  animation: wl-modalIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   overflow: hidden;
 }
 
-/* Crystal Glow Top Edge */
+/* Ambient Edge Light */
 .wl-modal-card::before {
   content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #ffffff, #e2e8f0, transparent);
-  border-radius: 50%;
-  filter: blur(1px);
-  opacity: 0.6;
+  position: absolute; top: 0; left: 15%; right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  box-shadow: 0 0 24px 3px rgba(255,255,255,0.15);
+  z-index: 2;
 }
 
-/* Deep Inner Glow */
+/* Metallic Grain */
 .wl-modal-card::after {
-  content: '';
-  position: absolute;
-  top: -100%; left: -100%;
-  width: 300%; height: 300%;
-  background: radial-gradient(circle at 30% 30%, rgba(96,165,250,0.03), transparent 60%);
-  pointer-events: none;
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; mix-blend-mode: overlay;
 }
 
 @keyframes wl-modalIn {
-  from{opacity:0; transform:scale(0.94) translateY(20px);}
-  to{opacity:1; transform:scale(1) translateY(0);}
+  from { opacity: 0; transform: scale(0.92) translateY(24px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .wl-modal-title {
@@ -956,16 +982,12 @@ const CSS = `
   font-size: 24px; font-weight: 700;
   margin-bottom: 4px;
   letter-spacing: -0.02em;
-  /* Premium Crystal Blue Text Gradient */
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #f1f5f9;
 }
 
 .wl-modal-sub {
   position: relative; z-index: 1;
-  font-size: 14px; color: #94a3b8;
+  font-size: 14px; color: rgba(255,255,255,0.5);
   margin-bottom: 28px;
 }
 
@@ -974,7 +996,7 @@ const CSS = `
   font-size: 11px; font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #64748b;
+  color: rgba(255,255,255,0.4);
   margin-bottom: 12px;
   display: block;
 }
@@ -991,30 +1013,28 @@ const CSS = `
   flex: 1;
   min-width: 0;
   padding: 12px 2px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.02);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   font-family: var(--body);
-  color: #64748b;
+  color: rgba(255,255,255,0.5);
 }
 .wl-equip-btn:hover {
   background: rgba(255,255,255,0.04);
-  color: #cbd5e1;
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.08);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.12);
 }
 .wl-equip-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.97);
 }
 .wl-equip-btn.active {
   border-color: #ffffff;
   background: rgba(255,255,255,0.12);
   color: #ffffff;
-  box-shadow: 0 0 24px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.05);
-  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
 }
 .wl-equip-btn .eq-icon {
   font-size: 16px; font-weight: 600;
@@ -1029,22 +1049,21 @@ const CSS = `
   position: relative; z-index: 1;
   width:100%;
   height: 52px;
-  background: #050b16;
-  border: 1px solid rgba(255,255,255,0.06);
+  background: #06070a;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   padding: 0 16px;
   font-family: var(--body);
-  font-size: 15px;
-  color: #f8fafc;
+  font-size: 16px;
+  color: #f1f5f9;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   margin-bottom: 28px;
 }
-.wl-modal-input::placeholder { color: #475569; }
+.wl-modal-input::placeholder { color: rgba(255,255,255,0.3); }
 .wl-modal-input:focus {
   border-color: #ffffff;
-  background: #050b16;
-  box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 0 0 1px #ffffff, 0 0 20px rgba(255,255,255,0.15);
 }
 
 .wl-modal-actions {
@@ -1054,59 +1073,43 @@ const CSS = `
 .wl-modal-btn {
   flex: 1;
   height: 52px;
-  border-radius: 16px;
+  border-radius: 12px;
   font-family: var(--body);
   font-size: 15px; font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: none;
   position: relative;
   overflow: hidden;
 }
 
 .wl-modal-btn.cancel {
-  background: rgba(255,255,255,0.02);
-  color: #64748b;
-  border: 1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .wl-modal-btn.cancel:hover { 
   background: rgba(255,255,255,0.06); 
-  color: #f8fafc;
-  border-color: rgba(255,255,255,0.08);
-}
-.wl-modal-btn.cancel:active { transform: scale(0.96); }
-
-/* Premium Crystal Blue CTA */
-.wl-modal-btn.add {
-  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
   color: #ffffff;
-  box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.12);
 }
-.wl-modal-btn.add::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -200%;
-  width: 200%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  transition: left 0.8s ease;
-}
-.wl-modal-btn.add:hover:not(:disabled)::after {
-  left: 200%;
+.wl-modal-btn.cancel:active { transform: scale(0.97); }
+
+.wl-modal-btn.add {
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.3);
 }
 .wl-modal-btn.add:hover:not(:disabled) { 
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-  box-shadow: 0 8px 32px rgba(255,255,255,0.3);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(255,255,255,0.45);
 }
-.wl-modal-btn.add:active { transform: scale(0.96); }
+.wl-modal-btn.add:active { transform: scale(0.97); }
 .wl-modal-btn.add:disabled {
   opacity: 0.25;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
-}
-.wl-modal-btn.add:disabled::after {
-  display: none;
 }
 
   /* ── TOAST ── */
@@ -1374,7 +1377,6 @@ function AddExerciseModal({ isOpen, onClose, onAdd, currentMuscle }) {
           </div>
         </form>
       </div>
-      <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
     </div>
   );
 }
@@ -1520,10 +1522,16 @@ export default function WorkoutLogger() {
       if (!next[muscle][groupKey]) {
         next[muscle][groupKey] = [];
       }
-      next[muscle][groupKey] = [...next[muscle][groupKey], createExercise(exerciseName)];
+      const newEx = createExercise(exerciseName);
+      newEx.open = true;
+      next[muscle][groupKey] = [...next[muscle][groupKey], newEx];
       return next;
     });
     setModalOpen(false);
+    setOpenGroups((prev) => ({
+      ...prev,
+      [`${muscle}-${equipmentType}`]: true,
+    }));
     showToast(`✨ Added "${exerciseName}" to ${equipmentType}`);
   };
 
@@ -1828,6 +1836,7 @@ export default function WorkoutLogger() {
             </div>
           </div>
         )}
+        <KaiAssistant isOpen={isKaiOpen} onClose={() => setIsKaiOpen(false)} />
       </div>
     </>
   );
