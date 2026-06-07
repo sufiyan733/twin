@@ -361,6 +361,30 @@ const CSS = `
 
   
 
+  /* ── SPLASH SCREEN ── */
+  .wl-splash {
+    position: fixed; inset: 0;
+    z-index: 9999;
+    background: #020305;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .wl-splash.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .wl-splash-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: splash-scale 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  @keyframes splash-scale {
+    0% { transform: scale(1.03); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
   /* ── HEADER ── */
   .wl-header {
     position:sticky;
@@ -1431,11 +1455,20 @@ export default function WorkoutLogger() {
   const [openGroups, setOpenGroups] = useState({});
   const [mounted, setMounted] = useState(false);
   const [isKaiOpen, setIsKaiOpen] = useState(false);
+  const [splashState, setSplashState] = useState("visible");
 
   useEffect(() => {
     const handler = () => setIsKaiOpen(true);
     window.addEventListener("twin:open-kai", handler);
-    return () => window.removeEventListener("twin:open-kai", handler);
+    
+    const fadeTimer = setTimeout(() => setSplashState("fading"), 1500);
+    const hideTimer = setTimeout(() => setSplashState("hidden"), 2100);
+    
+    return () => {
+      window.removeEventListener("twin:open-kai", handler);
+      clearTimeout(fadeTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -1645,6 +1678,13 @@ export default function WorkoutLogger() {
   return (
     <>
       <style>{CSS}</style>
+      
+      {splashState !== "hidden" && (
+        <div className={`wl-splash ${splashState === "fading" ? "fade-out" : ""}`}>
+          <img src="/opening.png" alt="Twin OS" className="wl-splash-img" />
+        </div>
+      )}
+
       <div className="wl-app">
         <Confetti active={showCelebration} />
 
