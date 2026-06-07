@@ -180,7 +180,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
       {/* Card Modal */}
       <div 
-        className="relative w-full max-w-[380px] rounded-[28px] px-6 pt-6 pb-6 animate-in zoom-in-90 fade-in duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] overflow-hidden"
+        className="relative w-full max-w-[380px] mb-24 rounded-[28px] px-6 pt-6 pb-6 animate-in zoom-in-90 fade-in duration-400 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] overflow-hidden"
         style={{ 
           background: "linear-gradient(160deg, #15171d 0%, #06070a 100%)", 
           border: "none",
