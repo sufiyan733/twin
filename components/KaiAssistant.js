@@ -196,8 +196,9 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 0 40px rgba(255,255,255,0.02), 0 40px 80px -20px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05), 0 0 40px rgba(255,255,255,0.03)"
         }}
       >
-        {/* Subtle Edge Light */}
-        <div className="absolute top-0 left-[15%] right-[15%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)", boxShadow: "0 1px 12px 1px rgba(255,255,255,0.15)" }} />
+        {/* Ultra-Premium Edge Bloom */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", boxShadow: "0 1px 25px 2px rgba(255,255,255,0.15)" }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)", boxShadow: "0 1px 15px 1px rgba(255,255,255,0.25)" }} />
         
         {/* Metallic Grain overlay */}
         <div className="absolute inset-0 pointer-events-none mix-blend-overlay z-0" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")" }} />
@@ -224,8 +225,8 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             <h2 className="text-[26px] font-bold tracking-[-0.03em] leading-none text-white mb-1.5" style={{ textShadow: "0 2px 10px rgba(255,255,255,0.1)" }}>Kai</h2>
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-40" style={{ boxShadow: "0 0 12px 2px rgba(255,255,255,0.4)" }}></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" style={{ boxShadow: "0 0 8px 1px rgba(255,255,255,0.6)" }}></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-30" style={{ boxShadow: "0 0 10px 1px rgba(255,255,255,0.3)" }}></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" style={{ boxShadow: "0 0 6px 1px rgba(255,255,255,0.5)" }}></span>
               </span>
               <p className="text-[14px] text-white/60 leading-none font-medium tracking-wide">AI Assistant</p>
             </div>
@@ -249,17 +250,15 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             {messages.map((msg, idx) => (
               msg.sender === "kai" ? (
                 <div key={idx} className="flex items-end gap-3 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-                  <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full border border-white/5" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05)" }}>
-                    <Sparkles size={12} className="text-white/70" />
+                  <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
+                    <Sparkles size={12} className="text-white" />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <div 
                       className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5"
                       style={{ 
                         background: "linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)", 
-                        border: "1px solid rgba(255,255,255,0.04)",
-                        borderTop: "1px solid rgba(255,255,255,0.06)",
-                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.2)",
+                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.08), 0 4px 15px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03)",
                         backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)"
                       }}
                     >
@@ -318,10 +317,10 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           </div>
 
           {/* Input Area */}
-          <div className="flex flex-col gap-6 mt-2 shrink-0">
+          <div className="flex flex-col mt-2 shrink-0">
             {/* Image Preview */}
             {attachedImage && (
-              <div className="relative self-start ml-1">
+              <div className="relative self-start ml-1 mb-4">
                 <img src={attachedImage} alt="Preview" className="h-16 w-16 object-cover rounded-xl border border-white/[0.1] shadow-md" />
                 <button
                   onClick={() => setAttachedImage(null)}
@@ -332,34 +331,25 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
               </div>
             )}
 
-            {/* Food Log Toggle */}
-            <div className="flex flex-col gap-3">
-              <label className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/30 ml-1">Mode</label>
-              <button
-                onClick={() => setTrackFood(v => !v)}
-                className="flex items-center justify-between w-full rounded-[18px] px-4 h-[56px] transition-all duration-400 active:scale-[0.98]"
-                style={{
-                  background: trackFood ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.02)",
-                  border: `1px solid ${trackFood ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)"}`,
-                  boxShadow: trackFood ? "0 0 20px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.1)" : "none",
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <Utensils size={18} className={trackFood ? "text-[#f8fafc]" : "text-white/30"} strokeWidth={1.8} />
-                  <span className={`text-[15px] font-medium leading-none ${trackFood ? "text-[#f8fafc]" : "text-white/40"}`}>
-                    Food Log
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-end justify-between px-1">
+                <label className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/30">Message Kai</label>
+                
+                {/* Compact Mode Pill */}
+                <button
+                  onClick={() => setTrackFood(v => !v)}
+                  className="flex items-center gap-1.5 rounded-[12px] px-3 py-1.5 transition-all duration-300 active:scale-[0.92]"
+                  style={{
+                    background: trackFood ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.03)",
+                    boxShadow: trackFood ? "inset 0 1px 1px rgba(255,255,255,0.2), 0 0 15px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.2)" : "0 0 0 1px rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <Utensils size={12} className={trackFood ? "text-white" : "text-white/40"} strokeWidth={trackFood ? 2.5 : 2} style={{ filter: trackFood ? "drop-shadow(0 0 4px rgba(255,255,255,0.6))" : "none" }} />
+                  <span className={`text-[11px] font-semibold leading-none tracking-[0.04em] ${trackFood ? "text-white" : "text-white/40"}`} style={{ textShadow: trackFood ? "0 0 6px rgba(255,255,255,0.5)" : "none", marginTop: "1px" }}>
+                    {trackFood ? "Log Mode" : "Food Log"}
                   </span>
-                </div>
-                <div className="flex items-center">
-                  <span className={`text-[10px] font-semibold uppercase tracking-[0.12em] ${trackFood ? "text-[#f8fafc]" : "text-white/20"}`}>
-                    {trackFood ? "Active" : "Off"}
-                  </span>
-                </div>
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <label className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/30 ml-1">Message Kai</label>
+                </button>
+              </div>
               <div className="relative flex items-center">
                 <div className="absolute left-2 flex items-center gap-1 z-10">
                   <input
@@ -391,27 +381,22 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                   placeholder={trackFood ? "Tell Kai what you ate..." : "Ask Kai..."}
-                  className="w-full h-[56px] rounded-[20px] pl-[96px] pr-14 text-[16px] outline-none transition-all duration-300 placeholder:text-white/30"
+                  className="w-full h-[56px] rounded-[20px] pl-[96px] pr-14 text-[16px] outline-none transition-all duration-300 placeholder:text-white/40"
                   style={{ 
-                    background: "#040508",
-                    border: `1px solid ${trackFood ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)"}`,
+                    background: "rgba(0,0,0,0.3)",
                     color: "#ffffff",
-                    boxShadow: trackFood ? "0 0 20px rgba(255,255,255,0.05), inset 0 2px 6px rgba(0,0,0,0.4)" : "inset 0 2px 6px rgba(0,0,0,0.4)"
+                    boxShadow: trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"
                   }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = trackFood ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.2)"; e.currentTarget.style.boxShadow = trackFood ? "0 0 25px rgba(255,255,255,0.1), inset 0 2px 6px rgba(0,0,0,0.4)" : "0 0 15px rgba(255,255,255,0.05), inset 0 2px 6px rgba(0,0,0,0.4)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = trackFood ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)"; e.currentTarget.style.boxShadow = trackFood ? "0 0 20px rgba(255,255,255,0.05), inset 0 2px 6px rgba(0,0,0,0.4)" : "inset 0 2px 6px rgba(0,0,0,0.4)"; }}
+                  onFocus={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2), 0 0 15px rgba(255,255,255,0.05)"; }}
+                  onBlur={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"; }}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || (!inputValue.trim() && !attachedImage)}
-                  className="absolute right-2.5 grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] group disabled:pointer-events-none"
-                  style={{ 
-                    background: (isLoading || (!inputValue.trim() && !attachedImage)) ? "rgba(255,255,255,0.03)" : "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", 
-                    color: (isLoading || (!inputValue.trim() && !attachedImage)) ? "rgba(255,255,255,0.2)" : "#020617", 
-                    boxShadow: (isLoading || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)"
-                  }}
+                  className="absolute right-2.5 grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
+                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", color: "#020617", boxShadow: (isLoading || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)" }}
                 >
-                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-[1px] group-hover:-translate-y-[1px]"}`} strokeWidth={2.5} />
+                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"}`} strokeWidth={2.5} />
                 </button>
               </div>
             </div>
