@@ -1341,60 +1341,83 @@ export default function Page() {
             onClick={() => setViewingProfile(null)}
           />
           <div className="relative w-full max-w-[360px] animate-in zoom-in-95 duration-300 fill-mode-both" style={{
-            borderRadius: "32px",
-            background: "linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,1) 100%)",
-            boxShadow: "0 32px 64px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
+            borderRadius: "28px",
+            background: "rgba(15, 23, 42, 0.45)",
+            backdropFilter: "blur(40px)",
+            WebkitBackdropFilter: "blur(40px)",
+            border: "1px solid rgba(148,163,184,0.08)",
+            borderTop: "1px solid rgba(255,255,255,0.12)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.5)",
             padding: "24px", display: "flex", flexDirection: "column", gap: "24px"
           }}>
+            {/* Subtle ambient shadow behind the card */}
+            <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
+
             {/* Header: Avatar + Name + Close */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div style={{ width: "48px", height: "48px", borderRadius: "16px", background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff" }}>
-                  <User size={24} strokeWidth={2.5} />
+            <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center gap-3.5">
+                <div 
+                  className="grid place-items-center shrink-0"
+                  style={{
+                    width: "48px", height: "48px",
+                    borderRadius: "14px",
+                    background: "linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderTop: "1px solid rgba(255,255,255,0.12)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
+                  }}
+                >
+                  <User size={22} strokeWidth={2} style={{ color: "#f8fafc" }} />
                 </div>
                 <div>
-                  <h2 className="text-[18px] font-bold tracking-tight" style={{ fontFamily: "var(--font-display)", color: "#ffffff" }}>{viewingProfile.name}</h2>
-                  <div className="text-[11px] font-semibold tracking-wider uppercase" style={{ color: "#94a3b8" }}>Active Now</div>
+                  <h2 className="text-[17px] font-semibold tracking-tight leading-tight" style={{ color: "#f8fafc" }}>{viewingProfile.name}</h2>
+                  <div className="text-[12px] font-medium mt-0.5" style={{ color: "#94a3b8" }}>Premium Member</div>
                 </div>
               </div>
-              <button onClick={() => setViewingProfile(null)} className="h-8 w-8 rounded-full flex items-center justify-center transition-colors hover:bg-white/10" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                <Plus size={16} strokeWidth={3} className="rotate-45 text-white" />
+              <button 
+                onClick={() => setViewingProfile(null)} 
+                className="relative grid place-items-center w-10 h-10 rounded-full transition-all active:scale-[0.95] group" 
+                style={{ background: "transparent" }}
+              >
+                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(255,255,255,0.05)" }} />
+                <Plus size={20} strokeWidth={2} className="rotate-45 relative z-10 transition-colors group-hover:text-white" style={{ color: "#64748b" }} />
               </button>
             </div>
 
             {/* Calorie Card Mini */}
-            <div style={{
-              background: "rgba(0,0,0,0.4)", borderRadius: "20px", padding: "16px",
-              border: "1px solid rgba(255,255,255,0.08)", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.5)"
+            <div className="relative z-10" style={{
+              background: "rgba(255,255,255,0.02)", borderRadius: "20px", padding: "18px",
+              border: "1px solid rgba(255,255,255,0.04)",
+              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.2)"
             }}>
-              <div className="flex items-center gap-2 mb-5">
-                <div className="grid place-items-center h-7 w-7 rounded-lg" style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}>
+              <div className="flex items-center gap-2.5 mb-5">
+                <div className="grid place-items-center h-7 w-7 rounded-lg shrink-0" style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}>
                   <Flame size={14} style={{ color: "#60a5fa" }} />
                 </div>
-                <div>
-                  <h3 className="text-[14px] font-bold tracking-tight leading-tight" style={{ color: "#ffffff" }}>Today's Intake</h3>
-                  <div className="text-[9px] font-semibold tracking-wider uppercase text-slate-400">Daily Tracker</div>
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-[14px] font-semibold tracking-tight leading-none" style={{ color: "#f8fafc" }}>Today's Intake</h3>
+                  <div className="text-[9px] font-semibold tracking-widest uppercase mt-1" style={{ color: "#64748b" }}>Daily Tracker</div>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
-                <div className="relative flex h-[80px] w-[80px] items-center justify-center shrink-0">
-                  <div className="absolute inset-0 m-auto h-[48px] w-[48px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+                <div className="relative flex h-[84px] w-[84px] items-center justify-center shrink-0">
+                  <div className="absolute inset-0 m-auto h-[52px] w-[52px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
                   <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
                     <circle cx="50" cy="50" r="44" fill="none" stroke="#6ee7b7" strokeWidth="8" strokeLinecap="round"
                       strokeDasharray={2 * Math.PI * 44}
                       strokeDashoffset={2 * Math.PI * 44 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
-                      style={{ filter: "drop-shadow(0 0 6px rgba(110,231,183,0.4))", transition: "stroke-dashoffset 1s ease-out" }}
+                      style={{ filter: "drop-shadow(0 0 8px rgba(110,231,183,0.3))", transition: "stroke-dashoffset 1s ease-out" }}
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
-                    <span className="text-[18px] leading-none font-bold tabular-nums" style={{ color: "#ffffff" }}>{viewingProfile.consumed.calories}</span>
-                    <span className="text-[8px] font-semibold tracking-wide tabular-nums mt-1" style={{ color: "#94a3b8" }}>/ {viewingProfile.calorieTarget}</span>
+                    <span className="text-[18px] leading-none font-bold tabular-nums tracking-tight" style={{ color: "#f8fafc" }}>{viewingProfile.consumed.calories}</span>
+                    <span className="text-[9px] font-medium tracking-wide tabular-nums mt-1" style={{ color: "#94a3b8" }}>/ {viewingProfile.calorieTarget}</span>
                   </div>
                 </div>
 
-                <div className="flex flex-1 flex-col justify-center gap-2 pl-6 pr-1">
+                <div className="flex flex-1 flex-col justify-center gap-2.5 pl-6 pr-1">
                   {[
                     { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color: "#10b981" },
                     { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color: "#f59e0b" },
@@ -1403,11 +1426,11 @@ export default function Page() {
                     const pct = Math.min((macro.current / macro.target) * 100, 100);
                     return (
                       <div key={macro.label} className="flex flex-col gap-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#94a3b8" }}>{macro.label}</span>
+                        <div className="flex items-center justify-between leading-none">
+                          <span className="text-[9px] font-semibold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
                           <div className="flex items-baseline gap-0.5">
-                            <span className="text-[10px] font-bold tabular-nums" style={{ color: "#ffffff" }}>{macro.current}</span>
-                            <span className="text-[8px] font-medium" style={{ color: "#64748b" }}>/ {macro.target}g</span>
+                            <span className="text-[11px] font-bold tabular-nums leading-none" style={{ color: "#f8fafc" }}>{macro.current}</span>
+                            <span className="text-[9px] font-medium tabular-nums" style={{ color: "#64748b" }}>/ {macro.target}</span>
                           </div>
                         </div>
                         <div className="h-[4px] w-full rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}>
@@ -1421,9 +1444,16 @@ export default function Page() {
             </div>
 
             {/* Action Buttons */}
-            <button className="w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 shadow-lg active:scale-[0.97] transition-transform" style={{ background: "#ffffff", color: "#000000" }}>
-              <MessageCircle size={18} strokeWidth={2.5} />
-              <span className="text-[14px] font-bold tracking-wide">Message</span>
+            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[14px] py-3.5 transition-all active:scale-[0.97] group overflow-hidden" 
+              style={{ 
+                background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderTop: "1px solid rgba(255,255,255,0.15)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.2)"
+              }}>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(255,255,255,0.04)" }} />
+              <MessageCircle size={18} strokeWidth={2} className="relative z-10" style={{ color: "#f8fafc" }} />
+              <span className="text-[14px] font-semibold tracking-wide relative z-10" style={{ color: "#f8fafc" }}>Message</span>
             </button>
           </div>
         </div>,
