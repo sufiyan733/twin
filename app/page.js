@@ -1367,32 +1367,35 @@ export default function Page() {
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
                   }}
                 >
-                  <User size={22} strokeWidth={2} style={{ color: "#f8fafc" }} />
+                  <User size={22} strokeWidth={2} style={{ color: "#f8fafc", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
                 </div>
                 <div>
-                  <h2 className="text-[17px] font-semibold tracking-tight leading-tight" style={{ color: "#f8fafc" }}>{viewingProfile.name}</h2>
+                  <h2 className="text-[18px] font-semibold tracking-tight leading-tight" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>{viewingProfile.name}</h2>
                   <div className="text-[12px] font-medium mt-0.5" style={{ color: "#94a3b8" }}>Premium Member</div>
                 </div>
               </div>
               <button 
                 onClick={() => setViewingProfile(null)} 
                 className="relative grid place-items-center w-10 h-10 rounded-full transition-all active:scale-[0.95] group" 
-                style={{ background: "transparent" }}
+                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}
               >
                 <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(255,255,255,0.05)" }} />
-                <Plus size={20} strokeWidth={2} className="rotate-45 relative z-10 transition-colors group-hover:text-white" style={{ color: "#64748b" }} />
+                <Plus size={20} strokeWidth={2} className="rotate-45 relative z-10 transition-colors group-hover:text-white" style={{ color: "#94a3b8" }} />
               </button>
             </div>
 
-            {/* Calorie Card Mini - 16/10 Refinement */}
-            <div className="relative z-10" style={{
-              background: "linear-gradient(180deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.5) 100%)",
+            {/* 18/10 Calorie Card - Absolute Luxury */}
+            <div className="relative z-10 group/card overflow-hidden" style={{
+              background: "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
               borderRadius: "20px", padding: "18px 20px",
-              border: "1px solid rgba(255,255,255,0.04)",
-              borderTop: "1px solid rgba(255,255,255,0.08)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.3)"
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderTop: "1px solid rgba(255,255,255,0.15)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(0,0,0,0.4)"
             }}>
-              <div className="flex items-center gap-2.5 mb-5">
+              {/* Subtle light sweep effect */}
+              <div className="absolute inset-0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)" }} />
+
+              <div className="flex items-center gap-2.5 mb-5 relative z-10">
                 <div className="grid place-items-center h-7 w-7 rounded-lg shrink-0" style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}>
                   <Flame size={14} style={{ color: "#60a5fa" }} />
                 </div>
@@ -1402,47 +1405,52 @@ export default function Page() {
                 </div>
               </div>
               
-              <div className="flex items-center justify-between">
-                {/* Refined 80px Ring */}
-                <div className="relative flex h-[80px] w-[80px] items-center justify-center shrink-0">
-                  <div className="absolute inset-0 m-auto h-[48px] w-[48px] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 100%)" }} />
+              <div className="flex items-center justify-between relative z-10">
+                {/* Refined 82px Ring with Ambient OLED Glow */}
+                <div className="relative flex h-[82px] w-[82px] items-center justify-center shrink-0">
+                  <div className="absolute inset-0 m-auto h-[60px] w-[60px] rounded-full" style={{ background: "radial-gradient(circle, rgba(110,231,183,0.12) 0%, transparent 70%)", filter: "blur(4px)" }} />
                   <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
-                    <circle cx="50" cy="50" r="44" fill="none" stroke="#6ee7b7" strokeWidth="8" strokeLinecap="round"
-                      strokeDasharray={2 * Math.PI * 44}
-                      strokeDashoffset={2 * Math.PI * 44 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
-                      style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="8" style={{ boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }} />
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#6ee7b7" strokeWidth="8" strokeLinecap="round"
+                      strokeDasharray={2 * Math.PI * 42}
+                      strokeDashoffset={2 * Math.PI * 42 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
+                      style={{ filter: "drop-shadow(0 2px 6px rgba(110,231,183,0.4))", transition: "stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
-                    <span className="text-[18px] leading-none font-bold tabular-nums tracking-tight" style={{ color: "#f8fafc" }}>
+                    <span className="text-[20px] leading-none font-bold tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>
                       {viewingProfile.consumed.calories}
                     </span>
-                    <span className="text-[9px] font-bold tracking-widest uppercase mt-1" style={{ color: "#64748b" }}>
+                    <span className="text-[9px] font-bold tracking-widest uppercase mt-1" style={{ color: "#94a3b8" }}>
                       / {viewingProfile.calorieTarget}
                     </span>
                   </div>
                 </div>
 
-                {/* Sleek Horizontal Bars */}
-                <div className="flex flex-1 flex-col justify-center gap-3 pl-6 pr-1">
+                {/* Sleek Horizontal Bars with Specular Highlights */}
+                <div className="flex flex-1 flex-col justify-center gap-3.5 pl-7 pr-1">
                   {[
-                    { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color: "#10b981" },
-                    { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color: "#f59e0b" },
-                    { label: "Fat", current: viewingProfile.consumed.fats, target: viewingProfile.macros.fats, color: "#f43f5e" }
+                    { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color: "#10b981", glow: "rgba(16,185,129,0.3)" },
+                    { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color: "#f59e0b", glow: "rgba(245,158,11,0.3)" },
+                    { label: "Fat", current: viewingProfile.consumed.fats, target: viewingProfile.macros.fats, color: "#f43f5e", glow: "rgba(244,63,94,0.3)" }
                   ].map((macro) => {
                     const pct = Math.min((macro.current / macro.target) * 100, 100);
                     return (
                       <div key={macro.label} className="flex flex-col gap-1.5">
-                        <div className="flex items-center justify-between leading-none">
+                        <div className="flex items-end justify-between leading-none">
                           <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
                           <div className="flex items-baseline gap-0.5">
-                            <span className="text-[12px] font-bold tabular-nums leading-none" style={{ color: "#f8fafc" }}>{macro.current}</span>
-                            <span className="text-[10px] font-medium tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
+                            <span className="text-[13px] font-bold tabular-nums leading-none" style={{ color: "#ffffff" }}>{macro.current}</span>
+                            <span className="text-[10px] font-semibold tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
                           </div>
                         </div>
-                        <div className="h-[4px] w-full rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.3)" }}>
-                          <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: macro.color }} />
+                        {/* Track with inner shadow */}
+                        <div className="h-[5px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}>
+                          {/* Progress bar with glowing tip */}
+                          <div className="absolute top-0 bottom-0 left-0 rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: macro.color, boxShadow: `0 0 10px ${macro.glow}` }}>
+                            {/* tiny specular highlight at the very end of the bar */}
+                            <div className="absolute right-0 top-0 bottom-0 w-2" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5))" }} />
+                          </div>
                         </div>
                       </div>
                     );
@@ -1451,14 +1459,17 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Apple-Style Crisp White CTA */}
-            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 transition-transform active:scale-[0.97]" 
+            {/* Ultra-Premium Midnight Black CTA */}
+            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 transition-all active:scale-[0.96] overflow-hidden group" 
               style={{ 
-                background: "#f8fafc",
-                boxShadow: "0 4px 16px rgba(255,255,255,0.1)"
+                background: "linear-gradient(180deg, rgba(30,41,59,0.9) 0%, rgba(2,6,23,1) 100%)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                borderTop: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)"
               }}>
-              <MessageCircle size={18} strokeWidth={2.5} className="text-slate-900" />
-              <span className="text-[15px] font-bold tracking-wide text-slate-900">Message</span>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)" }} />
+              <MessageCircle size={18} strokeWidth={2.5} className="text-[#f8fafc] relative z-10 drop-shadow-md" />
+              <span className="text-[15px] font-bold tracking-wide text-[#f8fafc] relative z-10 drop-shadow-md">Message</span>
             </button>
           </div>
         </div>,
