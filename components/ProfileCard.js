@@ -18,16 +18,15 @@ const GENDER_OPTIONS = ["male", "female", "other"];
 
 // ── Theme tokens (goal image palette)
 const T = {
-  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
-  card: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 15%, transparent 35%), linear-gradient(180deg, rgba(25,35,50,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
-  cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 20%, transparent 35%), linear-gradient(180deg, rgba(35,45,60,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
-  border: "rgba(255,255,255,0.12)",
-  accent: "#00d0ff",
-  textPrimary: "#f8fafc",
-  textMuted: "#94a3b8",
-  textFaint: "#475569",
+  bg: "rgba(0, 0, 0, 0.85)",
+  card: "linear-gradient(180deg, rgba(28,30,35,0.95) 0%, rgba(12,14,18,0.98) 100%)",
+  cardAlt: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
+  border: "rgba(255,255,255,0.06)",
+  accent: "#ffffff",
+  textPrimary: "#ffffff",
+  textMuted: "#a1a1aa",
+  textFaint: "#52525b",
 };
-
 
 // ─── Client-side calorie calculation (mirrors backend formula) ─────────────
 // Used as an instant fallback if the DB value is missing.
@@ -112,8 +111,8 @@ function HeightField({ valueCm, onChangeCm, editing }) {
         <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
         <div className="grid grid-cols-2 gap-2">
           {/* cm input */}
-          <div className="flex items-center gap-2 rounded-2xl px-3 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
-            <Ruler size={14} className="text-cyan-400/60 shrink-0" />
+          <div className="flex items-center gap-2 rounded-2xl px-3 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
+            <Ruler size={14} className="text-white/60 shrink-0" />
             <input
               type="number"
               min={100}
@@ -126,8 +125,8 @@ function HeightField({ valueCm, onChangeCm, editing }) {
             <span className="text-[11px] font-medium text-white/30 shrink-0">cm</span>
           </div>
           {/* ft + in inputs */}
-          <div className="flex items-center gap-1.5 rounded-2xl   px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
-            <Ruler size={14} className="text-indigo-400/60 shrink-0" />
+          <div className="flex items-center gap-1.5 rounded-2xl bg-black/40 border border-white/5 px-3 py-2.5 focus-within:border-white/40 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all">
+            <Ruler size={14} className="text-white/60 shrink-0" />
             <input
               type="number"
               min={3}
@@ -161,15 +160,15 @@ function HeightField({ valueCm, onChangeCm, editing }) {
     <div className="flex flex-col gap-1">
       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
       <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
-        <Ruler size={14} className="text-cyan-400/40 shrink-0" />
+        <Ruler size={14} className="text-white/40 shrink-0" />
         <span className="flex-1 text-sm font-medium" style={{ color: T.textPrimary }}>
-          {cm ? cm : <span className="text-white/20 italic">Not set</span>}
+          {cm ? cm : <span className="text-white/30 italic">Not set</span>}
         </span>
         {cm ? (
           <div className="flex items-center gap-1.5 shrink-0">
             <span className="text-[11px] font-medium text-white/30">cm</span>
             <span className="text-white/10">·</span>
-            <span className="text-[11px] font-semibold text-indigo-400/60">{ftInStr}</span>
+            <span className="text-[11px] font-semibold text-white/60">{ftInStr}</span>
           </div>
         ) : null}
       </div>
@@ -183,10 +182,10 @@ function SkeletonLoader() {
     <div className="space-y-6 animate-pulse">
       {/* Avatar & name */}
       <div className="flex items-center gap-4">
-        <div className="h-20 w-20 rounded-full bg-white/5" />
+        <div className="h-20 w-20 rounded-full bg-black/40" />
         <div className="space-y-2 flex-1">
-          <div className="h-5 w-32 rounded-lg bg-white/5" />
-          <div className="h-3.5 w-20 rounded-lg bg-white/5" />
+          <div className="h-5 w-32 rounded-lg bg-black/40" />
+          <div className="h-3.5 w-20 rounded-lg bg-black/40" />
         </div>
       </div>
 
@@ -195,12 +194,12 @@ function SkeletonLoader() {
 
       {/* Personal Info */}
       <div className="space-y-3">
-        <div className="h-3 w-20 rounded bg-white/5" />
+        <div className="h-3 w-20 rounded bg-black/40" />
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-12 rounded-xl bg-white/5" />
-          <div className="h-12 rounded-xl bg-white/5" />
-          <div className="h-12 rounded-xl bg-white/5" />
-          <div className="h-12 rounded-xl bg-white/5" />
+          <div className="h-12 rounded-xl bg-black/40" />
+          <div className="h-12 rounded-xl bg-black/40" />
+          <div className="h-12 rounded-xl bg-black/40" />
+          <div className="h-12 rounded-xl bg-black/40" />
         </div>
       </div>
 
@@ -208,24 +207,24 @@ function SkeletonLoader() {
 
       {/* Training */}
       <div className="space-y-3">
-        <div className="h-3 w-24 rounded bg-white/5" />
+        <div className="h-3 w-24 rounded bg-black/40" />
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-12 rounded-xl bg-white/5" />
-          <div className="h-12 rounded-xl bg-white/5" />
+          <div className="h-12 rounded-xl bg-black/40" />
+          <div className="h-12 rounded-xl bg-black/40" />
         </div>
-        <div className="h-16 rounded-xl bg-white/5" />
+        <div className="h-16 rounded-xl bg-black/40" />
       </div>
 
       <div className="h-px bg-white/[0.06]" />
 
       {/* Goals */}
       <div className="space-y-3">
-        <div className="h-3 w-16 rounded bg-white/5" />
+        <div className="h-3 w-16 rounded bg-black/40" />
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-12 rounded-xl bg-white/5" />
-          <div className="h-12 rounded-xl bg-white/5" />
+          <div className="h-12 rounded-xl bg-black/40" />
+          <div className="h-12 rounded-xl bg-black/40" />
         </div>
-        <div className="h-16 rounded-xl bg-white/5" />
+        <div className="h-16 rounded-xl bg-black/40" />
       </div>
     </div>
   );
@@ -241,7 +240,7 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
         <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
           {label}
         </span>
-        <div className="flex items-center gap-2 rounded-2xl   px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+        <div className="flex items-center gap-2 rounded-2xl bg-black/40 border border-white/5 px-3 py-2.5 focus-within:border-white/40 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all">
           {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
           <input
             autoFocus
@@ -264,10 +263,10 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
         {label}
       </span>
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
         {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
         <span className="flex-1 text-sm font-medium text-white/90">
-          {value || <span className="italic" style={{ color: T.textFaint }}>Not set</span>}
+          {value || <span className="italic text-white/30">Not set</span>}
         </span>
         {unit && value && <span className="text-[11px] font-medium" style={{ color: T.textMuted }}>{unit}</span>}
       </div>
@@ -285,15 +284,15 @@ function CalorieTargetField({ value, onChange, editing }) {
     return (
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-1.5 ml-1">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-400/70">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/60">
             Daily Calorie Target
           </span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-white/5  px-1.5 py-0.5 rounded-full">
+          <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-black/40  px-1.5 py-0.5 rounded-full">
             Manual Override
           </span>
         </div>
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl   focus-within:border-amber-400/40 focus-within:shadow-[0_0_0_3px_rgba(251,191,36,0.12)] transition-all">
-          <Flame size={15} className="text-amber-400/60 shrink-0" />
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl   focus-within:border-white/30 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.1)] transition-all">
+          <Flame size={15} className="text-white/90/60 shrink-0" />
           <input
             type="number"
             min={500}
@@ -315,21 +314,21 @@ function CalorieTargetField({ value, onChange, editing }) {
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center gap-1.5 ml-1">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-400/70">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/60">
           Daily Calorie Target
         </span>
-        <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/50 bg-amber-400/10 border border-amber-400/20 px-1.5 py-0.5 rounded-full">
+        <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-black/40 border border-white/10 px-1.5 py-0.5 rounded-full">
           Auto
         </span>
       </div>
-      <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-amber-400/[0.05] border border-amber-400/20 shadow-[0_0_20px_rgba(251,191,36,0.08)]">
-        <Flame size={15} className="text-amber-400/70 shrink-0 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
+      <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.03] border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.03)]">
+        <Flame size={15} className="text-white/60 shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
         {hasValue ? (
           <>
-            <span className="flex-1 text-sm font-bold text-amber-300">
+            <span className="flex-1 text-sm font-bold text-white">
               {Number(value).toLocaleString()}
             </span>
-            <span className="text-[11px] font-semibold text-amber-400/50 shrink-0">kcal / day</span>
+            <span className="text-[11px] font-semibold text-white/40 shrink-0">kcal / day</span>
           </>
         ) : (
           <span className="flex-1 text-sm text-white/20 italic">
@@ -549,16 +548,22 @@ export default function ProfileCard({ isOpen, onClose }) {
     <div className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 backdrop-blur-2xl animate-in fade-in duration-300"
+        className="absolute inset-0 backdrop-blur-[40px] saturate-50 animate-in fade-in duration-300"
         style={{ background: T.bg }}
         onClick={handleClose}
       />
 
       {/* Premium card – now uses flex column so the save bar never overlaps content */}
-      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] backdrop-blur-[24px] overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl shadow-[0_40px_100px_-10px_rgba(0,0,0,1)] backdrop-blur-[24px] overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+
+        {/* Premium Noise Texture Overlay */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.15]"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+        />
 
         {/* Inner ambient glow */}
-        <div className="absolute top-0 left-0 w-full h-44 bg-gradient-to-b from-cyan-500/8 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 w-full h-44 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
 
         {/* ================================================================ */}
         {/*  DISCARD CONFIRMATION DIALOG (shown as overlay inside card)      */}
@@ -573,7 +578,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               <div className="flex gap-3 justify-end">
                 <button
                   onClick={() => setShowDiscardDialog(false)}
-                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-white/5 text-white/70 hover:bg-white/10 transition-colors"
+                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-black/40 text-white/70 hover:bg-white/10 transition-colors"
                 >
                   Keep Editing
                 </button>
@@ -611,7 +616,7 @@ export default function ProfileCard({ isOpen, onClose }) {
             <div className="flex items-center gap-4">
               {/* Gradient ring avatar */}
               <div className="relative shrink-0">
-                <div className="h-[76px] w-[76px] rounded-full p-[2px]" style={{ background: `linear-gradient(135deg, ${T.accent}80, rgba(255,255,255,0.1), ${T.accent}80)`, boxShadow: `0 0 25px ${T.accent}40` }}>
+                <div className="h-[76px] w-[76px] rounded-full p-[2px]" style={{ background: `linear-gradient(145deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.2) 100%)`, boxShadow: `0 8px 32px rgba(0,0,0,0.8)` }}>
                   <div className="flex items-center justify-center h-full w-full rounded-full bg-[#020617] backdrop-blur-sm">
                     <span className="text-xl font-bold" style={{ color: T.textPrimary }}>{initials}</span>
                   </div>
@@ -619,7 +624,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                 {/* Status dot (green – indicates active) */}
                 <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#020617] shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                 {/* Verification badge (mock) */}
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-cyan-500 rounded-full border-2 border-[#020617] flex items-center justify-center shadow-[0_0_8px_rgba(0,208,255,0.6)]">
+                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-cyan-500 rounded-full border-2 border-[#020617] flex items-center justify-center shadow-[0_0_8px_rgba(255,255,255,0.6)]">
                   <Shield size={10} className="text-white" strokeWidth={3} />
                 </span>
               </div>
@@ -631,16 +636,16 @@ export default function ProfileCard({ isOpen, onClose }) {
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="bg-white/5  rounded-lg px-2.5 py-1 text-sm font-semibold text-white outline-none focus:border-cyan-400/50 shadow-inner"
+                    className="bg-black/40  rounded-lg px-2.5 py-1 text-sm font-semibold text-white outline-none focus:border-white/50 shadow-inner"
                     placeholder="Name"
                   />
                   <div className="relative">
-                    <AtSign size={10} className="absolute left-2.5 top-1.5 text-cyan-400/70" />
+                    <AtSign size={10} className="absolute left-2.5 top-1.5 text-white/70" />
                     <input
                       type="text"
                       value={form.username}
                       onChange={(e) => setForm({ ...form, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
-                      className="bg-white/5  rounded-lg pl-6 pr-2.5 py-0.5 text-xs text-cyan-400/70 outline-none focus:border-cyan-400/50 w-full shadow-inner"
+                      className="bg-black/40  rounded-lg pl-6 pr-2.5 py-0.5 text-xs text-white/70 outline-none focus:border-white/50 w-full shadow-inner"
                       placeholder="Username"
                     />
                   </div>
@@ -650,7 +655,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                   <h2 className="text-xl font-semibold text-white tracking-tight leading-tight">
                     {session?.user?.name || "Profile"}
                   </h2>
-                  <p className="text-xs text-cyan-400/70 flex items-center gap-1 mt-1 font-medium">
+                  <p className="text-xs text-white/70 flex items-center gap-1 mt-1 font-medium">
                     <AtSign size={11} /> {username || "—"}
                   </p>
                 </div>
@@ -712,7 +717,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90" style={{ color: T.accent }}>
                     Personal Info
                   </h3>
                 </div>
@@ -741,8 +746,8 @@ export default function ProfileCard({ isOpen, onClose }) {
                             type="button"
                             onClick={() => setForm({ ...form, gender: g })}
                             className={`flex-1 rounded-xl text-xs font-semibold border transition-all uppercase ${form.gender === g
-                              ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-[0_0_12px_rgba(0,208,255,0.2)]"
-                              : "bg-white/[0.03] border-white/[0.05] text-white/40 hover:border-cyan-400/20"
+                              ? "bg-white/20 border-white/50 text-white/90 shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+                              : "bg-white/[0.03] border-white/[0.05] text-white/40 hover:border-white/20"
                               }`}
                           >
                             {g}
@@ -755,10 +760,10 @@ export default function ProfileCard({ isOpen, onClose }) {
                       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">
                         Gender
                       </span>
-                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
-                        <User size={14} className="text-cyan-400/40 shrink-0" />
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
+                        <User size={14} className="text-white/40 shrink-0" />
                         <span className="flex-1 text-sm font-medium text-white/90 capitalize">
-                          {form.gender || <span className="text-white/20 italic">Not set</span>}
+                          {form.gender || <span className="text-white/30 italic">Not set</span>}
                         </span>
                       </div>
                     </div>
@@ -800,7 +805,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90" style={{ color: T.accent }}>
                     Training & Nutrition
                   </h3>
                 </div>
@@ -841,12 +846,12 @@ export default function ProfileCard({ isOpen, onClose }) {
                           type="button"
                           onClick={() => setForm({ ...form, trainingField: opt.key })}
                           className={`flex-1 flex flex-col items-center gap-1 py-3 rounded-2xl border transition-all ${form.trainingField === opt.key
-                            ? "bg-cyan-500/15 border-cyan-400/50 shadow-[0_0_16px_rgba(0,208,255,0.15)]"
-                            : " border-white/[0.04] hover:border-cyan-400/20"
+                            ? "bg-white/15 border-white/50 shadow-[0_0_16px_rgba(255,255,255,0.15)]"
+                            : " border-white/[0.04] hover:border-white/20"
                             }`}
                         >
                           <span className="text-xl">{opt.emoji}</span>
-                          <span className={`text-[10px] font-bold ${form.trainingField === opt.key ? "text-cyan-300" : "text-white/40"}`}>
+                          <span className={`text-[10px] font-bold ${form.trainingField === opt.key ? "text-white/90" : "text-white/40"}`}>
                             {opt.label}
                           </span>
                         </button>
@@ -854,12 +859,12 @@ export default function ProfileCard({ isOpen, onClose }) {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
-                    <Sparkles size={14} className="text-cyan-400/40 shrink-0" />
+                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
+                    <Sparkles size={14} className="text-white/40 shrink-0" />
                     <span className="flex-1 text-sm font-medium text-white/90">
                       {form.trainingField
                         ? TRAINING_OPTIONS.find((o) => o.key === form.trainingField)?.label
-                        : <span className="text-white/20 italic">Not set</span>}
+                        : <span className="text-white/30 italic">Not set</span>}
                     </span>
                   </div>
                 )}
@@ -871,7 +876,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               <section className="pb-2">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/90" style={{ color: T.accent }}>
                     Goals
                   </h3>
                 </div>
@@ -936,7 +941,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       {/* Slider with custom thumb */}
                       <div className="px-1">
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-bold text-cyan-400 w-8 text-right">{form.goalPeriod}</span>
+                          <span className="text-sm font-bold text-white/90 w-8 text-right">{form.goalPeriod}</span>
                           <div className="relative flex-1 h-1.5">
                             <input
                               type="range"
@@ -984,7 +989,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                     </>
                   ) : (
                     <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl  ">
-                      <Clock size={14} className="text-cyan-400/40 shrink-0" />
+                      <Clock size={14} className="text-white/40 shrink-0" />
                       <span className="text-sm font-medium text-white/90">
                         {form.goalPeriod} {currLimit.label}
                       </span>

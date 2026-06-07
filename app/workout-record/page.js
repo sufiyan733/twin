@@ -281,17 +281,17 @@ const CSS = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
   :root {
-    --bg: #020617;
-    --bg2: #020617;
-    --surface: #0f172a;
-    --card: rgba(15, 23, 42, 0.9);
+    --bg: #06070a;
+    --bg2: #06070a;
+    --surface: #0a0c10;
+    --card: rgba(14, 16, 20, 0.9);
     --card-border: rgba(255,255,255,0.06);
     --glass:      rgba(255,255,255,0.03);
     --a1:         #ffffff;
     --a2:         #ffffff;
     --a3:         #f1f5f9;
-    --g1:         #10b981;
-    --g2:         #34d399;
+    --g1: #ffffff;
+    --g2: #cbd5e1;
     --text:       #f0f4ff;
     --text2:      rgba(240,244,255,0.8);
     --text3:      rgba(240,244,255,0.5);
@@ -308,14 +308,14 @@ const CSS = `
   }
 
   html, body {
-    background: var(--bg);
+    background: radial-gradient(circle at 15% 0%, #1c1f26 0%, #06070a 100%);
     height: 100%;
     overflow-x: hidden;
     max-width: 100vw;
   }
 
   .wl-app {
-    background: var(--bg);
+    background: transparent;
     min-height: 100dvh;
     font-family: var(--body);
     color: var(--text);
@@ -325,29 +325,19 @@ const CSS = `
     position: relative;
     overflow-x: hidden;
     padding-bottom: 100px;
-    background-image:
-      radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.05) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 100%, rgba(16,185,129,0.03) 0%, transparent 50%);
   }
 
-  .wl-app::before {
-    content:'';
-    position:fixed;
-    inset:0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
-    pointer-events:none;
-    z-index:998;
-  }
+  
 
   /* ── HEADER ── */
   .wl-header {
     position:sticky;
     top:0;z-index:100;
     padding: 16px 20px 14px;
-    background: rgba(3,5,12,0.94);
+    background: rgba(8,9,12,0.85);
     backdrop-filter: blur(32px) saturate(1.6);
     -webkit-backdrop-filter: blur(32px) saturate(1.6);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
   .wl-header-row {
@@ -408,7 +398,7 @@ const CSS = `
   .wl-add-exercise-btn {
     padding: 10px 16px;
     border-radius: 99px;
-    border: 1.5px solid rgba(255,255,255,0.25);
+    border: 1.5px solid rgba(255,255,255,0.4);
     background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
     backdrop-filter: blur(10px);
     font-family: var(--body);
@@ -465,8 +455,8 @@ const CSS = `
   }
   .wl-finish-header-btn:active { transform: scale(0.96); }
   .wl-finish-header-btn.celebrating {
-    background: linear-gradient(135deg,#10b981,#059669);
-    box-shadow: 0 4px 24px rgba(16,185,129,0.4);
+    background:linear-gradient(135deg, #ffffff, #cbd5e1);
+    box-shadow: 0 4px 24px rgba(255,255,255,0.3);
   }
 
   /* ── PROGRESS BAR ── */
@@ -483,7 +473,7 @@ const CSS = `
   }
   .wl-progress-fill {
     height:100%;
-    background:linear-gradient(90deg, #ffffff, #10b981, #34d399);
+    background:linear-gradient(90deg, #ffffff, #94a3b8);
     transition:width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius:4px;
     box-shadow:0 0 20px rgba(255,255,255,0.2);
@@ -594,7 +584,8 @@ const CSS = `
   }
 
   .wl-group {
-    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+    background-color: rgba(10,12,16,0.85);
     border-radius: var(--rad-sm);
     border: 1px solid rgba(148,163,184,0.08);
     overflow: hidden;
@@ -673,6 +664,7 @@ const CSS = `
   /* ── EXERCISE CARD ── */
   .wl-ex {
     background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+    background-color: rgba(10,12,16,0.85);
     border: 1px solid rgba(148,163,184,0.08);
     border-top: 1px solid rgba(255,255,255,0.12);
     border-radius: var(--rad-sm);
@@ -684,7 +676,8 @@ const CSS = `
   }
   .wl-ex:hover { border-color: rgba(255,255,255,0.15); }
   .wl-ex.open {
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%);
+    background-color: rgba(14,16,20,0.9);
     border-color: rgba(255,255,255,0.2);
     box-shadow: 0 12px 32px -8px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
   }

@@ -43,7 +43,8 @@ export default function BottomNav() {
           style={{ background: T.cardBg, borderTop: `1px solid ${T.border}` }}
         >
           {NAV_ITEMS.map((item) => {
-            const active = !item.isKai && !item.isProfile && item.href === pathname;
+            const isWorkoutPage = pathname === "/workout" || pathname === "/workout-record";
+            const active = !item.isKai && !item.isProfile && (item.href === pathname || (item.href === "/workout" && isWorkoutPage));
 
             /* ── KAI floating circle ─────────────────────────────────────── */
             if (item.isKai) {
