@@ -1350,6 +1350,9 @@ export default function Page() {
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.5)",
             padding: "24px", display: "flex", flexDirection: "column", gap: "24px"
           }}>
+            {/* Absolute Luxury Gloss Layer */}
+            <div className="absolute inset-0 rounded-[28px] pointer-events-none mix-blend-overlay z-20" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.05)" }} />
+            
             {/* Subtle ambient shadow behind the card */}
             <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
 
@@ -1459,17 +1462,23 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Ultra-Premium Midnight Black CTA */}
+            {/* Ultra-Premium Obsidian Black CTA */}
             <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 transition-all active:scale-[0.96] overflow-hidden group" 
               style={{ 
-                background: "linear-gradient(180deg, rgba(30,41,59,0.9) 0%, rgba(2,6,23,1) 100%)",
-                border: "1px solid rgba(255,255,255,0.05)",
-                borderTop: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)"
+                background: "linear-gradient(180deg, rgba(30,41,59,0.7) 0%, rgba(2,6,23,0.95) 100%)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderTop: "1px solid rgba(255,255,255,0.15)",
+                borderBottom: "1px solid rgba(0,0,0,0.8)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -2px 6px rgba(0,0,0,0.5)"
               }}>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)" }} />
-              <MessageCircle size={18} strokeWidth={2.5} className="text-[#f8fafc] relative z-10 drop-shadow-md" />
-              <span className="text-[15px] font-bold tracking-wide text-[#f8fafc] relative z-10 drop-shadow-md">Message</span>
+              {/* Dynamic Sheen / Sweep Effect */}
+              <div className="absolute inset-0 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)", transform: "skewX(-20deg)" }} />
+              
+              {/* Ambient Hover Glow inside button */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(ellipse at top, rgba(255,255,255,0.15) 0%, transparent 70%)" }} />
+
+              <MessageCircle size={18} strokeWidth={2.5} className="text-[#f8fafc] relative z-10" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
+              <span className="text-[15px] font-bold tracking-[0.04em] text-[#f8fafc] relative z-10" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>Message</span>
             </button>
           </div>
         </div>,
