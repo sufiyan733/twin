@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X, Utensils } from "lucide-react";
 
 export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget, macros, onNutritionUpdate }) {
@@ -167,10 +168,16 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
     }
   };
 
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="absolute inset-0 z-50 flex flex-col justify-center items-center p-4">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
+
+  return createPortal(
+    <div className="absolute inset-0 z-[99999] flex flex-col justify-center items-center p-4">
       {/* Backdrop with premium blur */}
       <div
         className="absolute inset-0 animate-in fade-in duration-400"
@@ -418,6 +425,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           background: rgba(255,255,255,0.2);
         }
       `}</style>
-    </div>
+    </div>,
+    document.body
   );
 }

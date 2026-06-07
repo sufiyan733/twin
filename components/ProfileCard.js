@@ -16,16 +16,15 @@ const TRAINING_OPTIONS = [
 const GENDER_OPTIONS = ["male", "female", "other"];
 
 
-// ── Theme tokens (goal image palette)
 const T = {
-  bg: "rgba(0, 0, 0, 0.85)",
-  card: "linear-gradient(180deg, rgba(28,30,35,0.95) 0%, rgba(12,14,18,0.98) 100%)",
-  cardAlt: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
-  border: "rgba(255,255,255,0.06)",
+  bg: "radial-gradient(circle at 50% 50%, rgba(6,7,10,0.4) 0%, rgba(0,0,0,0.95) 100%)",
+  card: "linear-gradient(160deg, #15171d 0%, #06070a 100%)",
+  cardAlt: "#06070a",
+  border: "rgba(255,255,255,0.05)",
   accent: "#ffffff",
   textPrimary: "#ffffff",
-  textMuted: "#a1a1aa",
-  textFaint: "#52525b",
+  textMuted: "rgba(255,255,255,0.5)",
+  textFaint: "rgba(255,255,255,0.3)",
 };
 
 // ─── Client-side calorie calculation (mirrors backend formula) ─────────────
@@ -111,7 +110,7 @@ function HeightField({ valueCm, onChangeCm, editing }) {
         <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
         <div className="grid grid-cols-2 gap-2">
           {/* cm input */}
-          <div className="flex items-center gap-2 rounded-2xl px-3 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
+          <div className="flex items-center gap-2 rounded-[16px] px-3 py-3 focus-within:border-white/20 focus-within:shadow-none transition-all" style={{ background: "#06070a", border: `1px solid ${T.border}` }}>
             <Ruler size={14} className="text-white/60 shrink-0" />
             <input
               type="number"
@@ -125,7 +124,7 @@ function HeightField({ valueCm, onChangeCm, editing }) {
             <span className="text-[11px] font-medium text-white/30 shrink-0">cm</span>
           </div>
           {/* ft + in inputs */}
-          <div className="flex items-center gap-1.5 rounded-2xl bg-black/40 border border-white/5 px-3 py-2.5 focus-within:border-white/40 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all">
+          <div className="flex items-center gap-1.5 rounded-[16px] bg-[#06070a] border border-white/5 px-3 py-3 focus-within:border-white/20 transition-all">
             <Ruler size={14} className="text-white/60 shrink-0" />
             <input
               type="number"
@@ -159,7 +158,7 @@ function HeightField({ valueCm, onChangeCm, editing }) {
   return (
     <div className="flex flex-col gap-1">
       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
+      <div className="flex items-center gap-2 px-3 py-3 rounded-[16px]" style={{ background: "#06070a", border: `1px solid ${T.border}` }}>
         <Ruler size={14} className="text-white/40 shrink-0" />
         <span className="flex-1 text-sm font-medium" style={{ color: T.textPrimary }}>
           {cm ? cm : <span className="text-white/30 italic">Not set</span>}
@@ -237,10 +236,10 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
   if (editing) {
     return (
       <div className="flex flex-col gap-1.5">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1 text-white/40">
           {label}
         </span>
-        <div className="flex items-center gap-2 rounded-2xl bg-black/40 border border-white/5 px-3 py-2.5 focus-within:border-white/40 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.15)] transition-all">
+        <div className="flex items-center gap-2 rounded-[16px] bg-[#06070a] border border-white/5 px-3 py-3 focus-within:border-white/20 transition-all">
           {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
           <input
             autoFocus
@@ -260,11 +259,11 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
 
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
-        {label}
-      </span>
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
-        {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1 text-white/40">
+          {label}
+        </span>
+      <div className="flex items-center gap-2 px-3 py-3 rounded-[16px] bg-[#06070a] border border-transparent">
+        {Icon && <Icon size={14} className="shrink-0 text-white/40" />}
         <span className="flex-1 text-sm font-medium text-white/90">
           {value || <span className="italic text-white/30">Not set</span>}
         </span>
@@ -291,8 +290,8 @@ function CalorieTargetField({ value, onChange, editing }) {
             Manual Override
           </span>
         </div>
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl   focus-within:border-white/30 focus-within:shadow-[0_0_0_3px_rgba(255,255,255,0.1)] transition-all">
-          <Flame size={15} className="text-white/90/60 shrink-0" />
+        <div className="flex items-center gap-3 px-3 py-3 rounded-[16px] bg-[#06070a] border border-white/5 focus-within:border-white/20 transition-all">
+          <Flame size={15} className="text-[#6ee7b7] shrink-0" />
           <input
             type="number"
             min={500}
@@ -321,8 +320,8 @@ function CalorieTargetField({ value, onChange, editing }) {
           Auto
         </span>
       </div>
-      <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.03] border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.03)]">
-        <Flame size={15} className="text-white/60 shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
+      <div className="flex items-center gap-3 px-3 py-3 rounded-[16px] bg-[#06070a] border border-transparent shadow-[0_0_20px_rgba(110,231,183,0.03)]">
+        <Flame size={15} className="text-[#6ee7b7] shrink-0 drop-shadow-[0_0_6px_rgba(110,231,183,0.3)]" />
         {hasValue ? (
           <>
             <span className="flex-1 text-sm font-bold text-white">
@@ -553,17 +552,17 @@ export default function ProfileCard({ isOpen, onClose }) {
         onClick={handleClose}
       />
 
-      {/* Premium card – now uses flex column so the save bar never overlaps content */}
-      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl shadow-[0_40px_100px_-10px_rgba(0,0,0,1)] backdrop-blur-[24px] overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+      {/* Premium card */}
+      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-[24px] shadow-2xl backdrop-blur-[32px] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: "none", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 0 40px rgba(255,255,255,0.02), 0 40px 80px -20px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05)" }}>
+
+        {/* Ambient Edge Light */}
+        <div className="absolute top-0 left-[15%] right-[15%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)", boxShadow: "0 0 20px 2px rgba(255,255,255,0.1)" }} />
 
         {/* Premium Noise Texture Overlay */}
         <div
-          className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.15]"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+          className="absolute inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.08]"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
         />
-
-        {/* Inner ambient glow */}
-        <div className="absolute top-0 left-0 w-full h-44 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
 
         {/* ================================================================ */}
         {/*  DISCARD CONFIRMATION DIALOG (shown as overlay inside card)      */}
@@ -599,10 +598,10 @@ export default function ProfileCard({ isOpen, onClose }) {
         {showSuccess && (
           <div className="absolute inset-0 z-40 flex items-center justify-center bg-[#020617]/80 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="flex flex-col items-center gap-2 animate-in zoom-in-95 duration-300">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-                <Check size={32} className="text-emerald-400" strokeWidth={2.5} />
+              <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[0_0_40px_rgba(110,231,183,0.15)]">
+                <Check size={32} className="text-[#6ee7b7]" strokeWidth={2.5} />
               </div>
-              <span className="text-sm font-semibold text-emerald-300 tracking-wide">Saved!</span>
+              <span className="text-sm font-semibold text-[#6ee7b7] tracking-wide">Saved!</span>
             </div>
           </div>
         )}
@@ -616,36 +615,36 @@ export default function ProfileCard({ isOpen, onClose }) {
             <div className="flex items-center gap-4">
               {/* Gradient ring avatar */}
               <div className="relative shrink-0">
-                <div className="h-[76px] w-[76px] rounded-full p-[2px]" style={{ background: `linear-gradient(145deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.2) 100%)`, boxShadow: `0 8px 32px rgba(0,0,0,0.8)` }}>
-                  <div className="flex items-center justify-center h-full w-full rounded-full bg-[#020617] backdrop-blur-sm">
-                    <span className="text-xl font-bold" style={{ color: T.textPrimary }}>{initials}</span>
+                <div className="h-[76px] w-[76px] rounded-full p-[1px]" style={{ background: `linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.05) 100%)`, boxShadow: `0 8px 32px rgba(0,0,0,0.8)` }}>
+                  <div className="flex items-center justify-center h-full w-full rounded-full bg-[#06070a] backdrop-blur-sm border border-[#15171d]">
+                    <span className="text-xl font-bold tracking-tight" style={{ color: T.textPrimary }}>{initials}</span>
                   </div>
                 </div>
-                {/* Status dot (green – indicates active) */}
-                <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#020617] shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-                {/* Verification badge (mock) */}
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-cyan-500 rounded-full border-2 border-[#020617] flex items-center justify-center shadow-[0_0_8px_rgba(255,255,255,0.6)]">
-                  <Shield size={10} className="text-white" strokeWidth={3} />
+                {/* Status dot (Emerald) */}
+                <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-[#6ee7b7] rounded-full border-2 border-[#020617] shadow-[0_0_12px_rgba(110,231,183,0.5)]" />
+                {/* Verification badge (Emerald monochrome) */}
+                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#06070a] rounded-full border border-white/10 flex items-center justify-center shadow-lg">
+                  <Shield size={10} className="text-[#6ee7b7]" strokeWidth={2} />
                 </span>
               </div>
 
               {/* Name, username, email */}
               {isEditing ? (
-                <div className="flex flex-col gap-1.5 w-full max-w-[180px]">
+                <div className="flex flex-col gap-2 w-full max-w-[180px]">
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="bg-black/40  rounded-lg px-2.5 py-1 text-sm font-semibold text-white outline-none focus:border-white/50 shadow-inner"
+                    className="bg-[#06070a] border border-white/5 rounded-[12px] px-3 py-1.5 text-sm font-semibold text-white outline-none focus:border-white/20 transition-colors"
                     placeholder="Name"
                   />
                   <div className="relative">
-                    <AtSign size={10} className="absolute left-2.5 top-1.5 text-white/70" />
+                    <AtSign size={12} className="absolute left-3 top-2 text-white/40" />
                     <input
                       type="text"
                       value={form.username}
                       onChange={(e) => setForm({ ...form, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
-                      className="bg-black/40  rounded-lg pl-6 pr-2.5 py-0.5 text-xs text-white/70 outline-none focus:border-white/50 w-full shadow-inner"
+                      className="bg-[#06070a] border border-white/5 rounded-[12px] pl-8 pr-3 py-1.5 text-xs text-white/70 outline-none focus:border-white/20 w-full transition-colors"
                       placeholder="Username"
                     />
                   </div>
@@ -845,13 +844,13 @@ export default function ProfileCard({ isOpen, onClose }) {
                           key={opt.key}
                           type="button"
                           onClick={() => setForm({ ...form, trainingField: opt.key })}
-                          className={`flex-1 flex flex-col items-center gap-1 py-3 rounded-2xl border transition-all ${form.trainingField === opt.key
-                            ? "bg-white/15 border-white/50 shadow-[0_0_16px_rgba(255,255,255,0.15)]"
-                            : " border-white/[0.04] hover:border-white/20"
+                          className={`flex-1 flex flex-col items-center gap-1 py-3 rounded-[16px] border transition-all ${form.trainingField === opt.key
+                            ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                            : " border-transparent bg-[#06070a] hover:border-white/10"
                             }`}
                         >
                           <span className="text-xl">{opt.emoji}</span>
-                          <span className={`text-[10px] font-bold ${form.trainingField === opt.key ? "text-white/90" : "text-white/40"}`}>
+                          <span className={`text-[10px] font-bold ${form.trainingField === opt.key ? "text-white" : "text-white/40"}`}>
                             {opt.label}
                           </span>
                         </button>
@@ -859,7 +858,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
+                  <div className="flex items-center gap-2 px-3 py-3 rounded-[16px] bg-[#06070a] border border-transparent">
                     <Sparkles size={14} className="text-white/40 shrink-0" />
                     <span className="flex-1 text-sm font-medium text-white/90">
                       {form.trainingField
@@ -928,15 +927,15 @@ export default function ProfileCard({ isOpen, onClose }) {
                                 return { ...prev, goalPeriodUnit: u, goalPeriod: newPeriod };
                               });
                             }}
-                            className={`px-3 py-1.5 text-[11px] font-bold capitalize transition-colors ${form.goalPeriodUnit === u
-                              ? "bg-cyan-500 text-[#020617]"
-                              : " text-white/40 hover:text-white/60"
-                              }`}
-                          >
-                            {u}
-                          </button>
-                        ))}
-                      </div>
+                              className={`px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors rounded-[12px] ${form.goalPeriodUnit === u
+                                ? "bg-[#ffffff] text-[#000000]"
+                                : "text-white/40 hover:text-white/60"
+                                }`}
+                            >
+                              {u}
+                            </button>
+                          ))}
+                        </div>
 
                       {/* Slider with custom thumb */}
                       <div className="px-1">
@@ -952,7 +951,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                               onChange={(e) => setForm({ ...form, goalPeriod: Number(e.target.value) })}
                               className="absolute inset-0 w-full h-1.5 rounded-full appearance-none cursor-pointer"
                               style={{
-                                background: `linear-gradient(to right, #00d0ff ${((form.goalPeriod - currLimit.min) / (currLimit.max - currLimit.min)) * 100}%, rgba(255,255,255,0.05) ${((form.goalPeriod - currLimit.min) / (currLimit.max - currLimit.min)) * 100}%)`,
+                                background: `linear-gradient(to right, #ffffff ${((form.goalPeriod - currLimit.min) / (currLimit.max - currLimit.min)) * 100}%, rgba(255,255,255,0.05) ${((form.goalPeriod - currLimit.min) / (currLimit.max - currLimit.min)) * 100}%)`,
                               }}
                             />
                             {/* Custom thumb representation (CSS hack) – works via browser default but added glow */}
@@ -963,19 +962,19 @@ export default function ProfileCard({ isOpen, onClose }) {
                                 width: 18px;
                                 height: 18px;
                                 border-radius: 50%;
-                                background: #00d0ff;
+                                background: #ffffff;
                                 cursor: pointer;
-                                box-shadow: 0 0 20px rgba(0, 208, 255, 0.5);
-                                border: 2px solid #020617;
+                                box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+                                border: 2px solid #06070a;
                               }
                               input[type="range"]::-moz-range-thumb {
                                 width: 18px;
                                 height: 18px;
                                 border-radius: 50%;
-                                background: #00d0ff;
+                                background: #ffffff;
                                 cursor: pointer;
-                                box-shadow: 0 0 20px rgba(0, 208, 255, 0.5);
-                                border: 2px solid #020617;
+                                box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+                                border: 2px solid #06070a;
                               }
                             `}</style>
                           </div>
@@ -988,7 +987,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       </div>
                     </>
                   ) : (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.02]">
+                    <div className="flex items-center gap-3 px-3 py-3 rounded-[16px] bg-[#06070a] border border-transparent">
                       <Clock size={14} className="text-white/40 shrink-0" />
                       <span className="text-sm font-medium text-white/90">
                         {form.goalPeriod} {currLimit.label}
@@ -1005,31 +1004,31 @@ export default function ProfileCard({ isOpen, onClose }) {
         {/*  STICKY SAVE BAR – slides in from bottom, never overlays content */}
         {/* ================================================================ */}
         <div
-          className={`shrink-0 p-4 backdrop-blur-xl rounded-b-3xl transition-all duration-500 ease-out ${isEditing
+          className={`shrink-0 p-4 backdrop-blur-xl rounded-[24px] rounded-t-none transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${isEditing
             ? "translate-y-0 opacity-100"
             : "translate-y-full opacity-0 pointer-events-none absolute bottom-0 w-full"
             }`}
-          style={{ background: T.card, borderTop: `1px solid ${T.border}` }}
+          style={{ background: "#06070a", borderTop: `1px solid ${T.border}` }}
         >
           <div className="flex items-center justify-between gap-3">
             <button
               onClick={handleCancelEdit}
-              className="px-4 py-2.5 text-sm font-semibold rounded-2xl shadow-lg transition-all active:scale-[0.97]"
-              style={{ background: T.cardAlt, border: `1px solid ${T.border}`, color: T.textPrimary }}
+              className="px-5 py-3 text-[13px] font-semibold rounded-[16px] shadow-lg transition-all active:scale-[0.97]"
+              style={{ background: "#15171d", border: `1px solid ${T.border}`, color: T.textPrimary }}
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className={`flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-bold rounded-2xl transition-all active:scale-[0.97] ${saving
+              className={`flex flex-1 items-center justify-center gap-2 px-6 py-3 text-[13px] font-bold rounded-[16px] transition-all active:scale-[0.97] ${saving
                 ? "cursor-wait opacity-50"
                 : "shadow-lg"
                 }`}
               style={{
-                background: saving ? T.cardAlt : T.accent,
+                background: saving ? "#15171d" : "#ffffff",
                 color: saving ? T.textPrimary : "#000000",
-                boxShadow: saving ? undefined : `0 0 25px ${T.accent}80`
+                boxShadow: saving ? undefined : `0 0 20px rgba(255,255,255,0.15), 0 0 40px rgba(255,255,255,0.08)`
               }}
             >
               {saving ? (
@@ -1037,7 +1036,7 @@ export default function ProfileCard({ isOpen, onClose }) {
               ) : (
                 <>
                   <Save size={16} />
-                  Save Changes
+                  Save Profile
                 </>
               )}
             </button>
