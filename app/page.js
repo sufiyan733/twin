@@ -1384,40 +1384,48 @@ export default function Page() {
               </button>
             </div>
 
-            {/* Calorie Card Mini */}
+            {/* Calorie Card Mini - 16/10 Refinement */}
             <div className="relative z-10" style={{
-              background: "rgba(255,255,255,0.02)", borderRadius: "20px", padding: "18px",
+              background: "linear-gradient(180deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.5) 100%)",
+              borderRadius: "20px", padding: "18px 20px",
               border: "1px solid rgba(255,255,255,0.04)",
-              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.2)"
+              borderTop: "1px solid rgba(255,255,255,0.08)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.3)"
             }}>
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="grid place-items-center h-7 w-7 rounded-lg shrink-0" style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}>
                   <Flame size={14} style={{ color: "#60a5fa" }} />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <h3 className="text-[14px] font-semibold tracking-tight leading-none" style={{ color: "#f8fafc" }}>Today's Intake</h3>
+                  <h3 className="text-[14px] font-bold tracking-tight leading-none" style={{ color: "#f8fafc" }}>Today's Intake</h3>
                   <div className="text-[9px] font-semibold tracking-widest uppercase mt-1" style={{ color: "#64748b" }}>Daily Tracker</div>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
-                <div className="relative flex h-[84px] w-[84px] items-center justify-center shrink-0">
-                  <div className="absolute inset-0 m-auto h-[52px] w-[52px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+                {/* Refined 80px Ring */}
+                <div className="relative flex h-[80px] w-[80px] items-center justify-center shrink-0">
+                  <div className="absolute inset-0 m-auto h-[48px] w-[48px] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 100%)" }} />
                   <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
                     <circle cx="50" cy="50" r="44" fill="none" stroke="#6ee7b7" strokeWidth="8" strokeLinecap="round"
                       strokeDasharray={2 * Math.PI * 44}
                       strokeDashoffset={2 * Math.PI * 44 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
-                      style={{ filter: "drop-shadow(0 0 8px rgba(110,231,183,0.3))", transition: "stroke-dashoffset 1s ease-out" }}
+                      style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
-                    <span className="text-[18px] leading-none font-bold tabular-nums tracking-tight" style={{ color: "#f8fafc" }}>{viewingProfile.consumed.calories}</span>
-                    <span className="text-[9px] font-medium tracking-wide tabular-nums mt-1" style={{ color: "#94a3b8" }}>/ {viewingProfile.calorieTarget}</span>
+                    <span className="text-[18px] leading-none font-bold tabular-nums tracking-tight" style={{ color: "#f8fafc" }}>
+                      {viewingProfile.consumed.calories}
+                    </span>
+                    <span className="text-[9px] font-bold tracking-widest uppercase mt-1" style={{ color: "#64748b" }}>
+                      / {viewingProfile.calorieTarget}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex flex-1 flex-col justify-center gap-2.5 pl-6 pr-1">
+                {/* Sleek Horizontal Bars */}
+                <div className="flex flex-1 flex-col justify-center gap-3 pl-6 pr-1">
                   {[
                     { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color: "#10b981" },
                     { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color: "#f59e0b" },
@@ -1427,14 +1435,14 @@ export default function Page() {
                     return (
                       <div key={macro.label} className="flex flex-col gap-1.5">
                         <div className="flex items-center justify-between leading-none">
-                          <span className="text-[9px] font-semibold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
                           <div className="flex items-baseline gap-0.5">
-                            <span className="text-[11px] font-bold tabular-nums leading-none" style={{ color: "#f8fafc" }}>{macro.current}</span>
-                            <span className="text-[9px] font-medium tabular-nums" style={{ color: "#64748b" }}>/ {macro.target}</span>
+                            <span className="text-[12px] font-bold tabular-nums leading-none" style={{ color: "#f8fafc" }}>{macro.current}</span>
+                            <span className="text-[10px] font-medium tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
                           </div>
                         </div>
-                        <div className="h-[4px] w-full rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}>
-                          <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: macro.color, boxShadow: `0 0 8px ${macro.color}` }} />
+                        <div className="h-[4px] w-full rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.3)" }}>
+                          <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: macro.color }} />
                         </div>
                       </div>
                     );
@@ -1443,17 +1451,14 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[14px] py-3.5 transition-all active:scale-[0.97] group overflow-hidden" 
+            {/* Apple-Style Crisp White CTA */}
+            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 transition-transform active:scale-[0.97]" 
               style={{ 
-                background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderTop: "1px solid rgba(255,255,255,0.15)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.2)"
+                background: "#f8fafc",
+                boxShadow: "0 4px 16px rgba(255,255,255,0.1)"
               }}>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(255,255,255,0.04)" }} />
-              <MessageCircle size={18} strokeWidth={2} className="relative z-10" style={{ color: "#f8fafc" }} />
-              <span className="text-[14px] font-semibold tracking-wide relative z-10" style={{ color: "#f8fafc" }}>Message</span>
+              <MessageCircle size={18} strokeWidth={2.5} className="text-slate-900" />
+              <span className="text-[15px] font-bold tracking-wide text-slate-900">Message</span>
             </button>
           </div>
         </div>,
