@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, memo } from "react";
+import { createPortal } from "react-dom";
 import {
   X, Plus, Trash2,
   Dumbbell, Droplet,
@@ -300,7 +301,10 @@ export default function TasksManager({
     setExpandedTaskId(prev => prev === id ? null : id);
   }, []);
 
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!isOpen || !mounted) return null;
 
   // Determine active task list
   const activeGoal = goals.find(g => g.id === selectedTab) ?? null;
@@ -309,7 +313,7 @@ export default function TasksManager({
   const accentColor = activeGoal ? "#00d0ff" : "#00d0ff";
   const accentGlow = activeGoal ? "rgba(0,208,255,0.3)" : "rgba(0,208,255,0.3)";
 
-  return (
+  return createPortal(
     <>
       {/* Keyframes — hoisted outside render tree so they're never re-injected */}
       <style>{`
@@ -324,7 +328,7 @@ export default function TasksManager({
       `}</style>
 
       <div
-        className="absolute inset-0 z-[100] flex items-center justify-center p-4"
+        className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6"
         style={{
           backgroundColor: visible ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0)",
           backdropFilter: "blur(6px)",
@@ -335,7 +339,7 @@ export default function TasksManager({
         }}
       >
         <div
-          className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
+          className="w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -510,6 +514,7 @@ export default function TasksManager({
           </div>
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }

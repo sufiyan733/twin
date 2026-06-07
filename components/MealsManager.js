@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { 
   X, Plus, Trash2, Flame, Utensils, 
   Dumbbell, Droplet, Leaf, ChevronDown, ChevronUp, Pencil, Check
@@ -24,7 +25,10 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
   const [addingMeal, setAddingMeal] = useState(false);
   const [newMeal, setNewMeal] = useState({ name: "", calories: "", protein: "", fat: "", carbs: "" });
 
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!isOpen || !mounted) return null;
 
   // ── New meal form helpers ─────────────────────────────────────────────────
 
@@ -96,9 +100,9 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
   const readonlyCell = "w-full rounded-xl bg-transparent px-2 py-2 text-xs text-center font-bold select-none cursor-default";
   const editCell = "w-full rounded-xl bg-white/[0.04] border px-2 py-2 text-xs text-white text-center outline-none transition-all";
 
-  return (
-    <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-[95%] h-[95%] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6">
+      <div className="w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
@@ -377,6 +381,7 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
