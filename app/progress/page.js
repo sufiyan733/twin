@@ -31,17 +31,17 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle, fadingIndex })
     const isFading = fadingIndex === index;
     return (
         <g>
-            <circle cx={cx} cy={cy} r={10} fill="none" stroke="#1a6fff" strokeOpacity={isActive ? 0.35 : 0.18} strokeWidth={5} />
-            <circle cx={cx} cy={cy} r={6}  fill="none" stroke="#3d8fff" strokeOpacity={isActive ? 0.6 : 0.35} strokeWidth={2} />
-            <circle cx={cx} cy={cy} r={4}  fill={isActive ? "#2f8bff" : "#1a6fff"} stroke="#7dc8ff" strokeWidth={1.5} />
+            <circle cx={cx} cy={cy} r={10} fill="none" stroke="#00d0ff" strokeOpacity={isActive ? 0.35 : 0.18} strokeWidth={5} />
+            <circle cx={cx} cy={cy} r={6}  fill="none" stroke="#00d0ff" strokeOpacity={isActive ? 0.6 : 0.35} strokeWidth={2} />
+            <circle cx={cx} cy={cy} r={4}  fill={isActive ? "#00d0ff" : "#00d0ff"} stroke="#00d0ff" strokeWidth={1.5} />
 
             {(isActive || isFading) && (
                 <foreignObject x={cx - 40} y={cy - 52} width={82} height={44}>
                     <div
                         xmlns="http://www.w3.org/1999/xhtml"
                         style={{
-                            background: "rgba(4,16,42,0.97)",
-                            border: "1px solid rgba(29,106,255,0.55)",
+                            background: "rgba(10,12,15,0.97)",
+                            border: "1px solid rgba(0,208,255,0.5)",
                             borderRadius: "7px",
                             color: "#ffffff",
                             fontSize: "10.5px",
@@ -55,8 +55,8 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle, fadingIndex })
                             transition: "opacity 0.4s ease",
                         }}
                     >
-                        <div style={{ color: "#7dc8ff", fontSize: "11px" }}>{payload?.weight} KG</div>
-                        <div style={{ color: "#c0e8ff", fontSize: "10px" }}>{payload?.reps} REPS</div>
+                        <div style={{ color: "#00d0ff", fontSize: "11px" }}>{payload?.weight} KG</div>
+                        <div style={{ color: "#f8fafc", fontSize: "10px" }}>{payload?.reps} REPS</div>
                     </div>
                 </foreignObject>
             )}
@@ -134,7 +134,7 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading
                 </div>
             ) : !data || data.length === 0 ? (
                 <div className="chart-empty">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(29,106,255,0.3)" strokeWidth="1.5">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.5">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
                     </svg>
                     <span>No data yet</span>
@@ -145,9 +145,9 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading
                         <LineChart data={data} margin={{ top: 22, right: 10, left: 0, bottom: 16 }}>
                             <defs>
                                 <linearGradient id={`lg-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%"   stopColor="#1a6fff" stopOpacity={0.8} />
-                                    <stop offset="60%"  stopColor="#2f8bff" stopOpacity={1} />
-                                    <stop offset="100%" stopColor="#1a6fff" stopOpacity={0.9} />
+                                    <stop offset="0%"   stopColor="#00d0ff" stopOpacity={0.8} />
+                                    <stop offset="60%"  stopColor="#00d0ff" stopOpacity={1} />
+                                    <stop offset="100%" stopColor="#00d0ff" stopOpacity={0.9} />
                                 </linearGradient>
                                 <filter id={`glow-${uid}`} x="-30%" y="-30%" width="160%" height="160%">
                                     <feGaussianBlur stdDeviation="4" result="blur" />
@@ -160,22 +160,22 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading
 
                             <CartesianGrid
                                 strokeDasharray="2 4"
-                                stroke="rgba(29,106,255,0.10)"
+                                stroke="var(--cyan-dim)"
                                 vertical={true}
                                 horizontal={true}
                             />
 
                             <XAxis
                                 dataKey="date"
-                                tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, letterSpacing: "0.02em" }}
+                                tick={{ fill: "#94a3b8", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600, letterSpacing: "0.02em" }}
                                 tickLine={false}
-                                axisLine={{ stroke: "rgba(29,106,255,0.15)", strokeWidth: 1 }}
+                                axisLine={{ stroke: "rgba(255,255,255,0.06)", strokeWidth: 1 }}
                                 interval={0}
                             />
 
                             <YAxis
                                 dataKey="weight"
-                                tick={{ fill: "#3d6a9a", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600 }}
+                                tick={{ fill: "#94a3b8", fontSize: 10, fontFamily: "'Rajdhani', sans-serif", fontWeight: 600 }}
                                 tickLine={false}
                                 axisLine={false}
                                 width={32}
@@ -259,7 +259,7 @@ function ExerciseDropdown({ exercises, selected, onSelect, loading }) {
                 <div className="exercise-btn exercise-btn--disabled">
                     <div className="exercise-left">
                         <div className="exercise-icon-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3d6a9a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M6.5 6.5h11M6.5 17.5h11M3 12h18M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3" />
                             </svg>
                         </div>
@@ -278,7 +278,7 @@ function ExerciseDropdown({ exercises, selected, onSelect, loading }) {
             <button className="exercise-btn" onClick={() => setOpen((o) => !o)}>
                 <div className="exercise-left">
                     <div className="exercise-icon-box">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f8bff"
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d0ff"
                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6.5 6.5h11M6.5 17.5h11M3 12h18M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3" />
                         </svg>
@@ -288,7 +288,7 @@ function ExerciseDropdown({ exercises, selected, onSelect, loading }) {
                         <span className="exercise-name">{selected}</span>
                     </div>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3d6a9a"
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8"
                     strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                     style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease", flexShrink: 0 }}>
                     <polyline points="6 9 12 15 18 9" />
@@ -317,7 +317,7 @@ function EmptyState() {
     return (
         <div className="empty-state">
             <div className="empty-icon">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(29,106,255,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
                 </svg>
             </div>
@@ -406,20 +406,19 @@ export default function PerformancePage() {
         style { display: none !important; }
 
         .progress-page {
-          --bg:           #030d1a;
-          --surface:      #061422;
-          --surface-2:    #091c30;
-          --border:       rgba(29,106,255,0.18);
-          --border-hi:    rgba(29,106,255,0.5);
-          --cyan:         #2f8bff;
-          --cyan-dim:     rgba(29,106,255,0.5);
-          --cyan-label:   #7dc8ff;
-          --text:         #e8f4ff;
-          --text-muted:   #3d6a9a;
+          --surface:      linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 15%, transparent 35%), linear-gradient(180deg, rgba(25,35,50,0.95) 0%, rgba(10,12,15,0.98) 100%);
+          --surface-2:    linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 20%, transparent 35%), linear-gradient(180deg, rgba(35,45,60,0.7) 0%, rgba(15,18,22,0.9) 100%);
+          --border:       rgba(255,255,255,0.12);
+          --border-hi:    rgba(255,255,255,0.25);
+          --border-top:   rgba(255,255,255,0.06);
+          --cyan:         #00d0ff;
+          --cyan-dim:     rgba(0,208,255,0.15);
+          --cyan-label:   #00d0ff;
+          --text:         #f8fafc;
+          --text-muted:   #94a3b8;
           --font-ui:      'Rajdhani', sans-serif;
           --font-display: 'Orbitron', sans-serif;
 
-          background: var(--bg);
           color: var(--text);
           font-family: var(--font-ui);
           -webkit-font-smoothing: antialiased;
@@ -438,7 +437,7 @@ export default function PerformancePage() {
           max-height: 100dvh;
           display: flex;
           flex-direction: column;
-          background: var(--bg);
+          background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg);
           overflow: hidden;
           position: relative;
           padding-top: env(safe-area-inset-top, 0px);
@@ -465,6 +464,8 @@ export default function PerformancePage() {
           border-radius: 11px;
           background: var(--surface);
           border: 1px solid var(--border);
+          border-top: 1px solid var(--border-top);
+          box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
           cursor: pointer;
           position: relative;
           transition: border-color 0.25s, background 0.25s;
@@ -472,8 +473,9 @@ export default function PerformancePage() {
         }
 
         .body-card--active {
-          border-color: var(--cyan);
-          background: rgba(29,106,255,0.08);
+          border-color: var(--cyan-dim);
+          background: var(--surface-2);
+          box-shadow: inset 0 1px 0 rgba(0,208,255,0.2), 0 10px 20px -5px rgba(0,0,0,0.5);
         }
 
         .body-card--empty { opacity: 0.45; }
@@ -500,13 +502,13 @@ export default function PerformancePage() {
         }
 
         .body-card--active .body-img {
-          filter: brightness(1.1) saturate(1.2) drop-shadow(0 0 8px rgba(29,106,255,0.8));
+          filter: brightness(1.1) saturate(1.2) drop-shadow(0 0 8px rgba(0,208,255,0.5));
         }
 
         .body-img-glow {
           position: absolute;
           inset: 0;
-          background: radial-gradient(circle, rgba(29,106,255,0.18) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(0,208,255,0.15) 0%, transparent 70%);
           pointer-events: none;
         }
 
@@ -554,6 +556,8 @@ export default function PerformancePage() {
           padding: 7px 13px;
           background: var(--surface);
           border: 1px solid var(--border);
+          border-top: 1px solid var(--border-top);
+          box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
           border-radius: 11px;
           cursor: pointer;
           color: var(--text);
@@ -585,8 +589,8 @@ export default function PerformancePage() {
           width: 32px;
           height: 32px;
           border-radius: 8px;
-          background: rgba(29,106,255,0.10);
-          border: 1px solid rgba(29,106,255,0.25);
+          background: var(--cyan-dim);
+          border: 1px solid var(--border-hi);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -624,7 +628,7 @@ export default function PerformancePage() {
           border-radius: 11px;
           overflow: hidden;
           z-index: 100;
-          box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(29,106,255,0.08);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--surface-2);
           animation: dropIn 0.16s ease;
           max-height: 220px;
           overflow-y: auto;
@@ -640,7 +644,7 @@ export default function PerformancePage() {
           padding: 11px 16px;
           background: transparent;
           border: none;
-          border-bottom: 1px solid rgba(29,106,255,0.07);
+          border-bottom: 1px solid var(--cyan-dim);
           color: var(--text-muted);
           font-family: var(--font-ui);
           font-size: 15px;
@@ -651,8 +655,8 @@ export default function PerformancePage() {
         }
 
         .exercise-option:last-child { border-bottom: none; }
-        .exercise-option:hover { background: rgba(29,106,255,0.08); color: var(--text); }
-        .exercise-option--active { color: var(--cyan); background: rgba(29,106,255,0.07); }
+        .exercise-option:hover { background: var(--surface-2); color: var(--text); }
+        .exercise-option--active { color: var(--cyan); background: var(--cyan-dim); }
 
         /* ── CHARTS AREA ──────── */
         .charts-area {
@@ -669,6 +673,8 @@ export default function PerformancePage() {
           margin: 0 10px 5px;
           background: var(--surface);
           border: 1px solid var(--border);
+          border-top: 1px solid var(--border-top);
+          box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
           border-radius: 13px;
           padding: 7px 10px 2px 6px;
           position: relative;
@@ -730,8 +736,8 @@ export default function PerformancePage() {
           align-items: center;
           gap: 4px;
           padding: 4px 9px;
-          background: rgba(29,106,255,0.10);
-          border: 1px solid rgba(29,106,255,0.28);
+          background: var(--cyan-dim);
+          border: 1px solid var(--border-hi);
           border-radius: 7px;
           color: var(--cyan);
           font-family: var(--font-display);
@@ -745,7 +751,7 @@ export default function PerformancePage() {
         }
 
         .reps-btn:hover {
-          background: rgba(29,106,255,0.18);
+          background: rgba(0,208,255,0.15);
           border-color: var(--cyan);
         }
 
@@ -762,7 +768,7 @@ export default function PerformancePage() {
         /* ── SKELETON ─────────── */
         .skel-line {
           border-radius: 6px;
-          background: linear-gradient(90deg, rgba(29,106,255,0.05) 25%, rgba(29,106,255,0.12) 50%, rgba(29,106,255,0.05) 75%);
+          background: linear-gradient(90deg, rgba(0,208,255,0.05) 25%, rgba(0,208,255,0.12) 50%, rgba(0,208,255,0.05) 75%);
           background-size: 200% 100%;
           animation: skel-shimmer 1.6s ease-in-out infinite;
         }
@@ -775,7 +781,7 @@ export default function PerformancePage() {
         .skel-text {
           height: 12px;
           border-radius: 4px;
-          background: linear-gradient(90deg, rgba(29,106,255,0.05) 25%, rgba(29,106,255,0.12) 50%, rgba(29,106,255,0.05) 75%);
+          background: linear-gradient(90deg, rgba(0,208,255,0.05) 25%, rgba(0,208,255,0.12) 50%, rgba(0,208,255,0.05) 75%);
           background-size: 200% 100%;
           animation: skel-shimmer 1.6s ease-in-out infinite;
         }
@@ -821,8 +827,8 @@ export default function PerformancePage() {
           width: 64px;
           height: 64px;
           border-radius: 18px;
-          background: rgba(29,106,255,0.06);
-          border: 1px solid rgba(29,106,255,0.15);
+          background: var(--cyan-dim);
+          border: 1px solid rgba(255,255,255,0.06);
           display: flex;
           align-items: center;
           justify-content: center;

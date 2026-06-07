@@ -15,6 +15,20 @@ const TRAINING_OPTIONS = [
 
 const GENDER_OPTIONS = ["male", "female", "other"];
 
+
+// ── Theme tokens (goal image palette)
+const T = {
+  bg: `radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 4%), radial-gradient(circle at 75% 65%, rgba(255,255,255,0.1) 0%, transparent 3%), linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.12) 30.5%, rgba(255,255,255,0.02) 32%, transparent 34%), linear-gradient(245deg, transparent 60%, rgba(255,255,255,0.1) 60.5%, rgba(255,255,255,0.02) 62%, transparent 64%), linear-gradient(170deg, transparent 75%, rgba(255,255,255,0.08) 75.5%, rgba(255,255,255,0.01) 77%, transparent 78%), linear-gradient(35deg, transparent 40%, rgba(255,255,255,0.06) 40.5%, rgba(255,255,255,0.01) 42%, transparent 43%), conic-gradient(from 90deg at 80% 20%, rgba(255,255,255,0.04) 0deg, transparent 45deg, rgba(255,255,255,0.03) 90deg, transparent 135deg), conic-gradient(from -45deg at 10% 80%, rgba(255,255,255,0.04) 0deg, transparent 60deg), conic-gradient(from 180deg at 75% 65%, #111111 0deg, #000000 30deg, #1a1a1a 90deg, #000000 150deg, #111111 200deg, #000000 260deg, #1a1a1a 320deg, transparent 320.1deg), conic-gradient(from 20deg at 30% 40%, #1a1a1a 0deg, #000000 40deg, #0f0f0f 90deg, #000000 150deg, #1c1c1c 200deg, #000000 260deg, #05140b 300deg, #080808 320deg, #1a1a1a 360deg)`,
+  card: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 15%, transparent 35%), linear-gradient(180deg, rgba(25,35,50,0.95) 0%, rgba(10,12,15,0.98) 100%)`,
+  cardAlt: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 20%, transparent 35%), linear-gradient(180deg, rgba(35,45,60,0.7) 0%, rgba(15,18,22,0.9) 100%)`,
+  border: "rgba(255,255,255,0.12)",
+  accent: "#00d0ff",
+  textPrimary: "#f8fafc",
+  textMuted: "#94a3b8",
+  textFaint: "#475569",
+};
+
+
 // ─── Client-side calorie calculation (mirrors backend formula) ─────────────
 // Used as an instant fallback if the DB value is missing.
 function calcCalorieTarget({ weight, height, age, gender, workoutDays }) {
@@ -98,7 +112,7 @@ function HeightField({ valueCm, onChangeCm, editing }) {
         <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
         <div className="grid grid-cols-2 gap-2">
           {/* cm input */}
-          <div className="flex items-center gap-2 rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+          <div className="flex items-center gap-2 rounded-2xl px-3 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
             <Ruler size={14} className="text-cyan-400/60 shrink-0" />
             <input
               type="number"
@@ -112,7 +126,7 @@ function HeightField({ valueCm, onChangeCm, editing }) {
             <span className="text-[11px] font-medium text-white/30 shrink-0">cm</span>
           </div>
           {/* ft + in inputs */}
-          <div className="flex items-center gap-1.5 rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+          <div className="flex items-center gap-1.5 rounded-2xl   px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
             <Ruler size={14} className="text-indigo-400/60 shrink-0" />
             <input
               type="number"
@@ -146,9 +160,9 @@ function HeightField({ valueCm, onChangeCm, editing }) {
   return (
     <div className="flex flex-col gap-1">
       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">Height</span>
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl" style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}>
         <Ruler size={14} className="text-cyan-400/40 shrink-0" />
-        <span className="flex-1 text-sm font-medium text-white/90">
+        <span className="flex-1 text-sm font-medium" style={{ color: T.textPrimary }}>
           {cm ? cm : <span className="text-white/20 italic">Not set</span>}
         </span>
         {cm ? (
@@ -224,11 +238,11 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
   if (editing) {
     return (
       <div className="flex flex-col gap-1.5">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
           {label}
         </span>
-        <div className="flex items-center gap-2 rounded-2xl bg-white/[0.04] border border-white/10 px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
-          {Icon && <Icon size={14} className="text-cyan-400/60 shrink-0" />}
+        <div className="flex items-center gap-2 rounded-2xl   px-3 py-2.5 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_0_3px_rgba(0,208,255,0.12)] transition-all">
+          {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
           <input
             autoFocus
             type={type}
@@ -236,10 +250,10 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
             max={max}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="flex-1 bg-transparent text-sm text-white placeholder-white/20 outline-none"
+            className="flex-1 bg-transparent text-sm placeholder-white/20 outline-none" style={{ color: T.textPrimary }}
             placeholder="—"
           />
-          {unit && <span className="text-[11px] font-medium text-white/30 shrink-0">{unit}</span>}
+          {unit && <span className="text-[11px] font-medium shrink-0" style={{ color: T.textMuted }}>{unit}</span>}
         </div>
       </div>
     );
@@ -247,15 +261,15 @@ function FieldDisplay({ icon: Icon, label, value, unit, onChange, type = "text",
 
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] ml-1" style={{ color: T.textMuted }}>
         {label}
       </span>
-      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
-        {Icon && <Icon size={14} className="text-cyan-400/40 shrink-0" />}
+      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
+        {Icon && <Icon size={14} className="shrink-0" style={{ color: T.accent }} />}
         <span className="flex-1 text-sm font-medium text-white/90">
-          {value || <span className="text-white/20 italic">Not set</span>}
+          {value || <span className="italic" style={{ color: T.textFaint }}>Not set</span>}
         </span>
-        {unit && value && <span className="text-[11px] font-medium text-white/30">{unit}</span>}
+        {unit && value && <span className="text-[11px] font-medium" style={{ color: T.textMuted }}>{unit}</span>}
       </div>
     </div>
   );
@@ -274,11 +288,11 @@ function CalorieTargetField({ value, onChange, editing }) {
           <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-400/70">
             Daily Calorie Target
           </span>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full">
+          <span className="text-[9px] font-bold uppercase tracking-wider text-white/40 bg-white/5  px-1.5 py-0.5 rounded-full">
             Manual Override
           </span>
         </div>
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.04] border border-white/10 focus-within:border-amber-400/40 focus-within:shadow-[0_0_0_3px_rgba(251,191,36,0.12)] transition-all">
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl   focus-within:border-amber-400/40 focus-within:shadow-[0_0_0_3px_rgba(251,191,36,0.12)] transition-all">
           <Flame size={15} className="text-amber-400/60 shrink-0" />
           <input
             type="number"
@@ -535,12 +549,13 @@ export default function ProfileCard({ isOpen, onClose }) {
     <div className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-[#010614]/80 backdrop-blur-2xl animate-in fade-in duration-300"
+        className="absolute inset-0 backdrop-blur-2xl animate-in fade-in duration-300"
+        style={{ background: T.bg }}
         onClick={handleClose}
       />
 
       {/* Premium card – now uses flex column so the save bar never overlaps content */}
-      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl bg-[#020617]/70 border border-white/[0.08] shadow-2xl shadow-black/30 backdrop-blur-3xl overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col">
+      <div className="relative w-full max-w-[400px] h-[85vh] max-h-[750px] rounded-3xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] backdrop-blur-[24px] overflow-hidden transition-all duration-500 ease-out animate-in zoom-in-95 fade-in flex flex-col" style={{ background: T.card, border: `1px solid ${T.border}`, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
 
         {/* Inner ambient glow */}
         <div className="absolute top-0 left-0 w-full h-44 bg-gradient-to-b from-cyan-500/8 to-transparent pointer-events-none" />
@@ -550,7 +565,7 @@ export default function ProfileCard({ isOpen, onClose }) {
         {/* ================================================================ */}
         {showDiscardDialog && (
           <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#020617]/90 backdrop-blur-sm p-6 animate-in fade-in duration-150">
-            <div className="w-full max-w-[280px] rounded-2xl bg-[#0a1128] border border-white/10 p-6 shadow-2xl">
+            <div className="w-full max-w-[280px] rounded-2xl p-6 shadow-2xl" style={{ background: T.card, border: `1px solid ${T.border}` }}>
               <p className="text-sm font-semibold text-white mb-1">Discard changes?</p>
               <p className="text-xs text-white/50 mb-5">
                 You have unsaved edits. Are you sure you want to discard them?
@@ -596,9 +611,9 @@ export default function ProfileCard({ isOpen, onClose }) {
             <div className="flex items-center gap-4">
               {/* Gradient ring avatar */}
               <div className="relative shrink-0">
-                <div className="h-[76px] w-[76px] rounded-full bg-gradient-to-br from-cyan-400/50 via-indigo-500/30 to-cyan-400/50 p-[2px] shadow-[0_0_25px_rgba(0,208,255,0.25)]">
+                <div className="h-[76px] w-[76px] rounded-full p-[2px]" style={{ background: `linear-gradient(135deg, ${T.accent}80, rgba(255,255,255,0.1), ${T.accent}80)`, boxShadow: `0 0 25px ${T.accent}40` }}>
                   <div className="flex items-center justify-center h-full w-full rounded-full bg-[#020617] backdrop-blur-sm">
-                    <span className="text-xl font-bold text-white">{initials}</span>
+                    <span className="text-xl font-bold" style={{ color: T.textPrimary }}>{initials}</span>
                   </div>
                 </div>
                 {/* Status dot (green – indicates active) */}
@@ -616,7 +631,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-sm font-semibold text-white outline-none focus:border-cyan-400/50 shadow-inner"
+                    className="bg-white/5  rounded-lg px-2.5 py-1 text-sm font-semibold text-white outline-none focus:border-cyan-400/50 shadow-inner"
                     placeholder="Name"
                   />
                   <div className="relative">
@@ -625,7 +640,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       type="text"
                       value={form.username}
                       onChange={(e) => setForm({ ...form, username: e.target.value.toLowerCase().replace(/\s/g, "") })}
-                      className="bg-white/5 border border-white/10 rounded-lg pl-6 pr-2.5 py-0.5 text-xs text-cyan-400/70 outline-none focus:border-cyan-400/50 w-full shadow-inner"
+                      className="bg-white/5  rounded-lg pl-6 pr-2.5 py-0.5 text-xs text-cyan-400/70 outline-none focus:border-cyan-400/50 w-full shadow-inner"
                       placeholder="Username"
                     />
                   </div>
@@ -646,7 +661,7 @@ export default function ProfileCard({ isOpen, onClose }) {
             <div className="flex flex-col items-end gap-2">
               <button
                 onClick={handleClose}
-                className="flex items-center justify-center h-9 w-9 rounded-full bg-white/[0.04] border border-white/[0.06] text-white/60 hover:bg-white/10 hover:text-white transition-all active:scale-90"
+                className="flex items-center justify-center h-9 w-9 rounded-full  border border-white/[0.06] text-white/60 hover:bg-white/10 hover:text-white transition-all active:scale-90"
                 aria-label="Close profile"
               >
                 <X size={16} strokeWidth={1.5} />
@@ -654,7 +669,8 @@ export default function ProfileCard({ isOpen, onClose }) {
               {!isEditing && (
                 <button
                   onClick={handleEdit}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 backdrop-blur-sm hover:bg-white/10 hover:border-cyan-400/30 hover:text-cyan-300 transition-all active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm transition-all active:scale-95"
+                  style={{ background: T.cardAlt, border: `1px solid ${T.border}`, color: T.textPrimary }}
                 >
                   <Pencil size={13} /> Edit
                 </button>
@@ -695,8 +711,8 @@ export default function ProfileCard({ isOpen, onClose }) {
               {/* Section: Personal Information */}
               <section>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500" />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-cyan-400/80">
+                  <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
+                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
                     Personal Info
                   </h3>
                 </div>
@@ -739,7 +755,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 ml-1">
                         Gender
                       </span>
-                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
                         <User size={14} className="text-cyan-400/40 shrink-0" />
                         <span className="flex-1 text-sm font-medium text-white/90 capitalize">
                           {form.gender || <span className="text-white/20 italic">Not set</span>}
@@ -783,8 +799,8 @@ export default function ProfileCard({ isOpen, onClose }) {
               {/* Section: Training & Nutrition */}
               <section>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500" />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-cyan-400/80">
+                  <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
+                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
                     Training & Nutrition
                   </h3>
                 </div>
@@ -826,7 +842,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                           onClick={() => setForm({ ...form, trainingField: opt.key })}
                           className={`flex-1 flex flex-col items-center gap-1 py-3 rounded-2xl border transition-all ${form.trainingField === opt.key
                             ? "bg-cyan-500/15 border-cyan-400/50 shadow-[0_0_16px_rgba(0,208,255,0.15)]"
-                            : "bg-white/[0.02] border-white/[0.04] hover:border-cyan-400/20"
+                            : " border-white/[0.04] hover:border-cyan-400/20"
                             }`}
                         >
                           <span className="text-xl">{opt.emoji}</span>
@@ -838,7 +854,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                  <div className="flex items-center gap-2 px-3 py-2.5 rounded-2xl  ">
                     <Sparkles size={14} className="text-cyan-400/40 shrink-0" />
                     <span className="flex-1 text-sm font-medium text-white/90">
                       {form.trainingField
@@ -854,8 +870,8 @@ export default function ProfileCard({ isOpen, onClose }) {
               {/* Section: Goals */}
               <section className="pb-2">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-400 to-blue-500" />
-                  <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-cyan-400/80">
+                  <div className="h-5 w-0.5 rounded-full" style={{ background: T.accent }} />
+                  <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: T.accent }}>
                     Goals
                   </h3>
                 </div>
@@ -892,7 +908,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                   {isEditing ? (
                     <>
                       {/* Unit selector */}
-                      <div className="flex rounded-xl overflow-hidden border border-white/[0.08] w-fit">
+                      <div className="flex rounded-xl overflow-hidden  w-fit">
                         {["months", "weeks", "days"].map((u) => (
                           <button
                             key={u}
@@ -909,7 +925,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                             }}
                             className={`px-3 py-1.5 text-[11px] font-bold capitalize transition-colors ${form.goalPeriodUnit === u
                               ? "bg-cyan-500 text-[#020617]"
-                              : "bg-white/[0.02] text-white/40 hover:text-white/60"
+                              : " text-white/40 hover:text-white/60"
                               }`}
                           >
                             {u}
@@ -967,7 +983,7 @@ export default function ProfileCard({ isOpen, onClose }) {
                       </div>
                     </>
                   ) : (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl  ">
                       <Clock size={14} className="text-cyan-400/40 shrink-0" />
                       <span className="text-sm font-medium text-white/90">
                         {form.goalPeriod} {currLimit.label}
@@ -984,15 +1000,17 @@ export default function ProfileCard({ isOpen, onClose }) {
         {/*  STICKY SAVE BAR – slides in from bottom, never overlays content */}
         {/* ================================================================ */}
         <div
-          className={`shrink-0 p-4 backdrop-blur-xl bg-[#020617]/85 border-t border-white/[0.08] rounded-b-3xl transition-all duration-500 ease-out ${isEditing
+          className={`shrink-0 p-4 backdrop-blur-xl rounded-b-3xl transition-all duration-500 ease-out ${isEditing
             ? "translate-y-0 opacity-100"
             : "translate-y-full opacity-0 pointer-events-none absolute bottom-0 w-full"
             }`}
+          style={{ background: T.card, borderTop: `1px solid ${T.border}` }}
         >
           <div className="flex items-center justify-between gap-3">
             <button
               onClick={handleCancelEdit}
-              className="px-4 py-2.5 text-sm font-semibold rounded-2xl bg-white/5 text-white/70 hover:bg-white/10 transition-colors active:scale-95"
+              className="px-4 py-2.5 text-sm font-semibold rounded-2xl shadow-lg transition-all active:scale-[0.97]"
+              style={{ background: T.cardAlt, border: `1px solid ${T.border}`, color: T.textPrimary }}
             >
               Cancel
             </button>
@@ -1000,9 +1018,14 @@ export default function ProfileCard({ isOpen, onClose }) {
               onClick={handleSave}
               disabled={saving}
               className={`flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-bold rounded-2xl transition-all active:scale-[0.97] ${saving
-                ? "bg-cyan-500/40 text-white/70 cursor-wait"
-                : "bg-cyan-500 text-[#020617] shadow-[0_0_25px_rgba(0,208,255,0.35)] hover:shadow-[0_0_35px_rgba(0,208,255,0.55)]"
+                ? "cursor-wait opacity-50"
+                : "shadow-lg"
                 }`}
+              style={{
+                background: saving ? T.cardAlt : T.accent,
+                color: saving ? T.textPrimary : "#000000",
+                boxShadow: saving ? undefined : `0 0 25px ${T.accent}80`
+              }}
             >
               {saving ? (
                 <Loader2 size={16} className="animate-spin" />
