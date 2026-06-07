@@ -1272,8 +1272,8 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Dynamic Spacer to perfectly pin content to 100vh bottom */}
-            <div className="flex-1 min-h-0"></div>
+            {/* Dynamic Spacer with max-height to prevent massive gaps on tall screens */}
+            <div className="flex-1 min-h-[32px] max-h-[8vh]"></div>
 
             {/* Premium Analytics Card inside Menu */}
             <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both shrink-0">
