@@ -13,6 +13,7 @@ import MealsManager from "@/components/MealsManager";
 import GoalDropdown from "@/components/GoalDropdown";
 import CreateGoalModal from "@/components/CreateGoalModal";
 import NutritionAnalytics from "@/components/NutritionAnalytics";
+import ProgressPhotoCard from "@/components/ProgressPhotoCard";
 import {
   Bell,
   Book,
@@ -23,6 +24,7 @@ import {
   Heart,
   Leaf,
   Loader2,
+  LogOut,
   Menu,
   Pill,
   Plus,
@@ -1143,9 +1145,63 @@ export default function Page() {
               </button>
             </div>
 
+            {/* Progress Photo Card */}
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both mb-6">
+              <ProgressPhotoCard />
+            </div>
+
             {/* Premium Analytics Card inside Menu */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both">
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both mt-auto">
               <NutritionAnalytics />
+            </div>
+
+            {/* Ultra-Premium Profile Pill Docked to Bottom */}
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-6 duration-500 delay-200 fill-mode-both mt-4">
+              <div style={{
+                borderRadius: "32px",
+                background: "radial-gradient(120% 100% at 50% 100%, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.95) 100%)",
+                boxShadow: "0 -12px 48px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.05)",
+                backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
+                padding: "10px 12px", display: "flex", alignItems: "center", gap: "14px",
+                position: "relative", overflow: "hidden"
+              }}>
+                <div style={{ position: "absolute", bottom: 0, left: "20px", width: "80px", height: "80px", background: `radial-gradient(circle, #34d39920 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0 }} />
+                
+                <div style={{
+                  width: "44px", height: "44px", borderRadius: "50%", flexShrink: 0,
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.4)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "#34d399", position: "relative", zIndex: 1
+                }}>
+                  <User size={22} strokeWidth={2} />
+                </div>
+                
+                <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "16px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, marginBottom: "2px", textShadow: "0 1px 2px rgba(0,0,0,0.4)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {session?.user?.name || "Premium Member"}
+                  </div>
+                  <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", letterSpacing: "0.03em" }}>
+                    {session?.user?.email || "Welcome to Twin"}
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.push("/login") } })}
+                  className="press-scale"
+                  style={{
+                    all: "unset", width: "44px", height: "44px", borderRadius: "50%",
+                    background: "linear-gradient(135deg, rgba(239,68,68,0.2) 0%, rgba(239,68,68,0.05) 100%)", 
+                    border: "1px solid rgba(239,68,68,0.1)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "#f87171", cursor: "pointer", flexShrink: 0, touchAction: "manipulation",
+                    position: "relative", zIndex: 1, 
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 16px rgba(239,68,68,0.2)"
+                  }}
+                >
+                  <LogOut size={20} strokeWidth={2.5} style={{ transform: "translateX(1px)" }} />
+                </button>
+              </div>
             </div>
           </div>,
           document.body
