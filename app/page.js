@@ -613,7 +613,7 @@ export default function Page() {
                 <div className="relative flex h-[100px] w-[100px] items-center justify-center">
                   {/* Subtle glass orb behind text */}
                   <div className="absolute inset-0 m-auto h-[60px] w-[60px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
-                  
+
                   {/* Pulse behind ring if goal hit */}
                   {consumed.calories >= (calorieTarget || 1) && (
                     <div
@@ -651,8 +651,8 @@ export default function Page() {
 
                   {/* Core Typography */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
-                    <span 
-                      className="text-[24px] leading-none font-bold tracking-tight tabular-nums" 
+                    <span
+                      className="text-[24px] leading-none font-bold tracking-tight tabular-nums"
                       style={{ color: T.textPrimary }}
                     >
                       {consumed.calories}
@@ -666,21 +666,21 @@ export default function Page() {
                 {/* Left/Over Pill */}
                 <div
                   className="flex items-center gap-1 rounded-full px-3 py-1"
-                  style={{ 
-                    background: consumed.calories >= (calorieTarget || 1) 
-                      ? `linear-gradient(135deg, ${T.accent}26 0%, ${T.accent}0D 100%)` 
+                  style={{
+                    background: consumed.calories >= (calorieTarget || 1)
+                      ? `linear-gradient(135deg, ${T.accent}26 0%, ${T.accent}0D 100%)`
                       : "rgba(255,255,255,0.03)",
                     border: `1px solid ${consumed.calories >= (calorieTarget || 1) ? `${T.accent}4D` : "rgba(255,255,255,0.05)"}`,
-                    boxShadow: consumed.calories >= (calorieTarget || 1) 
-                      ? `0 0 10px ${T.accent}26, inset 0 1px 0 rgba(255,255,255,0.1)` 
+                    boxShadow: consumed.calories >= (calorieTarget || 1)
+                      ? `0 0 10px ${T.accent}26, inset 0 1px 0 rgba(255,255,255,0.1)`
                       : "inset 0 1px 0 rgba(255,255,255,0.05)"
                   }}
                 >
-                  <Flame size={9} style={{ 
+                  <Flame size={9} style={{
                     color: consumed.calories >= (calorieTarget || 1) ? T.accent : "#fbbf24",
                     filter: consumed.calories >= (calorieTarget || 1) ? `drop-shadow(0 0 3px ${T.accent})` : "none"
                   }} />
-                  <span className="text-[8.5px] font-black uppercase tracking-wider" style={{ 
+                  <span className="text-[8.5px] font-black uppercase tracking-wider" style={{
                     color: consumed.calories >= (calorieTarget || 1) ? T.accent : T.textMuted
                   }}>
                     {calorieTarget
@@ -725,7 +725,7 @@ export default function Page() {
                           </span>
                         </div>
                       </div>
-                      
+
                       {/* Premium Segmented Progress bar */}
                       <div
                         className="relative h-[4px] w-full rounded-full overflow-hidden"
@@ -1130,360 +1130,379 @@ export default function Page() {
 
         {/* ── Fullscreen Menu Overlay ────────────────────────────────────── */}
         {isMenuOpen && typeof document !== 'undefined' && createPortal(
-          <div 
+          <div
             className="fixed inset-0 z-[99999] flex justify-center animate-in fade-in zoom-in-95 duration-300"
             style={{
               background: "#111318",
               backgroundImage: "radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%)"
             }}
           >
-            <div 
+            <div
               className="w-full max-w-[400px] h-[100dvh] flex flex-col px-6 pt-6 pb-6 overflow-hidden"
               style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
             >
               <div className="relative z-10 flex justify-end shrink-0">
                 <button
-                onClick={() => setIsMenuOpen(false)}
-                className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
-                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
-              >
-                <Plus size={24} strokeWidth={1.5} style={{ color: "#fff", transform: "rotate(45deg)" }} />
-              </button>
-            </div>
-
-            <div className="flex flex-col flex-1 justify-between mt-6">
-              {/* Friends List Parent Card - Sleek 20/10 UI */}
-            <div className="relative z-10 w-full shrink-0 flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
-              <div style={{
-                borderRadius: "24px",
-                background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.9) 100%)",
-                boxShadow: "0 32px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
-                backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
-                padding: "16px 14px", display: "flex", flexDirection: "column", gap: "6px",
-                position: "relative", overflow: "hidden"
-              }}>
-                {/* Subtle top edge glow */}
-                <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)" }} />
-
-                <div style={{ position: "relative", marginBottom: "4px" }}>
-                  <div style={{ position: "absolute", left: "12px", top: "0", bottom: "0", display: "flex", alignItems: "center", pointerEvents: "none", color: "rgba(255,255,255,0.5)" }}>
-                    <Search size={14} strokeWidth={2.5} />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Search friends..." 
-                    style={{ 
-                      width: "100%", height: "36px", paddingLeft: "34px", paddingRight: "14px",
-                      background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "12px", color: "#ffffff", fontSize: "14px", outline: "none",
-                      boxShadow: "inset 0 2px 8px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05)", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                    }} 
-                    className="focus:border-white/30 focus:bg-black/60 placeholder:text-white/40"
-                  />
-                </div>
-
-                <div 
-                  className="flex flex-col gap-[6px] relative z-10" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
+                  style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
                 >
-                  {/* Friend Card 1 */}
-                  <button onClick={() => setViewingProfile({ name: "Alex Chen", macros: { protein: 120, carbs: 180, fats: 55 }, consumed: { protein: 90, carbs: 140, fats: 40, calories: 1550 }, calorieTarget: 2200 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Alex Chen</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
-
-                  {/* Friend Card 2 */}
-                  <button onClick={() => setViewingProfile({ name: "Sarah Miller", macros: { protein: 110, carbs: 150, fats: 50 }, consumed: { protein: 110, carbs: 130, fats: 40, calories: 1400 }, calorieTarget: 2000 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Sarah Miller</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
-                  
-                  {/* Friend Card 3 */}
-                  <button onClick={() => setViewingProfile({ name: "Mike Ross", macros: { protein: 180, carbs: 250, fats: 70 }, consumed: { protein: 160, carbs: 200, fats: 60, calories: 2400 }, calorieTarget: 2800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Mike Ross</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
-
-                  {/* Friend Card 4 */}
-                  <button onClick={() => setViewingProfile({ name: "Emma Stone", macros: { protein: 100, carbs: 130, fats: 45 }, consumed: { protein: 80, carbs: 100, fats: 30, calories: 1200 }, calorieTarget: 1800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Emma Stone</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
-
-                </div>
-              </div>
-            </div>
-
-            {/* Premium Analytics Card inside Menu */}
-            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both shrink-0">
-              <NutritionAnalytics />
-            </div>
-
-            {/* Ultra-Premium Profile Pill Docked to Bottom */}
-            <div className="relative w-full shrink-0 group">
-              {/* Subtle ambient shadow behind the card */}
-              <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
-              
-              <div 
-                className="relative flex items-center justify-between p-3.5"
-                style={{
-                  borderRadius: "24px",
-                  background: "rgba(15, 23, 42, 0.45)",
-                  backdropFilter: "blur(40px)",
-                  WebkitBackdropFilter: "blur(40px)",
-                  border: "1px solid rgba(148,163,184,0.08)",
-                  borderTop: "1px solid rgba(255,255,255,0.08)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 30px -10px rgba(0,0,0,0.5)"
-                }}
-              >
-                <div className="flex items-center gap-3.5">
-                  {/* Premium Squircle Avatar */}
-                  <div className="relative">
-                    <div 
-                      className="grid place-items-center"
-                      style={{
-                        width: "44px", height: "44px",
-                        borderRadius: "14px",
-                        background: "linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%)",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        borderTop: "1px solid rgba(255,255,255,0.12)",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
-                      }}
-                    >
-                      <User size={20} strokeWidth={2} style={{ color: "#f8fafc" }} />
-                    </div>
-                    {/* Active Status Indicator */}
-                    <div 
-                      className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full"
-                      style={{
-                        background: "#10b981",
-                        border: "2.5px solid #0f172a",
-                        boxShadow: "0 0 8px rgba(16,185,129,0.5)"
-                      }}
-                    />
-                  </div>
-
-                  {/* Clean Hierarchy Text */}
-                  <div className="flex flex-col justify-center">
-                    <span 
-                      className="text-[15px] font-semibold tracking-tight leading-tight" 
-                      style={{ color: "#f8fafc" }}
-                    >
-                      {session?.user?.name || "Premium Member"}
-                    </span>
-                    <span 
-                      className="text-[12px] font-medium mt-0.5" 
-                      style={{ color: "#94a3b8" }}
-                    >
-                      {session?.user?.email || "Welcome to Twin"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Refined Minimalist Action Button */}
-                <button
-                  onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.push("/login") } })}
-                  className="grid place-items-center w-11 h-11 rounded-[12px] transition-all active:scale-[0.95]"
-                  style={{
-                    background: "transparent",
-                  }}
-                >
-                  <div 
-                    className="absolute inset-0 rounded-[12px] opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ background: "rgba(225,29,72,0.1)" }}
-                  />
-                  <LogOut size={18} strokeWidth={2} className="relative z-10 transition-colors group-hover:text-rose-400" style={{ color: "#64748b" }} />
+                  <Plus size={24} strokeWidth={1.5} style={{ color: "#fff", transform: "rotate(45deg)" }} />
                 </button>
               </div>
+
+              <div className="flex flex-col flex-1 justify-between mt-6">
+                {/* Friends List Parent Card - Sleek 20/10 UI */}
+                <div className="relative z-10 w-full shrink-0 flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
+                  <div style={{
+                    borderRadius: "24px",
+                    background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.9) 100%)",
+                    boxShadow: "0 32px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                    backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
+                    padding: "16px 14px", display: "flex", flexDirection: "column", gap: "6px",
+                    position: "relative", overflow: "hidden"
+                  }}>
+                    {/* Subtle top edge glow */}
+                    <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)" }} />
+
+                    <div style={{ position: "relative", marginBottom: "4px" }}>
+                      <div style={{ position: "absolute", left: "12px", top: "0", bottom: "0", display: "flex", alignItems: "center", pointerEvents: "none", color: "rgba(255,255,255,0.5)" }}>
+                        <Search size={14} strokeWidth={2.5} />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Search friends..."
+                        style={{
+                          width: "100%", height: "36px", paddingLeft: "34px", paddingRight: "14px",
+                          background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.08)",
+                          borderRadius: "12px", color: "#ffffff", fontSize: "14px", outline: "none",
+                          boxShadow: "inset 0 2px 8px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05)", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                        }}
+                        className="focus:border-white/30 focus:bg-black/60 placeholder:text-white/40"
+                      />
+                    </div>
+
+                    <div
+                      className="flex flex-col gap-[6px] relative z-10"
+                    >
+                      {/* Friend Card 1 */}
+                      <button onClick={() => setViewingProfile({ name: "Alex Chen", macros: { protein: 120, carbs: 180, fats: 55 }, consumed: { protein: 90, carbs: 140, fats: 40, calories: 1550 }, calorieTarget: 2200 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                          <User size={16} strokeWidth={2.5} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Alex Chen</div>
+                        </div>
+                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                          View Profile
+                        </div>
+                      </button>
+
+                      {/* Friend Card 2 */}
+                      <button onClick={() => setViewingProfile({ name: "Sarah Miller", macros: { protein: 110, carbs: 150, fats: 50 }, consumed: { protein: 110, carbs: 130, fats: 40, calories: 1400 }, calorieTarget: 2000 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                          <User size={16} strokeWidth={2.5} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Sarah Miller</div>
+                        </div>
+                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                          View Profile
+                        </div>
+                      </button>
+
+                      {/* Friend Card 3 */}
+                      <button onClick={() => setViewingProfile({ name: "Mike Ross", macros: { protein: 180, carbs: 250, fats: 70 }, consumed: { protein: 160, carbs: 200, fats: 60, calories: 2400 }, calorieTarget: 2800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                          <User size={16} strokeWidth={2.5} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Mike Ross</div>
+                        </div>
+                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                          View Profile
+                        </div>
+                      </button>
+
+                      {/* Friend Card 4 */}
+                      <button onClick={() => setViewingProfile({ name: "Emma Stone", macros: { protein: 100, carbs: 130, fats: 45 }, consumed: { protein: 80, carbs: 100, fats: 30, calories: 1200 }, calorieTarget: 1800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
+                          <User size={16} strokeWidth={2.5} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Emma Stone</div>
+                        </div>
+                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                          View Profile
+                        </div>
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+
+                {/* Premium Analytics Card inside Menu */}
+                <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both shrink-0">
+                  <NutritionAnalytics />
+                </div>
+
+                {/* Ultra-Premium Profile Pill Docked to Bottom */}
+                <div className="relative w-full shrink-0 group">
+                  {/* Subtle ambient shadow behind the card */}
+                  <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
+
+                  <div
+                    className="relative flex items-center justify-between p-3.5"
+                    style={{
+                      borderRadius: "24px",
+                      background: "rgba(15, 23, 42, 0.45)",
+                      backdropFilter: "blur(40px)",
+                      WebkitBackdropFilter: "blur(40px)",
+                      border: "1px solid rgba(148,163,184,0.08)",
+                      borderTop: "1px solid rgba(255,255,255,0.08)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 30px -10px rgba(0,0,0,0.5)"
+                    }}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      {/* Premium Squircle Avatar */}
+                      <div className="relative">
+                        <div
+                          className="grid place-items-center"
+                          style={{
+                            width: "44px", height: "44px",
+                            borderRadius: "14px",
+                            background: "linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%)",
+                            border: "1px solid rgba(255,255,255,0.06)",
+                            borderTop: "1px solid rgba(255,255,255,0.12)",
+                            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
+                          }}
+                        >
+                          <User size={20} strokeWidth={2} style={{ color: "#f8fafc" }} />
+                        </div>
+                        {/* Active Status Indicator */}
+                        <div
+                          className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full"
+                          style={{
+                            background: "#10b981",
+                            border: "2.5px solid #0f172a",
+                            boxShadow: "0 0 8px rgba(16,185,129,0.5)"
+                          }}
+                        />
+                      </div>
+
+                      {/* Clean Hierarchy Text */}
+                      <div className="flex flex-col justify-center">
+                        <span
+                          className="text-[15px] font-semibold tracking-tight leading-tight"
+                          style={{ color: "#f8fafc" }}
+                        >
+                          {session?.user?.name || "Premium Member"}
+                        </span>
+                        <span
+                          className="text-[12px] font-medium mt-0.5"
+                          style={{ color: "#94a3b8" }}
+                        >
+                          {session?.user?.email || "Welcome to Twin"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Refined Minimalist Action Button */}
+                    <button
+                      onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.push("/login") } })}
+                      className="grid place-items-center w-11 h-11 rounded-[12px] transition-all active:scale-[0.95]"
+                      style={{
+                        background: "transparent",
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 rounded-[12px] opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{ background: "rgba(225,29,72,0.1)" }}
+                      />
+                      <LogOut size={18} strokeWidth={2} className="relative z-10 transition-colors group-hover:text-rose-400" style={{ color: "#64748b" }} />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
             </div>
           </div>,
           document.body
         )}
 
-      {/* Viewing Profile Modal overlay */}
-      {viewingProfile && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4">
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-md animate-in fade-in duration-300" 
-            onClick={() => setViewingProfile(null)}
-          />
-          <div className="relative w-full max-w-[360px] animate-in zoom-in-95 duration-300 fill-mode-both" style={{
-            borderRadius: "28px",
-            background: "rgba(15, 23, 42, 0.45)",
-            backdropFilter: "blur(40px)",
-            WebkitBackdropFilter: "blur(40px)",
-            border: "1px solid rgba(148,163,184,0.08)",
-            borderTop: "1px solid rgba(255,255,255,0.12)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.5)",
-            padding: "24px", display: "flex", flexDirection: "column", gap: "24px"
-          }}>
-            {/* Absolute Luxury Gloss Layer */}
-            <div className="absolute inset-0 rounded-[28px] pointer-events-none mix-blend-overlay z-20" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.05)" }} />
-            
-            {/* Subtle ambient shadow behind the card */}
-            <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
+        {/* Viewing Profile Modal overlay */}
+        {viewingProfile && typeof document !== "undefined" && createPortal(
+          <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/70 backdrop-blur-xl animate-in fade-in duration-300"
+              style={{ filter: "saturate(150%)" }}
+              onClick={() => setViewingProfile(null)}
+            />
+            <div className="relative w-full max-w-[360px] animate-in zoom-in-95 duration-200 fill-mode-both" style={{
+              borderRadius: "32px",
+              background: "rgba(10, 15, 30, 0.55)",
+              backdropFilter: "blur(48px)",
+              WebkitBackdropFilter: "blur(48px)",
+              border: "1px solid rgba(148,163,184,0.08)",
+              borderTop: "1px solid rgba(255,255,255,0.15)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.02), 0 32px 64px -12px rgba(0,0,0,0.8)",
+              padding: "24px", display: "flex", flexDirection: "column", gap: "24px"
+            }}>
+              {/* Subtle ambient shadow behind the card */}
+              <div className="absolute inset-0 rounded-[32px] bg-[#020617] blur-2xl translate-y-4 opacity-50 pointer-events-none" />
 
-            {/* Header: Avatar + Name + Close */}
-            <div className="relative z-10 flex items-center justify-between">
-              <div className="flex items-center gap-3.5">
-                <div 
-                  className="grid place-items-center shrink-0"
+              {/* Header: Avatar + Name + Close */}
+              <div className="relative z-10 flex items-center justify-between">
+                <div className="flex items-center gap-3.5">
+                  <div
+                    className="relative grid place-items-center shrink-0 overflow-hidden"
+                    style={{
+                      width: "48px", height: "48px",
+                      borderRadius: "16px",
+                      background: "radial-gradient(120% 120% at 50% 0%, rgba(30,41,59,0.9) 0%, rgba(2,6,23,1) 100%)",
+                      border: "1px solid rgba(255,255,255,0.04)",
+                      borderTop: "1px solid rgba(255,255,255,0.12)",
+                      boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 16px rgba(0,0,0,0.4)"
+                    }}
+                  >
+                    <div className="absolute inset-0 rounded-[16px] pointer-events-none" style={{ border: "1px solid rgba(0,0,0,0.5)", mixBlendMode: "overlay" }} />
+                    <User size={22} strokeWidth={2} style={{ color: "#f8fafc", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }} />
+                  </div>
+                  <div>
+                    <h2 className="text-[18px] font-bold tracking-tight leading-tight" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{viewingProfile.name}</h2>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setViewingProfile(null)}
+                  className="relative grid place-items-center w-10 h-10 rounded-full transition-transform active:scale-[0.85]"
                   style={{
-                    width: "48px", height: "48px",
-                    borderRadius: "14px",
-                    background: "linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    borderTop: "1px solid rgba(255,255,255,0.12)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
+                    background: "linear-gradient(180deg, rgba(30,41,59,0.6) 0%, rgba(15,23,42,0.8) 100%)",
+                    border: "1px solid rgba(255,255,255,0.04)",
+                    borderTop: "1px solid rgba(255,255,255,0.1)",
+                    boxShadow: "inset 0 1px 1px rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.3)"
                   }}
                 >
-                  <User size={22} strokeWidth={2} style={{ color: "#f8fafc", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
-                </div>
-                <div>
-                  <h2 className="text-[18px] font-semibold tracking-tight leading-tight" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>{viewingProfile.name}</h2>
-                  <div className="text-[12px] font-medium mt-0.5" style={{ color: "#94a3b8" }}>Premium Member</div>
-                </div>
+                  <Plus size={20} strokeWidth={2.5} className="rotate-45 relative z-10" style={{ color: "#94a3b8", filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.5))" }} />
+                </button>
               </div>
-              <button 
-                onClick={() => setViewingProfile(null)} 
-                className="relative grid place-items-center w-10 h-10 rounded-full transition-all active:scale-[0.95] group" 
-                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}
-              >
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "rgba(255,255,255,0.05)" }} />
-                <Plus size={20} strokeWidth={2} className="rotate-45 relative z-10 transition-colors group-hover:text-white" style={{ color: "#94a3b8" }} />
-              </button>
-            </div>
 
-            {/* 18/10 Calorie Card - Absolute Luxury */}
-            <div className="relative z-10 group/card overflow-hidden" style={{
-              background: "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-              borderRadius: "20px", padding: "18px 20px",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderTop: "1px solid rgba(255,255,255,0.15)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(0,0,0,0.4)"
-            }}>
-              {/* Subtle light sweep effect */}
-              <div className="absolute inset-0 translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000 pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)" }} />
+              {/* The Ultimate 30/10 Calorie Card */}
+              <div className="relative z-10 overflow-hidden" style={{
+                background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.8) 100%)",
+                borderRadius: "28px", padding: "24px",
+                border: "1px solid rgba(148,163,184,0.08)",
+                borderTop: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.02), 0 20px 40px -10px rgba(0,0,0,0.7)"
+              }}>
+                {/* Top ambient bleed */}
+                <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)" }} />
 
-              <div className="flex items-center gap-2.5 mb-5 relative z-10">
-                <div className="grid place-items-center h-7 w-7 rounded-lg shrink-0" style={{ background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.22)" }}>
-                  <Flame size={14} style={{ color: "#60a5fa" }} />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <h3 className="text-[14px] font-bold tracking-tight leading-none" style={{ color: "#f8fafc" }}>Today's Intake</h3>
-                  <div className="text-[9px] font-semibold tracking-widest uppercase mt-1" style={{ color: "#64748b" }}>Daily Tracker</div>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between relative z-10">
-                {/* Refined 82px Ring with Ambient OLED Glow */}
-                <div className="relative flex h-[82px] w-[82px] items-center justify-center shrink-0">
-                  <div className="absolute inset-0 m-auto h-[60px] w-[60px] rounded-full" style={{ background: "radial-gradient(circle, rgba(110,231,183,0.12) 0%, transparent 70%)", filter: "blur(4px)" }} />
-                  <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="8" style={{ boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }} />
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="#6ee7b7" strokeWidth="8" strokeLinecap="round"
-                      strokeDasharray={2 * Math.PI * 42}
-                      strokeDashoffset={2 * Math.PI * 42 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
-                      style={{ filter: "drop-shadow(0 2px 6px rgba(110,231,183,0.4))", transition: "stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pt-0.5">
-                    <span className="text-[20px] leading-none font-bold tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>
-                      {viewingProfile.consumed.calories}
-                    </span>
-                    <span className="text-[9px] font-bold tracking-widest uppercase mt-1" style={{ color: "#94a3b8" }}>
-                      / {viewingProfile.calorieTarget}
-                    </span>
+                <div className="flex items-center gap-3.5 mb-8 relative z-10">
+                  <div className="grid place-items-center h-10 w-10 rounded-[12px] shrink-0" style={{ background: "linear-gradient(180deg, rgba(56,189,248,0.25) 0%, rgba(56,189,248,0.05) 100%)", border: "1px solid rgba(56,189,248,0.3)", borderTop: "1px solid rgba(56,189,248,0.6)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.3), 0 4px 12px rgba(56,189,248,0.2)" }}>
+                    <Flame size={20} strokeWidth={2.5} style={{ color: "#7dd3fc", filter: "drop-shadow(0 2px 4px rgba(56,189,248,0.8))" }} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <h3 className="text-[18px] font-bold tracking-tight leading-none" style={{ background: "linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>Today's Intake</h3>
+                    <div className="text-[11px] font-bold tracking-widest uppercase mt-1.5" style={{ color: "#64748b", letterSpacing: "0.15em" }}>Daily Tracker</div>
                   </div>
                 </div>
 
-                {/* Sleek Horizontal Bars with Specular Highlights */}
-                <div className="flex flex-1 flex-col justify-center gap-3.5 pl-7 pr-1">
-                  {[
-                    { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color: "#10b981", glow: "rgba(16,185,129,0.3)" },
-                    { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color: "#f59e0b", glow: "rgba(245,158,11,0.3)" },
-                    { label: "Fat", current: viewingProfile.consumed.fats, target: viewingProfile.macros.fats, color: "#f43f5e", glow: "rgba(244,63,94,0.3)" }
-                  ].map((macro) => {
-                    const pct = Math.min((macro.current / macro.target) * 100, 100);
-                    return (
-                      <div key={macro.label} className="flex flex-col gap-1.5">
-                        <div className="flex items-end justify-between leading-none">
-                          <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
-                          <div className="flex items-baseline gap-0.5">
-                            <span className="text-[13px] font-bold tabular-nums leading-none" style={{ color: "#ffffff" }}>{macro.current}</span>
-                            <span className="text-[10px] font-semibold tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
+                <div className="flex items-center justify-between gap-4 relative z-10">
+                  {/* Massive 130px Ring - True Hero Metric */}
+                  <div className="relative flex h-[130px] w-[130px] items-center justify-center shrink-0">
+                    <div className="absolute inset-0 m-auto h-[100px] w-[100px] rounded-full" style={{ background: "radial-gradient(circle, rgba(110,231,183,0.12) 0%, transparent 60%)", filter: "blur(8px)" }} />
+                    <svg className="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 130 130">
+                      {/* Background Track */}
+                      <circle cx="65" cy="65" r="58" fill="none" stroke="rgba(15,23,42,0.9)" strokeWidth="12" />
+                      <circle cx="65" cy="65" r="58" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12" style={{ boxShadow: "inset 0 2px 6px rgba(0,0,0,1)" }} />
+
+                      {/* Foreground Track */}
+                      <defs>
+                        <linearGradient id="emerald-gradient-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#6ee7b7" />
+                          <stop offset="100%" stopColor="#059669" />
+                        </linearGradient>
+                        <filter id="glow-drop">
+                          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#10b981" floodOpacity="0.5" />
+                        </filter>
+                      </defs>
+                      <circle cx="65" cy="65" r="58" fill="none" stroke="url(#emerald-gradient-ring)" strokeWidth="12" strokeLinecap="round"
+                        strokeDasharray={2 * Math.PI * 58}
+                        strokeDashoffset={2 * Math.PI * 58 * (1 - Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1))}
+                        filter="url(#glow-drop)"
+                      />
+
+                      {/* Glowing Leading Edge Dot (The Thumb) */}
+                      <g style={{ transformOrigin: "65px 65px", transform: `rotate(${Math.min(viewingProfile.consumed.calories / viewingProfile.calorieTarget, 1) * 360}deg)`, transition: "transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                        <circle cx="65" cy="7" r="4.5" fill="#ffffff" style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 8px #6ee7b7)" }} />
+                      </g>
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
+                      <span className="text-[36px] leading-none font-bold tabular-nums tracking-tighter" style={{ color: "#ffffff", textShadow: "0 4px 12px rgba(0,0,0,0.8)" }}>
+                        {viewingProfile.consumed.calories}
+                      </span>
+                      <span className="text-[10px] font-bold tracking-widest uppercase mt-1.5 opacity-80" style={{ color: "#94a3b8" }}>
+                        / {viewingProfile.calorieTarget}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Horizontal Bars */}
+                  <div className="flex flex-1 flex-col justify-center gap-5 pr-1">
+                    {[
+                      { label: "Protein", current: viewingProfile.consumed.protein, target: viewingProfile.macros.protein, color1: "#6ee7b7", color2: "#059669", glow: "rgba(16,185,129,0.5)" },
+                      { label: "Carbs", current: viewingProfile.consumed.carbs, target: viewingProfile.macros.carbs, color1: "#fcd34d", color2: "#d97706", glow: "rgba(245,158,11,0.5)" },
+                      { label: "Fat", current: viewingProfile.consumed.fats, target: viewingProfile.macros.fats, color1: "#fda4af", color2: "#e11d48", glow: "rgba(244,63,94,0.5)" }
+                    ].map((macro) => {
+                      const pct = Math.min((macro.current / macro.target) * 100, 100);
+                      return (
+                        <div key={macro.label} className="flex flex-col gap-2 relative">
+                          <div className="flex items-end justify-between leading-none">
+                            <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "#94a3b8" }}>{macro.label}</span>
+                            <div className="flex items-baseline gap-0.5">
+                              <span className="text-[15px] font-bold tabular-nums leading-none" style={{ color: "#ffffff", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>{macro.current}</span>
+                              <span className="text-[11px] font-semibold tabular-nums" style={{ color: "#64748b" }}>/{macro.target}g</span>
+                            </div>
+                          </div>
+                          {/* Deep etched track */}
+                          <div className="h-[8px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(2,6,23,0.8)", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "inset 0 2px 4px rgba(0,0,0,0.9)" }}>
+                            {/* Physical glass bar */}
+                            <div className="absolute top-0 bottom-0 left-0 rounded-full" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${macro.color2}, ${macro.color1})`, boxShadow: `0 0 12px ${macro.glow}` }}>
+                              {/* Glass edge highlight spanning the whole bar */}
+                              <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 100%)" }} />
+
+                              {/* Glowing Bright Head at the leading edge */}
+                              <div className="absolute right-0 top-0 bottom-0 w-[5px] bg-white rounded-full" style={{ filter: "blur(0.5px)", boxShadow: "0 0 8px rgba(255,255,255,0.9)" }} />
+                            </div>
                           </div>
                         </div>
-                        {/* Track with inner shadow */}
-                        <div className="h-[5px] w-full rounded-full overflow-hidden relative" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.03)", boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)" }}>
-                          {/* Progress bar with glowing tip */}
-                          <div className="absolute top-0 bottom-0 left-0 rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: macro.color, boxShadow: `0 0 10px ${macro.glow}` }}>
-                            {/* tiny specular highlight at the very end of the bar */}
-                            <div className="absolute right-0 top-0 bottom-0 w-2" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.5))" }} />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
+
+              {/* Mobile Touch-Optimized Obsidian CTA */}
+              <button className="relative w-full flex items-center justify-center gap-2.5 rounded-[24px] py-4 transition-transform active:scale-[0.96] overflow-hidden mt-2"
+                style={{
+                  background: "linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,1) 100%)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderTop: "1px solid rgba(255,255,255,0.2)",
+                  boxShadow: "0 16px 32px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.02), inset 0 -4px 16px rgba(0,0,0,0.9)"
+                }}>
+                {/* Ultra subtle specular top edge */}
+                <div className="absolute top-0 left-8 right-8 h-px bg-white/30 blur-[1px]" />
+
+                <MessageCircle size={22} strokeWidth={2.5} className="text-[#f8fafc] relative z-10" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} />
+                <span className="text-[17px] font-bold tracking-[0.05em] text-[#f8fafc] relative z-10" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.6)" }}>Message</span>
+              </button>
             </div>
-
-            {/* Ultra-Premium Obsidian Black CTA */}
-            <button className="relative z-10 w-full flex items-center justify-center gap-2 rounded-[16px] py-3.5 transition-all active:scale-[0.96] overflow-hidden group" 
-              style={{ 
-                background: "linear-gradient(180deg, rgba(30,41,59,0.7) 0%, rgba(2,6,23,0.95) 100%)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderTop: "1px solid rgba(255,255,255,0.15)",
-                borderBottom: "1px solid rgba(0,0,0,0.8)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -2px 6px rgba(0,0,0,0.5)"
-              }}>
-              {/* Dynamic Sheen / Sweep Effect */}
-              <div className="absolute inset-0 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)", transform: "skewX(-20deg)" }} />
-              
-              {/* Ambient Hover Glow inside button */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(ellipse at top, rgba(255,255,255,0.15) 0%, transparent 70%)" }} />
-
-              <MessageCircle size={18} strokeWidth={2.5} className="text-[#f8fafc] relative z-10" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
-              <span className="text-[15px] font-bold tracking-[0.04em] text-[#f8fafc] relative z-10" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>Message</span>
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body
+        )}
       </div>
     </div>
   );
