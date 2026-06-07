@@ -354,10 +354,11 @@ const CSS = `
     position:sticky;
     top:0;z-index:100;
     padding: 16px 20px 14px;
-    background: rgba(8,9,12,0.85);
-    backdrop-filter: blur(32px) saturate(1.6);
-    -webkit-backdrop-filter: blur(32px) saturate(1.6);
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
     border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   }
 
   .wl-header-row {
@@ -369,32 +370,36 @@ const CSS = `
   .wl-back {
     width:44px;height:44px;flex-shrink:0;
     border-radius:14px;
-    background: rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     display:flex;align-items:center;justify-content:center;
-    cursor:pointer;color:var(--text2);
+    cursor:pointer;color: #ffffff;
     transition:all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    backdrop-filter: blur(10px);
   }
-  .wl-back:hover { background: rgba(255,255,255,0.1); color:#fff; transform:scale(1.02); }
+  .wl-back:hover { 
+    background: rgba(255,255,255,0.04); 
+    color:#fff; 
+    border-color: rgba(255,255,255,0.1);
+  }
   .wl-back:active { transform:scale(0.94); }
 
   .wl-title-block { flex:1;min-width:0; }
   .wl-eyebrow {
     font-family:var(--mono);
-    font-size:9px;font-weight:500;
+    font-size:9px;font-weight:700;
     letter-spacing:4px;
-    color:var(--a1);
+    color: rgba(255,255,255,0.85);
     text-transform:uppercase;
     margin-bottom:2px;
-    opacity:0.9;
     display:flex;align-items:center;gap:6px;
   }
   .wl-eyebrow .eyebrow-dot {
     width:4px;height:4px;border-radius:50%;
-    background:var(--g1);
+    background: #ffffff;
     display:inline-block;
     animation: pulse-dot 2s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(255,255,255,0.8);
   }
   @keyframes pulse-dot {
     0%,100%{opacity:0.4;transform:scale(1);}
@@ -403,9 +408,9 @@ const CSS = `
   .wl-title {
     font-family:var(--display);
     font-size:28px;font-weight:800;
-    color:#fff;line-height:1;
+    color:#ffffff;line-height:1;
     letter-spacing:-0.5px;
-    text-shadow: 0 0 60px rgba(255,255,255,0.08);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
   }
 
   .wl-header-actions {
@@ -417,37 +422,31 @@ const CSS = `
 
   .wl-add-exercise-btn {
     padding: 10px 16px;
-    border-radius: 99px;
-    border: 1.5px solid rgba(255,255,255,0.4);
-    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
-    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     font-family: var(--body);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--a2);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: #ffffff;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    flex-shrink: 0;
-    white-space: nowrap;
     display:flex;align-items:center;gap:4px;
   }
   .wl-add-exercise-btn:hover {
-    background: rgba(255,255,255,0.15);
-    border-color: var(--a1);
-    color: #000;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 24px rgba(255,255,255,0.12);
+    color: #fff;
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
   }
   .wl-add-exercise-btn:active { transform: scale(0.96); }
   .wl-add-exercise-btn svg { width:14px;height:14px; }
 
   .wl-finish-header-btn {
     padding: 10px 20px;
-    border-radius: 99px;
-    border: none;
-    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.8);
+    background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 40%, #94a3b8 100%);
     font-family: var(--body);
     font-size: 11px;
     font-weight: 700;
@@ -456,27 +455,26 @@ const CSS = `
     color: #000;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 4px 20px rgba(255,255,255,0.3);
-    flex-shrink: 0;
-    backdrop-filter: blur(10px);
-    position:relative;
-    overflow:hidden;
+    box-shadow: 
+      inset 0 1px 2px rgba(255,255,255,0.9),
+      inset 0 -1px 2px rgba(0,0,0,0.2),
+      0 8px 24px rgba(255,255,255,0.15),
+      0 16px 32px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.6);
   }
-  .wl-finish-header-btn::before {
-    content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-    opacity:0;transition:opacity 0.4s;
-  }
-  .wl-finish-header-btn:hover::before { opacity:1; }
   .wl-finish-header-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 28px rgba(255,255,255,0.45);
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #cbd5e1 100%);
+    box-shadow: 
+      inset 0 1px 2px #ffffff,
+      inset 0 -1px 2px rgba(0,0,0,0.1),
+      0 12px 28px rgba(255,255,255,0.25),
+      0 24px 48px rgba(0,0,0,0.6);
   }
   .wl-finish-header-btn:active { transform: scale(0.96); }
   .wl-finish-header-btn.celebrating {
-    background:linear-gradient(135deg, #ffffff, #cbd5e1);
-    box-shadow: 0 4px 24px rgba(255,255,255,0.3);
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #cbd5e1 100%);
+    box-shadow: 0 4px 28px rgba(255,255,255,0.4);
   }
 
   /* ── PROGRESS BAR ── */
@@ -486,7 +484,8 @@ const CSS = `
   }
   .wl-progress-bar {
     height:3px;
-    background:rgba(255,255,255,0.05);
+    background: #020305;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.05);
     position:relative;
     overflow:hidden;
     border-radius:4px;
@@ -496,34 +495,33 @@ const CSS = `
     background:linear-gradient(90deg, #ffffff, #94a3b8);
     transition:width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius:4px;
-    box-shadow:0 0 20px rgba(255,255,255,0.2);
+    box-shadow:0 0 20px rgba(255,255,255,0.3), inset 0 1px 1px rgba(255,255,255,0.8);
     position:relative;
   }
   .wl-progress-fill::after {
     content:'';
     position:absolute;right:0;top:-2px;bottom:-2px;width:20px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.15));
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
     filter: blur(2px);
   }
   .wl-progress-stats {
     display:flex;justify-content:space-between;
     margin-top:4px;
-    font-size:10px;font-weight:500;
-    color:var(--text4);
+    font-size:10px;font-weight:700;
+    color: rgba(255,255,255,0.3);
     font-family:var(--mono);
     letter-spacing:0.3px;
   }
-  .wl-progress-stats span { color:var(--text3); }
+  .wl-progress-stats span { color: rgba(255,255,255,0.6); }
 
   /* ── MUSCLE RAIL ── */
   .wl-rail-wrap {
     padding:16px 0 6px;
-    background: rgba(0,0,0,0.15);
   }
   .wl-rail-label {
     font-size:9px;font-weight:700;
     letter-spacing:3px;
-    color:var(--text4);
+    color: rgba(255,255,255,0.85);
     text-transform:uppercase;
     margin-bottom:12px;
     padding:0 20px;
@@ -539,10 +537,10 @@ const CSS = `
     flex: 0 0 calc((100% - 16px) / 3);
     display:flex;flex-direction:column;align-items:center;
     padding:14px 4px 10px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.02);
-    backdrop-filter: blur(10px);
+    border-radius:14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     cursor:pointer;
     transition:all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position:relative;
@@ -552,28 +550,29 @@ const CSS = `
   .wl-tab::before {
     content:'';
     position:absolute;inset:0;
-    background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(16,185,129,0.02));
+    background:linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
     opacity:0;transition:opacity 0.4s;
   }
   .wl-tab::after {
     content:'';
     position:absolute;bottom:0;left:50%;transform:translateX(-50%);
     width:0;height:3px;border-radius:3px;
-    background:linear-gradient(90deg, var(--a1), var(--g1));
+    background:linear-gradient(90deg, #ffffff, #94a3b8);
     transition:width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .wl-tab:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+  .wl-tab:hover:not(.active) { box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.08); }
   .wl-tab.active {
     border-color: rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.08);
-    box-shadow: 0 4px 28px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+    background: transparent;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 8px 16px rgba(0,0,0,0.4), 0 0 24px rgba(255,255,255,0.15);
+    transform: translateY(-2px);
   }
   .wl-tab.active::before { opacity:1; }
   .wl-tab.active::after { width:28px; }
 
   .wl-tab-label {
     font-size:12px;font-weight:600;
-    color:var(--text3);
+    color: rgba(255,255,255,0.85);
     transition:color 0.3s;
     white-space:nowrap;
     position:relative;z-index:1;
@@ -582,19 +581,19 @@ const CSS = `
 
   .wl-tab-dot {
     width:5px;height:5px;border-radius:50%;
-    background:var(--text4);
+    background: rgba(255,255,255,0.3);
     margin-top:6px;
     transition:all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position:relative;z-index:1;
   }
   .wl-tab.active .wl-tab-dot {
-    background:var(--a1);
-    box-shadow:0 0 16px var(--a1), 0 0 40px rgba(255,255,255,0.1);
+    background: #ffffff;
+    box-shadow:0 0 16px #ffffff, 0 0 40px rgba(255,255,255,0.1);
     width:6px;height:6px;
   }
   .wl-tab .wl-tab-dot.wl-dot-done {
-    background:var(--g1);
-    box-shadow:0 0 16px rgba(16,185,129,0.25);
+    background: #ffffff;
+    box-shadow:0 0 16px rgba(255,255,255,0.8);
   }
 
   /* ── GROUPS ── */
@@ -604,12 +603,12 @@ const CSS = `
   }
 
   .wl-group {
-    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
-    background-color: rgba(10,12,16,0.85);
-    border-radius: var(--rad-sm);
-    border: 1px solid rgba(148,163,184,0.08);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, transparent 60%), #12151c;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.15);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
   }
   .wl-group:hover { border-color: rgba(255,255,255,0.12); }
 
@@ -633,40 +632,42 @@ const CSS = `
     letter-spacing:0.5px;
     flex-shrink:0;
     backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
   }
 
   .wl-group-name {
     font-size:13px;font-weight:700;
     letter-spacing:2px;
     text-transform:uppercase;
-    color:var(--text2);
+    color:#ffffff;
     flex:1;
   }
 
   .wl-group-count {
     font-family:var(--mono);
     font-size:10px;
-    color:var(--text3);
-    background:rgba(255,255,255,0.04);
+    color:rgba(255,255,255,0.8);
+    background:rgba(255,255,255,0.08);
     padding:3px 10px;
     border-radius:20px;
-    border:1px solid rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
     transition: all 0.3s ease;
   }
   .wl-group-count.has-progress {
-    border-color: rgba(16,185,129,0.15);
+    border-color: rgba(16,185,129,0.25);
     color: var(--g2);
-    background: rgba(16,185,129,0.05);
+    background: rgba(16,185,129,0.1);
   }
 
   .wl-group-chevron {
     transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display:flex;align-items:center;justify-content:center;
-    color:var(--text4);
+    color:rgba(255,255,255,0.6);
     width:24px;height:24px;
     flex-shrink:0;
   }
-  .wl-group-chevron.open { transform: rotate(180deg); color:var(--text2); }
+  .wl-group-chevron.open { transform: rotate(180deg); color:#ffffff; }
 
   .wl-group-body {
     padding: 0 16px 16px;
@@ -683,28 +684,24 @@ const CSS = `
 
   /* ── EXERCISE CARD ── */
   .wl-ex {
-    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
-    background-color: rgba(10,12,16,0.85);
-    border: 1px solid rgba(148,163,184,0.08);
+    background: linear-gradient(160deg, rgba(255,255,255,0.02) 0%, transparent 60%), #06070a;
+    border: 1px solid rgba(255,255,255,0.04);
     border-top: 1px solid rgba(255,255,255,0.12);
-    border-radius: var(--rad-sm);
+    border-radius: 20px;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 8px 24px -6px rgba(0,0,0,0.5);
+    box-shadow: 0 16px 32px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
   }
   .wl-ex:hover { border-color: rgba(255,255,255,0.15); }
   .wl-ex.open {
-    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%);
-    background-color: rgba(14,16,20,0.9);
+    background: linear-gradient(160deg, rgba(255,255,255,0.04) 0%, transparent 60%), #08090d;
     border-color: rgba(255,255,255,0.2);
-    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,1), inset 0 1px 0 rgba(255,255,255,0.15);
   }
   .wl-ex.all-done {
-    border-color: rgba(16,185,129,0.2);
-    box-shadow: 0 4px 28px rgba(16,185,129,0.06);
-    background: rgba(16,185,129,0.02);
+    border-color: rgba(255,255,255,0.4);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+    background: linear-gradient(160deg, rgba(255,255,255,0.08) 0%, transparent 60%), #0a0c10;
   }
 
   .wl-ex-header {
