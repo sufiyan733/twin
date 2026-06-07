@@ -34,7 +34,7 @@ function GlowDot({ cx, cy, payload, index, activeIndex, onToggle, fadingIndex })
             {/* Ambient Pulse */}
             <circle cx={cx} cy={cy} r={isActive ? 14 : 0} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={4} style={{ transition: "all 0.3s ease" }} />
             {/* Main Dot */}
-            <circle cx={cx} cy={cy} r={isActive ? 5 : 0} fill="#020617" stroke="#ffffff" strokeWidth={isActive ? 2.5 : 0} style={{ transition: "all 0.2s ease" }} />
+            <circle cx={cx} cy={cy} r={isActive ? 5 : 2.5} fill={isActive ? "#020617" : "#ffffff"} stroke="#ffffff" strokeWidth={isActive ? 2.5 : 0} style={{ transition: "all 0.2s ease" }} />
 
             {(isActive || isFading) && (
                 <foreignObject x={cx - 45} y={cy - 60} width={90} height={48}>
@@ -119,23 +119,12 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading
             {/* header */}
             <div className="chart-header" onClick={(e) => e.stopPropagation()}>
                 <div className="chart-title-group">
-                    <span className="chart-icon">{icon}</span>
                     <div>
-                        <div className="chart-title">{title}</div>
+                        <div className="chart-title">{title} <span className="chart-y-inline">• {yLabel}</span></div>
                         <div className="chart-subtitle">{subtitle}</div>
                     </div>
                 </div>
-                <button className="reps-btn">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                        <polyline points="17 6 23 6 23 12" />
-                    </svg>
-                    {btnLabel}
-                </button>
             </div>
-
-            <div className="y-label">{yLabel}</div>
 
             {loading ? (
                 <div className="chart-skeleton">
@@ -199,7 +188,7 @@ function AnalyticsChart({ title, icon, subtitle, yLabel, data, btnLabel, loading
                             <Tooltip active={false} content={() => null} />
 
                             <Area
-                                type="monotone"
+                                type="natural"
                                 dataKey="weight"
                                 stroke={`url(#line-${uid})`}
                                 strokeWidth={2.5}
@@ -706,16 +695,16 @@ export default function PerformancePage() {
           position: absolute;
           top: 0; left: 18px; right: 18px;
           height: 1px;
-          background: linear-gradient(90deg, transparent, var(--emerald-dim), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
         }
 
         .chart-header {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          margin-bottom: 0;
+          margin-bottom: 16px;
           flex-shrink: 0;
-          padding: 0 2px;
+          padding: 8px 6px 0;
         }
 
         .chart-title-group {
@@ -724,58 +713,30 @@ export default function PerformancePage() {
           gap: 7px;
         }
 
-        .chart-icon { font-size: 16px; line-height: 1.2; flex-shrink: 0; }
-
         .chart-title {
-          font-family: var(--font-display);
-          font-size: 11px;
+          font-family: 'Inter', sans-serif;
+          font-size: 13px;
           font-weight: 700;
-          letter-spacing: 0.1em;
-          color: var(--text);
+          letter-spacing: 0.06em;
+          color: #ffffff;
           line-height: 1.2;
         }
 
-        .chart-subtitle {
-          font-family: var(--font-ui);
+        .chart-y-inline {
+          font-family: 'Inter', sans-serif;
           font-size: 10px;
+          font-weight: 600;
+          color: rgba(255,255,255,0.4);
+          letter-spacing: 0.02em;
+        }
+
+        .chart-subtitle {
+          font-family: 'Inter', sans-serif;
+          font-size: 11px;
           font-weight: 500;
-          color: var(--text-muted);
+          color: rgba(255,255,255,0.5);
           letter-spacing: 0.01em;
-          margin-top: 1px;
-        }
-
-        .reps-btn {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          padding: 4px 9px;
-          background: var(--emerald-dim);
-          border: 1px solid var(--border-hi);
-          border-radius: 7px;
-          color: var(--emerald);
-          font-family: var(--font-display);
-          font-size: 8.5px;
-          font-weight: 700;
-          letter-spacing: 0.07em;
-          cursor: pointer;
-          transition: background 0.2s, border-color 0.2s;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-
-        .reps-btn:hover {
-          background: rgba(255,255,255,0.15);
-          border-color: var(--emerald);
-        }
-
-        .y-label {
-          font-family: var(--font-display);
-          font-size: 8px;
-          font-weight: 700;
-          color: var(--emerald);
-          letter-spacing: 0.10em;
-          padding: 1px 0 0 36px;
-          flex-shrink: 0;
+          margin-top: 3px;
         }
 
         /* ── SKELETON ─────────── */

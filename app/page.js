@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { calculateMacros } from "@/lib/macros";
@@ -11,6 +12,7 @@ import TasksManager from "@/components/TasksManager";
 import MealsManager from "@/components/MealsManager";
 import GoalDropdown from "@/components/GoalDropdown";
 import CreateGoalModal from "@/components/CreateGoalModal";
+import NutritionAnalytics from "@/components/NutritionAnalytics";
 import {
   Bell,
   Book,
@@ -95,6 +97,7 @@ export default function Page() {
   const { data: session, isPending } = authClient.useSession();
   const [isKaiOpen, setIsKaiOpen] = useState(false);
   const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
   const profileFetchedRef = useRef(false);
@@ -518,6 +521,7 @@ export default function Page() {
         <header className="relative z-10 flex shrink-0 items-center justify-between px-5 pt-3 pb-1">
           <button
             type="button"
+            onClick={() => setIsMenuOpen(true)}
             className="grid place-items-center h-9 w-9 rounded-xl shadow-lg transition-transform active:scale-[0.97]"
             style={{ background: T.cardAlt, border: `1px solid ${T.border}` }}
           >
@@ -1119,6 +1123,33 @@ export default function Page() {
               .catch(console.error);
           }}
         />
+
+        {/* ── Fullscreen Menu Overlay ────────────────────────────────────── */}
+        {isMenuOpen && typeof document !== 'undefined' && createPortal(
+          <div 
+            className="fixed inset-0 z-[99999] flex flex-col p-6 animate-in fade-in zoom-in-95 duration-300"
+            style={{
+              background: "#111318",
+              backgroundImage: "radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%)"
+            }}
+          >
+            <div className="relative z-10 flex justify-end mb-8">
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
+                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
+              >
+                <Plus size={24} strokeWidth={1.5} style={{ color: "#fff", transform: "rotate(45deg)" }} />
+              </button>
+            </div>
+
+            {/* Premium Analytics Card inside Menu */}
+            <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both">
+              <NutritionAnalytics />
+            </div>
+          </div>,
+          document.body
+        )}
       </div>
     </div>
   );

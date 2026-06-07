@@ -1104,45 +1104,43 @@ const PlanExerciseModal = ({ onClose }) => {
 
 const PlanDayPill = ({ day, label, color, isRest }) => (
   <div style={{
-    display: "flex", alignItems: "center", gap: "7px",
-    padding: "6px 10px", borderRadius: "8px",
-    background: isRest ? "rgba(255,255,255,0.03)" : `${color}10`,
-    border: `1px solid ${isRest ? "rgba(255,255,255,0.06)" : color + "28"}`,
+    display: "flex", alignItems: "center", gap: "10px",
+    padding: "8px 12px", borderRadius: "10px",
+    background: isRest ? "rgba(255,255,255,0.02)" : `linear-gradient(135deg, ${color}15 0%, rgba(255,255,255,0.01) 100%)`,
+    boxShadow: isRest ? "inset 0 1px 0 rgba(255,255,255,0.04), inset 0 0 0 1px rgba(255,255,255,0.02)" : `inset 0 1px 0 rgba(255,255,255,0.1), inset 0 0 0 1px ${color}30, 0 4px 12px rgba(0,0,0,0.2)`,
   }}>
     <div style={{
-      fontFamily: "var(--font-display)", fontSize: "10px", letterSpacing: "0.06em",
-      color: isRest ? "var(--c-dim)" : color, flexShrink: 0, minWidth: "24px",
+      fontFamily: "var(--font-display)", fontSize: "11px", letterSpacing: "0.08em",
+      color: isRest ? "rgba(255,255,255,0.3)" : color, flexShrink: 0, minWidth: "26px",
     }}>{day}</div>
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ fontSize: "11px", fontWeight: 600, color: isRest ? "var(--c-dim)" : "#d1dce8", lineHeight: 1.2, letterSpacing: "-0.01em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label}</div>
+      <div style={{ fontSize: "12px", fontWeight: 700, color: isRest ? "rgba(255,255,255,0.3)" : "#ffffff", lineHeight: 1.2, letterSpacing: "0.01em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label}</div>
     </div>
   </div>
 );
 
 const WorkoutRow = ({ exercise, idx }) => (
   <div style={{
-    display: "flex", alignItems: "flex-start", gap: "14px",
-    padding: "12px 0",
+    display: "flex", alignItems: "flex-start", gap: "16px",
+    padding: "16px 0",
     borderBottom: "1px solid rgba(255,255,255,0.04)",
-    animation: `exRowSlide 0.28s ease ${idx * 40}ms both`,
+    animation: `exRowSlide 0.3s var(--ease-out) ${idx * 40}ms both`,
   }}>
     <div style={{
-      width: "26px", height: "26px", borderRadius: "8px", flexShrink: 0,
-      background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01))",
-      border: "1px solid rgba(255,255,255,0.06)",
-      borderTop: "1px solid rgba(255,255,255,0.15)",
-      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 6px rgba(0,0,0,0.2)",
+      width: "32px", height: "32px", borderRadius: "8px", flexShrink: 0,
+      background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.2)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontSize: "11px", fontWeight: 800, color: "#cbd5e1", fontFamily: "var(--font-display)",
-      letterSpacing: "0.04em",
+      fontSize: "13px", fontWeight: 800, color: "#ffffff", fontFamily: "var(--font-display)",
+      letterSpacing: "0.06em", textShadow: "0 1px 2px rgba(0,0,0,0.5)"
     }}>{String(idx + 1).padStart(2, "0")}</div>
-    <div style={{ flex: 1, minWidth: 0, paddingTop: "1px" }}>
-      <div style={{ fontSize: "14px", fontWeight: 700, color: "#ffffff", letterSpacing: "-0.01em", marginBottom: "4px", lineHeight: 1.2 }}>{exercise.name}</div>
-      <div style={{ fontSize: "12px", color: "#64748b", fontWeight: 500 }}>{exercise.note}</div>
+    <div style={{ flex: 1, minWidth: 0, paddingTop: "2px" }}>
+      <div style={{ fontSize: "15px", fontWeight: 800, color: "#ffffff", letterSpacing: "0.01em", marginBottom: "4px", lineHeight: 1.2 }}>{exercise.name}</div>
+      <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>{exercise.note}</div>
     </div>
     <div style={{
-      flexShrink: 0, fontSize: "12px", fontWeight: 700, letterSpacing: "0.02em",
-      color: "#94a3b8", whiteSpace: "nowrap", paddingTop: "2px",
+      flexShrink: 0, fontSize: "13px", fontWeight: 800, letterSpacing: "0.04em",
+      color: "rgba(255,255,255,0.6)", whiteSpace: "nowrap", paddingTop: "3px",
     }}>{exercise.sets}</div>
   </div>
 );
@@ -1151,24 +1149,23 @@ const WorkoutSectionCard = ({ workout, accent }) => {
   const [open, setOpen] = useState(false);
   return (
     <div style={{
-      border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)",
-      borderRadius: "16px", background: "#0a0c10", marginBottom: "8px", overflow: "hidden",
-      boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+      borderRadius: "16px", background: "linear-gradient(165deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)", marginBottom: "12px", overflow: "hidden",
+      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12), inset 0 0 0 1px rgba(255,255,255,0.04), 0 8px 24px rgba(0,0,0,0.4)",
     }}>
       <button onClick={() => setOpen(v => !v)} style={{
-        all: "unset", display: "flex", alignItems: "center", gap: "12px",
-        width: "100%", padding: "14px 16px", cursor: "pointer", boxSizing: "border-box",
-        touchAction: "manipulation",
-      }}>
-        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: accent, flexShrink: 0, boxShadow: `0 0 10px ${accent}80` }} />
-        <div style={{ flex: 1, fontSize: "13px", fontWeight: 700, color: "#f8fafc", letterSpacing: "-0.01em" }}>{workout.label}</div>
-        <div style={{ fontSize: "11px", color: "var(--c-muted)", fontWeight: 600, marginRight: "4px" }}>{workout.exercises.length} ex</div>
-        <div style={{ color: open ? accent : "var(--c-muted)", transition: "transform 0.22s var(--ease-spring), color 0.18s", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+        all: "unset", display: "flex", alignItems: "center", gap: "14px",
+        width: "100%", padding: "18px 20px", cursor: "pointer", boxSizing: "border-box",
+        touchAction: "manipulation", transition: "background 0.2s",
+      }} className="hover:bg-white/5">
+        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: accent, flexShrink: 0, boxShadow: `0 0 10px ${accent}80` }} />
+        <div style={{ flex: 1, fontSize: "16px", fontWeight: 800, color: "#ffffff", letterSpacing: "0.01em" }}>{workout.label}</div>
+        <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontWeight: 700, marginRight: "4px" }}>{workout.exercises.length} ex</div>
+        <div style={{ color: open ? accent : "rgba(255,255,255,0.3)", transition: "transform 0.3s var(--ease-spring), color 0.2s", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
         </div>
       </button>
       {open && (
-        <div style={{ padding: "0 16px 16px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div style={{ padding: "0 20px 16px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           {workout.exercises.map((ex, i) => <WorkoutRow key={i} exercise={ex} idx={i} />)}
         </div>
       )}
@@ -1215,53 +1212,80 @@ const PlanDetailCTA = ({ plan, onClose }) => {
   }, [plan, saving, saved, onClose]);
 
   return (
-    <div style={{ padding: "12px 16px 28px", borderTop: "1px solid rgba(255,255,255,0.06)", flexShrink: 0 }}>
+    <div style={{ padding: "16px 20px 24px", borderTop: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
+      <style>{`
+        @keyframes ultra-pulse {
+          0%, 100% { transform: scale(1); box-shadow: inset 0 2px 1px rgba(255,255,255,0.6), inset 0 -2px 1px rgba(0,0,0,0.2), 0 16px 40px rgba(16,185,129,0.5), 0 0 20px rgba(16,185,129,0.2); }
+          50% { transform: scale(1.02); box-shadow: inset 0 2px 1px rgba(255,255,255,0.8), inset 0 -2px 1px rgba(0,0,0,0.3), 0 24px 56px rgba(16,185,129,0.7), 0 0 40px rgba(16,185,129,0.4); }
+        }
+        @keyframes laser-shimmer {
+          0% { transform: translateX(-150%) skewX(-25deg); opacity: 0; }
+          20% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { transform: translateX(250%) skewX(-25deg); opacity: 0; }
+        }
+      `}</style>
       <button
         onClick={handleUsePlan}
         disabled={saving || saved}
         className={!saving && !saved ? "press-scale" : ""}
         style={{
-          all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-          width: "100%", padding: "15px", borderRadius: "var(--r-md)", boxSizing: "border-box",
+          all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+          width: "100%", padding: "18px", borderRadius: "20px", boxSizing: "border-box",
+          position: "relative", overflow: "hidden",
           background: saved
-            ? "linear-gradient(135deg,#16a34a,#166534)"
+            ? "linear-gradient(135deg, #16a34a 0%, #15803d 100%)"
             : error
-              ? "linear-gradient(135deg,#7f1d1d,#450a0a)"
+              ? "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)"
               : saving
-                ? `${plan.accent}55`
-                : `linear-gradient(135deg, ${plan.accent}cc, ${plan.accent}88)`,
-          color: "#fff", fontSize: "14px", fontWeight: 700, letterSpacing: "-0.01em",
+                ? `rgba(52,211,153,0.3)`
+                : `radial-gradient(120% 100% at 50% -10%, rgba(255,255,255,0.4) 0%, transparent 60%), linear-gradient(135deg, #10b981 0%, #047857 100%)`, // Epic dome highlight over deep emerald
+          color: "#ffffff", fontSize: "17px", fontWeight: 800, letterSpacing: "0.03em",
+          textShadow: "0 2px 4px rgba(0,0,0,0.4)",
           cursor: saving || saved ? "default" : "pointer", touchAction: "manipulation",
+          border: "1px solid rgba(255,255,255,0.25)",
           boxShadow: saved
-            ? "0 0 28px rgba(22,163,74,0.4)"
+            ? "inset 0 2px 1px rgba(255,255,255,0.4), inset 0 -2px 1px rgba(0,0,0,0.2), 0 16px 40px rgba(22,163,74,0.4)"
             : error
-              ? "0 0 20px rgba(239,68,68,0.3)"
-              : `0 0 28px ${plan.accent}40`,
-          transition: "background 0.3s, box-shadow 0.3s",
-          animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none",
+              ? "inset 0 2px 1px rgba(255,255,255,0.4), inset 0 -2px 1px rgba(0,0,0,0.2), 0 16px 40px rgba(239,68,68,0.4)"
+              : `inset 0 2px 1px rgba(255,255,255,0.6), inset 0 -2px 1px rgba(0,0,0,0.2), 0 16px 40px rgba(16,185,129,0.5), 0 0 20px rgba(16,185,129,0.2)`,
+          transition: "all 0.3s var(--ease-spring)",
+          animation: saved ? "successBounce 0.4s var(--ease-spring)" : (!saving && !error) ? "ultra-pulse 4s infinite var(--ease-out)" : "none",
         }}
       >
-        {saved ? (
-          <>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-            Plan Saved!
-          </>
-        ) : saving ? (
-          <>
-            <div style={{ width: "14px", height: "14px", border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
-            Saving…
-          </>
-        ) : error ? (
-          <>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" /></svg>
-            Sign in to save
-          </>
-        ) : (
-          <>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-            Use This Plan
-          </>
+        {/* Shimmer overlay - incredibly sharp and bright */}
+        {!saving && !saved && !error && (
+          <div style={{ 
+            position: "absolute", top: 0, bottom: 0, width: "30%", 
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)", 
+            animation: "laser-shimmer 3s ease-in-out infinite", 
+            pointerEvents: "none" 
+          }} />
         )}
+        
+        <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "10px" }}>
+          {saved ? (
+            <>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+              Plan Saved!
+            </>
+          ) : saving ? (
+            <>
+              <div style={{ width: "20px", height: "20px", border: "3.5px solid rgba(255,255,255,0.3)", borderTop: "3.5px solid #ffffff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+              Saving…
+            </>
+          ) : error ? (
+            <>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" /></svg>
+              Sign in to save
+            </>
+          ) : (
+            <>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+              Use This Plan
+            </>
+          )}
+        </div>
       </button>
     </div>
   );
@@ -1285,66 +1309,55 @@ const PlanDetailCard = ({ plan, onClose }) => {
       }}>
         <div style={{
           width: "100%", maxWidth: "430px",
-          background: "linear-gradient(180deg, rgba(20,25,35,0.95) 0%, rgba(10,12,15,0.98) 100%)",
-          backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-          borderRadius: "26px 26px 0 0",
-          border: `1px solid ${plan.borderColor}`, borderTop: "1px solid rgba(255,255,255,0.25)", borderBottom: "none",
+          background: "radial-gradient(120% 100% at 50% 0%, rgba(30,41,59,0.45) 0%, rgba(2,6,23,0.85) 100%)",
+          backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
+          borderRadius: "32px 32px 0 0",
+          boxShadow: `0 -24px 80px rgba(0,0,0,0.9), 0 -2px 40px ${plan.accent}20, inset 0 1px 0 rgba(255,255,255,0.2), inset 1px 0 0 rgba(255,255,255,0.05), inset -1px 0 0 rgba(255,255,255,0.05)`,
           display: "flex", flexDirection: "column",
-          maxHeight: "92dvh", overflow: "hidden",
-          boxShadow: `0 -28px 80px rgba(0,0,0,0.95), 0 -2px 40px ${plan.accent}18`,
-          position: "relative",
+          maxHeight: "94dvh", overflow: "hidden",
         }}>
-          {/* gradient accent at top */}
-          <div style={{ height: "1px", background: `linear-gradient(90deg,transparent,${plan.accent}80,transparent)`, flexShrink: 0 }} />
 
           {/* HEADER */}
-          <div style={{ padding: "18px 18px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, position: "relative" }}>
+          <div style={{ padding: "24px 24px 16px", flexShrink: 0, position: "relative" }}>
             <SheetHandle />
-            {/* gradient bg */}
-            <div style={{ position: "absolute", inset: 0, background: plan.gradient, opacity: 0.35, pointerEvents: "none", borderRadius: "26px 26px 0 0" }} />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                <div style={{
-                  width: "52px", height: "52px", borderRadius: "16px", flexShrink: 0,
-                  background: `${plan.accent}18`, border: `1.5px solid ${plan.accent}40`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "24px", boxShadow: `0 0 24px ${plan.accent}25`,
-                }}>{plan.icon}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "4px" }}>
-                    <span style={{
-                      fontSize: "8px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase",
-                      padding: "2px 8px", borderRadius: "20px",
-                      background: `${plan.badgeColor}20`, border: `1px solid ${plan.badgeColor}45`, color: plan.badgeColor,
-                    }}>{plan.badge}</span>
-                  </div>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: "28px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "4px" }}>{plan.name}</div>
-                  <div style={{ fontSize: "11px", color: plan.accent, fontWeight: 600, letterSpacing: "0.02em" }}>{plan.tagline}</div>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+              <div style={{ position: "absolute", top: 0, left: "20px", width: "100px", height: "100px", background: `radial-gradient(circle, ${plan.accent}30 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0 }} />
+              <div style={{
+                width: "60px", height: "60px", borderRadius: "16px", flexShrink: 0,
+                background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.5)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "30px", color: plan.accent, position: "relative", zIndex: 1
+              }}>{plan.icon}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "6px" }}>
+                  <span style={{
+                    fontSize: "9px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase",
+                    padding: "3px 10px", borderRadius: "6px",
+                    background: `${plan.badgeColor}15`, color: plan.badgeColor,
+                  }}>{plan.badge}</span>
                 </div>
-                <button onClick={close} style={{ all: "unset", width: "30px", height: "30px", borderRadius: "50%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-muted)", cursor: "pointer", flexShrink: 0, touchAction: "manipulation" }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
-                </button>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1, marginBottom: "4px" }}>{plan.name}</div>
+                <div style={{ fontSize: "14px", color: plan.accent, fontWeight: 700, letterSpacing: "0.01em" }}>{plan.tagline}</div>
               </div>
-              {/* stats row */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", marginTop: "16px" }}>
-                {[
-                  { label: "Days/wk", value: `${plan.days}` },
-                  { label: "Level", value: plan.level.split("–")[0] },
-                  { label: "Freq", value: plan.freq.replace("per muscle", "").trim() },
-                  { label: "Goal", value: plan.goal.split(" · ")[0] },
-                ].map((s, i) => (
-                  <div key={i} style={{
-                    padding: "10px 4px", borderRadius: "12px",
-                    background: "rgba(255,255,255,0.02)",
-                    border: "1px solid rgba(148,163,184,0.08)",
-                    borderTop: "1px solid rgba(255,255,255,0.06)",
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: "3px",
-                  }}>
-                    <div style={{ fontSize: "8px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: `${plan.accent}90` }}>{s.label}</div>
-                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#f8fafc", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "100%" }}>{s.value}</div>
-                  </div>
-                ))}
-              </div>
+              <button onClick={close} style={{ all: "unset", width: "36px", height: "36px", borderRadius: "18px", background: "rgba(255,255,255,0.1)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.8)", cursor: "pointer", flexShrink: 0, touchAction: "manipulation" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            {/* stats row */}
+            <div style={{ display: "flex", borderRadius: "16px", background: "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.3)", marginTop: "24px" }}>
+              {[
+                { label: "Days/wk", value: `${plan.days}` },
+                { label: "Level", value: plan.level.split("–")[0] },
+                { label: "Freq", value: plan.freq.replace("per muscle", "").trim() },
+                { label: "Goal", value: plan.goal.split(" · ")[0] },
+              ].map((s, i) => (
+                <div key={i} style={{ flex: 1, padding: "16px 4px", textAlign: "center", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none", display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>{s.label}</div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "17px", color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: "100%", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>{s.value}</div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1375,39 +1388,7 @@ const PlanDetailCard = ({ plan, onClose }) => {
               ))}
             </div>
 
-            {/* Volume & Recovery */}
-            <div style={{ marginBottom: "16px" }}>
-              <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: plan.accent, marginBottom: "10px", display: "flex", alignItems: "center", gap: "8px" }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
-                Volume & Science
-              </div>
-              <div style={{ padding: "16px", borderRadius: "16px", background: "#0a0c10", border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
-                {[
-                  { label: "Weekly Volume", val: plan.volume, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="18" y="3" width="4" height="18" /><rect x="10" y="8" width="4" height="13" /><rect x="2" y="13" width="4" height="8" /></svg> },
-                  { label: "Frequency", val: plan.freq, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4" /><path d="M3 11v-1a4 4 0 0 1 4-4h14" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> },
-                  { label: "Rest Days", val: plan.rest, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg> },
-                  { label: "Best For", val: plan.goal, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg> },
-                  { label: "Level", val: plan.level, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg> },
-                ].map((r, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "24px", height: "24px", borderRadius: "6px", background: "rgba(255,255,255,0.04)", color: plan.accent, flexShrink: 0 }}>
-                      {r.icon}
-                    </div>
-                    <span style={{ fontSize: "12px", color: "var(--c-muted)", fontWeight: 500, flex: 1 }}>{r.label}</span>
-                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#ffffff" }}>{r.val}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Science Note */}
-            <div style={{ padding: "16px", borderRadius: "16px", background: "#0a0c10", border: "1px solid rgba(148,163,184,0.08)", borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "16px", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
-              <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--c-muted)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
-                Evidence-Based Note
-              </div>
-              <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 400, lineHeight: 1.6 }}>{plan.scienceNote}</div>
-            </div>
 
             <div style={{ height: "8px" }} />
           </div>
@@ -1423,6 +1404,7 @@ const PlanDetailCard = ({ plan, onClose }) => {
 /* ═══════════════════════════════════════════════════════════
    PLAN CARD (in the list)
 ═══════════════════════════════════════════════════════════ */
+
 const PlanCard = ({ plan, index, onSelect }) => {
   const dayDots = Array.from({ length: 7 }, (_, i) => {
     const sched = plan.schedule[i];
@@ -1431,87 +1413,83 @@ const PlanCard = ({ plan, index, onSelect }) => {
   });
 
   return (
-    <div
+    <button
       onClick={() => onSelect(plan)}
-      className="plan-card-hover"
+      className="press-scale"
       style={{
-        position: "relative", borderRadius: "18px", cursor: "pointer", overflow: "hidden",
-        background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)",
+        all: "unset", display: "block", position: "relative",
+        width: "100%", borderRadius: "20px",
+        background: "linear-gradient(165deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.04)",
         backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-        border: `1px solid ${plan.borderColor}`, borderTop: "1px solid rgba(255,255,255,0.18)",
-        boxShadow: `0 10px 30px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04)`,
-        animation: `planCardIn 0.45s var(--ease-out) ${index * 60}ms both`,
-        flexShrink: 0,
+        animation: `planCardIn 0.4s var(--ease-out) ${index * 60}ms both`,
+        flexShrink: 0, overflow: "hidden", cursor: "pointer", touchAction: "manipulation",
       }}
     >
-      {/* gradient bg */}
-      <div style={{ position: "absolute", inset: 0, background: plan.gradient, opacity: 0.15, pointerEvents: "none" }} />
-      {/* top accent line */}
-      <div style={{ position: "absolute", top: 0, left: "12%", right: "12%", height: "1px", background: `linear-gradient(90deg,transparent,${plan.accent}70,transparent)`, pointerEvents: "none" }} />
-
-      <div style={{ position: "relative", zIndex: 1, padding: "16px 16px 14px" }}>
+      <div style={{ padding: "20px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, left: "20px", width: "100px", height: "100px", background: `radial-gradient(circle, ${plan.accent}25 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0 }} />
         {/* TOP ROW */}
-        <div style={{ display: "flex", alignItems: "flex-start", gap: "11px", marginBottom: "12px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", marginBottom: "18px", position: "relative", zIndex: 1 }}>
           <div style={{
-            width: "46px", height: "46px", borderRadius: "14px", flexShrink: 0,
-            background: `${plan.accent}15`, border: `1px solid ${plan.accent}40`, borderTop: `1px solid ${plan.accent}80`,
+            width: "52px", height: "52px", borderRadius: "16px", flexShrink: 0,
+            background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.5)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "22px", boxShadow: `0 0 20px ${plan.accent}20, inset 0 2px 4px ${plan.accent}10`,
+            fontSize: "26px", color: plan.accent
           }}>{plan.icon}</div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 0, paddingTop: "2px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px", flexWrap: "wrap" }}>
               <span style={{
-                fontSize: "8px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
-                padding: "2px 7px", borderRadius: "20px",
-                background: `${plan.badgeColor}1a`, border: `1px solid ${plan.badgeColor}40`,
-                color: plan.badgeColor, flexShrink: 0,
+                fontSize: "9px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase",
+                padding: "3px 8px", borderRadius: "6px",
+                background: `${plan.badgeColor}15`, color: plan.badgeColor,
               }}>{plan.badge}</span>
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: "22px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "2px" }}>{plan.name}</div>
-            <div style={{ fontSize: "11px", color: plan.accent, fontWeight: 600, letterSpacing: "0.01em" }}>{plan.tagline}</div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: "24px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.1, marginBottom: "4px" }}>{plan.name}</div>
+            <div style={{ fontSize: "13px", color: plan.accent, fontWeight: 600, letterSpacing: "0.01em" }}>{plan.tagline}</div>
           </div>
-          <div style={{ color: `${plan.accent}60`, flexShrink: 0, marginTop: "2px" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+          <div style={{ color: `rgba(255,255,255,0.3)`, flexShrink: 0, marginTop: "6px" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
           </div>
         </div>
 
         {/* STATS CHIPS */}
-        <div style={{ display: "flex", gap: "5px", marginBottom: "12px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "18px", flexWrap: "wrap" }}>
           {[
             { val: `${plan.days}d / wk` },
             { val: plan.level },
             { val: plan.freq },
           ].map((chip, i) => (
             <div key={i} style={{
-              padding: "3px 9px", borderRadius: "20px",
-              background: `${plan.accent}10`, border: `1px solid ${plan.accent}30`,
-              fontSize: "10px", fontWeight: 700, color: `${plan.accent}e0`,
-              letterSpacing: "0.02em",
+              padding: "5px 12px", borderRadius: "8px",
+              background: "rgba(255,255,255,0.05)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), inset 0 0 0 1px rgba(255,255,255,0.02)",
+              fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.9)",
+              letterSpacing: "0.02em"
             }}>{chip.val}</div>
           ))}
         </div>
 
         {/* WEEK DOTS */}
-        <div style={{ display: "flex", gap: "4px", alignItems: "center", marginBottom: "10px" }}>
+        <div style={{ display: "flex", gap: "4px", alignItems: "center", marginBottom: "16px" }}>
           {dayDots.map((dot, i) => (
             <div key={i} style={{
               flex: 1, height: "4px", borderRadius: "2px",
-              background: dot.isRest ? "rgba(255,255,255,0.06)" : `${dot.color}55`,
-              boxShadow: dot.isRest ? "none" : `0 0 4px ${dot.color}40`,
-              transition: "all 0.2s",
+              background: dot.isRest ? "rgba(255,255,255,0.08)" : dot.color,
+              boxShadow: dot.isRest ? "none" : `0 0 8px ${dot.color}40`,
             }} />
           ))}
         </div>
 
         {/* GOAL ROW */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: plan.accent, flexShrink: 0 }} />
-          <span style={{ fontSize: "10px", fontWeight: 500, color: "var(--c-muted)" }}>{plan.goal}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ width: "6px", height: "6px", borderRadius: "3px", background: plan.accent, flexShrink: 0 }} />
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(255,255,255,0.5)" }}>{plan.goal}</span>
           <div style={{ flex: 1 }} />
-          <span style={{ fontSize: "10px", fontWeight: 600, color: plan.accent }}>View plan →</span>
+          <span style={{ fontSize: "12px", fontWeight: 700, color: plan.accent }}>View plan →</span>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -1538,73 +1516,77 @@ const BestPlansModal = ({ onClose }) => {
 
   return (
     <>
-      <div onClick={handleClose} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }} />
+      <div onClick={handleClose} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(2,6,23,0.85)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }} />
 
-      <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 51, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.4s var(--ease-out)" }}>
-        <div style={{ width: "100%", maxWidth: "430px", background: "linear-gradient(180deg, rgba(20,25,35,0.95) 0%, rgba(10,12,15,0.98) 100%)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: "28px 28px 0 0", border: "1px solid rgba(255,255,255,0.12)", borderTop: "1px solid rgba(255,255,255,0.25)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "94dvh", overflow: "hidden", boxShadow: "0 -32px 120px rgba(0,0,0,0.98), 0 -2px 60px rgba(255,255,255,0.08)", position: "relative" }}>
-          <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.7),transparent)", pointerEvents: "none" }} />
+      <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 51, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+        <div style={{
+          width: "100%", maxWidth: "430px",
+          background: "radial-gradient(120% 100% at 50% 0%, rgba(30,41,59,0.45) 0%, rgba(2,6,23,0.85) 100%)",
+          backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
+          borderRadius: "32px 32px 0 0",
+          boxShadow: `0 -24px 80px rgba(0,0,0,0.9), 0 -2px 40px rgba(52,211,153,0.15), inset 0 1px 0 rgba(255,255,255,0.2), inset 1px 0 0 rgba(255,255,255,0.05), inset -1px 0 0 rgba(255,255,255,0.05)`,
+          display: "flex", flexDirection: "column",
+          maxHeight: "94dvh", overflow: "hidden",
+        }}>
 
           {/* HEADER */}
-          <div style={{ padding: "20px 20px 0", flexShrink: 0 }}>
+          <div style={{ padding: "24px 24px 0", flexShrink: 0 }}>
             <SheetHandle />
-            <div style={{ display: "flex", alignItems: "flex-start", marginBottom: "6px" }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--c-accent)", marginBottom: "5px", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <div style={{ width: "14px", height: "1.5px", background: "var(--c-accent)", borderRadius: "2px" }} />
+            <div style={{ display: "flex", alignItems: "flex-start", marginBottom: "16px", position: "relative" }}>
+              <div style={{ position: "absolute", top: "-20px", left: "0", width: "150px", height: "150px", background: `radial-gradient(circle, #34d39915 0%, transparent 70%)`, pointerEvents: "none", zIndex: 0 }} />
+              <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
+                <div style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: "#34d399", marginBottom: "6px" }}>
                   Science-Based Splits
                 </div>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: "36px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "6px" }}>
-                  BEST PLANS
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "42px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1, marginBottom: "8px", textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>
+                  Best Plans
                 </div>
-                <div style={{ fontSize: "12px", color: "var(--c-muted)", fontWeight: 400, letterSpacing: "0.01em" }}>
-                  2× weekly frequency · 10–20 sets/muscle · Evidence-backed
+                <div style={{ fontSize: "14px", color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>
+                  2× weekly frequency · 10–20 sets/muscle
                 </div>
               </div>
-              <button onClick={handleClose} style={{ all: "unset", width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--c-border-hi)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-muted)", cursor: "pointer", flexShrink: 0, touchAction: "manipulation" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              <button onClick={handleClose} style={{ all: "unset", width: "36px", height: "36px", borderRadius: "18px", background: "rgba(255,255,255,0.1)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.8)", cursor: "pointer", flexShrink: 0, touchAction: "manipulation", position: "relative", zIndex: 1 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
               </button>
             </div>
 
             {/* key stats bar */}
-            <div style={{ display: "flex", gap: "0", margin: "12px 0", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ display: "flex", borderRadius: "16px", background: "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.3)", marginBottom: "24px", position: "relative", zIndex: 1 }}>
               {[
-                { val: "7", label: "Programs", accent: "#ffffff" },
-                { val: "2×", label: "Frequency", accent: "#a78bfa" },
-                { val: "100%", label: "Evidence", accent: "#22c55e" },
+                { val: "7", label: "Programs", color: "#ffffff" },
+                { val: "2×", label: "Frequency", color: "#ffffff" },
+                { val: "100%", label: "Evidence", color: "#34d399" },
               ].map((s, i) => (
-                <div key={i} style={{ flex: 1, padding: "9px 10px", background: `${s.accent}08`, borderRight: i < 2 ? "1px solid rgba(255,255,255,0.05)" : "none", textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: "18px", letterSpacing: "0.04em", color: s.accent, lineHeight: 1 }}>{s.val}</div>
-                  <div style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--c-dim)", marginTop: "2px" }}>{s.label}</div>
+                <div key={i} style={{ flex: 1, padding: "18px 0", textAlign: "center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "26px", color: s.color, lineHeight: 1, marginBottom: "4px", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>{s.val}</div>
+                  <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>{s.label}</div>
                 </div>
               ))}
             </div>
 
             {/* FILTER PILLS */}
-            <div style={{ display: "flex", gap: "5px", paddingBottom: "14px", overflowX: "auto", borderBottom: "1px solid var(--c-border)" }}>
+            <div className="ws-scroll" style={{ display: "flex", gap: "8px", paddingBottom: "16px", overflowX: "auto", borderBottom: "1px solid rgba(255,255,255,0.08)", WebkitOverflowScrolling: "touch" }}>
               {FILTERS.map(f => (
                 <button key={f} onClick={() => setFilter(f)} style={{
-                  all: "unset", padding: "5px 13px", borderRadius: "20px", flexShrink: 0,
-                  fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", cursor: "pointer",
-                  background: filter === f ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.04)",
-                  border: filter === f ? "1px solid rgba(255,255,255,0.45)" : "1px solid var(--c-border)",
-                  color: filter === f ? "#ffffff" : "var(--c-muted)",
-                  transition: "all 0.18s",
-                  boxShadow: filter === f ? "0 0 12px rgba(255,255,255,0.2)" : "none",
-                  touchAction: "manipulation",
+                  all: "unset", padding: "8px 18px", borderRadius: "24px", flexShrink: 0,
+                  fontSize: "13px", fontWeight: 700, letterSpacing: "0.01em", cursor: "pointer",
+                  background: filter === f ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.05)",
+                  boxShadow: filter === f ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.1)",
+                  color: filter === f ? "#020617" : "rgba(255,255,255,0.7)",
+                  transition: "all 0.2s", touchAction: "manipulation",
                 }}>{f}</button>
               ))}
             </div>
           </div>
 
           {/* PLAN LIST */}
-          <div className="ws-scroll" style={{ flex: 1, overflowY: "auto", padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div className="ws-scroll" style={{ flex: 1, overflowY: "auto", padding: "16px 24px 24px", display: "flex", flexDirection: "column", gap: "12px" }}>
             {filtered.map((plan, i) => (
               <PlanCard key={plan.id} plan={plan} index={i} onSelect={setSelectedPlan} />
             ))}
             {filtered.length === 0 && (
-              <div style={{ textAlign: "center", padding: "32px 0", color: "var(--c-muted)", fontSize: "13px" }}>No plans match this filter</div>
+              <div style={{ textAlign: "center", padding: "40px 0", color: "rgba(255,255,255,0.5)", fontSize: "14px", fontWeight: 600 }}>No plans match this filter</div>
             )}
-            <div style={{ height: "8px" }} />
           </div>
         </div>
       </div>
