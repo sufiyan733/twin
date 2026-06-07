@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import InstallAppPrompt from "@/components/install-app-prompt";
 import NavShell from "@/components/NavShell";
-import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,7 +41,6 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/manifest.webmanifest" crossOrigin="use-credentials" />
       </head>
       <body className="min-h-full flex flex-col">
-        <SplashScreen />
         {children}
         <NavShell />
         <InstallAppPrompt />
