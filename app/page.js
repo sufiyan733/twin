@@ -1152,14 +1152,14 @@ export default function Page() {
             </div>
 
             {/* Friends List Parent Card - Sleek 20/10 UI */}
-            <div className="relative z-10 w-full flex-1 min-h-[140px] max-h-[320px] flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
+            <div className="relative z-10 w-full shrink-0 flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
               <div style={{
                 borderRadius: "24px",
                 background: "linear-gradient(180deg, rgba(30,41,59,0.5) 0%, rgba(2,6,23,0.9) 100%)",
                 boxShadow: "0 32px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06)",
                 backdropFilter: "blur(48px)", WebkitBackdropFilter: "blur(48px)",
                 padding: "16px 14px", display: "flex", flexDirection: "column", gap: "6px",
-                position: "relative", overflow: "hidden", flex: 1, minHeight: 0
+                position: "relative", overflow: "hidden"
               }}>
                 {/* Subtle top edge glow */}
                 <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent)" }} />
@@ -1182,11 +1182,7 @@ export default function Page() {
                 </div>
 
                 <div 
-                  className="flex flex-col gap-[6px] overflow-y-auto flex-1 min-h-0 relative z-10" 
-                  style={{ 
-                    msOverflowStyle: "none",
-                    scrollbarWidth: "none"
-                  }}
+                  className="flex flex-col gap-[6px] relative z-10" 
                 >
                   {/* Friend Card 1 */}
                   <button onClick={() => setViewingProfile({ name: "Alex Chen", macros: { protein: 120, carbs: 180, fats: 55 }, consumed: { protein: 90, carbs: 140, fats: 40, calories: 1550 }, calorieTarget: 2200 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
@@ -1244,33 +1240,6 @@ export default function Page() {
                     </div>
                   </button>
 
-                  {/* Friend Card 5 */}
-                  <button onClick={() => setViewingProfile({ name: "Liam Smith", macros: { protein: 150, carbs: 200, fats: 60 }, consumed: { protein: 130, carbs: 180, fats: 50, calories: 2100 }, calorieTarget: 2500 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Liam Smith</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
-
-                  {/* Friend Card 6 */}
-                  <button onClick={() => setViewingProfile({ name: "Olivia Davis", macros: { protein: 120, carbs: 160, fats: 55 }, consumed: { protein: 100, carbs: 120, fats: 45, calories: 1700 }, calorieTarget: 2100 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                    <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                      <User size={16} strokeWidth={2.5} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                      <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Olivia Davis</div>
-                    </div>
-                    <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                      View Profile
-                    </div>
-                  </button>
                 </div>
               </div>
             </div>
