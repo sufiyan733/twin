@@ -101,17 +101,36 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
   const editCell = "w-full rounded-xl bg-white/[0.04] border px-2 py-2 text-xs text-white text-center outline-none transition-all";
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6">
-      <div className="w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
+    <div 
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-500"
+      style={{
+        background: "radial-gradient(circle at 50% 50%, rgba(6,7,10,0.6) 0%, rgba(0,0,0,0.98) 100%)",
+        backdropFilter: "blur(40px) saturate(150%)",
+        WebkitBackdropFilter: "blur(40px) saturate(150%)"
+      }}
+    >
+      <div 
+        className="relative w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[32px] overflow-hidden animate-in zoom-in-90 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+        style={{
+          background: "linear-gradient(160deg, rgba(21,23,29,0.9) 0%, rgba(6,7,10,0.95) 100%)", 
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255,255,255,0.04)",
+          boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 0 40px rgba(255,255,255,0.02), 0 40px 80px -20px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05)"
+        }}
+      >
+        {/* Ultra-Premium Edge Bloom & Noise */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", boxShadow: "0 1px 25px 2px rgba(255,255,255,0.15)" }} />
+        <div className="absolute inset-0 pointer-events-none mix-blend-overlay z-0" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")" }} />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
+        <div className="flex items-center justify-between px-6 pt-6 pb-5 border-b border-white/[0.04] bg-transparent shrink-0 relative z-10">
           <div>
-            <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
-              <Utensils className="text-[#00d0ff]" size={20} />
-              Meals Manager
+            <h2 className="text-[22px] font-bold tracking-tight flex items-center gap-2" style={{ background: "linear-gradient(180deg, #ffffff 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
+              <Utensils className="text-[#60a5fa]" size={22} />
+              Meals
             </h2>
-            <p className="text-[10px] text-white/30 mt-0.5">
+            <p className="text-[11px] font-semibold tracking-wide text-white/40 mt-1 uppercase">
               {meals.length} meals · {totalCalories.toLocaleString()} kcal total today
             </p>
           </div>
@@ -125,13 +144,21 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
 
         {/* Add Meal Button */}
         {!addingMeal && (
-          <div className="px-5 py-3 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
+          <div className="px-6 py-4 border-b border-white/[0.04] bg-transparent shrink-0 relative z-10">
             <button
               onClick={() => setAddingMeal(true)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#fafafa]/10 border border-[#fafafa]/20 text-[#fafafa] hover:bg-[#fafafa]/20 hover:shadow-[0_0_15px_rgba(250,250,250,0.1)] transition-all text-sm font-semibold"
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-[20px] text-[15px] font-bold transition-all duration-300 active:scale-[0.97] group relative overflow-hidden"
+              style={{ 
+                background: "linear-gradient(180deg, rgba(2,6,23,0.8) 0%, rgba(15,23,42,0.9) 100%)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderTop: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.5)"
+              }}
             >
-              <Plus size={16} />
-              Add Meal
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <div className="absolute inset-0 m-auto w-[60%] h-full rounded-full opacity-20" style={{ background: "radial-gradient(circle, #60a5fa 0%, transparent 70%)", filter: "blur(12px)" }} />
+              <Plus size={18} className="text-[#60a5fa] relative z-10" />
+              <span className="relative z-10 tracking-wide" style={{ background: "linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Add New Meal</span>
             </button>
           </div>
         )}
@@ -230,7 +257,12 @@ export default function MealsManager({ isOpen, onClose, meals, setMeals, saveMea
               const isExpanded = expandedMealId === meal.id;
 
               return (
-                <div key={meal.id} className={`rounded-[16px] border bg-gradient-to-b from-[#222224] to-[#161618] border border-white/[0.04] overflow-hidden transition-all ${isEditing ? "border-[#00d0ff]/60 shadow-[0_0_20px_rgba(0,208,255,0.12)]" : "border-white/10 hover:border-white/20"}`}>
+                <div key={meal.id} className={`rounded-[20px] relative overflow-hidden transition-all ${isEditing ? "bg-white/[0.04]" : "bg-[rgba(2,6,23,0.3)]"}`}
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.04)",
+                    boxShadow: isEditing ? "inset 0 1px 1px rgba(255,255,255,0.05), 0 0 20px rgba(96,165,250,0.15)" : "inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.2)"
+                  }}
+                >
 
                   {/* Summary Row — always clickable to expand/collapse */}
                   <div

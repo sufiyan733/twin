@@ -127,12 +127,14 @@ function ExpandPanel({ open, children }) {
 const TaskRow = memo(function TaskRow({ task, index, isExpanded, onToggleExpand, onUpdate, onDelete }) {
   return (
     <div
-      className={`rounded-[16px] border bg-gradient-to-b from-[#222224] to-[#161618] border border-white/[0.04] overflow-hidden ${
-        task.checked ? "border-white/10 opacity-60" : "border-white/10 hover:border-white/20"
-      } ${isExpanded ? "shadow-[0_0_25px_rgba(0,208,255,0.08)]" : ""}`}
+      className={`rounded-[20px] overflow-hidden relative z-10 ${
+        task.checked ? "opacity-60" : ""
+      } ${isExpanded ? "bg-white/[0.04]" : "bg-[rgba(2,6,23,0.3)]"}`}
       style={{
+        border: "1px solid rgba(255,255,255,0.04)",
+        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.2)",
         animation: `tmFadeSlideUp 280ms ${index * 35}ms both ease-out`,
-        transition: "border-color 200ms ease, box-shadow 200ms ease, opacity 200ms ease",
+        transition: "background-color 200ms ease, box-shadow 200ms ease, opacity 200ms ease",
         willChange: "transform, opacity",
       }}
     >
@@ -330,32 +332,41 @@ export default function TasksManager({
       <div
         className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6"
         style={{
-          backgroundColor: visible ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
+          background: visible ? "radial-gradient(circle at 50% 50%, rgba(6,7,10,0.6) 0%, rgba(0,0,0,0.98) 100%)" : "rgba(0,0,0,0)",
+          backdropFilter: "blur(40px) saturate(150%)",
+          WebkitBackdropFilter: "blur(40px) saturate(150%)",
           opacity: visible ? 1 : 0,
           transition: "opacity 260ms ease",
           willChange: "opacity",
         }}
       >
         <div
-          className="w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[24px] bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden"
+          className="relative w-full max-w-[420px] h-[85vh] max-h-[800px] flex flex-col rounded-[32px] overflow-hidden"
           style={{
+            background: "linear-gradient(160deg, rgba(21,23,29,0.9) 0%, rgba(6,7,10,0.95) 100%)", 
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid rgba(255,255,255,0.04)",
+            boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 0 40px rgba(255,255,255,0.02), 0 40px 80px -20px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05)",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 260ms cubic-bezier(0.4,0,0.2,1), transform 260ms cubic-bezier(0.4,0,0.2,1)",
+            transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.98)",
+            transition: "opacity 350ms cubic-bezier(0.25,0.46,0.45,0.94), transform 350ms cubic-bezier(0.25,0.46,0.45,0.94)",
             willChange: "transform, opacity",
           }}
         >
+          {/* Ultra-Premium Edge Bloom & Noise */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", boxShadow: "0 1px 25px 2px rgba(255,255,255,0.15)" }} />
+          <div className="absolute inset-0 pointer-events-none mix-blend-overlay z-0" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")" }} />
+
           {/* Header */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-white/5 bg-[#000000] bg-gradient-to-b from-[#18181a] to-[#0e0e10] shrink-0">
+          <div className="flex items-center justify-between px-6 pt-6 pb-5 border-b border-white/[0.04] bg-transparent shrink-0 relative z-10">
             <div>
-              <h2 className="text-lg font-bold text-white tracking-wide flex items-center gap-2">
-                <ClipboardList className="text-[#00d0ff]" size={20} />
-                Tasks Manager
+              <h2 className="text-[22px] font-bold tracking-tight flex items-center gap-2" style={{ background: "linear-gradient(180deg, #ffffff 0%, #94a3b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
+                <ClipboardList className="text-[#00d0ff]" size={22} />
+                Tasks
               </h2>
               {activeTasks.length > 0 && (
-                <p className="text-[10px] text-white/30 mt-0.5">
+                <p className="text-[11px] font-semibold tracking-wide text-white/40 mt-1 uppercase">
                   {completedCount} / {activeTasks.length} completed
                 </p>
               )}
@@ -499,17 +510,18 @@ export default function TasksManager({
 
             <button
               onClick={addNewTask}
-              className="w-full flex items-center justify-center gap-2 py-3 mt-4 rounded-xl border border-dashed text-sm font-semibold transition-all active:scale-[0.98]"
-              style={{
-                borderColor: `${accentColor}66`,
-                color: accentColor,
-                transition: "background 150ms ease, border-color 150ms ease, transform 100ms ease",
+              className="w-full flex items-center justify-center gap-2 py-4 mt-6 mb-2 rounded-[20px] text-[15px] font-bold transition-all duration-300 active:scale-[0.97] group relative overflow-hidden"
+              style={{ 
+                background: "linear-gradient(180deg, rgba(2,6,23,0.8) 0%, rgba(15,23,42,0.9) 100%)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderTop: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.5)"
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}18`; e.currentTarget.style.borderColor = `${accentColor}99`; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = `${accentColor}66`; }}
             >
-              <Plus size={16} />
-              Add New Task
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <div className="absolute inset-0 m-auto w-[60%] h-full rounded-full opacity-20" style={{ background: "radial-gradient(circle, #00d0ff 0%, transparent 70%)", filter: "blur(12px)" }} />
+              <Plus size={18} className="text-[#00d0ff] relative z-10" />
+              <span className="relative z-10 tracking-wide" style={{ background: "linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Add New Task</span>
             </button>
           </div>
         </div>
