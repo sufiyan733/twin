@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <link rel="manifest" href="/manifest.webmanifest" crossOrigin="use-credentials" />
+        <link rel="manifest" href="/manifest.webmanifest?v=2" crossOrigin="use-credentials" />
       </head>
       <body className="min-h-full flex flex-col">
         {children}
