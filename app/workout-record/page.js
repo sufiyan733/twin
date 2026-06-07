@@ -281,15 +281,15 @@ const CSS = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
   :root {
-    --bg:         #03050c;
-    --bg2:        #060a16;
-    --surface:    #0b0f1e;
-    --card:       rgba(15, 20, 38, 0.9);
+    --bg: #020617;
+    --bg2: #020617;
+    --surface: #0f172a;
+    --card: rgba(15, 23, 42, 0.9);
     --card-border: rgba(255,255,255,0.06);
     --glass:      rgba(255,255,255,0.03);
-    --a1:         #3b82f6;
-    --a2:         #60a5fa;
-    --a3:         #93c5fd;
+    --a1:         #ffffff;
+    --a2:         #ffffff;
+    --a3:         #f1f5f9;
     --g1:         #10b981;
     --g2:         #34d399;
     --text:       #f0f4ff;
@@ -304,7 +304,7 @@ const CSS = `
     --body:       'Space Grotesk', sans-serif;
     --shadow-sm:  0 2px 16px rgba(0,0,0,0.6);
     --shadow-card: 0 8px 48px rgba(0,0,0,0.6);
-    --shadow-glow: 0 0 80px rgba(59,130,246,0.06);
+    --shadow-glow: 0 0 80px rgba(255,255,255,0.06);
   }
 
   html, body {
@@ -326,7 +326,7 @@ const CSS = `
     overflow-x: hidden;
     padding-bottom: 100px;
     background-image:
-      radial-gradient(ellipse at 20% 0%, rgba(59,130,246,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.05) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 100%, rgba(16,185,129,0.03) 0%, transparent 50%);
   }
 
@@ -363,7 +363,7 @@ const CSS = `
     border:1px solid rgba(255,255,255,0.08);
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;color:var(--text2);
-    transition:all 0.25s cubic-bezier(.34,1.56,.64,1);
+    transition:all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     backdrop-filter: blur(10px);
   }
   .wl-back:hover { background: rgba(255,255,255,0.1); color:#fff; transform:scale(1.02); }
@@ -395,7 +395,7 @@ const CSS = `
     font-size:28px;font-weight:800;
     color:#fff;line-height:1;
     letter-spacing:-0.5px;
-    text-shadow: 0 0 60px rgba(59,130,246,0.08);
+    text-shadow: 0 0 60px rgba(255,255,255,0.08);
   }
 
   .wl-header-actions {
@@ -408,8 +408,8 @@ const CSS = `
   .wl-add-exercise-btn {
     padding: 10px 16px;
     border-radius: 99px;
-    border: 1.5px solid rgba(59,130,246,0.25);
-    background: rgba(59,130,246,0.06);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
     backdrop-filter: blur(10px);
     font-family: var(--body);
     font-size: 11px;
@@ -418,17 +418,17 @@ const CSS = `
     text-transform: uppercase;
     color: var(--a2);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     flex-shrink: 0;
     white-space: nowrap;
     display:flex;align-items:center;gap:4px;
   }
   .wl-add-exercise-btn:hover {
-    background: rgba(59,130,246,0.15);
+    background: rgba(255,255,255,0.15);
     border-color: var(--a1);
-    color: #fff;
+    color: #000;
     transform: translateY(-1px);
-    box-shadow: 0 4px 24px rgba(59,130,246,0.12);
+    box-shadow: 0 4px 24px rgba(255,255,255,0.12);
   }
   .wl-add-exercise-btn:active { transform: scale(0.96); }
   .wl-add-exercise-btn svg { width:14px;height:14px; }
@@ -437,16 +437,16 @@ const CSS = `
     padding: 10px 20px;
     border-radius: 99px;
     border: none;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
     font-family: var(--body);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    color: #fff;
+    color: #000;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
-    box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 20px rgba(255,255,255,0.3);
     flex-shrink: 0;
     backdrop-filter: blur(10px);
     position:relative;
@@ -461,7 +461,7 @@ const CSS = `
   .wl-finish-header-btn:hover::before { opacity:1; }
   .wl-finish-header-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 28px rgba(59,130,246,0.45);
+    box-shadow: 0 6px 28px rgba(255,255,255,0.45);
   }
   .wl-finish-header-btn:active { transform: scale(0.96); }
   .wl-finish-header-btn.celebrating {
@@ -483,10 +483,10 @@ const CSS = `
   }
   .wl-progress-fill {
     height:100%;
-    background:linear-gradient(90deg, #3b82f6, #10b981, #34d399);
-    transition:width 0.6s cubic-bezier(0.4,0,0.2,1);
+    background:linear-gradient(90deg, #ffffff, #10b981, #34d399);
+    transition:width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius:4px;
-    box-shadow:0 0 20px rgba(59,130,246,0.2);
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
     position:relative;
   }
   .wl-progress-fill::after {
@@ -534,7 +534,7 @@ const CSS = `
     background: rgba(255,255,255,0.02);
     backdrop-filter: blur(10px);
     cursor:pointer;
-    transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    transition:all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position:relative;
     overflow:hidden;
     min-height: 64px;
@@ -542,7 +542,7 @@ const CSS = `
   .wl-tab::before {
     content:'';
     position:absolute;inset:0;
-    background:linear-gradient(135deg, rgba(59,130,246,0.06), rgba(16,185,129,0.02));
+    background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(16,185,129,0.02));
     opacity:0;transition:opacity 0.4s;
   }
   .wl-tab::after {
@@ -550,13 +550,13 @@ const CSS = `
     position:absolute;bottom:0;left:50%;transform:translateX(-50%);
     width:0;height:3px;border-radius:3px;
     background:linear-gradient(90deg, var(--a1), var(--g1));
-    transition:width 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    transition:width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .wl-tab:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
   .wl-tab.active {
-    border-color: rgba(59,130,246,0.3);
-    background: rgba(59,130,246,0.08);
-    box-shadow: 0 4px 28px rgba(59,130,246,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 4px 28px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
   }
   .wl-tab.active::before { opacity:1; }
   .wl-tab.active::after { width:28px; }
@@ -574,12 +574,12 @@ const CSS = `
     width:5px;height:5px;border-radius:50%;
     background:var(--text4);
     margin-top:6px;
-    transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    transition:all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position:relative;z-index:1;
   }
   .wl-tab.active .wl-tab-dot {
     background:var(--a1);
-    box-shadow:0 0 16px var(--a1), 0 0 40px rgba(59,130,246,0.1);
+    box-shadow:0 0 16px var(--a1), 0 0 40px rgba(255,255,255,0.1);
     width:6px;height:6px;
   }
   .wl-tab .wl-tab-dot.wl-dot-done {
@@ -594,13 +594,13 @@ const CSS = `
   }
 
   .wl-group {
-    background: rgba(255,255,255,0.01);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
     border-radius: var(--rad-sm);
-    border: 1px solid rgba(255,255,255,0.04);
+    border: 1px solid rgba(148,163,184,0.08);
     overflow: hidden;
     transition: all 0.3s ease;
   }
-  .wl-group:hover { border-color: rgba(255,255,255,0.08); }
+  .wl-group:hover { border-color: rgba(255,255,255,0.12); }
 
   .wl-group-header {
     display:flex;align-items:center;gap:14px;
@@ -649,7 +649,7 @@ const CSS = `
   }
 
   .wl-group-chevron {
-    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display:flex;align-items:center;justify-content:center;
     color:var(--text4);
     width:24px;height:24px;
@@ -672,18 +672,21 @@ const CSS = `
 
   /* ── EXERCISE CARD ── */
   .wl-ex {
-    background: var(--card);
-    border:1px solid var(--card-border);
-    border-radius:var(--rad-sm);
-    overflow:hidden;
-    transition:all 0.4s cubic-bezier(0.25,0.1,0.25,1);
-    backdrop-filter: blur(20px);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(148,163,184,0.08);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--rad-sm);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 8px 24px -6px rgba(0,0,0,0.5);
   }
-  .wl-ex:hover { border-color: rgba(255,255,255,0.08); }
+  .wl-ex:hover { border-color: rgba(255,255,255,0.15); }
   .wl-ex.open {
-    border-color: rgba(59,130,246,0.15);
-    box-shadow: 0 8px 32px rgba(59,130,246,0.08);
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
   }
   .wl-ex.all-done {
     border-color: rgba(16,185,129,0.2);
@@ -706,7 +709,7 @@ const CSS = `
   }
   .wl-ring svg { transform:rotate(-90deg); }
   .wl-ring-track { fill:none;stroke:rgba(255,255,255,0.06);stroke-width:2.5; }
-  .wl-ring-fill  { fill:none;stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .wl-ring-fill  { fill:none;stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   .wl-ring-label {
     position:absolute;inset:0;
     display:flex;align-items:center;justify-content:center;
@@ -753,12 +756,12 @@ const CSS = `
     border:1px solid rgba(255,255,255,0.06);
     display:flex;align-items:center;justify-content:center;
     color:var(--text4);
-    transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    transition:all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .wl-ex.open .wl-chevron {
     transform:rotate(180deg);
-    background:rgba(59,130,246,0.12);
-    border-color:rgba(59,130,246,0.25);
+    background:rgba(255,255,255,0.12);
+    border-color:rgba(255,255,255,0.25);
     color:var(--a2);
   }
 
@@ -828,9 +831,9 @@ const CSS = `
   .wl-input::placeholder{color:rgba(255,255,255,0.08);font-weight:400;font-size:14px;}
   .wl-input:focus:not(:disabled){
     border-color:var(--a1);
-    background:rgba(59,130,246,0.06);
+    background:rgba(255,255,255,0.06);
     color:#fff;
-    box-shadow:0 0 0 3px rgba(59,130,246,0.08);
+    box-shadow:0 0 0 3px rgba(255,255,255,0.08);
   }
   .wl-input.done {
     border-color:rgba(16,185,129,0.25);
@@ -859,12 +862,12 @@ const CSS = `
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
-    transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    transition:all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     color:var(--text4);
   }
   .wl-tick:hover:not(.wl-tick-done){
     border-color:var(--a2);
-    background:rgba(59,130,246,0.06);
+    background:rgba(255,255,255,0.06);
     color:var(--a2);
   }
   .wl-tick.wl-tick-done {
@@ -881,21 +884,21 @@ const CSS = `
     height:44px;
     margin-top:10px;
     border-radius:var(--rad-xs);
-    border:1.5px dashed rgba(59,130,246,0.15);
+    border:1.5px dashed rgba(255,255,255,0.15);
     background:transparent;
     font-family:var(--body);
     font-size:10px;font-weight:700;
     letter-spacing:1.5px;
     text-transform:uppercase;
-    color:rgba(59,130,246,0.5);
+    color:rgba(255,255,255,0.5);
     cursor:pointer;
     transition:all 0.3s;
     display:flex;align-items:center;justify-content:center;
     gap:6px;
   }
   .wl-add-set:hover{
-    background:rgba(59,130,246,0.06);
-    border-color:rgba(59,130,246,0.35);
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.35);
     color:var(--a2);
   }
 /* ── ADD EXERCISE MODAL ── */
@@ -933,7 +936,7 @@ const CSS = `
   transform: translateX(-50%);
   width: 60%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #60a5fa, #2563eb, transparent);
+  background: linear-gradient(90deg, transparent, #ffffff, #e2e8f0, transparent);
   border-radius: 50%;
   filter: blur(1px);
   opacity: 0.6;
@@ -961,7 +964,7 @@ const CSS = `
   margin-bottom: 4px;
   letter-spacing: -0.02em;
   /* Premium Crystal Blue Text Gradient */
-  background: linear-gradient(135deg, #f8fafc 0%, #60a5fa 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1014,10 +1017,10 @@ const CSS = `
   transform: scale(0.94);
 }
 .wl-equip-btn.active {
-  border-color: #3b82f6;
-  background: rgba(59,130,246,0.12);
-  color: #60a5fa;
-  box-shadow: 0 0 24px rgba(59,130,246,0.05), inset 0 1px 0 rgba(255,255,255,0.05);
+  border-color: #ffffff;
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  box-shadow: 0 0 24px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.05);
   transform: translateY(-2px);
 }
 .wl-equip-btn .eq-icon {
@@ -1046,9 +1049,9 @@ const CSS = `
 }
 .wl-modal-input::placeholder { color: #475569; }
 .wl-modal-input:focus {
-  border-color: #3b82f6;
+  border-color: #ffffff;
   background: #050b16;
-  box-shadow: 0 0 0 4px rgba(59,130,246,0.1), 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 8px 24px rgba(0,0,0,0.2);
 }
 
 .wl-modal-actions {
@@ -1082,9 +1085,9 @@ const CSS = `
 
 /* Premium Crystal Blue CTA */
 .wl-modal-btn.add {
-  background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
   color: #ffffff;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.15);
+  box-shadow: 0 8px 24px rgba(255,255,255,0.15);
 }
 .wl-modal-btn.add::after {
   content: '';
@@ -1098,8 +1101,8 @@ const CSS = `
   left: 200%;
 }
 .wl-modal-btn.add:hover:not(:disabled) { 
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  box-shadow: 0 8px 32px rgba(59,130,246,0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  box-shadow: 0 8px 32px rgba(255,255,255,0.3);
   transform: translateY(-2px);
 }
 .wl-modal-btn.add:active { transform: scale(0.96); }
@@ -1128,7 +1131,7 @@ const CSS = `
     font-size:14px;font-weight:700;
     opacity:0;pointer-events:none;
     white-space:nowrap;z-index:300;
-    transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    transition:all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow:0 8px 32px rgba(16,185,129,0.5);
     border:1px solid rgba(255,255,255,0.1);
   }
@@ -1155,7 +1158,7 @@ const CSS = `
     text-align:center;
     max-width:320px;
     box-shadow:0 24px 48px rgba(0,0,0,0.6);
-    animation: wl-modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    animation: wl-modalIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .wl-celebrate-card .emoji-big { font-size:56px;margin-bottom:12px;display:block; }
   .wl-celebrate-card .title {
@@ -1278,7 +1281,7 @@ const PlusIcon = () => (
 // ─────────────────────────────────────────────
 function Confetti({ active }) {
   if (!active) return null;
-  const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6", "#4ECDC4", "#FF6B35", "#A855F7", "#34d399", "#60a5fa"];
+  const colors = ["#ffffff", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6", "#4ECDC4", "#FF6B35", "#A855F7", "#34d399", "#ffffff"];
   const pieces = Array.from({ length: 60 }, (_, i) => ({
     id: i,
     left: Math.random() * 100,

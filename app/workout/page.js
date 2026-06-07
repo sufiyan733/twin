@@ -19,21 +19,21 @@ const GLOBAL_STYLES = `
     --c-surface2: #0e1623;
     --c-border: rgba(255,255,255,0.065);
     --c-border-hi: rgba(255,255,255,0.13);
-    --c-text: #eef2ff;
-    --c-muted: #38506e;
-    --c-dim: #1a2d44;
-    --c-accent: #5b9bff;
+    --c-text: #ffffff;
+    --c-muted: #94a3b8;
+    --c-dim: #475569;
+    --c-accent: #ffffff;
     --c-accent2: #a78bfa;
-    --c-accent-dim: rgba(91,155,255,0.11);
-    --c-accent-glow: rgba(91,155,255,0.28);
+    --c-accent-dim: rgba(255,255,255,0.11);
+    --c-accent-glow: rgba(255,255,255,0.28);
     --font-display: 'Bebas Neue', sans-serif;
     --font-body: 'DM Sans', sans-serif;
     --r-sm: 10px;
     --r-md: 14px;
     --r-lg: 20px;
     --r-xl: 26px;
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-family: var(--font-body);
     background: var(--c-bg);
     color: var(--c-text);
@@ -70,8 +70,8 @@ const GLOBAL_STYLES = `
     50%       { opacity: 1; }
   }
   @keyframes ctaGlow {
-    0%,100% { box-shadow: 0 0 32px rgba(91,155,255,0.18), 0 0 0 1px rgba(91,155,255,0.22); }
-    50%      { box-shadow: 0 0 56px rgba(91,155,255,0.34), 0 0 0 1px rgba(91,155,255,0.38); }
+    0%,100% { box-shadow: 0 0 32px rgba(255,255,255,0.18), 0 0 0 1px rgba(255,255,255,0.22); }
+    50%      { box-shadow: 0 0 56px rgba(255,255,255,0.34), 0 0 0 1px rgba(255,255,255,0.38); }
   }
   @keyframes successBounce {
     0%  { transform: scale(0.88); }
@@ -98,30 +98,31 @@ const GLOBAL_STYLES = `
 
   .ws-scroll::-webkit-scrollbar { width: 2px; }
   .ws-scroll::-webkit-scrollbar-track { background: transparent; }
-  .ws-scroll::-webkit-scrollbar-thumb { background: rgba(91,155,255,0.18); border-radius: 2px; }
+  .ws-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 2px; }
 
   .press-scale { transition: transform 0.12s var(--ease-spring); }
   .press-scale:active { transform: scale(0.93) !important; }
 
   .action-card {
-    transition: transform 0.2s var(--ease-spring), background 0.2s, border-color 0.2s, box-shadow 0.22s !important;
+    transition: transform 0.25s var(--ease-spring), background 0.25s, border-color 0.25s, box-shadow 0.25s !important;
   }
   .action-card:hover {
-    background: rgba(91,155,255,0.08) !important;
-    border-color: rgba(91,155,255,0.4) !important;
-    box-shadow: 0 8px 32px rgba(91,155,255,0.1), inset 0 1px 0 rgba(255,255,255,0.06) !important;
-    transform: translateY(-2px) !important;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 15%, transparent 35%), linear-gradient(180deg, rgba(35,45,60,0.7) 0%, rgba(15,18,22,0.9) 100%) !important;
+    border-color: rgba(255,255,255,0.15) !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    transform: translateY(-1px) !important;
   }
   .action-card:active { transform: scale(0.97) translateY(0) !important; }
 
   .plan-card-hover {
-    transition: transform 0.22s var(--ease-spring), border-color 0.22s, box-shadow 0.22s !important;
+    transition: transform 0.25s var(--ease-spring), border-color 0.25s, box-shadow 0.25s !important;
   }
   .plan-card-hover:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    border-top-color: rgba(255,255,255,0.12) !important;
   }
-  .plan-card-hover:active { transform: scale(0.98) !important; }
+  .plan-card-hover:active { transform: scale(0.97) !important; }
 
   .day-card-hover { transition: box-shadow 0.22s !important; }
   .day-card-hover:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.35) !important; }
@@ -238,7 +239,7 @@ const EXERCISES = {
 };
 
 const TAG_META = {
-  Compound: { bg: "rgba(59,130,246,0.14)", bd: "rgba(96,165,250,0.28)", tx: "#93c5fd" },
+  Compound: { bg: "rgba(59,130,246,0.14)", bd: "rgba(96,165,250,0.28)", tx: "#ffffff" },
   Isolation: { bg: "rgba(168,85,247,0.14)", bd: "rgba(192,132,252,0.28)", tx: "#d8b4fe" },
   Bodyweight: { bg: "rgba(34,197,94,0.14)", bd: "rgba(74,222,128,0.28)", tx: "#86efac" },
   Machine: { bg: "rgba(234,179,8,0.14)", bd: "rgba(250,204,21,0.28)", tx: "#fde047" },
@@ -272,7 +273,7 @@ const WORKOUT_PLANS = [
       { day: "THU", label: "Legs", muscles: "Hamstrings · Quads", color: "#10b981" },
       { day: "FRI", label: "Chest + Back", muscles: "Chest · Lats · Mid-back", color: "#3b82f6" },
       { day: "SAT", label: "Shoulders + Arms", muscles: "Delts · Biceps · Triceps", color: "#8b5cf6" },
-      { day: "SUN", label: "Rest", muscles: "Recovery", color: "#38506e" },
+      { day: "SUN", label: "Rest", muscles: "Recovery", color: "#94a3b8" },
     ],
     workouts: [
       {
@@ -319,11 +320,11 @@ const WORKOUT_PLANS = [
     days: 6,
     level: "Intermediate",
     badge: "MOST POPULAR",
-    badgeColor: "#5b9bff",
-    accent: "#5b9bff",
-    accentDim: "rgba(91,155,255,0.12)",
+    badgeColor: "#ffffff",
+    accent: "#ffffff",
+    accentDim: "rgba(255,255,255,0.12)",
     gradient: "linear-gradient(135deg,#1e3a5f 0%,#0c1e36 100%)",
-    borderColor: "rgba(91,155,255,0.35)",
+    borderColor: "rgba(255,255,255,0.35)",
     freq: "2× per muscle",
     volume: "10–16 sets/muscle/wk",
     rest: "Sun",
@@ -336,7 +337,7 @@ const WORKOUT_PLANS = [
       { day: "THU", label: "Push B", muscles: "Shoulders (focus) · Chest · Tris", color: "#ef5a5a" },
       { day: "FRI", label: "Pull B", muscles: "Back (width) · Biceps · Traps", color: "#3b82f6" },
       { day: "SAT", label: "Legs B", muscles: "Glutes · Hams · Quads · Core", color: "#22c55e" },
-      { day: "SUN", label: "Rest", muscles: "Active recovery / mobility", color: "#38506e" },
+      { day: "SUN", label: "Rest", muscles: "Active recovery / mobility", color: "#94a3b8" },
     ],
     workouts: [
       {
@@ -398,11 +399,11 @@ const WORKOUT_PLANS = [
     schedule: [
       { day: "MON", label: "Upper A", muscles: "Chest · Back · Shoulders · Arms", color: "#a78bfa" },
       { day: "TUE", label: "Lower A", muscles: "Quads · Hamstrings · Glutes · Calves", color: "#22c55e" },
-      { day: "WED", label: "Rest", muscles: "Mobility / light cardio", color: "#38506e" },
+      { day: "WED", label: "Rest", muscles: "Mobility / light cardio", color: "#94a3b8" },
       { day: "THU", label: "Upper B", muscles: "Back (focus) · Chest · Arms", color: "#a78bfa" },
       { day: "FRI", label: "Lower B", muscles: "Posterior chain + quad volume", color: "#22c55e" },
-      { day: "SAT", label: "Rest", muscles: "Active recovery", color: "#38506e" },
-      { day: "SUN", label: "Rest", muscles: "Full recovery", color: "#38506e" },
+      { day: "SAT", label: "Rest", muscles: "Active recovery", color: "#94a3b8" },
+      { day: "SUN", label: "Rest", muscles: "Full recovery", color: "#94a3b8" },
     ],
     workouts: [
       {
@@ -458,7 +459,7 @@ const WORKOUT_PLANS = [
       { day: "THU", label: "Chest + Back", muscles: "Angle variation — incline focus", color: "#eab308" },
       { day: "FRI", label: "Shoulders + Arms", muscles: "Heavy OHP · arm isolation", color: "#c084fc" },
       { day: "SAT", label: "Legs", muscles: "Posterior chain focus + core", color: "#22c55e" },
-      { day: "SUN", label: "Rest", muscles: "Complete rest — mandatory", color: "#38506e" },
+      { day: "SUN", label: "Rest", muscles: "Complete rest — mandatory", color: "#94a3b8" },
     ],
     workouts: [
       {
@@ -512,8 +513,8 @@ const WORKOUT_PLANS = [
       { day: "WED", label: "Shoulders", muscles: "All 3 delt heads · Traps", color: "#c084fc" },
       { day: "THU", label: "Legs", muscles: "Full lower body · Core", color: "#22c55e" },
       { day: "FRI", label: "Arms + Core", muscles: "Biceps · Triceps · Abs", color: "#f97316" },
-      { day: "SAT", label: "Rest", muscles: "Active recovery", color: "#38506e" },
-      { day: "SUN", label: "Rest", muscles: "Full recovery", color: "#38506e" },
+      { day: "SAT", label: "Rest", muscles: "Active recovery", color: "#94a3b8" },
+      { day: "SUN", label: "Rest", muscles: "Full recovery", color: "#94a3b8" },
     ],
     workouts: [
       {
@@ -570,7 +571,7 @@ const CheckCircle = ({ checked, color }) => (
     border: `1.5px solid ${checked ? color : "rgba(255,255,255,0.1)"}`,
     display: "flex", alignItems: "center", justifyContent: "center",
     color: color, transition: "all 0.18s var(--ease-spring)",
-    boxShadow: checked ? `0 0 10px ${color}40` : "none",
+    boxShadow: checked ? `0 0 20px ${color}30, inset 0 1px 2px ${color}50` : "inset 0 1px 2px rgba(0,0,0,0.3)",
   }}>
     {checked && (
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -588,12 +589,12 @@ const Toggle = ({ checked, onChange }) => (
       all: "unset", position: "relative", width: "46px", height: "26px",
       borderRadius: "13px", flexShrink: 0,
       background: checked
-        ? "linear-gradient(135deg,#4f8ef7,#1d4ed8)"
+        ? "linear-gradient(135deg,#ffffff,#333333)"
         : "rgba(255,255,255,0.07)",
-      border: checked ? "1px solid rgba(79,142,247,0.5)" : "1px solid rgba(255,255,255,0.1)",
+      border: checked ? "1px solid rgba(255,255,255,0.5)" : "1px solid rgba(255,255,255,0.1)",
       cursor: "pointer",
       transition: "background 0.28s, border 0.28s, box-shadow 0.28s",
-      boxShadow: checked ? "0 0 14px rgba(79,142,247,0.4)" : "none",
+      boxShadow: checked ? "0 0 14px rgba(255,255,255,0.4)" : "inset 0 2px 4px rgba(0,0,0,0.5)",
       touchAction: "manipulation",
     }}
   >
@@ -655,12 +656,14 @@ const MusclePicker = ({ dayLabel, selected, onToggle, onClose }) => {
       }}>
         <div style={{
           width: "100%", maxWidth: "430px",
-          background: "#0b1525",
+          background: "linear-gradient(180deg, rgba(25,35,50,0.95) 0%, rgba(10,12,15,0.98) 100%)",
+          backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
           borderRadius: "24px 24px 0 0",
-          border: "1px solid rgba(79,142,247,0.18)", borderBottom: "none",
+          border: "1px solid rgba(255,255,255,0.12)", borderTop: "1px solid rgba(255,255,255,0.2)",
+          borderBottom: "none",
           boxShadow: "0 -20px 80px rgba(0,0,0,0.9)",
         }}>
-          <div style={{ height: "1px", background: "linear-gradient(90deg,transparent,rgba(79,142,247,0.55),transparent)" }} />
+          <div style={{ height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)" }} />
           <div style={{ padding: "14px 18px 12px" }}>
             <SheetHandle />
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -687,11 +690,11 @@ const MusclePicker = ({ dayLabel, selected, onToggle, onClose }) => {
                   all: "unset", display: "flex", alignItems: "center", gap: "5px",
                   padding: "5px 13px", borderRadius: "20px", flexShrink: 0,
                   fontSize: "11px", fontWeight: 700, letterSpacing: "0.05em", cursor: "pointer",
-                  background: active ? "rgba(79,142,247,0.18)" : "rgba(255,255,255,0.04)",
-                  border: active ? "1px solid rgba(79,142,247,0.45)" : "1px solid var(--c-border)",
-                  color: active ? "#93c5fd" : "var(--c-muted)",
+                  background: active ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.04)",
+                  border: active ? "1px solid rgba(255,255,255,0.45)" : "1px solid var(--c-border)",
+                  color: active ? "#ffffff" : "var(--c-muted)",
                   transition: "all 0.18s",
-                  boxShadow: active ? "0 0 12px rgba(79,142,247,0.22)" : "none",
+                  boxShadow: active ? "0 0 12px rgba(255,255,255,0.22)" : "none",
                 }}>
                   {cat}
                   {count > 0 && (
@@ -719,7 +722,7 @@ const MusclePicker = ({ dayLabel, selected, onToggle, onClose }) => {
                   transition: "background 0.18s, border 0.18s, box-shadow 0.18s",
                 }}>
                   <span style={{ fontSize: "19px", lineHeight: 1, flexShrink: 0 }}>{mg.emoji}</span>
-                  <span style={{ fontSize: "12px", fontWeight: 600, flex: 1, lineHeight: 1.2, color: sel ? mg.color : "#4b6280", transition: "color 0.18s" }}>{mg.label}</span>
+                  <span style={{ fontSize: "12px", fontWeight: 600, flex: 1, lineHeight: 1.2, color: sel ? mg.color : "#94a3b8", transition: "color 0.18s" }}>{mg.label}</span>
                   <CheckCircle checked={sel} color={mg.color} />
                 </button>
               );
@@ -761,34 +764,38 @@ const DayCard = ({ dayIndex, isWorkout, muscles, onToggle, onMuscleToggle, onOpe
   return (
     <div style={{
       position: "relative", borderRadius: "var(--r-md)",
-      background: isWorkout ? "rgba(79,142,247,0.06)" : "rgba(255,255,255,0.025)",
-      border: `1px solid ${isWorkout ? "rgba(79,142,247,0.2)" : "var(--c-border)"}`,
+      background: isWorkout ? "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 20%, transparent 35%), linear-gradient(180deg, rgba(25,35,50,0.6) 0%, rgba(10,12,15,0.8) 100%)" : "linear-gradient(180deg, rgba(15,20,30,0.4) 0%, rgba(5,8,12,0.6) 100%)",
+      border: `1px solid ${isWorkout ? "rgba(255,255,255,0.12)" : "rgba(148,163,184,0.08)"}`,
+      borderTop: `1px solid ${isWorkout ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)"}`,
+      boxShadow: "0 10px 20px -5px rgba(0,0,0,0.5)",
+      backdropFilter: "blur(24px)",
+      WebkitBackdropFilter: "blur(24px)",
       padding: "12px 13px",
       transition: "background 0.28s, border 0.28s",
     }}>
       {isWorkout && (
         <div style={{
           position: "absolute", top: 0, left: "18%", right: "18%", height: "1px",
-          background: "linear-gradient(90deg,transparent,rgba(79,142,247,0.4),transparent)",
+          background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)",
           borderRadius: "2px", pointerEvents: "none",
         }} />
       )}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div style={{
           width: "38px", height: "38px", borderRadius: "var(--r-sm)", flexShrink: 0,
-          background: isWorkout ? "rgba(79,142,247,0.12)" : "rgba(255,255,255,0.04)",
-          border: `1px solid ${isWorkout ? "rgba(79,142,247,0.25)" : "var(--c-border)"}`,
+          background: isWorkout ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)",
+          border: `1px solid ${isWorkout ? "rgba(255,255,255,0.25)" : "var(--c-border)"}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "all 0.28s",
         }}>
           <span style={{
             fontFamily: "var(--font-display)", fontSize: "12px", letterSpacing: "0.05em",
-            color: isWorkout ? "#60a5fa" : "var(--c-dim)",
+            color: isWorkout ? "#ffffff" : "var(--c-dim)",
             transition: "color 0.28s",
           }}>{short}</span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: "13px", fontWeight: 600, color: isWorkout ? "#e2e8f0" : "var(--c-muted)", marginBottom: "2px", transition: "color 0.28s" }}>{day}</div>
+          <div style={{ fontSize: "13px", fontWeight: 600, color: isWorkout ? "#ffffff" : "var(--c-muted)", marginBottom: "2px", transition: "color 0.28s" }}>{day}</div>
           <div style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase", color: isWorkout ? "var(--c-accent)" : "var(--c-dim)", transition: "color 0.28s" }}>
             {isWorkout ? (muscles.length > 0 ? `${muscles.length} muscle${muscles.length > 1 ? "s" : ""}` : "Training day") : "Rest"}
           </div>
@@ -796,7 +803,7 @@ const DayCard = ({ dayIndex, isWorkout, muscles, onToggle, onMuscleToggle, onOpe
         {isWorkout && (
           <button onClick={e => { e.stopPropagation(); onOpenPicker(); }} className="press-scale" style={{
             all: "unset", width: "28px", height: "28px", borderRadius: "8px",
-            background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.3)",
+            background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.3)",
             display: "flex", alignItems: "center", justifyContent: "center",
             color: "#60a5fa", cursor: "pointer", flexShrink: 0, marginRight: "6px", touchAction: "manipulation",
           }}>
@@ -854,8 +861,8 @@ const WorkoutSplitModal = ({ onClose }) => {
     <>
       <div onClick={handleClose} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }} />
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 51, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.38s var(--ease-out)" }}>
-        <div style={{ width: "100%", maxWidth: "430px", background: "#06080f", borderRadius: "26px 26px 0 0", border: "1px solid rgba(79,142,247,0.14)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "92dvh", overflow: "hidden", boxShadow: "0 -24px 100px rgba(0,0,0,0.9)", position: "relative" }}>
-          <div style={{ position: "absolute", top: 0, left: "15%", right: "15%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(79,142,247,0.55),transparent)", pointerEvents: "none" }} />
+        <div style={{ width: "100%", maxWidth: "430px", background: "#06080f", borderRadius: "26px 26px 0 0", border: "1px solid rgba(255,255,255,0.14)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "92dvh", overflow: "hidden", boxShadow: "0 -24px 100px rgba(0,0,0,0.9)", position: "relative" }}>
+          <div style={{ position: "absolute", top: 0, left: "15%", right: "15%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)", pointerEvents: "none" }} />
           <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid var(--c-border)", flexShrink: 0 }}>
             <SheetHandle />
             <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -864,8 +871,8 @@ const WorkoutSplitModal = ({ onClose }) => {
                 <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "10px" }}>Workout Split</div>
                 <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
                   {DAYS.map((d, i) => (
-                    <div key={i} title={d} style={{ width: "28px", height: "28px", borderRadius: "8px", background: dayState[i].isWorkout ? "var(--c-accent-dim)" : "rgba(255,255,255,0.04)", border: `1px solid ${dayState[i].isWorkout ? "rgba(79,142,247,0.45)" : "var(--c-border)"}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.25s var(--ease-spring)", boxShadow: dayState[i].isWorkout ? "0 0 10px rgba(79,142,247,0.3)" : "none" }}>
-                      <span style={{ fontFamily: "var(--font-display)", fontSize: "10px", letterSpacing: "0.03em", color: dayState[i].isWorkout ? "#93c5fd" : "var(--c-dim)", transition: "color 0.25s" }}>{DAY_SHORT[i].slice(0, 2)}</span>
+                    <div key={i} title={d} style={{ width: "28px", height: "28px", borderRadius: "8px", background: dayState[i].isWorkout ? "var(--c-accent-dim)" : "rgba(255,255,255,0.04)", border: `1px solid ${dayState[i].isWorkout ? "rgba(255,255,255,0.45)" : "var(--c-border)"}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.25s var(--ease-spring)", boxShadow: dayState[i].isWorkout ? "0 0 10px rgba(255,255,255,0.3)" : "none" }}>
+                      <span style={{ fontFamily: "var(--font-display)", fontSize: "10px", letterSpacing: "0.03em", color: dayState[i].isWorkout ? "#ffffff" : "var(--c-dim)", transition: "color 0.25s" }}>{DAY_SHORT[i].slice(0, 2)}</span>
                     </div>
                   ))}
                 </div>
@@ -874,7 +881,7 @@ const WorkoutSplitModal = ({ onClose }) => {
                 <button onClick={handleClose} style={{ all: "unset", width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--c-border-hi)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-muted)", cursor: "pointer", touchAction: "manipulation" }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
                 </button>
-                <div style={{ padding: "4px 10px", borderRadius: "20px", background: workoutCount > 0 ? "rgba(79,142,247,0.12)" : "rgba(255,255,255,0.04)", border: workoutCount > 0 ? "1px solid rgba(79,142,247,0.28)" : "1px solid var(--c-border)", fontSize: "10px", fontWeight: 700, color: workoutCount > 0 ? "#60a5fa" : "var(--c-muted)", transition: "all 0.28s", whiteSpace: "nowrap" }}>
+                <div style={{ padding: "4px 10px", borderRadius: "20px", background: workoutCount > 0 ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)", border: workoutCount > 0 ? "1px solid rgba(255,255,255,0.28)" : "1px solid var(--c-border)", fontSize: "10px", fontWeight: 700, color: workoutCount > 0 ? "#60a5fa" : "var(--c-muted)", transition: "all 0.28s", whiteSpace: "nowrap" }}>
                   {workoutCount === 0 ? "0 active" : `${workoutCount}/7 days`}
                 </div>
               </div>
@@ -891,7 +898,7 @@ const WorkoutSplitModal = ({ onClose }) => {
             <div style={{ height: "4px" }} />
           </div>
           <div style={{ padding: "13px 16px 28px", borderTop: "1px solid var(--c-border)", flexShrink: 0 }}>
-            <button onClick={handleSave} disabled={saving || saved} className={!saving && !saved ? "press-scale" : ""} style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "15px", borderRadius: "var(--r-md)", background: saved ? "linear-gradient(135deg,#16a34a,#166534)" : saving ? "rgba(79,142,247,0.25)" : "linear-gradient(135deg,#4f8ef7,#1d4ed8)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: saving || saved ? "default" : "pointer", boxSizing: "border-box", transition: "background 0.3s, box-shadow 0.3s", boxShadow: saved ? "0 0 24px rgba(22,163,74,0.4)" : !saving ? "0 0 28px rgba(79,142,247,0.3)" : "none", touchAction: "manipulation", animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none" }}>
+            <button onClick={handleSave} disabled={saving || saved} className={!saving && !saved ? "press-scale" : ""} style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "15px", borderRadius: "var(--r-md)", background: saved ? "linear-gradient(135deg,#16a34a,#166534)" : saving ? "rgba(255,255,255,0.25)" : "linear-gradient(135deg,#ffffff,#333333)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: saving || saved ? "default" : "pointer", boxSizing: "border-box", transition: "background 0.3s, box-shadow 0.3s", boxShadow: saved ? "0 0 24px rgba(22,163,74,0.4)" : !saving ? "0 0 28px rgba(255,255,255,0.3)" : "none", touchAction: "manipulation", animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none" }}>
               {saved ? (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>Split Saved!</>) : saving ? (<><div style={{ width: "14px", height: "14px", border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />Saving…</>) : "Save Workout Split"}
             </button>
           </div>
@@ -918,7 +925,7 @@ const ExercisePicker = ({ muscle, selected, onToggle, onClose }) => {
     <>
       <SheetOverlay visible={visible} onClose={close} zIndex={298} />
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 299, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.32s var(--ease-out)", pointerEvents: visible ? "auto" : "none" }}>
-        <div style={{ width: "100%", maxWidth: "430px", background: "#0b1525", borderRadius: "24px 24px 0 0", border: "1px solid rgba(79,142,247,0.18)", borderBottom: "none", boxShadow: "0 -20px 80px rgba(0,0,0,0.9)", display: "flex", flexDirection: "column", maxHeight: "74dvh" }}>
+        <div style={{ width: "100%", maxWidth: "430px", background: "#111111", borderRadius: "24px 24px 0 0", border: "1px solid rgba(255,255,255,0.18)", borderBottom: "none", boxShadow: "0 -20px 80px rgba(0,0,0,0.9)", display: "flex", flexDirection: "column", maxHeight: "74dvh" }}>
           <div style={{ height: "1px", background: `linear-gradient(90deg,transparent,${muscle.color}70,transparent)`, flexShrink: 0 }} />
           <div style={{ padding: "14px 18px 12px", flexShrink: 0 }}>
             <SheetHandle />
@@ -938,7 +945,7 @@ const ExercisePicker = ({ muscle, selected, onToggle, onClose }) => {
           <div style={{ padding: "0 18px 10px", flexShrink: 0 }}>
             <div style={{ position: "relative" }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ position: "absolute", left: "11px", top: "50%", transform: "translateY(-50%)", color: "var(--c-muted)", pointerEvents: "none" }}><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
-              <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search exercises…" style={{ all: "unset", width: "100%", padding: "9px 12px 9px 32px", borderRadius: "var(--r-sm)", fontSize: "12px", fontFamily: "var(--font-body)", background: "rgba(255,255,255,0.05)", border: "1px solid var(--c-border-hi)", color: "#e2e8f0", boxSizing: "border-box", transition: "border 0.2s" }} />
+              <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search exercises…" style={{ all: "unset", width: "100%", padding: "9px 12px 9px 32px", borderRadius: "var(--r-sm)", fontSize: "12px", fontFamily: "var(--font-body)", background: "rgba(255,255,255,0.05)", border: "1px solid var(--c-border-hi)", color: "#ffffff", boxSizing: "border-box", transition: "border 0.2s" }} />
             </div>
           </div>
           <div style={{ height: "1px", background: "var(--c-border)", flexShrink: 0, margin: "0 18px" }} />
@@ -949,7 +956,7 @@ const ExercisePicker = ({ muscle, selected, onToggle, onClose }) => {
               return (
                 <button key={ex.id} onClick={e => { e.stopPropagation(); onToggle(ex.id); }} style={{ all: "unset", display: "flex", alignItems: "center", gap: "12px", width: "100%", boxSizing: "border-box", padding: "11px 2px", borderBottom: idx < filtered.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", cursor: "pointer", touchAction: "manipulation", transition: "opacity 0.12s" }}>
                   <CheckCircle checked={isSel} color={muscle.color} />
-                  <span style={{ flex: 1, fontSize: "13px", fontWeight: isSel ? 600 : 400, color: isSel ? "#e2e8f0" : "#5d7288", transition: "color 0.15s, font-weight 0.15s" }}>{ex.name}</span>
+                  <span style={{ flex: 1, fontSize: "13px", fontWeight: isSel ? 600 : 400, color: isSel ? "#ffffff" : "#5d7288", transition: "color 0.15s, font-weight 0.15s" }}>{ex.name}</span>
                   <Tag label={ex.tag} />
                 </button>
               );
@@ -1049,8 +1056,8 @@ const PlanExerciseModal = ({ onClose }) => {
     <>
       <div onClick={handleClose} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }} />
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 51, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.38s var(--ease-out)" }}>
-        <div style={{ width: "100%", maxWidth: "430px", background: "#06080f", borderRadius: "26px 26px 0 0", border: "1px solid rgba(79,142,247,0.14)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "92dvh", overflow: "hidden", boxShadow: "0 -24px 100px rgba(0,0,0,0.9)", position: "relative" }}>
-          <div style={{ position: "absolute", top: 0, left: "15%", right: "15%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(79,142,247,0.55),transparent)", pointerEvents: "none" }} />
+        <div style={{ width: "100%", maxWidth: "430px", background: "linear-gradient(180deg, rgba(20,25,35,0.95) 0%, rgba(10,12,15,0.98) 100%)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: "26px 26px 0 0", border: "1px solid rgba(255,255,255,0.12)", borderTop: "1px solid rgba(255,255,255,0.25)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "92dvh", overflow: "hidden", boxShadow: "0 -24px 100px rgba(0,0,0,0.9)", position: "relative" }}>
+          <div style={{ position: "absolute", top: 0, left: "15%", right: "15%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)", pointerEvents: "none" }} />
           <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid var(--c-border)", flexShrink: 0 }}>
             <SheetHandle />
             <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -1058,7 +1065,7 @@ const PlanExerciseModal = ({ onClose }) => {
                 <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--c-accent)", marginBottom: "5px" }}>Exercise Library</div>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "10px" }}>Plan Exercise</div>
                 <div style={{ display: "flex", alignItems: "center", gap: "7px", flexWrap: "wrap" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 10px", borderRadius: "20px", background: total > 0 ? "rgba(79,142,247,0.12)" : "rgba(255,255,255,0.04)", border: total > 0 ? "1px solid rgba(79,142,247,0.28)" : "1px solid var(--c-border)", transition: "all 0.28s" }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "4px 10px", borderRadius: "20px", background: total > 0 ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)", border: total > 0 ? "1px solid rgba(255,255,255,0.28)" : "1px solid var(--c-border)", transition: "all 0.28s" }}>
                     <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: total > 0 ? "var(--c-accent)" : "var(--c-dim)", transition: "background 0.28s" }} />
                     <span style={{ fontSize: "10px", fontWeight: 700, color: total > 0 ? "#60a5fa" : "var(--c-muted)", transition: "color 0.28s" }}>{total === 0 ? "No exercises added" : `${total} exercise${total > 1 ? "s" : ""} across ${musclesWithEx} muscle${musclesWithEx > 1 ? "s" : ""}`}</span>
                   </div>
@@ -1080,8 +1087,8 @@ const PlanExerciseModal = ({ onClose }) => {
             <div style={{ height: "4px" }} />
           </div>
           <div style={{ padding: "13px 16px 28px", borderTop: "1px solid var(--c-border)", flexShrink: 0 }}>
-            <button onClick={handleSave} disabled={saving || saved || total === 0} className={total > 0 && !saving && !saved ? "press-scale" : ""} style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "15px", borderRadius: "var(--r-md)", boxSizing: "border-box", background: saved ? "linear-gradient(135deg,#16a34a,#166534)" : total === 0 ? "rgba(255,255,255,0.04)" : saving ? "rgba(79,142,247,0.25)" : "linear-gradient(135deg,#4f8ef7,#1d4ed8)", border: total === 0 ? "1px solid var(--c-border)" : "1px solid transparent", color: total === 0 ? "var(--c-muted)" : "#fff", fontSize: "14px", fontWeight: 700, cursor: saving || saved || total === 0 ? "default" : "pointer", transition: "background 0.3s, box-shadow 0.3s, color 0.3s", boxShadow: saved ? "0 0 24px rgba(22,163,74,0.4)" : total > 0 && !saving ? "0 0 28px rgba(79,142,247,0.3)" : "none", touchAction: "manipulation", animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none" }}>
-              {saved ? (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>Exercises Saved!</>) : saving ? (<><div style={{ width: "14px", height: "14px", border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />Saving…</>) : total === 0 ? "Select exercises to save" : `Save ${total} Exercise${total > 1 ? "s" : ""}`}
+            <button onClick={handleSave} disabled={saving || saved || total === 0} className={total > 0 && !saving && !saved ? "press-scale" : ""} style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "15px", borderRadius: "var(--r-md)", boxSizing: "border-box", background: saved ? "linear-gradient(135deg,#16a34a,#166534)" : total === 0 ? "rgba(255,255,255,0.04)" : saving ? "rgba(255,255,255,0.25)" : "linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%)", border: total === 0 ? "1px solid var(--c-border)" : "1px solid transparent", color: total === 0 ? "var(--c-muted)" : saved ? "#fff" : "#000000", fontSize: "14px", fontWeight: 800, letterSpacing: "-0.01em", cursor: saving || saved || total === 0 ? "default" : "pointer", transition: "background 0.3s, box-shadow 0.3s, color 0.3s", boxShadow: saved ? "0 0 24px rgba(22,163,74,0.4)" : total > 0 && !saving ? "0 0 24px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)" : "none", touchAction: "manipulation", animation: saved ? "successBounce 0.4s var(--ease-spring)" : "none" }}>
+              {saved ? (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>Exercises Saved!</>) : saving ? (<><div style={{ width: "14px", height: "14px", border: "2px solid rgba(0,0,0,0.3)", borderTop: "2px solid #000", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />Saving…</>) : total === 0 ? "Select exercises to save" : `Save ${total} Exercise${total > 1 ? "s" : ""}`}
             </button>
           </div>
         </div>
@@ -1278,9 +1285,10 @@ const PlanDetailCard = ({ plan, onClose }) => {
       }}>
         <div style={{
           width: "100%", maxWidth: "430px",
-          background: "#07090f",
+          background: "linear-gradient(180deg, rgba(20,25,35,0.95) 0%, rgba(10,12,15,0.98) 100%)",
+          backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
           borderRadius: "26px 26px 0 0",
-          border: `1px solid ${plan.borderColor}`, borderBottom: "none",
+          border: `1px solid ${plan.borderColor}`, borderTop: "1px solid rgba(255,255,255,0.25)", borderBottom: "none",
           display: "flex", flexDirection: "column",
           maxHeight: "92dvh", overflow: "hidden",
           boxShadow: `0 -28px 80px rgba(0,0,0,0.95), 0 -2px 40px ${plan.accent}18`,
@@ -1386,7 +1394,7 @@ const PlanDetailCard = ({ plan, onClose }) => {
                       {r.icon}
                     </div>
                     <span style={{ fontSize: "12px", color: "var(--c-muted)", fontWeight: 500, flex: 1 }}>{r.label}</span>
-                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#e2e8f0" }}>{r.val}</span>
+                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#ffffff" }}>{r.val}</span>
                   </div>
                 ))}
               </div>
@@ -1419,7 +1427,7 @@ const PlanCard = ({ plan, index, onSelect }) => {
   const dayDots = Array.from({ length: 7 }, (_, i) => {
     const sched = plan.schedule[i];
     const isRest = !sched || sched.label === "Rest";
-    return { isRest, color: sched?.color || "#38506e" };
+    return { isRest, color: sched?.color || "#94a3b8" };
   });
 
   return (
@@ -1428,15 +1436,16 @@ const PlanCard = ({ plan, index, onSelect }) => {
       className="plan-card-hover"
       style={{
         position: "relative", borderRadius: "18px", cursor: "pointer", overflow: "hidden",
-        background: "#08090f",
-        border: `1px solid ${plan.borderColor}`,
-        boxShadow: `0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)`,
+        background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)",
+        backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+        border: `1px solid ${plan.borderColor}`, borderTop: "1px solid rgba(255,255,255,0.18)",
+        boxShadow: `0 10px 30px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04)`,
         animation: `planCardIn 0.45s var(--ease-out) ${index * 60}ms both`,
         flexShrink: 0,
       }}
     >
       {/* gradient bg */}
-      <div style={{ position: "absolute", inset: 0, background: plan.gradient, opacity: 0.28, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, background: plan.gradient, opacity: 0.15, pointerEvents: "none" }} />
       {/* top accent line */}
       <div style={{ position: "absolute", top: 0, left: "12%", right: "12%", height: "1px", background: `linear-gradient(90deg,transparent,${plan.accent}70,transparent)`, pointerEvents: "none" }} />
 
@@ -1445,9 +1454,9 @@ const PlanCard = ({ plan, index, onSelect }) => {
         <div style={{ display: "flex", alignItems: "flex-start", gap: "11px", marginBottom: "12px" }}>
           <div style={{
             width: "46px", height: "46px", borderRadius: "14px", flexShrink: 0,
-            background: `${plan.accent}15`, border: `1.5px solid ${plan.accent}35`,
+            background: `${plan.accent}15`, border: `1px solid ${plan.accent}40`, borderTop: `1px solid ${plan.accent}80`,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "22px", boxShadow: `0 0 18px ${plan.accent}20`,
+            fontSize: "22px", boxShadow: `0 0 20px ${plan.accent}20, inset 0 2px 4px ${plan.accent}10`,
           }}>{plan.icon}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px", flexWrap: "wrap" }}>
@@ -1475,8 +1484,8 @@ const PlanCard = ({ plan, index, onSelect }) => {
           ].map((chip, i) => (
             <div key={i} style={{
               padding: "3px 9px", borderRadius: "20px",
-              background: `${plan.accent}0d`, border: `1px solid ${plan.accent}22`,
-              fontSize: "10px", fontWeight: 600, color: `${plan.accent}cc`,
+              background: `${plan.accent}10`, border: `1px solid ${plan.accent}30`,
+              fontSize: "10px", fontWeight: 700, color: `${plan.accent}e0`,
               letterSpacing: "0.02em",
             }}>{chip.val}</div>
           ))}
@@ -1532,8 +1541,8 @@ const BestPlansModal = ({ onClose }) => {
       <div onClick={handleClose} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }} />
 
       <div style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 51, display: "flex", justifyContent: "center", transform: visible ? "translateY(0)" : "translateY(100%)", transition: "transform 0.4s var(--ease-out)" }}>
-        <div style={{ width: "100%", maxWidth: "430px", background: "#05070d", borderRadius: "28px 28px 0 0", border: "1px solid rgba(91,155,255,0.16)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "94dvh", overflow: "hidden", boxShadow: "0 -32px 120px rgba(0,0,0,0.98), 0 -2px 60px rgba(91,155,255,0.08)", position: "relative" }}>
-          <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(91,155,255,0.7),transparent)", pointerEvents: "none" }} />
+        <div style={{ width: "100%", maxWidth: "430px", background: "linear-gradient(180deg, rgba(20,25,35,0.95) 0%, rgba(10,12,15,0.98) 100%)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: "28px 28px 0 0", border: "1px solid rgba(255,255,255,0.12)", borderTop: "1px solid rgba(255,255,255,0.25)", borderBottom: "none", display: "flex", flexDirection: "column", maxHeight: "94dvh", overflow: "hidden", boxShadow: "0 -32px 120px rgba(0,0,0,0.98), 0 -2px 60px rgba(255,255,255,0.08)", position: "relative" }}>
+          <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.7),transparent)", pointerEvents: "none" }} />
 
           {/* HEADER */}
           <div style={{ padding: "20px 20px 0", flexShrink: 0 }}>
@@ -1559,7 +1568,7 @@ const BestPlansModal = ({ onClose }) => {
             {/* key stats bar */}
             <div style={{ display: "flex", gap: "0", margin: "12px 0", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
               {[
-                { val: "7", label: "Programs", accent: "#5b9bff" },
+                { val: "7", label: "Programs", accent: "#ffffff" },
                 { val: "2×", label: "Frequency", accent: "#a78bfa" },
                 { val: "100%", label: "Evidence", accent: "#22c55e" },
               ].map((s, i) => (
@@ -1576,11 +1585,11 @@ const BestPlansModal = ({ onClose }) => {
                 <button key={f} onClick={() => setFilter(f)} style={{
                   all: "unset", padding: "5px 13px", borderRadius: "20px", flexShrink: 0,
                   fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", cursor: "pointer",
-                  background: filter === f ? "rgba(91,155,255,0.18)" : "rgba(255,255,255,0.04)",
-                  border: filter === f ? "1px solid rgba(91,155,255,0.45)" : "1px solid var(--c-border)",
-                  color: filter === f ? "#93c5fd" : "var(--c-muted)",
+                  background: filter === f ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.04)",
+                  border: filter === f ? "1px solid rgba(255,255,255,0.45)" : "1px solid var(--c-border)",
+                  color: filter === f ? "#ffffff" : "var(--c-muted)",
                   transition: "all 0.18s",
-                  boxShadow: filter === f ? "0 0 12px rgba(91,155,255,0.2)" : "none",
+                  boxShadow: filter === f ? "0 0 12px rgba(255,255,255,0.2)" : "none",
                   touchAction: "manipulation",
                 }}>{f}</button>
               ))}
@@ -1615,8 +1624,11 @@ const ActionCard = ({ icon, title, subtitle, delay, mounted, onClick, premium })
     className="press-scale"
     style={{
       all: "unset", display: "flex", alignItems: "center", gap: "14px",
-      background: premium ? "rgba(91,155,255,0.07)" : "rgba(255,255,255,0.04)",
-      border: premium ? "1px solid rgba(91,155,255,0.32)" : "1px solid rgba(79,142,247,0.22)",
+      background: premium ? "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%)" : "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)",
+      border: premium ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(148,163,184,0.08)",
+      borderTop: premium ? "1px solid rgba(255,255,255,0.4)" : "1px solid rgba(255,255,255,0.12)",
+      boxShadow: "0 8px 24px -6px rgba(0,0,0,0.5)",
+      backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
       borderRadius: "var(--r-md)", padding: "16px 14px",
       cursor: "pointer", width: "100%", boxSizing: "border-box",
       opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(12px)",
@@ -1625,28 +1637,28 @@ const ActionCard = ({ icon, title, subtitle, delay, mounted, onClick, premium })
       touchAction: "manipulation",
     }}
   >
-    <div style={{ position: "absolute", top: 0, left: "12%", right: "12%", height: "1px", background: premium ? "linear-gradient(90deg,transparent,rgba(91,155,255,0.55),transparent)" : "linear-gradient(90deg,transparent,rgba(79,142,247,0.35),transparent)" }} />
+    <div style={{ position: "absolute", top: 0, left: "12%", right: "12%", height: "1px", background: premium ? "linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)" : "linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent)" }} />
     {premium && (
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "linear-gradient(105deg,transparent 40%,rgba(91,155,255,0.04) 50%,transparent 60%)", animation: "shimmer 3.5s ease-in-out infinite", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.04) 50%,transparent 60%)", animation: "shimmer 3.5s ease-in-out infinite", pointerEvents: "none" }} />
     )}
     <div style={{
       width: "46px", height: "46px", borderRadius: "13px", flexShrink: 0,
-      background: premium ? "rgba(91,155,255,0.15)" : "rgba(79,142,247,0.10)",
-      border: premium ? "1px solid rgba(91,155,255,0.35)" : "1px solid rgba(79,142,247,0.22)",
+      background: premium ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.06)",
+      border: premium ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.15)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      color: "#60a5fa",
-      boxShadow: premium ? "0 0 18px rgba(91,155,255,0.2)" : "none",
+      color: premium ? "#ffffff" : "#cbd5e1",
+      boxShadow: premium ? "0 0 18px rgba(255,255,255,0.2)" : "none",
     }}>{icon}</div>
     <div style={{ flex: 1, textAlign: "left" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "3px" }}>
         <div style={{ fontSize: "14px", fontWeight: 600, color: premium ? "#e8eeff" : "#f1f5f9", letterSpacing: "-0.01em" }}>{title}</div>
         {premium && (
-          <span style={{ fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", padding: "2px 6px", borderRadius: "20px", background: "rgba(91,155,255,0.18)", border: "1px solid rgba(91,155,255,0.35)", color: "#93c5fd", flexShrink: 0 }}>PRO</span>
+          <span style={{ fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", padding: "2px 6px", borderRadius: "20px", background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.35)", color: "#ffffff", flexShrink: 0 }}>PRO</span>
         )}
       </div>
       <div style={{ fontSize: "12px", color: "var(--c-muted)", fontWeight: 400 }}>{subtitle}</div>
     </div>
-    <div style={{ color: "rgba(79,142,247,0.55)", flexShrink: 0 }}>
+    <div style={{ color: "rgba(255,255,255,0.55)", flexShrink: 0 }}>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
     </div>
   </button>
@@ -1677,10 +1689,10 @@ export default function WorkoutPage() {
       <style>{GLOBAL_STYLES}</style>
       <div className="workout-page" style={{ height: "100dvh", width: "100%", background: "var(--c-bg)", fontFamily: "var(--font-body)", color: "var(--c-text)", display: "flex", justifyContent: "center", overflow: "hidden", position: "relative" }}>
         {/* ambient blobs */}
-        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "320px", height: "320px", borderRadius: "50%", background: "radial-gradient(circle,rgba(79,142,247,0.07) 0%,transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-80px", right: "-80px", width: "320px", height: "320px", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,255,255,0.07) 0%,transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "100px", left: "-60px", width: "240px", height: "240px", borderRadius: "50%", background: "radial-gradient(circle,rgba(168,85,247,0.05) 0%,transparent 70%)", pointerEvents: "none" }} />
         {/* subtle grid texture */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(79,142,247,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.03) 1px,transparent 1px)", backgroundSize: "48px 48px", maskImage: "radial-gradient(ellipse 80% 80% at 50% 0%,black 40%,transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 0%,black 40%,transparent 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px)", backgroundSize: "48px 48px", maskImage: "radial-gradient(ellipse 80% 80% at 50% 0%,black 40%,transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 0%,black 40%,transparent 100%)" }} />
 
         <div style={{ width: "100%", maxWidth: "430px", height: "100dvh", display: "flex", flexDirection: "column", padding: "48px 22px 100px", position: "relative", zIndex: 1 }}>
           {/* HEADER */}
@@ -1689,7 +1701,7 @@ export default function WorkoutPage() {
               <div style={{ width: "18px", height: "1.5px", background: "var(--c-accent)", borderRadius: "2px" }} />
               <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--c-accent)" }}>Training</span>
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: "52px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1, marginBottom: "6px" }}>WORKOUT</div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: "54px", fontWeight: 700, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em", color: "#fff", lineHeight: 1, marginBottom: "6px", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>WORKOUT</div>
             <p style={{ fontSize: "13px", color: "var(--c-muted)", fontWeight: 400, letterSpacing: "0.01em" }}>Build your perfect routine</p>
           </div>
 
@@ -1743,16 +1755,16 @@ export default function WorkoutPage() {
               onClick={() => router.push("/workout-record")}
               onMouseDown={() => setCtaDown(true)} onMouseUp={() => setCtaDown(false)}
               onMouseLeave={() => setCtaDown(false)} onTouchStart={() => setCtaDown(true)} onTouchEnd={() => setCtaDown(false)}
-              style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", boxSizing: "border-box", background: "rgba(79,142,247,0.13)", border: "1px solid rgba(79,142,247,0.32)", borderRadius: "var(--r-xl)", padding: "20px 20px 20px 24px", cursor: "pointer", overflow: "hidden", position: "relative", transform: ctaDown ? "scale(0.97)" : "scale(1)", transition: "transform 0.15s var(--ease-spring)", boxShadow: "0 0 40px rgba(79,142,247,0.10)", touchAction: "manipulation" }}
+              style={{ all: "unset", display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", boxSizing: "border-box", background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.25)", borderTop: "1px solid rgba(255,255,255,0.5)", borderRadius: "var(--r-xl)", padding: "20px 20px 20px 24px", cursor: "pointer", overflow: "hidden", position: "relative", transform: ctaDown ? "scale(0.97)" : "scale(1)", transition: "transform 0.25s var(--ease-spring), box-shadow 0.25s", boxShadow: "0 0 20px rgba(255,255,255,0.15), 0 0 40px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.1)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", touchAction: "manipulation" }}
             >
-              <div style={{ position: "absolute", top: 0, left: "8%", right: "8%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(79,142,247,0.6),transparent)" }} />
-              <div style={{ position: "absolute", top: 0, left: "-100%", width: "100%", height: "100%", background: "linear-gradient(105deg,transparent 40%,rgba(79,142,247,0.06) 50%,transparent 60%)", animation: "shimmer 3.5s ease-in-out infinite", pointerEvents: "none" }} />
-              <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "#60a5fa" }}>Ready to go</span>
-                <span style={{ fontFamily: "var(--font-display)", fontSize: "30px", letterSpacing: "0.04em", color: "#fff", lineHeight: 1 }}>Start Session</span>
+              <div style={{ position: "absolute", top: 0, left: "8%", right: "8%", height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)" }} />
+              <div style={{ position: "absolute", top: 0, left: "-100%", width: "100%", height: "100%", background: "linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.1) 50%,transparent 60%)", animation: "shimmer 3.5s ease-in-out infinite", pointerEvents: "none" }} />
+              <div style={{ display: "flex", flexDirection: "column", gap: "5px", position: "relative", zIndex: 1 }}>
+                <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>Ready to go</span>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: "32px", letterSpacing: "0.05em", color: "#fff", lineHeight: 1, textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>Start Session</span>
               </div>
-              <div style={{ width: "54px", height: "54px", borderRadius: "50%", flexShrink: 0, background: "linear-gradient(145deg,#4f8ef7,#1d4ed8)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", boxShadow: "0 0 22px rgba(79,142,247,0.45)" }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z" /></svg>
+              <div style={{ width: "54px", height: "54px", borderRadius: "50%", flexShrink: 0, background: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", color: "#000000", boxShadow: "0 0 24px rgba(255,255,255,0.4), inset 0 2px 4px rgba(255,255,255,0.8)", position: "relative", zIndex: 1, transition: "transform 0.25s var(--ease-spring)", transform: ctaDown ? "scale(0.92)" : "scale(1)" }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style={{ marginLeft: "2px" }}><path d="M8 5.14v14l11-7-11-7z" /></svg>
               </div>
             </button>
           </div>
