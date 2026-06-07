@@ -1141,8 +1141,8 @@ export default function Page() {
               className="w-full max-w-[400px] h-[100dvh] flex flex-col px-6 pt-6 pb-6 overflow-hidden"
               style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
             >
-              <div className="relative z-10 flex justify-end mb-2 shrink-0">
-              <button
+              <div className="relative z-10 flex justify-end shrink-0">
+                <button
                 onClick={() => setIsMenuOpen(false)}
                 className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
                 style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
@@ -1151,7 +1151,8 @@ export default function Page() {
               </button>
             </div>
 
-            {/* Friends List Parent Card - Sleek 20/10 UI */}
+            <div className="flex flex-col flex-1 justify-between mt-6">
+              {/* Friends List Parent Card - Sleek 20/10 UI */}
             <div className="relative z-10 w-full shrink-0 flex flex-col animate-in slide-in-from-bottom-3 duration-500 delay-75 fill-mode-both">
               <div style={{
                 borderRadius: "24px",
@@ -1244,16 +1245,13 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Dynamic Spacer with max-height to prevent massive gaps on tall screens */}
-            <div className="flex-1 min-h-[32px] max-h-[8vh]"></div>
-
             {/* Premium Analytics Card inside Menu */}
             <div className="relative z-10 w-full animate-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both shrink-0">
               <NutritionAnalytics />
             </div>
 
             {/* Ultra-Premium Profile Pill Docked to Bottom */}
-            <div className="relative w-full mt-4 shrink-0 group">
+            <div className="relative w-full shrink-0 group">
               {/* Subtle ambient shadow behind the card */}
               <div className="absolute inset-0 rounded-[28px] bg-black/40 blur-xl translate-y-2 opacity-50 pointer-events-none" />
               
@@ -1329,6 +1327,7 @@ export default function Page() {
                 </button>
               </div>
               </div>
+            </div>
             </div>
           </div>,
           document.body
