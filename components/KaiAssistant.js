@@ -332,16 +332,16 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             )}
 
             <div className="flex flex-col gap-2.5">
-              <div className="flex items-end justify-between px-1">
+              <div className="flex items-center justify-between px-1">
                 <label className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/30">Message Kai</label>
                 
-                {/* Compact Mode Pill */}
+                {/* Ultra-Compact Mode Pill */}
                 <button
                   onClick={() => setTrackFood(v => !v)}
-                  className="flex items-center gap-1.5 rounded-[12px] px-3 py-1.5 transition-all duration-300 active:scale-[0.92]"
+                  className="flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-all duration-300 active:scale-[0.94]"
                   style={{
-                    background: trackFood ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.03)",
-                    boxShadow: trackFood ? "inset 0 1px 1px rgba(255,255,255,0.2), 0 0 15px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.2)" : "0 0 0 1px rgba(255,255,255,0.06)",
+                    background: trackFood ? "rgba(255,255,255,0.08)" : "transparent",
+                    boxShadow: trackFood ? "inset 0 1px 1px rgba(255,255,255,0.15), 0 0 12px rgba(255,255,255,0.08), 0 0 0 1px rgba(255,255,255,0.15)" : "0 0 0 1px rgba(255,255,255,0.04)",
                   }}
                 >
                   <Utensils size={12} className={trackFood ? "text-white" : "text-white/40"} strokeWidth={trackFood ? 2.5 : 2} style={{ filter: trackFood ? "drop-shadow(0 0 4px rgba(255,255,255,0.6))" : "none" }} />
