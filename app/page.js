@@ -1131,13 +1131,13 @@ export default function Page() {
         {/* ── Fullscreen Menu Overlay ────────────────────────────────────── */}
         {isMenuOpen && typeof document !== 'undefined' && createPortal(
           <div 
-            className="fixed inset-0 z-[99999] flex flex-col px-6 pt-10 pb-3 animate-in fade-in zoom-in-95 duration-300 overflow-hidden"
+            className="fixed inset-0 z-[99999] flex flex-col px-6 pt-6 pb-3 animate-in fade-in zoom-in-95 duration-300 overflow-hidden"
             style={{
               background: "#111318",
               backgroundImage: "radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%)"
             }}
           >
-            <div className="relative z-10 flex justify-end mb-6">
+            <div className="relative z-10 flex justify-end mb-2">
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="grid place-items-center h-10 w-10 rounded-full bg-white/5 border border-white/10 active:scale-95 transition-all hover:bg-white/10"
