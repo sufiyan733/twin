@@ -3,23 +3,39 @@
 import { useState, useEffect } from "react";
 
 export default function SplashScreen() {
-  const [splashState, setSplashState] = useState("visible");
+  const [splashState, setSplashState] = useState("visible"); // 'visible' | 'animating' | 'hidden'
+  const [glowState, setGlowState] = useState(false);
   
   useEffect(() => {
-    // Only show splash screen once per session
+    // Check if we've already shown the splash this session
     const hasSeenSplash = sessionStorage.getItem("twin_splash_seen");
     if (hasSeenSplash) {
       setSplashState("hidden");
       return;
     }
     
+    // Mark as seen
     sessionStorage.setItem("twin_splash_seen", "true");
     
-    const fadeTimer = setTimeout(() => setSplashState("fading"), 1800);
-    const hideTimer = setTimeout(() => setSplashState("hidden"), 2400);
+    // Sequence the animations
+    // 1. Wait a moment for the DOM to settle (matching the native splash)
+    const glowTimer = setTimeout(() => {
+      setGlowState(true);
+    }, 400);
+
+    // 2. Start the fade out animation
+    const animateTimer = setTimeout(() => {
+      setSplashState("animating");
+    }, 1800);
+    
+    // 3. Remove from DOM
+    const hideTimer = setTimeout(() => {
+      setSplashState("hidden");
+    }, 2800); // 1800 + 1000ms duration
     
     return () => {
-      clearTimeout(fadeTimer);
+      clearTimeout(glowTimer);
+      clearTimeout(animateTimer);
       clearTimeout(hideTimer);
     };
   }, []);
@@ -28,25 +44,39 @@ export default function SplashScreen() {
 
   return (
     <div 
-      className={`fixed inset-0 z-[99999] flex items-center justify-center bg-[#020305] transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
-        splashState === "fading" ? "opacity-0 pointer-events-none" : "opacity-100"
+      className={`fixed inset-0 z-[99999] flex items-center justify-center bg-black transition-opacity duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
+        splashState === "animating" ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      <img
-        src="/opening.png"
-        alt="Twin OS"
-        className="w-full h-full object-cover"
-        style={{
-          animation: "splash-scale 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
-        }}
-      />
-      <style>{`
-        @keyframes splash-scale {
-          0% { transform: scale(1.03); opacity: 0; }
-          15% { opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-      `}</style>
+      <div 
+        className={`relative flex items-center justify-center transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
+          splashState === "animating" ? "scale-[1.08] opacity-0 blur-md translate-y-4" : "scale-100 opacity-100 blur-0 translate-y-0"
+        }`}
+      >
+        {/* Core Logo matching the native Android PWA splash screen */}
+        <img
+          src="/icon-512.png"
+          alt="Twin Logo"
+          className="w-[144px] h-[144px] sm:w-[160px] sm:h-[160px] object-contain drop-shadow-2xl z-10"
+        />
+
+        {/* Cinematic Emerald Core Glow */}
+        <div 
+          className={`absolute inset-0 bg-[#6ee7b7] rounded-full mix-blend-screen filter blur-[60px] transition-all duration-1000 ease-out z-0 ${
+            glowState && splashState !== "animating" ? "opacity-30 scale-150" : "opacity-0 scale-50"
+          }`}
+        />
+        
+        {/* Premium ambient edge light around the logo */}
+        <div 
+          className={`absolute inset-[-2px] rounded-[32px] border border-white/10 transition-all duration-1000 ease-out z-20 ${
+            glowState && splashState !== "animating" ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          }`}
+          style={{
+            boxShadow: "inset 0 0 40px rgba(255,255,255,0.05)"
+          }}
+        />
+      </div>
     </div>
   );
 }
