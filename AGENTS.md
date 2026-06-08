@@ -1,4 +1,4 @@
-`# AGENTS.md — Twin
+# AGENTS.md — Twin
 
 # Framework Rules
 
@@ -39,20 +39,22 @@ Every screen must provoke: **"This was made for me."**
 ---
 
 ## Tech Stack
-Next.js (JS) · Tailwind CSS · React hooks · Mobile-first PWA · Dark by default (`#020617`)
+Next.js (JS) · Tailwind CSS · React hooks · Mobile-first PWA · Dark by default (`#060d1a`)
 
 ---
 
 ## Design System
-**Surfaces:** `#020617` base → `#0f172a` cards → `#1e293b` overlays → `#0a1628` inputs
+**Surfaces:** `#060d1a` base → `#0d1b2e` cards → `#162035` overlays → `#0a1525` inputs
 
-**Text:** `#f1f5f9` primary · `#94a3b8` secondary · `#475569` muted
+**Text:** `#e8edf5` primary · `#7a90a8` secondary · `#3d5068` muted
 
-**Semantic:** `#fbbf24` warning · `#f87171` danger · `#60a5fa` info
+**Semantic:** `#f59e0b` warning · `#ef4444` danger · `#38bdf8` info
 
-**Borders:** `rgba(148,163,184,0.08)` subtle · `rgba(148,163,184,0.12)` default · `rgba(110,231,183,0.20)` brand
+**Borders:** `rgba(56,189,248,0.06)` subtle · `rgba(56,189,248,0.10)` default · `rgba(56,189,248,0.22)` brand
 
-**Brand glow** (CTAs + completions only): `0 0 20px rgba(110,231,183,0.15), 0 0 40px rgba(110,231,183,0.08)`
+**Brand glow** (CTAs + completions only): `0 0 20px rgba(56,189,248,0.14), 0 0 40px rgba(56,189,248,0.07)`
+
+**Macro colors (fixed):** Protein = `#2dd4bf` · Fat = `#f87171` · Carbs = `#fbbf24` · Calories = `#38bdf8`
 
 **Spacing:** 4px grid. Page padding: 20px. Section gap: 32px min.
 
@@ -66,7 +68,7 @@ Next.js (JS) · Tailwind CSS · React hooks · Mobile-first PWA · Dark by defau
 
 ## Premium UI — What Makes Twin Feel Crafted
 
-**Depth:** Cards use `border: 1px solid rgba(148,163,184,0.08)` + `border-top: 1px solid rgba(255,255,255,0.06)` — simulates light on a physical surface. Reads as premium without being obvious.
+**Depth:** Cards use `border: 1px solid rgba(56,189,248,0.06)` + `border-top: 1px solid rgba(255,255,255,0.05)` — simulates light on a physical surface. Reads as premium without being obvious.
 
 **Press states on everything:** Cards `scale(0.99)` · Buttons `scale(0.97)` · List items background-shift. If tappable and no press state — it feels broken.
 
@@ -103,7 +105,7 @@ Motion confirms, reveals, rewards. Never decorates.
 ## Fitness
 - Priority order: **calories → protein → everything else**. Always.
 - Progress rings must show the number inside. A ring without a number is decoration.
-- Macro colors are fixed: Protein = emerald · Carbs = amber · Fats = rose.
+- Macro colors are fixed: Protein = teal · Carbs = amber · Fats = rose · Calories = sky blue.
 - Active workout: persistent bottom banner when minimized. `wakeLock` during session.
 - PRs + streak completions get a celebration moment. This is why users open the app.
 
@@ -144,4 +146,3 @@ Lightweight. Daily focus only. Never a project manager.
 - [ ] A designer at Apple and an engineer at Linear would both approve
 
 **The bar:** Hold every screen next to Whoop, Nike Training Club, Linear. If it belongs — ship it. If not — it's not done.
-`

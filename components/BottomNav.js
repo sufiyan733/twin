@@ -37,7 +37,7 @@ export default function BottomNav() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none bottom-nav-container">
         <nav
           className="pointer-events-auto flex w-full max-w-[400px] items-end justify-between px-4 pt-2 pb-4"
           style={{ background: T.cardBg, borderTop: `1px solid ${T.border}` }}
