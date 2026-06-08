@@ -481,11 +481,14 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   <div
                     className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0 max-w-full"
                     style={{
-                      background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)",
-                      boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.05)"
+                      background: "linear-gradient(135deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.8) 100%)",
+                      border: "1px solid rgba(148,163,184,0.12)",
+                      borderTop: "1px solid rgba(255,255,255,0.08)",
+                      boxShadow: "0 4px 15px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05)",
+                      backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)"
                     }}
                   >
-                    <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words max-w-full tracking-[0.01em]" style={{ wordBreak: 'break-word' }}>
+                    <p className="text-[15px] font-semibold text-[#f1f5f9] leading-[1.6] whitespace-pre-wrap break-words max-w-full tracking-[0.01em]" style={{ wordBreak: 'break-word' }}>
                       {msg.content}
                     </p>
                   </div>
