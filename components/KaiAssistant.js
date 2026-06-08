@@ -53,11 +53,15 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
           ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
           li: ({node, ...props}) => <li className="mb-1" {...props} />,
           strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
-          table: ({node, ...props}) => <table className="w-full text-[13px] border-collapse my-3" {...props} />,
-          thead: ({node, ...props}) => <thead className="border-b border-white/10" {...props} />,
-          th: ({node, ...props}) => <th className="text-left font-semibold uppercase tracking-[0.05em] text-white/50 pb-2 pr-4" {...props} />,
-          td: ({node, ...props}) => <td className="text-white/80 py-2 pr-4 border-b border-white/5" {...props} />,
-          tr: ({node, ...props}) => <tr className="hover:bg-white/[0.02] transition-colors" {...props} />,
+          table: ({node, ...props}) => (
+            <div className="w-full pb-1 my-3">
+              <table className="w-full text-[13px] border-collapse table-fixed" style={{ wordBreak: 'break-word' }} {...props} />
+            </div>
+          ),
+          thead: ({node, ...props}) => <thead className="" {...props} />,
+          th: ({node, ...props}) => <th className="text-left text-[10px] font-semibold uppercase tracking-[0.05em] text-white/40 pb-2 px-1 border-b border-white/10" {...props} />,
+          td: ({node, ...props}) => <td className="text-white/80 py-2.5 px-1 border-b border-white/[0.04] align-top text-[13px] leading-tight" {...props} />,
+          tr: ({node, ...props}) => <tr className="" {...props} />,
           code: ({node, inline, children, ...props}) => {
             if (children && children[0] === 'ᑢ') {
               return <span className="inline-cursor" />;
