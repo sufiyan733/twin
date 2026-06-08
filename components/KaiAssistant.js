@@ -55,7 +55,7 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
           strong: ({ node, ...props }) => <strong className="font-semibold text-white" {...props} />,
           table: ({ node, ...props }) => (
             <div className="w-full my-4 overflow-x-auto custom-scrollbar rounded-xl border border-white/[0.08] bg-black/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
-              <table className="w-full text-[12.5px] border-collapse min-w-[280px]" {...props} />
+              <table className="w-full text-[12.5px] border-collapse" {...props} />
             </div>
           ),
           thead: ({ node, ...props }) => <thead className="bg-white/[0.03]" {...props} />,
@@ -429,14 +429,14 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             onTouchMove={() => {
               userScrolledUpRef.current = true;
             }}
-            className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar"
+            className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto overflow-x-hidden pr-1 pl-0.5 custom-scrollbar"
           >
             <div className="flex-1" />
 
             {displayMessages.map((msg, idx) => (
               msg.role === "assistant" ? (
                 <div key={idx} className="flex flex-col items-start gap-1 max-w-[98%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-                  <div className="flex flex-col gap-1.5 min-w-0">
+                  <div className="flex flex-col gap-1.5 min-w-0 max-w-full">
                     <div
                       className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5"
                       style={{
@@ -479,13 +479,13 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                     </button>
                   </div>
                   <div
-                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0"
+                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0 max-w-full"
                     style={{
                       background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)",
                       boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.05)"
                     }}
                   >
-                    <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
+                    <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words max-w-full tracking-[0.01em]" style={{ wordBreak: 'break-word' }}>
                       {msg.content}
                     </p>
                   </div>
