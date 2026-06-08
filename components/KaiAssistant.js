@@ -111,22 +111,37 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
   const scrollContainerRef = useRef(null);
   const userScrolledUpRef = useRef(false);
+  const isProgrammaticScrollRef = useRef(false);
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    // If the user scrolls up more than 40px from the bottom, lock auto-scroll
-    userScrolledUpRef.current = scrollHeight - scrollTop - clientHeight > 40;
+    const distanceToBottom = scrollHeight - scrollTop - clientHeight;
+    
+    // If we naturally hit the bottom, unlock auto-scroll
+    if (distanceToBottom <= 5) {
+      userScrolledUpRef.current = false;
+    }
+
+    if (isProgrammaticScrollRef.current) {
+      return; // Ignore programmatic scroll events for locking logic
+    }
+
+    // Lock auto-scroll if the user scrolled up
+    userScrolledUpRef.current = distanceToBottom > 5;
   };
 
   const scrollToBottom = (behavior = "auto") => {
     if (!userScrolledUpRef.current && scrollContainerRef.current) {
+      isProgrammaticScrollRef.current = true;
       if (behavior === "smooth") {
         scrollContainerRef.current.scrollTo({
           top: scrollContainerRef.current.scrollHeight,
           behavior: "smooth"
         });
+        setTimeout(() => { isProgrammaticScrollRef.current = false; }, 600);
       } else {
         scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        setTimeout(() => { isProgrammaticScrollRef.current = false; }, 50);
       }
     }
   };
@@ -379,6 +394,18 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           <div 
             ref={scrollContainerRef}
             onScroll={handleScroll}
+            onWheel={(e) => {
+              if (e.deltaY < 0) {
+                userScrolledUpRef.current = true;
+                isProgrammaticScrollRef.current = false;
+              }
+            }}
+            onTouchStart={() => {
+              isProgrammaticScrollRef.current = false;
+            }}
+            onTouchMove={() => {
+              userScrolledUpRef.current = true;
+            }}
             className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar"
           >
             <div className="flex-1" />
