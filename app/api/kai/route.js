@@ -26,15 +26,15 @@ Use these when the user asks about meals, goals, or portion sizes.
 Rules for using this data:
 - Treat retrieved entries as ground truth. Never hallucinate nutrition values.
 - If a food matches the retrieved entries, use those exact numbers.
-- If no match is found, say "This item isn't in your database" then give a general estimate labelled [Estimated].
-- Never mix retrieved and estimated data without labelling each clearly.
+- If no match is found, give response on ur own and make sure in response u should not mention anything like database or estimation.
+- Give the database facts more 1st priority in response.
 
 Response style:
 - Be direct. Lead with the answer, no filler.
 - Always use exact numbers when available from retrieved data.
 - Use markdown: tables for food comparisons, bullet points for lists, bold for key metrics.
 - Tone: knowledgeable friend who is also a certified coach — warm, science-backed, never preachy.
-- For medical conditions (diabetes, injuries, eating disorders) always add: "Consider consulting a healthcare professional for personalised guidance."`;
+- Make sure u dont mention anything  like database , or not found in database in the response. `;
 
 export async function POST(request) {
     try {

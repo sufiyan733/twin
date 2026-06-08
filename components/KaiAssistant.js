@@ -8,6 +8,70 @@ import { useKai } from "@/lib/hooks/useKai";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 
+const TypewriterMarkdown = ({ content, animateInit, onType }) => {
+  const [displayedText, setDisplayedText] = useState(animateInit ? "" : content);
+  const [isTyping, setIsTyping] = useState(animateInit && content.length > 0);
+
+  useEffect(() => {
+    if (!animateInit) {
+      setDisplayedText(content);
+      setIsTyping(false);
+      return;
+    }
+
+    if (displayedText.length >= content.length) {
+      setIsTyping(false);
+      return;
+    }
+
+    setIsTyping(true);
+    const interval = setInterval(() => {
+      setDisplayedText((prev) => {
+        // Slower generation: 1 character per 16ms (approx 60 chars/sec)
+        const nextLen = prev.length + 1; 
+        if (nextLen >= content.length) {
+          clearInterval(interval);
+          setIsTyping(false);
+          if (onType) requestAnimationFrame(onType);
+          return content;
+        }
+        if (onType && nextLen % 2 === 0) requestAnimationFrame(onType);
+        return content.substring(0, nextLen);
+      });
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, [content, animateInit]);
+
+  return (
+    <div className={isTyping ? "typing-active" : ""}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+          ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 last:mb-0" {...props} />,
+          ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
+          li: ({node, ...props}) => <li className="mb-1" {...props} />,
+          strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
+          table: ({node, ...props}) => <table className="w-full text-[13px] border-collapse my-3" {...props} />,
+          thead: ({node, ...props}) => <thead className="border-b border-white/10" {...props} />,
+          th: ({node, ...props}) => <th className="text-left font-semibold uppercase tracking-[0.05em] text-white/50 pb-2 pr-4" {...props} />,
+          td: ({node, ...props}) => <td className="text-white/80 py-2 pr-4 border-b border-white/5" {...props} />,
+          tr: ({node, ...props}) => <tr className="hover:bg-white/[0.02] transition-colors" {...props} />,
+          code: ({node, inline, children, ...props}) => {
+            if (children && children[0] === 'ᑢ') {
+              return <span className="inline-cursor" />;
+            }
+            return <code className="bg-white/10 rounded px-1.5 py-0.5 text-[13px] font-mono text-[#6ee7b7]" {...props}>{children}</code>;
+          },
+        }}
+      >
+        {displayedText + (isTyping ? " `ᑢ`" : "")}
+      </ReactMarkdown>
+    </div>
+  );
+};
+
 export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget, macros, onNutritionUpdate }) {
   const { data: session } = authClient.useSession();
   const userName = session?.user?.name?.split(" ")[0] || "there";
@@ -45,10 +109,30 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
     }
   }, [inputValue]);
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  const scrollContainerRef = useRef(null);
+  const userScrolledUpRef = useRef(false);
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    // If the user scrolls up more than 40px from the bottom, lock auto-scroll
+    userScrolledUpRef.current = scrollHeight - scrollTop - clientHeight > 40;
+  };
+
+  const scrollToBottom = (behavior = "auto") => {
+    if (!userScrolledUpRef.current && scrollContainerRef.current) {
+      if (behavior === "smooth") {
+        scrollContainerRef.current.scrollTo({
+          top: scrollContainerRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+      } else {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+      }
     }
+  };
+
+  useEffect(() => {
+    scrollToBottom("smooth");
   }, [kaiMessages, isLoading, isOpen]);
 
   const handleImageUpload = (e) => {
@@ -152,6 +236,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
   const executeSend = async (textToSend) => {
     if ((!textToSend.trim() && !attachedImage) || isLoading) return;
     const finalText = attachedImage ? `${textToSend} [image attached]`.trim() : textToSend;
+    userScrolledUpRef.current = false; // Reset user scroll lock on new send
     kaiSendMessage(finalText);
     setInputValue("");
     setAttachedImage(null);
@@ -291,7 +376,11 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             </div>
           )}
           {/* Chat Display */}
-          <div className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar">
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar"
+          >
             <div className="flex-1" />
 
             {displayMessages.map((msg, idx) => (
@@ -310,23 +399,11 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                       }}
                     >
                       <div className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] break-words tracking-[0.01em]">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 last:mb-0" {...props} />,
-                            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
-                            li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                            strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
-                            table: ({node, ...props}) => <table className="w-full text-[13px] border-collapse my-3" {...props} />,
-                            thead: ({node, ...props}) => <thead className="border-b border-white/10" {...props} />,
-                            th: ({node, ...props}) => <th className="text-left font-semibold uppercase tracking-[0.05em] text-white/50 pb-2 pr-4" {...props} />,
-                            td: ({node, ...props}) => <td className="text-white/80 py-2 pr-4 border-b border-white/5" {...props} />,
-                            tr: ({node, ...props}) => <tr className="hover:bg-white/[0.02] transition-colors" {...props} />,
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
+                        <TypewriterMarkdown 
+                          content={msg.content} 
+                          animateInit={idx === displayMessages.length - 1 && idx > 0} 
+                          onType={() => scrollToBottom("auto")}
+                        />
                       </div>
                     </div>
                   </div>
@@ -476,6 +553,40 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(255,255,255,0.2);
+        }
+        .typing-active {
+          position: relative;
+          -webkit-mask-image: linear-gradient(-60deg, rgba(0,0,0,1) 30%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,1) 70%);
+          -webkit-mask-size: 250% 100%;
+          animation: text-super-shimmer 2s infinite linear;
+          text-shadow: 0 0 12px rgba(110,231,183,0.35); /* Hot-off-the-press text glow */
+        }
+        @keyframes text-super-shimmer {
+          0% { -webkit-mask-position: 250% 0; }
+          100% { -webkit-mask-position: -250% 0; }
+        }
+        .inline-cursor {
+          display: inline-block;
+          width: 5px;
+          height: 18px;
+          margin-left: 6px;
+          border-radius: 10px;
+          background: #ffffff; /* Bright white hot center */
+          vertical-align: middle;
+          transform-origin: center;
+          animation: cursor-super-pulse 0.6s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+        }
+        @keyframes cursor-super-pulse {
+          0% { 
+            transform: scaleY(0.8) scaleX(0.8); 
+            opacity: 0.8; 
+            box-shadow: 0 0 10px #6ee7b7, 0 0 20px #6ee7b7; 
+          }
+          100% { 
+            transform: scaleY(1.2) scaleX(1.3); 
+            opacity: 1; 
+            box-shadow: 0 0 20px #6ee7b7, 0 0 40px #6ee7b7, 0 0 60px rgba(110,231,183,0.8); 
+          }
         }
       `}</style>
     </div>,
