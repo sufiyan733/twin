@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X, Utensils } from "lucide-react";
+import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X, Utensils, Copy, Check, Edit2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useKai } from "@/lib/hooks/useKai";
 import ReactMarkdown from "react-markdown";
@@ -62,7 +62,7 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
             if (children && children[0] === 'ᑢ') {
               return <span className="inline-cursor" />;
             }
-            return <code className="bg-white/10 rounded px-1.5 py-0.5 text-[13px] font-mono text-[#6ee7b7]" {...props}>{children}</code>;
+            return <code className="bg-white/10 rounded px-1.5 py-0.5 text-[13px] font-mono text-white" {...props}>{children}</code>;
           },
         }}
       >
@@ -89,6 +89,20 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
   const [isRecording, setIsRecording] = useState(false);
   const [nutritionToast, setNutritionToast] = useState(null);
   const [trackFood, setTrackFood] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState(null);
+
+  const handleCopy = (text, idx) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(idx);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  const handleEdit = (text) => {
+    setInputValue(text);
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
 
   const appliedNutritionKeys = useRef(new Set());
 
@@ -293,13 +307,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
       {/* Card Modal */}
       <div 
-        className="relative w-full max-w-[380px] rounded-[32px] px-6 pt-6 pb-6 animate-in zoom-in-90 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] overflow-hidden"
+        className="relative w-full max-w-[380px] rounded-[32px] px-6 pt-6 pb-6 animate-in zoom-in-95 fade-in duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
         style={{ 
           background: "linear-gradient(160deg, rgba(21,23,29,0.9) 0%, rgba(6,7,10,0.95) 100%)", 
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,255,255,0.04)",
-          boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 0 40px rgba(255,255,255,0.02), 0 40px 80px -20px rgba(0,0,0,1), 0 0 0 1px rgba(255,255,255,0.05), 0 0 40px rgba(255,255,255,0.03)"
+          boxShadow: "0 24px 80px -12px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1), inset 0 0 0 1px rgba(255,255,255,0.02)"
         }}
       >
         {/* Ultra-Premium Edge Bloom */}
@@ -331,8 +344,8 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             <h2 className="text-[26px] font-bold tracking-[-0.03em] leading-none text-white mb-1.5" style={{ textShadow: "0 2px 10px rgba(255,255,255,0.1)" }}>Kai</h2>
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-30" style={{ boxShadow: "0 0 10px 1px rgba(255,255,255,0.3)" }}></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" style={{ boxShadow: "0 0 6px 1px rgba(255,255,255,0.5)" }}></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-40" style={{ boxShadow: "0 0 10px 2px rgba(255,255,255,0.4)" }}></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" style={{ boxShadow: "0 0 6px 1px rgba(255,255,255,0.6)" }}></span>
               </span>
               <p className="text-[14px] text-white/60 leading-none font-medium tracking-wide">AI Assistant</p>
             </div>
@@ -418,10 +431,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </div>
                   <div className="flex flex-col gap-1.5 min-w-0">
                     <div 
-                      className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5"
+                      className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5 transition-transform hover:scale-[0.99]"
                       style={{ 
                         background: "linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)", 
-                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.08), 0 4px 15px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(148,163,184,0.08)",
+                        borderTop: "1px solid rgba(255,255,255,0.06)",
+                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.04), 0 4px 15px rgba(0,0,0,0.3)",
                         backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)"
                       }}
                     >
@@ -436,10 +451,29 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </div>
                 </div>
               ) : (
-                <div key={idx} className="flex items-end self-end gap-2.5 max-w-[85%] min-w-0 animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                <div key={idx} className="flex flex-col items-end self-end max-w-[85%] group animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                  <div className="flex items-center gap-1.5 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+                    <button 
+                      onClick={() => handleCopy(msg.content, idx)}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white backdrop-blur-md border border-white/5 hover:border-white/10 transition-all active:scale-[0.95]"
+                    >
+                      {copiedIndex === idx ? <Check size={11} className="text-white" /> : <Copy size={11} />}
+                      <span className="text-[9px] font-bold tracking-wider uppercase leading-none mt-0.5">{copiedIndex === idx ? 'Copied' : 'Copy'}</span>
+                    </button>
+                    <button 
+                      onClick={() => handleEdit(msg.content)}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white backdrop-blur-md border border-white/5 hover:border-white/10 transition-all active:scale-[0.95]"
+                    >
+                      <Edit2 size={11} />
+                      <span className="text-[9px] font-bold tracking-wider uppercase leading-none mt-0.5">Edit</span>
+                    </button>
+                  </div>
                   <div 
-                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0"
-                    style={{ background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)", boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1)" }}
+                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0 transition-transform active:scale-[0.98] hover:scale-[0.99]"
+                    style={{ 
+                      background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)", 
+                      boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.05)" 
+                    }}
                   >
                     <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
                       {msg.content}
@@ -490,7 +524,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
             <div className="flex flex-col gap-2.5">
               <div className="flex items-center justify-between px-1">
-                <label className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/30">Message Kai</label>
+                <label className="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/40" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>Message Kai</label>
                 
                 {/* Ultra-Compact Mode Pill */}
                 <button
@@ -548,18 +582,26 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                     height: "56px",
                     background: "rgba(0,0,0,0.3)",
                     color: "#ffffff",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
                     boxShadow: trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"
                   }}
-                  onFocus={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2), 0 0 15px rgba(255,255,255,0.05)"; }}
-                  onBlur={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"; }}
+                  onFocus={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.3), 0 0 25px rgba(255,255,255,0.1)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.4), 0 0 15px rgba(255,255,255,0.1)"; e.currentTarget.style.background = "rgba(0,0,0,0.5)"; }}
+                  onBlur={(e) => { e.currentTarget.style.boxShadow = trackFood ? "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.05)" : "inset 0 2px 6px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)"; e.currentTarget.style.background = "rgba(0,0,0,0.3)"; }}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={isLoading || transcribing || (!inputValue.trim() && !attachedImage)}
                   className="absolute right-2.5 bottom-[8px] grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
-                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", color: "#020617", boxShadow: (isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)" }}
+                  style={{ 
+                    background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", 
+                    color: "#020617", 
+                    boxShadow: (isLoading || transcribing || (!inputValue.trim() && !attachedImage)) 
+                      ? "none" 
+                      : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15), 0 0 20px rgba(255,255,255,0.25), 0 0 40px rgba(255,255,255,0.12)" 
+                  }}
                 >
-                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"}`} strokeWidth={2.5} />
+                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-black"}`} strokeWidth={2.5} />
                 </button>
               </div>
             </div>
@@ -586,7 +628,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           -webkit-mask-image: linear-gradient(-60deg, rgba(0,0,0,1) 30%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,1) 70%);
           -webkit-mask-size: 250% 100%;
           animation: text-super-shimmer 2s infinite linear;
-          text-shadow: 0 0 12px rgba(110,231,183,0.35); /* Hot-off-the-press text glow */
+          text-shadow: 0 0 12px rgba(255,255,255,0.35); /* Hot-off-the-press text glow */
         }
         @keyframes text-super-shimmer {
           0% { -webkit-mask-position: 250% 0; }
@@ -607,12 +649,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           0% { 
             transform: scaleY(0.8) scaleX(0.8); 
             opacity: 0.8; 
-            box-shadow: 0 0 10px #6ee7b7, 0 0 20px #6ee7b7; 
+            box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff; 
           }
           100% { 
             transform: scaleY(1.2) scaleX(1.3); 
             opacity: 1; 
-            box-shadow: 0 0 20px #6ee7b7, 0 0 40px #6ee7b7, 0 0 60px rgba(110,231,183,0.8); 
+            box-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff, 0 0 60px rgba(255,255,255,0.8); 
           }
         }
       `}</style>
