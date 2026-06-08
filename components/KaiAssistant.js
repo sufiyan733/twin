@@ -54,14 +54,14 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
           li: ({node, ...props}) => <li className="mb-1" {...props} />,
           strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
           table: ({node, ...props}) => (
-            <div className="w-full pb-1 my-3 overflow-x-auto custom-scrollbar">
+            <div className="w-full my-4 overflow-x-auto custom-scrollbar rounded-xl border border-white/[0.08] bg-black/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
               <table className="w-full text-[12.5px] border-collapse min-w-[280px]" {...props} />
             </div>
           ),
-          thead: ({node, ...props}) => <thead className="" {...props} />,
-          th: ({node, ...props}) => <th className="text-left text-[9px] font-semibold uppercase tracking-wider text-white/40 pb-2 px-1.5 border-b border-white/10" {...props} />,
-          td: ({node, ...props}) => <td className="text-white/80 py-2 px-1.5 border-b border-white/[0.04] align-top leading-tight" {...props} />,
-          tr: ({node, ...props}) => <tr className="" {...props} />,
+          thead: ({node, ...props}) => <thead className="bg-white/[0.03]" {...props} />,
+          th: ({node, ...props}) => <th className="text-left text-[9px] font-bold uppercase tracking-[0.08em] text-white/50 py-2.5 px-2.5 border-b border-white/[0.08]" {...props} />,
+          td: ({node, ...props}) => <td className="text-[#e2e8f0] py-3 px-2.5 border-b border-white/[0.03] align-top tabular-nums tracking-tight leading-snug group-last:border-0" {...props} />,
+          tr: ({node, ...props}) => <tr className="group even:bg-white/[0.01]" {...props} />,
           code: ({node, inline, children, ...props}) => {
             if (children && children[0] === 'ᑢ') {
               return <span className="inline-cursor" />;
@@ -322,6 +322,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
         {/* Ultra-Premium Edge Bloom */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", boxShadow: "0 1px 25px 2px rgba(255,255,255,0.15)" }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)", boxShadow: "0 1px 15px 1px rgba(255,255,255,0.25)" }} />
+        
+        {/* Dynamic Drag Handle Pill */}
+        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-[5px] rounded-full bg-white/10 hover:bg-white/20 transition-colors z-[10]" />
+
+        {/* Ambient Background Glow */}
+        <div className="absolute top-1/4 -right-1/4 w-[250px] h-[250px] bg-white/[0.02] rounded-full mix-blend-overlay pointer-events-none blur-[60px] animate-pulse" style={{ animationDuration: '8s' }} />
         
         {/* Metallic Grain overlay */}
         <div className="absolute inset-0 pointer-events-none mix-blend-overlay z-0" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")" }} />
