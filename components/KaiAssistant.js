@@ -34,8 +34,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = '56px';
-      textareaRef.current.style.height = Math.min(Math.max(textareaRef.current.scrollHeight, 56), 168) + 'px';
+      if (!inputValue) {
+        textareaRef.current.style.height = '56px';
+      } else {
+        textareaRef.current.style.height = '56px';
+        textareaRef.current.style.height = Math.min(Math.max(textareaRef.current.scrollHeight, 56), 168) + 'px';
+      }
     }
   }, [inputValue]);
 
@@ -143,10 +147,10 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
     return { cleanText, action };
   };
 
-  const sendMessage = async () => {
-    if ((!inputValue.trim() && !attachedImage) || isLoading) return;
-    const userMsgKey = (inputValue.trim() + Date.now()).slice(0, 80);
-    const newMsg = { sender: "user", text: inputValue, image: attachedImage };
+  const executeSend = async (textToSend) => {
+    if ((!textToSend.trim() && !attachedImage) || isLoading) return;
+    const userMsgKey = (textToSend.trim() + Date.now()).slice(0, 80);
+    const newMsg = { sender: "user", text: textToSend, image: attachedImage };
     setMessages(prev => [...prev, newMsg]);
     setInputValue("");
     setAttachedImage(null);
@@ -185,6 +189,23 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
       setIsLoading(false);
       setTrackFood(false);
     }
+  };
+
+  const [pendingMessage, setPendingMessage] = useState(null);
+
+  const sendMessage = async () => {
+    if ((!inputValue.trim() && !attachedImage) || isLoading) return;
+
+    const t = inputValue.toLowerCase();
+    const hasWeight = /\b\d+(\.\d+)?\s*(g|gram|grams|kg|kilo|kilos|oz|lbs|ml)\b/.test(t) || /\b\d+\s*(pieces|piece|serving|servings|katori|cup|cups|tbsp|tsp|glass|bowl)\b/.test(t);
+    const hasRawOrCooked = t.includes("raw") || t.includes("cooked") || t.includes("boiled") || t.includes("fried") || t.includes("grilled") || t.includes("baked") || t.includes("roasted") || t.includes("steamed");
+
+    if (isNewConsumptionReport(t) && hasWeight && !hasRawOrCooked) {
+      setPendingMessage(inputValue);
+      return;
+    }
+
+    executeSend(inputValue);
   };
 
   const [mounted, setMounted] = useState(false);
@@ -262,6 +283,47 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
         </div>
 
         <div className="relative z-10 flex flex-col h-[560px]">
+          {pendingMessage && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm rounded-[32px] animate-in fade-in duration-200">
+              <div className="w-full bg-[#0d1426] border border-white/10 rounded-2xl p-5 shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200">
+                <div className="flex items-center gap-3 text-white">
+                  <Utensils size={18} className="text-amber-400" />
+                  <h3 className="font-semibold text-[15px] tracking-wide">Raw or Cooked?</h3>
+                </div>
+                <p className="text-[13px] text-white/70 leading-relaxed font-light">
+                  You entered a weight but didn't specify if it's raw or cooked. Macros differ significantly!
+                </p>
+                <div className="flex gap-3 mt-2">
+                  <button 
+                    onClick={() => {
+                      const finalMsg = pendingMessage + " (raw)";
+                      setPendingMessage(null);
+                      executeSend(finalMsg);
+                    }}
+                    className="flex-1 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-white text-[13px] font-medium border border-white/10 transition-colors active:scale-95"
+                  >
+                    Raw
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const finalMsg = pendingMessage + " (cooked)";
+                      setPendingMessage(null);
+                      executeSend(finalMsg);
+                    }}
+                    className="flex-1 py-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-[13px] font-medium border border-amber-500/20 transition-colors active:scale-95"
+                  >
+                    Cooked
+                  </button>
+                </div>
+                <button 
+                  onClick={() => setPendingMessage(null)}
+                  className="mt-1 text-[12px] text-white/40 hover:text-white/70 py-2 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
           {/* Chat Display */}
           <div className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar">
             <div className="flex-1" />
@@ -272,7 +334,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
                     <Sparkles size={12} className="text-white" />
                   </div>
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-1.5 min-w-0">
                     <div 
                       className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5"
                       style={{ 
@@ -281,7 +343,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                         backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)"
                       }}
                     >
-                      <p className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] whitespace-pre-wrap tracking-[0.01em]">
+                      <p className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
                         {msg.text}
                       </p>
                     </div>
@@ -298,15 +360,15 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </div>
                 </div>
               ) : (
-                <div key={idx} className="flex items-end self-end gap-2.5 max-w-[85%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                <div key={idx} className="flex items-end self-end gap-2.5 max-w-[85%] min-w-0 animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                   <div 
-                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5"
+                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0"
                     style={{ background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)", boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1)" }}
                   >
                     {msg.image && (
                       <img src={msg.image} alt="Upload" className="w-full max-w-[200px] rounded-[12px] mb-2 object-cover border border-black/5 shadow-sm" />
                     )}
-                    <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap tracking-[0.01em]">
+                    <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
                       {msg.text}
                     </p>
                   </div>

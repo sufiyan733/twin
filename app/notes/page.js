@@ -64,7 +64,14 @@ export default function NotesApp() {
     useEffect(() => {
         fetch("/api/notes", { credentials: "include" })
             .then((r) => r.json())
-            .then((data) => { setNotes(data.notes ?? []); setLoading(false); })
+            .then((data) => {
+                const loadedNotes = data.notes ?? [];
+                setNotes(loadedNotes);
+                if (loadedNotes.length > 0) {
+                    setActiveId(loadedNotes[0].id);
+                }
+                setLoading(false);
+            })
             .catch((err) => { console.error(err); setLoading(false); });
     }, []);
 
