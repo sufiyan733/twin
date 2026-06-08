@@ -4,21 +4,23 @@ import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Sparkles, Plus, Send, Mic, Image as ImageIcon, X, Utensils } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { useKai } from "@/lib/hooks/useKai";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 
 export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget, macros, onNutritionUpdate }) {
   const { data: session } = authClient.useSession();
   const userName = session?.user?.name?.split(" ")[0] || "there";
 
-  const [messages, setMessages] = useState([{ sender: 'kai', text: `${userName} wassup` }]);
-
-  useEffect(() => {
-    if (session?.user?.name && messages.length === 1 && messages[0].sender === 'kai') {
-      setMessages([{ sender: 'kai', text: `${session.user.name.split(" ")[0]} wassup` }]);
-    }
-  }, [session?.user?.name]);
+  const { messages: kaiMessages, loading: isLoading, error: kaiError, sendMessage: kaiSendMessage } = useKai();
+  
+  const displayMessages = [
+    { role: 'assistant', content: `${userName} wassup` },
+    ...kaiMessages
+  ];
 
   const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [transcribing, setTranscribing] = useState(false);
   const [attachedImage, setAttachedImage] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [nutritionToast, setNutritionToast] = useState(null);
@@ -47,7 +49,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isLoading, isOpen]);
+  }, [kaiMessages, isLoading, isOpen]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -93,7 +95,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           const formData = new FormData();
           formData.append("file", audioBlob, "recording.webm");
 
-          setIsLoading(true);
+          setTranscribing(true);
           try {
             const res = await fetch("/api/transcribe", {
               method: "POST",
@@ -106,7 +108,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           } catch (err) {
             console.error("Transcription failed", err);
           } finally {
-            setIsLoading(false);
+            setTranscribing(false);
           }
 
           stream.getTracks().forEach(track => track.stop());
@@ -149,52 +151,16 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
   const executeSend = async (textToSend) => {
     if ((!textToSend.trim() && !attachedImage) || isLoading) return;
-    const userMsgKey = (textToSend.trim() + Date.now()).slice(0, 80);
-    const newMsg = { sender: "user", text: textToSend, image: attachedImage };
-    setMessages(prev => [...prev, newMsg]);
+    const finalText = attachedImage ? `${textToSend} [image attached]`.trim() : textToSend;
+    kaiSendMessage(finalText);
     setInputValue("");
     setAttachedImage(null);
-    setIsLoading(true);
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, newMsg] })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        const { cleanText, action } = parseActionBlock(data.text);
-        const shouldApply =
-          trackFood &&
-          action?.type === "UPDATE_NUTRITION" &&
-          !appliedNutritionKeys.current.has(userMsgKey) &&
-          onNutritionUpdate;
-
-        setMessages(prev => [...prev, { sender: "kai", text: cleanText, nutritionUpdate: shouldApply ? action : null }]);
-
-        if (shouldApply) {
-          appliedNutritionKeys.current.add(userMsgKey);
-          onNutritionUpdate(action);
-          setNutritionToast(`+${action.calories} kcal logged`);
-          setTimeout(() => setNutritionToast(null), 3500);
-        }
-      } else {
-        const errMsg = data.error || "Sorry, I ran into an error.";
-        setMessages(prev => [...prev, { sender: "kai", text: errMsg }]);
-      }
-    } catch (err) {
-      setMessages(prev => [...prev, { sender: "kai", text: "Sorry, network error." }]);
-    } finally {
-      setIsLoading(false);
-      setTrackFood(false);
-    }
   };
 
   const [pendingMessage, setPendingMessage] = useState(null);
 
   const sendMessage = async () => {
-    if ((!inputValue.trim() && !attachedImage) || isLoading) return;
+    if ((!inputValue.trim() && !attachedImage) || isLoading || transcribing) return;
 
     const t = inputValue.toLowerCase();
     const hasWeight = /\b\d+(\.\d+)?\s*(g|gram|grams|kg|kilo|kilos|oz|lbs|ml)\b/.test(t) || /\b\d+\s*(pieces|piece|serving|servings|katori|cup|cups|tbsp|tsp|glass|bowl)\b/.test(t);
@@ -328,8 +294,8 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
           <div className="flex-1 flex flex-col gap-4 pb-4 overflow-y-auto pr-1 pl-0.5 custom-scrollbar">
             <div className="flex-1" />
 
-            {messages.map((msg, idx) => (
-              msg.sender === "kai" ? (
+            {displayMessages.map((msg, idx) => (
+              msg.role === "assistant" ? (
                 <div key={idx} className="flex items-end gap-3 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                   <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
                     <Sparkles size={12} className="text-white" />
@@ -343,20 +309,26 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                         backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)"
                       }}
                     >
-                      <p className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
-                        {msg.text}
-                      </p>
-                    </div>
-                    {msg.nutritionUpdate && (
-                      <div className="flex items-center gap-1.5 px-1">
-                        <div className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                          <span className="text-[10px] text-white/50">✦</span>
-                          <span className="text-[10px] font-medium text-white/70">
-                            +{msg.nutritionUpdate.calories} kcal · {msg.nutritionUpdate.protein}g P · {msg.nutritionUpdate.fat}g F · {msg.nutritionUpdate.carbs}g C
-                          </span>
-                        </div>
+                      <div className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] break-words tracking-[0.01em]">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 last:mb-0" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
+                            li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
+                            table: ({node, ...props}) => <table className="w-full text-[13px] border-collapse my-3" {...props} />,
+                            thead: ({node, ...props}) => <thead className="border-b border-white/10" {...props} />,
+                            th: ({node, ...props}) => <th className="text-left font-semibold uppercase tracking-[0.05em] text-white/50 pb-2 pr-4" {...props} />,
+                            td: ({node, ...props}) => <td className="text-white/80 py-2 pr-4 border-b border-white/5" {...props} />,
+                            tr: ({node, ...props}) => <tr className="hover:bg-white/[0.02] transition-colors" {...props} />,
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -365,16 +337,16 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                     className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0"
                     style={{ background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)", boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1)" }}
                   >
-                    {msg.image && (
-                      <img src={msg.image} alt="Upload" className="w-full max-w-[200px] rounded-[12px] mb-2 object-cover border border-black/5 shadow-sm" />
-                    )}
                     <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
-                      {msg.text}
+                      {msg.content}
                     </p>
                   </div>
                 </div>
               )
             ))}
+            {kaiError && (
+              <div className="text-red-400 text-[13px] text-center my-2 animate-in fade-in">{kaiError}</div>
+            )}
             {isLoading && (
               <div className="flex items-end gap-3 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                 <div className="shrink-0 grid place-items-center h-7 w-7 rounded-[10px] border" style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}>
@@ -479,11 +451,11 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={isLoading || (!inputValue.trim() && !attachedImage)}
+                  disabled={isLoading || transcribing || (!inputValue.trim() && !attachedImage)}
                   className="absolute right-2.5 bottom-[8px] grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
-                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", color: "#020617", boxShadow: (isLoading || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)" }}
+                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", color: "#020617", boxShadow: (isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "none" : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15)" }}
                 >
-                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"}`} strokeWidth={2.5} />
+                  <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"}`} strokeWidth={2.5} />
                 </button>
               </div>
             </div>

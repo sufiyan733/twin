@@ -1,0 +1,983 @@
+{
+  "diet_protocols": {
+    "iifym": {
+      "name": "IIFYM (If It Fits Your Macros)",
+      "description": "Flexible dieting focusing on hitting daily macronutrient targets (Protein, Carbs, Fat) rather than restricting specific foods.",
+      "best_for": "People wanting food freedom, sustainable long-term dieting.",
+      "how_it_works": "Calculate TDEE, set a calorie goal, assign protein (e.g. 2g/kg), fat (e.g. 0.8g/kg), and fill the rest with carbs. Eat whatever you want as long as you hit those numbers.",
+      "sample_schedule": "No fixed schedule. Eat when convenient.",
+      "pros": "Highly sustainable, prevents binge eating, allows social eating.",
+      "cons": "Can lead to micronutrient deficiencies if abused with junk food. Requires meticulous tracking.",
+      "macro_split": "Varies, typically 30% P / 45% C / 25% F",
+      "lingo": [
+        "flexible dieting",
+        "macro tracking"
+      ]
+    },
+    "clean eating": {
+      "name": "Clean Eating",
+      "description": "Focuses on consuming whole, unprocessed, nutrient-dense foods. Avoids refined sugars and artificial additives.",
+      "best_for": "Overall health, improving digestion, micronutrient density.",
+      "how_it_works": "Base diet around vegetables, lean meats, whole grains, fruits, nuts, and seeds.",
+      "sample_schedule": "Standard 3 meals + 2 snacks.",
+      "pros": "Excellent for health, highly satiating.",
+      "cons": "Can be restrictive, difficult for social events, 'clean' foods still have calories causing unexpected weight gain if portions aren't managed.",
+      "macro_split": "Balanced, typically 25% P / 50% C / 25% F",
+      "lingo": [
+        "eating clean",
+        "whole foods diet"
+      ]
+    },
+    "intermittent fasting": {
+      "name": "Intermittent Fasting (16:8)",
+      "description": "Eating pattern cycling between periods of fasting and eating.",
+      "best_for": "People who prefer larger meals, controlling late-night snacking.",
+      "how_it_works": "Fast for 16 hours, eat all calories within an 8-hour window.",
+      "sample_schedule": "Fast from 8 PM to 12 PM next day. Eat lunch at 12 PM, snack at 4 PM, dinner at 7:30 PM.",
+      "pros": "Simplifies eating, can improve insulin sensitivity, helps maintain calorie deficit easily.",
+      "cons": "Can cause low energy in mornings, difficult to hit high protein goals for muscle gain.",
+      "macro_split": "Any",
+      "lingo": [
+        "IF",
+        "time restricted feeding",
+        "16:8",
+        "OMAD"
+      ]
+    },
+    "carb cycling": {
+      "name": "Carb Cycling",
+      "description": "Alternating high carb and low carb days, usually aligned with training intensity.",
+      "best_for": "Advanced athletes, breaking fat loss plateaus while maintaining performance.",
+      "how_it_works": "High carb days on heavy training days (legs/back) to fuel performance. Low carb days on rest or light cardio days to enhance fat burning.",
+      "sample_schedule": "Mon (Legs): High Carb, Tue (Upper): Moderate Carb, Wed (Rest): Low Carb.",
+      "pros": "Maximizes gym performance while losing fat, improves insulin sensitivity.",
+      "cons": "Complex to plan and track, requires strict adherence.",
+      "macro_split": "Varies daily",
+      "lingo": [
+        "carb manipulation"
+      ]
+    },
+    "ketogenic": {
+      "name": "Ketogenic Diet",
+      "description": "Very low carb, high fat diet designed to put the body into a state of ketosis.",
+      "best_for": "People with insulin resistance, sedentary individuals, those who prefer high-fat foods.",
+      "how_it_works": "Restrict carbs to <30g per day. Body switches to burning ketones (fat) for fuel instead of glucose.",
+      "sample_schedule": "Eggs/Bacon for breakfast, Salad with olive oil/chicken for lunch, Salmon with buttery asparagus for dinner.",
+      "pros": "Strong appetite suppression, rapid initial water weight loss.",
+      "cons": "Poor for high-intensity anaerobic performance (lifting), 'keto flu' during adaptation, highly restrictive.",
+      "macro_split": "20% P / 5% C / 75% F",
+      "lingo": [
+        "keto",
+        "LCHF"
+      ]
+    },
+    "high protein low carb": {
+      "name": "High Protein Low Carb",
+      "description": "Similar to keto but with more protein and slightly more carbs, avoiding full ketosis.",
+      "best_for": "Fat loss while preserving muscle, managing hunger.",
+      "how_it_works": "Protein is kept very high (>2.2g/kg). Carbs kept low (50-100g) mainly from vegetables.",
+      "sample_schedule": "Omelette for breakfast, Chicken salad for lunch, Paneer tikka and veggies for dinner.",
+      "pros": "Great for muscle retention during cuts, highly satiating.",
+      "cons": "Can leave you feeling flat in the gym due to low glycogen.",
+      "macro_split": "40% P / 20% C / 40% F",
+      "lingo": [
+        "HPLC",
+        "low carb"
+      ]
+    },
+    "calorie cycling": {
+      "name": "Calorie Cycling",
+      "description": "Fluctuating daily calorie intake while maintaining a weekly average target.",
+      "best_for": "Social flexibility, enjoying weekends without ruining diet.",
+      "how_it_works": "Eat lower calories Mon-Thu, eat higher calories Fri-Sun, but weekly average remains in a deficit.",
+      "sample_schedule": "Mon-Thu: 1800 cal. Fri-Sun: 2500 cal. (Average ~2100 cal).",
+      "pros": "Psychologically easier, accommodates social life.",
+      "cons": "Easy to overeat on high days and ruin the weekly deficit.",
+      "macro_split": "Any",
+      "lingo": [
+        "zig zag dieting"
+      ]
+    },
+    "reverse dieting": {
+      "name": "Reverse Dieting",
+      "description": "Slowly increasing calories after a prolonged diet to restore metabolism while minimizing fat gain.",
+      "best_for": "Post-diet transition to maintenance, recovering from metabolic adaptation.",
+      "how_it_works": "Add 50-100 calories (mostly carbs/fat) each week until maintenance is reached.",
+      "sample_schedule": "Week 1: 1600c. Week 2: 1700c. Week 3: 1800c.",
+      "pros": "Restores hormonal balance and metabolic rate without rebound weight gain.",
+      "cons": "Requires immense patience and strict tracking.",
+      "macro_split": "Gradually increasing C/F",
+      "lingo": [
+        "metabolic repair",
+        "reversing"
+      ]
+    },
+    "maintenance": {
+      "name": "Maintenance Phase",
+      "description": "Eating at TDEE to maintain current body weight.",
+      "best_for": "Consolidating gains or fat loss, taking a break from dieting, performance phases.",
+      "how_it_works": "Eat exactly what you burn. Focus shifts to performance and recovery.",
+      "sample_schedule": "Balanced meals fitting TDEE.",
+      "pros": "Sustainable, good energy levels, mental break.",
+      "cons": "No rapid changes in body weight.",
+      "macro_split": "30% P / 40% C / 30% F",
+      "lingo": [
+        "maintaining",
+        "isocaloric"
+      ]
+    },
+    "lean bulk": {
+      "name": "Lean Bulk",
+      "description": "A slight caloric surplus aimed at maximizing muscle gain while minimizing fat accumulation.",
+      "best_for": "Muscle gain, aesthetic goals.",
+      "how_it_works": "Eat 200-300 calories above maintenance. Ensure adequate protein.",
+      "sample_schedule": "3 solid meals + 1 pre-workout snack + 1 protein shake.",
+      "pros": "Builds muscle with minimal fat gain, easy to transition out of.",
+      "cons": "Muscle gain is slower than a dirty bulk.",
+      "macro_split": "25% P / 50% C / 25% F",
+      "lingo": [
+        "clean bulk",
+        "maingaining"
+      ]
+    },
+    "dirty bulk": {
+      "name": "Dirty Bulk",
+      "description": "A large caloric surplus with no food restrictions to maximize weight gain.",
+      "best_for": "Hardgainers, powerlifters not in a weight class, absolute mass building.",
+      "how_it_works": "Eat 500-1000+ calories above maintenance. Eat whatever is necessary to hit calorie goals.",
+      "sample_schedule": "Large meals, liquid calories, high-calorie snacks.",
+      "pros": "Rapid weight and strength gain.",
+      "cons": "Significant fat gain, potential negative impacts on health markers (lipids, insulin).",
+      "macro_split": "High Carbs and Fats",
+      "lingo": [
+        "dreamer bulk",
+        "see food diet"
+      ]
+    },
+    "mini cut": {
+      "name": "Mini Cut",
+      "description": "A short, aggressive fat loss phase used during a bulking cycle.",
+      "best_for": "Stripping off fat mid-bulk to extend the bulking runway.",
+      "how_it_works": "Aggressive deficit (500-800 cal) for 2-6 weeks to drop fat fast without losing muscle.",
+      "sample_schedule": "High protein, very low carb/fat for 4 weeks.",
+      "pros": "Quick results, clears up insulin sensitivity, lets you get back to bulking sooner.",
+      "cons": "Hunger, temporarily low energy.",
+      "macro_split": "40% P / 30% C / 30% F",
+      "lingo": [
+        "aggressive cut"
+      ]
+    }
+  },
+  "meal_plans": {
+    "muscle gain 2500 veg": {
+      "goal": "muscle gain",
+      "calories_approx": 2500,
+      "protein_approx": 130,
+      "description": "Vegetarian muscle building plan prioritizing paneer, whey, and lentils for protein.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "08:30",
+          "foods": [
+            "2 scoop Whey Protein",
+            "50g Oats",
+            "1 medium Apple",
+            "15g Almonds"
+          ],
+          "macros": "500 kcal, 55g P, 45g C, 12g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "13:30",
+          "foods": [
+            "2 Katori Toor Dal",
+            "150g Rice",
+            "100g Paneer cubes (cooked with minimal oil)",
+            "Side Salad"
+          ],
+          "macros": "750 kcal, 35g P, 85g C, 30g F"
+        },
+        {
+          "name": "Pre-Workout Snack",
+          "time": "17:00",
+          "foods": [
+            "2 slices Whole Wheat Bread",
+            "1.5 tbsp Peanut Butter",
+            "1 Banana"
+          ],
+          "macros": "400 kcal, 12g P, 55g C, 15g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "21:00",
+          "foods": [
+            "150g Low Fat Paneer (Bhurji)",
+            "3 Roti",
+            "1 Katori Mixed Veg Subzi"
+          ],
+          "macros": "650 kcal, 35g P, 65g C, 25g F"
+        },
+        {
+          "name": "Before Bed",
+          "time": "23:00",
+          "foods": [
+            "200ml Skimmed Milk"
+          ],
+          "macros": "80 kcal, 7g P, 10g C, 1g F"
+        }
+      ],
+      "notes": "Drink 3-4 liters of water. Adjust rice/roti quantities to hit exact calories."
+    },
+    "muscle gain 2800 non-veg": {
+      "goal": "muscle gain",
+      "calories_approx": 2800,
+      "protein_approx": 160,
+      "description": "High protein non-veg plan utilizing eggs, chicken breast, and whey.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "08:00",
+          "foods": [
+            "4 Whole Eggs",
+            "2 Egg Whites",
+            "3 slices Whole Wheat Bread",
+            "1 Banana"
+          ],
+          "macros": "600 kcal, 40g P, 50g C, 22g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "13:30",
+          "foods": [
+            "200g Chicken Breast (Grilled)",
+            "200g Rice",
+            "1 Katori Dal",
+            "Salad"
+          ],
+          "macros": "750 kcal, 65g P, 90g C, 10g F"
+        },
+        {
+          "name": "Pre-Workout",
+          "time": "17:00",
+          "foods": [
+            "1 scoop Whey Protein",
+            "50g Oats"
+          ],
+          "macros": "300 kcal, 28g P, 35g C, 4g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "21:00",
+          "foods": [
+            "150g Chicken Curry (Low Oil)",
+            "3 Roti",
+            "Mixed Veg"
+          ],
+          "macros": "650 kcal, 45g P, 60g C, 20g F"
+        },
+        {
+          "name": "Before Bed",
+          "time": "23:00",
+          "foods": [
+            "30g Peanut Butter",
+            "1 slice Bread"
+          ],
+          "macros": "250 kcal, 9g P, 18g C, 16g F"
+        }
+      ],
+      "notes": "Cook chicken with minimal oil. Use spices freely for taste."
+    },
+    "fat loss 1600 veg": {
+      "goal": "fat loss",
+      "calories_approx": 1600,
+      "protein_approx": 110,
+      "description": "Aggressive fat loss for vegetarians, high volume foods to maintain satiety.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "09:00",
+          "foods": [
+            "1.5 scoop Whey Protein",
+            "30g Oats in water",
+            "Handful of berries"
+          ],
+          "macros": "250 kcal, 40g P, 20g C, 3g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "14:00",
+          "foods": [
+            "100g Paneer (Low Fat)",
+            "1 Roti",
+            "Large Bowl Green Salad",
+            "1 Katori Dal"
+          ],
+          "macros": "450 kcal, 30g P, 40g C, 15g F"
+        },
+        {
+          "name": "Evening Snack",
+          "time": "17:30",
+          "foods": [
+            "100g Greek Yogurt",
+            "10g Almonds"
+          ],
+          "macros": "150 kcal, 12g P, 5g C, 8g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "20:30",
+          "foods": [
+            "150g Tofu Stir Fry with Broccoli and Bell Peppers",
+            "1 Roti"
+          ],
+          "macros": "350 kcal, 25g P, 30g C, 15g F"
+        }
+      ],
+      "notes": "Drink black coffee or green tea to manage hunger."
+    },
+    "fat loss 1800 non-veg": {
+      "goal": "fat loss",
+      "calories_approx": 1800,
+      "protein_approx": 150,
+      "description": "Sustainable fat loss plan utilizing lean meats for high satiety.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "08:30",
+          "foods": [
+            "5 Egg Whites",
+            "1 Whole Egg",
+            "2 slices Brown Bread"
+          ],
+          "macros": "300 kcal, 25g P, 30g C, 8g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "13:30",
+          "foods": [
+            "150g Chicken Breast",
+            "100g Rice",
+            "Large Salad with Lemon Dressing"
+          ],
+          "macros": "400 kcal, 45g P, 35g C, 5g F"
+        },
+        {
+          "name": "Snack",
+          "time": "17:00",
+          "foods": [
+            "1 scoop Whey Protein",
+            "1 Apple"
+          ],
+          "macros": "200 kcal, 25g P, 22g C, 2g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "20:30",
+          "foods": [
+            "150g Fish (Tilapia/Rohu) grilled",
+            "2 Roti",
+            "1 Katori Spinach/Palak"
+          ],
+          "macros": "450 kcal, 35g P, 45g C, 12g F"
+        }
+      ],
+      "notes": "Protein is kept very high to prevent muscle loss during the calorie deficit."
+    },
+    "maintenance 2000": {
+      "goal": "maintenance",
+      "calories_approx": 2000,
+      "protein_approx": 120,
+      "description": "Balanced baseline diet.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "08:00",
+          "foods": [
+            "2 Whole Eggs",
+            "2 Egg Whites",
+            "2 Roti"
+          ],
+          "macros": "400 kcal, 22g P, 40g C, 14g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "13:00",
+          "foods": [
+            "100g Chicken/Paneer",
+            "150g Rice",
+            "1 Katori Dal",
+            "Salad"
+          ],
+          "macros": "550 kcal, 40g P, 65g C, 12g F"
+        },
+        {
+          "name": "Snack",
+          "time": "16:30",
+          "foods": [
+            "1 scoop Whey",
+            "1 Banana"
+          ],
+          "macros": "220 kcal, 26g P, 27g C, 2g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "20:30",
+          "foods": [
+            "100g Chicken/Paneer",
+            "2 Roti",
+            "Mixed Veg Subzi"
+          ],
+          "macros": "500 kcal, 30g P, 50g C, 15g F"
+        }
+      ],
+      "notes": "A good baseline to adjust upwards for bulking or downwards for cutting."
+    },
+    "athletic performance 3000": {
+      "goal": "performance",
+      "calories_approx": 3000,
+      "protein_approx": 150,
+      "description": "High carb diet to fuel intense training sessions.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "07:30",
+          "foods": [
+            "100g Oats",
+            "1 scoop Whey",
+            "1 tbsp Peanut Butter",
+            "1 Banana"
+          ],
+          "macros": "650 kcal, 45g P, 85g C, 15g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "12:30",
+          "foods": [
+            "200g Chicken Breast",
+            "250g Rice",
+            "Vegetables"
+          ],
+          "macros": "750 kcal, 65g P, 100g C, 8g F"
+        },
+        {
+          "name": "Pre-Workout",
+          "time": "16:00",
+          "foods": [
+            "4 slices Bread",
+            "Jam",
+            "Black Coffee"
+          ],
+          "macros": "350 kcal, 10g P, 75g C, 2g F"
+        },
+        {
+          "name": "Post-Workout",
+          "time": "18:30",
+          "foods": [
+            "1 scoop Whey",
+            "50g Dextrose/Glucon-D"
+          ],
+          "macros": "320 kcal, 25g P, 50g C, 2g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "21:00",
+          "foods": [
+            "4 Whole Eggs",
+            "3 Roti",
+            "Dal"
+          ],
+          "macros": "700 kcal, 35g P, 65g C, 30g F"
+        }
+      ],
+      "notes": "Carbs are placed strategically around the workout for maximum energy and recovery."
+    },
+    "budget muscle gain": {
+      "goal": "muscle gain",
+      "calories_approx": 2600,
+      "protein_approx": 120,
+      "description": "Cheap, high-calorie, adequate protein plan relying on eggs, dal, and peanuts.",
+      "meals": [
+        {
+          "name": "Breakfast",
+          "time": "08:00",
+          "foods": [
+            "4 Whole Eggs (boiled or bhurji)",
+            "4 slices Bread"
+          ],
+          "macros": "550 kcal, 32g P, 55g C, 22g F"
+        },
+        {
+          "name": "Lunch",
+          "time": "13:30",
+          "foods": [
+            "2 Katori thick Dal",
+            "200g Rice",
+            "Aloo Subzi"
+          ],
+          "macros": "650 kcal, 20g P, 110g C, 12g F"
+        },
+        {
+          "name": "Snack",
+          "time": "17:00",
+          "foods": [
+            "50g Roasted Peanuts",
+            "1 Banana"
+          ],
+          "macros": "400 kcal, 14g P, 35g C, 25g F"
+        },
+        {
+          "name": "Dinner",
+          "time": "21:00",
+          "foods": [
+            "4 Egg Whites",
+            "1 Whole Egg",
+            "4 Roti",
+            "Dal"
+          ],
+          "macros": "600 kcal, 30g P, 80g C, 15g F"
+        },
+        {
+          "name": "Before Bed",
+          "time": "23:00",
+          "foods": [
+            "250ml Milk"
+          ],
+          "macros": "150 kcal, 8g P, 12g C, 8g F"
+        }
+      ],
+      "notes": "Extremely cost-effective. Peanuts provide dense calories and healthy fats."
+    }
+  },
+  "supplements": {
+    "creatine": {
+      "name": "Creatine Monohydrate",
+      "benefit": "Increases strength, power output, and muscle volume by replenishing ATP stores.",
+      "dose": "3-5g daily.",
+      "timing": "Anytime, taken consistently daily.",
+      "evidence_level": "strong",
+      "best_for": "All lifters and athletes.",
+      "caution": "Drink adequate water to prevent cramping.",
+      "lingo": [
+        "creatine"
+      ]
+    },
+    "whey protein": {
+      "name": "Whey Protein",
+      "benefit": "Convenient, high-quality, fast-absorbing protein source to hit daily macro goals.",
+      "dose": "20-40g (1-2 scoops) per serving.",
+      "timing": "Post-workout or anytime you need protein.",
+      "evidence_level": "strong",
+      "best_for": "Hitting protein targets easily.",
+      "caution": "May cause bloating in lactose intolerant individuals (use Isolate instead).",
+      "lingo": [
+        "whey",
+        "protein powder",
+        "shake"
+      ]
+    },
+    "caffeine": {
+      "name": "Caffeine",
+      "benefit": "Central nervous system stimulant, decreases perceived exertion, increases focus.",
+      "dose": "100-300mg (1-2 cups coffee).",
+      "timing": "30-45 mins pre-workout.",
+      "evidence_level": "strong",
+      "best_for": "Energy boosts before hard sessions.",
+      "caution": "Avoid within 6-8 hours of sleep. Can cause jitters.",
+      "lingo": [
+        "pre",
+        "coffee"
+      ]
+    },
+    "beta-alanine": {
+      "name": "Beta-Alanine",
+      "benefit": "Buffers lactic acid, improving endurance in the 1-4 minute rep range (e.g., high rep sets).",
+      "dose": "3-5g daily.",
+      "timing": "Anytime, taken consistently.",
+      "evidence_level": "strong",
+      "best_for": "High rep training, CrossFit.",
+      "caution": "Causes harmless skin tingling (paresthesia).",
+      "lingo": [
+        "beta alanine"
+      ]
+    },
+    "omega-3": {
+      "name": "Omega-3 Fish Oil",
+      "benefit": "Reduces inflammation, supports cardiovascular and joint health.",
+      "dose": "1-3g combined EPA/DHA.",
+      "timing": "With meals.",
+      "evidence_level": "strong",
+      "best_for": "General health, joint support.",
+      "caution": "If vegetarian, use algae oil.",
+      "lingo": [
+        "fish oil",
+        "omega 3"
+      ]
+    },
+    "vitamin d": {
+      "name": "Vitamin D3",
+      "benefit": "Supports bone health, immune function, and optimal testosterone levels.",
+      "dose": "2000-5000 IU daily (if deficient).",
+      "timing": "With a meal containing fat.",
+      "evidence_level": "strong",
+      "best_for": "People with low sun exposure.",
+      "caution": "Toxicity is rare but possible at massive doses.",
+      "lingo": [
+        "vit d",
+        "sunshine vitamin"
+      ]
+    },
+    "magnesium": {
+      "name": "Magnesium",
+      "benefit": "Supports nerve function, muscle relaxation, and sleep quality.",
+      "dose": "200-400mg.",
+      "timing": "Before bed.",
+      "evidence_level": "strong",
+      "best_for": "Cramp prevention, sleep aid.",
+      "caution": "Avoid Magnesium Oxide (poor absorption), use Citrate, Glycinate, or Threonate.",
+      "lingo": [
+        "magnesium"
+      ]
+    },
+    "zinc": {
+      "name": "Zinc",
+      "benefit": "Supports immune system and testosterone production (if deficient).",
+      "dose": "15-30mg.",
+      "timing": "With meals.",
+      "evidence_level": "strong",
+      "best_for": "General health, male hormone support.",
+      "caution": "Taking on an empty stomach causes severe nausea.",
+      "lingo": [
+        "zinc"
+      ]
+    },
+    "bcaas": {
+      "name": "BCAAs (Branched-Chain Amino Acids)",
+      "benefit": "May prevent muscle breakdown during fasted training. Largely redundant if eating enough total protein.",
+      "dose": "5-10g.",
+      "timing": "Intra-workout.",
+      "evidence_level": "weak",
+      "best_for": "Fasted cardio/training.",
+      "caution": "Often a waste of money if eating adequate whey/meat.",
+      "lingo": [
+        "bcaa",
+        "aminos"
+      ]
+    },
+    "pre-workout": {
+      "name": "Pre-Workout Blends",
+      "benefit": "Combines caffeine, pump ingredients (citrulline), and focus agents.",
+      "dose": "1 scoop.",
+      "timing": "30 mins before training.",
+      "evidence_level": "moderate",
+      "best_for": "Energy and pump.",
+      "caution": "Watch total caffeine intake. Do not dry scoop.",
+      "lingo": [
+        "pre"
+      ]
+    },
+    "casein": {
+      "name": "Casein Protein",
+      "benefit": "Slow-digesting protein providing a steady stream of amino acids.",
+      "dose": "25-40g.",
+      "timing": "Before bed.",
+      "evidence_level": "strong",
+      "best_for": "Overnight recovery.",
+      "caution": "Thicker texture than whey.",
+      "lingo": [
+        "casein"
+      ]
+    },
+    "collagen": {
+      "name": "Collagen Peptides",
+      "benefit": "May support joint, tendon, skin, and hair health.",
+      "dose": "10-20g.",
+      "timing": "Daily, preferably with Vitamin C 60 mins before exercise.",
+      "evidence_level": "moderate",
+      "best_for": "Joint pain, tendon recovery.",
+      "caution": "Not a complete protein, doesn't count towards muscle building protein.",
+      "lingo": [
+        "collagen"
+      ]
+    },
+    "ashwagandha": {
+      "name": "Ashwagandha",
+      "benefit": "Adaptogen that reduces cortisol (stress hormone) and may modestly boost testosterone.",
+      "dose": "300-600mg (KSM-66 extract).",
+      "timing": "Daily.",
+      "evidence_level": "moderate",
+      "best_for": "Highly stressed individuals.",
+      "caution": "May cause lethargy in some people. Cycle it (e.g., 2 months on, 1 month off).",
+      "lingo": [
+        "ashwa"
+      ]
+    },
+    "melatonin": {
+      "name": "Melatonin",
+      "benefit": "Aids in falling asleep faster.",
+      "dose": "0.5-3mg.",
+      "timing": "30 mins before bed.",
+      "evidence_level": "strong",
+      "best_for": "Shift workers, jet lag, occasional insomnia.",
+      "caution": "High doses (>5mg) can cause grogginess the next day.",
+      "lingo": [
+        "sleep aid"
+      ]
+    },
+    "multivitamin": {
+      "name": "Multivitamin",
+      "benefit": "Fills potential micronutrient gaps in the diet.",
+      "dose": "1 pill.",
+      "timing": "With a meal.",
+      "evidence_level": "moderate",
+      "best_for": "People on restrictive diets (heavy cuts).",
+      "caution": "Does not replace a diet rich in fruits and vegetables.",
+      "lingo": [
+        "multi",
+        "vitamins"
+      ]
+    }
+  },
+  "cutting_strategies": {
+    "calorie deficit": {
+      "name": "Calorie Deficit",
+      "description": "Consuming fewer calories than you burn. The absolute requirement for fat loss.",
+      "how_to": "Calculate TDEE, subtract 300-500 calories.",
+      "best_for": "Everyone trying to lose fat.",
+      "common_mistakes": [
+        "Cutting calories too drastically, leading to muscle loss."
+      ]
+    },
+    "protein sparing": {
+      "name": "Protein Sparing",
+      "description": "Keeping protein exceptionally high during a cut to preserve lean mass.",
+      "how_to": "Eat 2.2-2.7g of protein per kg of bodyweight.",
+      "best_for": "Aggressive cuts, lean individuals trying to get shredded.",
+      "common_mistakes": [
+        "Neglecting fat intake entirely."
+      ]
+    },
+    "diet breaks": {
+      "name": "Diet Breaks",
+      "description": "Taking 1-2 weeks at maintenance calories during a long cut.",
+      "how_to": "After 6-8 weeks of cutting, eat at TDEE for 1 week.",
+      "best_for": "Reversing metabolic adaptation, mental relief.",
+      "common_mistakes": [
+        "Turning a diet break into a binge week."
+      ]
+    },
+    "refeed days": {
+      "name": "Refeed Days",
+      "description": "A single day of eating at maintenance, entirely via increased carbohydrates.",
+      "how_to": "Keep fats low, protein moderate, and increase carbs heavily for one day.",
+      "best_for": "Replenishing muscle glycogen, boosting leptin levels.",
+      "common_mistakes": [
+        "Eating junk food (high fat/sugar) instead of complex carbs."
+      ]
+    },
+    "water cutting": {
+      "name": "Water Cutting",
+      "description": "Temporarily manipulating water and sodium to drop scale weight.",
+      "how_to": "Water load for 3 days, then cut water 12 hours before weigh-in.",
+      "best_for": "Fighters, powerlifters making weight classes.",
+      "common_mistakes": [
+        "Doing this for aesthetic reasons—it's dangerous and temporary."
+      ]
+    },
+    "sodium manipulation": {
+      "name": "Sodium Manipulation",
+      "description": "Keeping sodium constant to prevent water weight fluctuations.",
+      "how_to": "Eat roughly the same amount of salt daily.",
+      "best_for": "Tracking scale weight accurately.",
+      "common_mistakes": [
+        "Cutting sodium entirely, leading to flat muscles and cramps."
+      ]
+    },
+    "cardio stacking": {
+      "name": "Cardio Stacking",
+      "description": "Gradually adding cardio as weight loss stalls, rather than cutting more food.",
+      "how_to": "Start with 0 cardio. When weight stalls, add 2x20 mins. Stall again, add 3x20 mins.",
+      "best_for": "Maintaining metabolic rate.",
+      "common_mistakes": [
+        "Doing 1 hour of cardio daily from Day 1."
+      ]
+    }
+  },
+  "bulking_strategies": {
+    "lean bulk": {
+      "name": "Lean Bulk",
+      "description": "A small calorie surplus.",
+      "how_to": "Eat +200-300 calories over TDEE.",
+      "best_for": "Minimizing fat gain while building muscle.",
+      "common_mistakes": [
+        "Impatience with slow scale movement."
+      ]
+    },
+    "dirty bulk": {
+      "name": "Dirty Bulk",
+      "description": "A massive calorie surplus.",
+      "how_to": "Eat +800-1000 calories over TDEE.",
+      "best_for": "Underweight beginners who struggle to eat.",
+      "common_mistakes": [
+        "Gaining too much fat, making the inevitable cut miserable."
+      ]
+    },
+    "calorie surplus sizing": {
+      "name": "Calorie Surplus Sizing",
+      "description": "Adjusting surplus size based on experience level.",
+      "how_to": "Beginners: +500. Intermediates: +250. Advanced: +100.",
+      "best_for": "Aligning food intake with actual muscle growth potential.",
+      "common_mistakes": [
+        "Advanced lifters trying to bulk like beginners."
+      ]
+    },
+    "progressive overload nutrition": {
+      "name": "Progressive Overload Nutrition",
+      "description": "Increasing food intake as body weight goes up.",
+      "how_to": "When scale stalls for 2 weeks on a bulk, add 150 calories.",
+      "best_for": "Sustaining a bulk for months.",
+      "common_mistakes": [
+        "Eating the same calories even after gaining 5kg."
+      ]
+    },
+    "peri-workout nutrition": {
+      "name": "Peri-Workout Nutrition",
+      "description": "Concentrating carbs around the training window.",
+      "how_to": "Eat 40% of daily carbs pre-workout and 40% post-workout.",
+      "best_for": "Maximizing gym energy and recovery.",
+      "common_mistakes": [
+        "Over-complicating it—total daily intake matters most."
+      ]
+    },
+    "muscle memory": {
+      "name": "Muscle Memory",
+      "description": "Regaining lost muscle is much faster than building new muscle.",
+      "how_to": "Eat at a slight surplus and train hard; muscle returns rapidly.",
+      "best_for": "People returning to the gym after a long break.",
+      "common_mistakes": [
+        "Dirty bulking thinking the rapid weight gain is entirely new muscle."
+      ]
+    }
+  },
+  "nutrient_timing": {
+    "pre-workout meal": {
+      "name": "Pre-Workout Meal",
+      "description": "Fueling the body for an intense session.",
+      "what_to_eat": "Complex carbs + moderate protein + low fat.",
+      "when": "1.5 to 2 hours before training.",
+      "why": "To top off glycogen stores without causing gastrointestinal distress.",
+      "foods": [
+        "Oats and whey",
+        "Chicken and rice",
+        "Banana and peanut butter"
+      ]
+    },
+    "post-workout meal": {
+      "name": "Post-Workout Meal",
+      "description": "Kickstarting the recovery and muscle protein synthesis process.",
+      "what_to_eat": "Fast absorbing protein + simple carbs.",
+      "when": "Within 1-2 hours after training.",
+      "why": "To replenish glycogen and provide amino acids for repair.",
+      "foods": [
+        "Whey protein and dextrose",
+        "Eggs and toast",
+        "Chicken and white rice"
+      ]
+    },
+    "pre-sleep nutrition": {
+      "name": "Pre-Sleep Nutrition",
+      "description": "Preventing overnight muscle breakdown.",
+      "what_to_eat": "Slow-digesting protein + healthy fats.",
+      "when": "30-60 mins before bed.",
+      "why": "To provide a trickle of amino acids while fasting overnight.",
+      "foods": [
+        "Cottage cheese/Paneer",
+        "Casein protein",
+        "Greek yogurt"
+      ]
+    },
+    "morning nutrition": {
+      "name": "Morning Nutrition",
+      "description": "Breaking the overnight fast.",
+      "what_to_eat": "Protein + hydration.",
+      "when": "Upon waking.",
+      "why": "To halt catabolism and rehydrate.",
+      "foods": [
+        "Water with salt/lemon",
+        "Eggs",
+        "Protein shake"
+      ]
+    },
+    "intra-workout": {
+      "name": "Intra-Workout",
+      "description": "Fueling during a session.",
+      "what_to_eat": "Fast digesting carbs + electrolytes.",
+      "when": "During workouts lasting longer than 90 minutes.",
+      "why": "To prevent glycogen depletion in marathon sessions.",
+      "foods": [
+        "Gatorade",
+        "Tang",
+        "Electrolyte powder"
+      ]
+    },
+    "carb backloading": {
+      "name": "Carb Backloading",
+      "description": "Eating majority of daily carbs in the evening.",
+      "what_to_eat": "Carbs.",
+      "when": "Dinner / post-workout evening.",
+      "why": "Based on the theory that insulin sensitivity is higher post-workout, avoiding fat storage.",
+      "foods": [
+        "Rice",
+        "Potatoes",
+        "Pasta"
+      ]
+    }
+  },
+  "lingo_map": {
+    "bulk": "lean bulk",
+    "cut": "calorie deficit",
+    "if": "intermittent fasting",
+    "keto": "ketogenic",
+    "cheat meal": "refeed days",
+    "gains": "muscle gain",
+    "shred": "calorie deficit",
+    "patla hona": "calorie deficit",
+    "mota hona": "lean bulk",
+    "shredded": "calorie deficit",
+    "ripped": "calorie deficit",
+    "maintenance": "maintenance phase",
+    "iifym": "flexible dieting",
+    "clean eating": "whole foods diet",
+    "macros": "macronutrients",
+    "protein powder": "whey protein",
+    "pre": "pre-workout",
+    "bcaa": "bcaas",
+    "fish oil": "omega-3",
+    "diet break": "diet breaks",
+    "water cut": "water cutting",
+    "dirty bulk": "dirty bulk",
+    "lean bulk": "lean bulk",
+    "recomp": "maintenance phase",
+    "omad": "intermittent fasting",
+    "fasting": "intermittent fasting",
+    "lchf": "ketogenic",
+    "low carb": "high protein low carb",
+    "zig zag": "calorie cycling",
+    "reverse diet": "reverse dieting",
+    "starvation mode": "metabolic adaptation",
+    "metabolism": "tdee",
+    "tdee": "total daily energy expenditure",
+    "bmr": "basal metabolic rate",
+    "post workout": "post-workout meal",
+    "pre workout food": "pre-workout meal",
+    "anabolic window": "nutrient timing",
+    "supps": "supplements",
+    "vitamin d": "vitamin d3",
+    "zma": "zinc and magnesium",
+    "creatine": "creatine monohydrate",
+    "whey": "whey protein",
+    "casein": "casein protein",
+    "mass gainer": "dirty bulk",
+    "weight loss": "calorie deficit",
+    "weight gain": "lean bulk"
+  }
+}
