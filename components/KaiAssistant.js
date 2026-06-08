@@ -54,13 +54,13 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
           li: ({node, ...props}) => <li className="mb-1" {...props} />,
           strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
           table: ({node, ...props}) => (
-            <div className="w-full pb-1 my-3">
-              <table className="w-full text-[13px] border-collapse table-fixed" style={{ wordBreak: 'break-word' }} {...props} />
+            <div className="w-full pb-1 my-3 overflow-x-auto custom-scrollbar">
+              <table className="w-full text-[12.5px] border-collapse min-w-[280px]" {...props} />
             </div>
           ),
           thead: ({node, ...props}) => <thead className="" {...props} />,
-          th: ({node, ...props}) => <th className="text-left text-[10px] font-semibold uppercase tracking-[0.05em] text-white/40 pb-2 px-1 border-b border-white/10" {...props} />,
-          td: ({node, ...props}) => <td className="text-white/80 py-2.5 px-1 border-b border-white/[0.04] align-top text-[13px] leading-tight" {...props} />,
+          th: ({node, ...props}) => <th className="text-left text-[9px] font-semibold uppercase tracking-wider text-white/40 pb-2 px-1.5 border-b border-white/10" {...props} />,
+          td: ({node, ...props}) => <td className="text-white/80 py-2 px-1.5 border-b border-white/[0.04] align-top leading-tight" {...props} />,
           tr: ({node, ...props}) => <tr className="" {...props} />,
           code: ({node, inline, children, ...props}) => {
             if (children && children[0] === 'ᑢ') {
@@ -429,7 +429,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
             {displayMessages.map((msg, idx) => (
               msg.role === "assistant" ? (
-                <div key={idx} className="flex items-end gap-3 max-w-[90%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                <div key={idx} className="flex items-end gap-3 max-w-[98%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                   <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
                     <Sparkles size={12} className="text-white" />
                   </div>
@@ -455,7 +455,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </div>
                 </div>
               ) : (
-                <div key={idx} className="flex flex-col items-end self-end max-w-[85%] group animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                <div key={idx} className="flex flex-col items-end self-end max-w-[92%] group animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                   <div className="flex items-center gap-1.5 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
                     <button 
                       onClick={() => handleCopy(msg.content, idx)}
