@@ -30,7 +30,7 @@ const CardBox = ({ children, delay = 0, className = "", focusHex = MACRO_COLORS.
   
   return (
     <div 
-      className={`opacity-0 bg-[#0a1525] rounded-[16px] p-[12px] flex flex-col transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group relative ${colSpan === 2 ? 'col-span-2' : ''} ${className}`}
+      className={`opacity-0 bg-[#0a1525] rounded-[16px] p-[10px] flex flex-col transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group relative ${colSpan === 2 ? 'col-span-2' : ''} ${className}`}
       style={{ 
         animation: `${animName} 280ms cubic-bezier(0.25,0.46,0.45,0.94) forwards`,
         animationDelay: `${delay}ms`,
@@ -45,10 +45,10 @@ const CardBox = ({ children, delay = 0, className = "", focusHex = MACRO_COLORS.
       
       <div className="relative z-10 w-full h-full flex flex-col justify-center">
         {(label || rightElement) && (
-          <div className="flex justify-between items-center mb-[6px]">
+          <div className="flex justify-between items-center mb-[4px]">
             {label && (
               <div 
-                className={`flex items-center gap-[6px] transition-all duration-200 ${onScrub ? 'cursor-ew-resize select-none rounded-[6px] px-[6px] py-[2px] -ml-[6px] hover:bg-[var(--focus-color)] hover:bg-opacity-10 active:scale-[0.97]' : ''}`}
+                className={`flex items-center gap-[4px] transition-all duration-200 ${onScrub ? 'cursor-ew-resize select-none rounded-[6px] px-[6px] py-[2px] -ml-[6px] hover:bg-[var(--focus-color)] hover:bg-opacity-10 active:scale-[0.97]' : ''}`}
                 style={{ '--focus-color': activeHex }}
                 onPointerDown={onScrub}
                 title={onScrub ? "Drag left/right to scrub" : ""}
@@ -87,7 +87,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
   useEffect(() => setMounted(true), []);
 
   const [step, setStep] = useState(1);
-  const [navDir, setNavDir] = useState('up'); // 'up', 'forward', 'backward'
+  const [navDir, setNavDir] = useState('up'); 
   const [saving, setSaving] = useState(false);
 
   const goToStep = (newStep) => {
@@ -126,7 +126,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
   };
   const currLimit = periodLimits[goalPeriodUnit] || periodLimits.months;
 
-  // Real-time UI Validation Rules
   const getErr = (val, min, max) => {
     if (val === "") return null;
     const num = parseInt(val, 10);
@@ -186,7 +185,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         body: JSON.stringify({
           age, gender, weight, height: heightInCm,
           workoutDays, proteinBudget,
-          trainingField, goalWeight, goalBodyFat, goalPeriod, goalPeriodUnit,
+          trainingField, goalWeight, goalBodyFat, goalPeriod, goalPeriodUnit
         }),
       });
       if (res.ok) onComplete();
@@ -208,7 +207,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [step, step1Valid, step2Valid]);
 
-  // Infinite Virtual Number Scrubber Generator (Figma UX)
   const createScrubber = (val, setter, min, max, stepAmount = 1) => {
     return (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return; 
@@ -298,12 +296,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         }
       `}</style>
 
-      {/* 
-        The Spatial Physics & Haptic Polish Pass.
-        Introduced dynamic directional animations based on forward/backward navigation routes.
-        Engineered a global 'Figma-style' infinite virtual number scrubber. You can now physically
-        click and drag left/right on any input label to seamlessly dial in precise numeric values.
-      */}
       <div 
         className="relative w-full max-w-[340px] bg-[#0d1b2e] rounded-[28px] p-[16px] shadow-[0_20px_60px_rgba(0,0,0,0.5)] mx-auto overflow-hidden opacity-0"
         style={{ 
@@ -313,14 +305,12 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         }}
       >
         
-        {/* Progress Bar (Crisp, flat line. NO massive glow bleeding down) */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#060d1a]">
           <div className="h-full bg-gradient-to-r from-[#2dd4bf] via-[#38bdf8] to-[#38bdf8] transition-all duration-[800ms] ease-out relative" style={{ width: step === 1 ? '50%' : '100%' }}>
             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[24px] h-[4px] bg-white rounded-full blur-[2px] opacity-60" />
           </div>
         </div>
 
-        {/* Branded Header with Spatial Title Animation */}
         <div className="flex justify-between items-end mb-[16px] px-[4px] mt-[8px]">
           <div>
             <div className="flex items-center gap-[6px] mb-[4px]">
@@ -340,7 +330,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           </div>
         </div>
 
-        {/* ──── STEP 1 ──── */}
         {step === 1 && (
           <div className="w-full">
             <div className="grid grid-cols-2 gap-[8px] mb-[16px]">
@@ -387,11 +376,11 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                 </div>
               </CardBox>
 
-              <CardBox delay={160} navDir={navDir} colSpan={2} className="!p-[6px]">
+              <CardBox delay={160} navDir={navDir} colSpan={2} className="!p-[4px]">
                  <div className="flex w-full p-[4px] bg-[#060d1a] rounded-[12px] border border-[#38bdf8]/[0.06] shadow-inner">
                    {['M','F','O'].map(g => (
                      <button key={g} type="button" onClick={() => setGender(g.toLowerCase())}
-                       className={`flex-1 h-[36px] rounded-[10px] text-[15px] font-[600] transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] active:duration-100 active:scale-[0.96] ${
+                       className={`flex-1 h-[32px] rounded-[10px] text-[14px] font-[600] transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] active:duration-100 active:scale-[0.96] ${
                          gender === g.toLowerCase() 
                            ? 'bg-[#38bdf8] text-[#060d1a] shadow-sm' 
                            : 'text-[#7a90a8] hover:text-[#e8edf5]'
@@ -432,7 +421,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           </div>
         )}
 
-        {/* ──── STEP 2 ──── */}
         {step === 2 && (
           <div className="w-full">
             
@@ -444,7 +432,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
               
               {TRAINING_OPTIONS.map((opt, i) => (
                 <button key={opt.key} type="button" onClick={() => setTrainingField(opt.key)}
-                  className="relative w-full flex items-center p-[10px] pl-[12px] rounded-[16px] transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] active:duration-100 active:scale-[0.98] outline-none opacity-0 group"
+                  className="relative w-full flex items-center p-[8px] pl-[12px] rounded-[16px] transition-all duration-[250ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] active:duration-100 active:scale-[0.98] outline-none opacity-0 group"
                   style={{
                     animation: `${animName} 280ms cubic-bezier(0.25,0.46,0.45,0.94) forwards`,
                     animationDelay: `${40 + (i * 40)}ms`,
@@ -453,23 +441,23 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                     borderTop: trainingField === opt.key ? '1px solid rgba(56,189,248,0.3)' : '1px solid rgba(255,255,255,0.05)'
                   }}
                 >
-                  <span className="text-[24px] mr-[12px] drop-shadow-md">{opt.emoji}</span>
+                  <span className="text-[20px] mr-[12px] drop-shadow-md">{opt.emoji}</span>
                   <div className="flex flex-col text-left">
-                    <span className={`text-[15px] font-[600] mb-[2px] leading-none transition-colors ${trainingField === opt.key ? 'text-[#38bdf8]' : 'text-[#e8edf5]'}`}>{opt.label}</span>
+                    <span className={`text-[14px] font-[600] mb-[2px] leading-none transition-colors ${trainingField === opt.key ? 'text-[#38bdf8]' : 'text-[#e8edf5]'}`}>{opt.label}</span>
                     <span className="text-[11px] font-[500] leading-none text-[#7a90a8]">{opt.sub}</span>
                   </div>
                   
-                  <div className={`ml-auto w-[20px] h-[20px] rounded-full border-[1.5px] flex items-center justify-center transition-all duration-300 ${
+                  <div className={`ml-auto w-[18px] h-[18px] rounded-full border-[1.5px] flex items-center justify-center transition-all duration-300 ${
                     trainingField === opt.key ? 'border-[#38bdf8] bg-[#38bdf8]/10 scale-110' : 'border-[#3d5068]'
                   }`}>
-                     {trainingField === opt.key && <div className="w-[10px] h-[10px] rounded-full bg-[#38bdf8] animate-in zoom-in duration-200" />}
+                     {trainingField === opt.key && <div className="w-[8px] h-[8px] rounded-full bg-[#38bdf8] animate-in zoom-in duration-200" />}
                   </div>
                 </button>
               ))}
             </div>
 
             <div className="grid grid-cols-2 gap-[8px] mb-[16px]">
-              <CardBox delay={160} navDir={navDir} label="Goal Weight" icon={Scale} isError={!!errs.goalWeight} errorMsg={errs.goalWeight} onScrub={createScrubber(goalWeight, setGoalWeight, 30, 300)}>
+              <CardBox delay={160} navDir={navDir} label="Goal Wt" icon={Scale} isError={!!errs.goalWeight} errorMsg={errs.goalWeight} onScrub={createScrubber(goalWeight, setGoalWeight, 30, 300)}>
                 <div className="flex items-baseline gap-[4px]">
                   <input type="number" value={goalWeight} onChange={e=>setGoalWeight(e.target.value)} 
                     className={getInpClass(errs.goalWeight)} style={{'--focus-color': MACRO_COLORS.brand}} placeholder="70" />
@@ -486,29 +474,28 @@ export default function OnboardingModal({ isOpen, onComplete }) {
               </CardBox>
             </div>
 
-            {/* The Ultimate Timeline Hero */}
-            <CardBox delay={240} navDir={navDir} colSpan={2} className="!items-center !justify-center !p-[16px] group/timeline focus-within:!bg-[#38bdf8]/[0.02] relative overflow-hidden" label="Timeline" icon={CalendarDays} onScrub={createScrubber(goalPeriod, setGoalPeriod, currLimit.min, currLimit.max, currLimit.step)}>
+            <CardBox delay={240} navDir={navDir} colSpan={2} className="!items-center !justify-center !p-[12px] group/timeline focus-within:!bg-[#38bdf8]/[0.02] relative overflow-hidden" label="Timeline" icon={CalendarDays} onScrub={createScrubber(goalPeriod, setGoalPeriod, currLimit.min, currLimit.max, currLimit.step)}>
               
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.03)_0%,_transparent_70%)] pointer-events-none opacity-0 group-focus-within/timeline:opacity-100 transition-opacity duration-[800ms]" />
               
-              <div className="flex items-center justify-between w-full px-[8px] mt-[8px] relative z-10">
+              <div className="flex items-center justify-between w-full px-[4px] mt-[4px] relative z-10">
                 <button type="button" disabled={timelineAtMin} onClick={() => {
                   const p = parseInt(goalPeriod) || 0;
                   setGoalPeriod(Math.max(currLimit.min, p - currLimit.step));
                 }} 
-                  className={`w-[36px] h-[36px] shrink-0 rounded-full bg-[#060d1a] border flex items-center justify-center transition-all outline-none ${timelineAtMin ? 'border-[#38bdf8]/[0.03] text-[#3d5068] cursor-not-allowed opacity-50' : 'border-[#38bdf8]/[0.08] text-[#7a90a8] hover:text-[#e8edf5] hover:bg-[#0a1525] hover:border-[#38bdf8]/30 active:scale-[0.90] active:duration-100'}`}>
-                  <Minus size={18} strokeWidth={2.5} />
+                  className={`w-[32px] h-[32px] shrink-0 rounded-full bg-[#060d1a] border flex items-center justify-center transition-all outline-none ${timelineAtMin ? 'border-[#38bdf8]/[0.03] text-[#3d5068] cursor-not-allowed opacity-50' : 'border-[#38bdf8]/[0.08] text-[#7a90a8] hover:text-[#e8edf5] hover:bg-[#0a1525] hover:border-[#38bdf8]/30 active:scale-[0.90] active:duration-100'}`}>
+                  <Minus size={16} strokeWidth={2.5} />
                 </button>
                 
                 <div className="flex flex-col items-center group relative cursor-text">
                   
-                  <div className="relative flex items-center justify-center w-[110px] h-[110px] rounded-full transition-all duration-500">
+                  <div className="relative flex items-center justify-center w-[84px] h-[84px] rounded-full transition-all duration-500">
                     <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
-                      <circle cx="55" cy="55" r="53" stroke="rgba(255,255,255,0.05)" strokeWidth="3" fill="none" />
+                      <circle cx="42" cy="42" r="40" stroke="rgba(255,255,255,0.05)" strokeWidth="3" fill="none" />
                       <circle 
-                        cx="55" cy="55" r="53" 
+                        cx="42" cy="42" r="40" 
                         stroke="#38bdf8" strokeWidth="3" fill="none" strokeLinecap="round" 
-                        strokeDasharray="333" strokeDashoffset={333 - (333 * ((goalPeriod || 0) / currLimit.max))} 
+                        strokeDasharray="251.2" strokeDashoffset={251.2 - (251.2 * ((goalPeriod || 0) / currLimit.max))} 
                         className="transition-all duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" 
                       />
                     </svg>
@@ -526,18 +513,18 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                         if (val > currLimit.max) val = currLimit.max;
                         setGoalPeriod(val);
                       }}
-                      className="no-spin w-[90px] bg-transparent text-center text-[48px] font-[700] text-[#e8edf5] tabular-nums tracking-tighter leading-none outline-none transition-all duration-300 relative z-10" 
+                      className="no-spin w-[70px] bg-transparent text-center text-[36px] font-[700] text-[#e8edf5] tabular-nums tracking-tighter leading-none outline-none transition-all duration-300 relative z-10" 
                     />
                   </div>
                   
-                  <div className="flex gap-[4px] mt-[12px] bg-[#060d1a] p-[3px] rounded-[10px] border border-[#38bdf8]/[0.06] shadow-inner">
+                  <div className="flex gap-[4px] mt-[10px] bg-[#060d1a] p-[3px] rounded-[8px] border border-[#38bdf8]/[0.06] shadow-inner">
                     {['months', 'weeks', 'days'].map(u => (
                       <button key={u} type="button" onClick={() => {
                         setGoalPeriodUnit(u);
                         if (u === "months") setGoalPeriod(3);
                         if (u === "weeks") setGoalPeriod(12);
                         if (u === "days") setGoalPeriod(30);
-                      }} className={`text-[10px] font-[700] tracking-widest uppercase px-[8px] py-[4px] rounded-[6px] transition-all duration-[250ms] active:scale-[0.95] ${
+                      }} className={`text-[9px] font-[700] tracking-widest uppercase px-[6px] py-[3px] rounded-[4px] transition-all duration-[250ms] active:scale-[0.95] ${
                         goalPeriodUnit === u ? 'bg-[#38bdf8] text-[#060d1a] shadow-sm' : 'text-[#7a90a8] hover:text-[#e8edf5]'
                       }`}>{u}</button>
                     ))}
@@ -548,13 +535,13 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                   const p = parseInt(goalPeriod) || 0;
                   setGoalPeriod(Math.min(currLimit.max, p + currLimit.step));
                 }} 
-                  className={`w-[36px] h-[36px] shrink-0 rounded-full bg-[#060d1a] border flex items-center justify-center transition-all outline-none ${timelineAtMax ? 'border-[#38bdf8]/[0.03] text-[#3d5068] cursor-not-allowed opacity-50' : 'border-[#38bdf8]/[0.08] text-[#7a90a8] hover:text-[#e8edf5] hover:bg-[#0a1525] hover:border-[#38bdf8]/30 active:scale-[0.90] active:duration-100'}`}>
-                  <Plus size={18} strokeWidth={2.5} />
+                  className={`w-[32px] h-[32px] shrink-0 rounded-full bg-[#060d1a] border flex items-center justify-center transition-all outline-none ${timelineAtMax ? 'border-[#38bdf8]/[0.03] text-[#3d5068] cursor-not-allowed opacity-50' : 'border-[#38bdf8]/[0.08] text-[#7a90a8] hover:text-[#e8edf5] hover:bg-[#0a1525] hover:border-[#38bdf8]/30 active:scale-[0.90] active:duration-100'}`}>
+                  <Plus size={16} strokeWidth={2.5} />
                 </button>
               </div>
             </CardBox>
 
-            <div className="flex gap-[10px] opacity-0 mt-[4px]" style={{ animation: `${animName} 280ms cubic-bezier(0.25,0.46,0.45,0.94) forwards`, animationDelay: `280ms` }}>
+            <div className="flex gap-[10px] opacity-0 mt-[12px]" style={{ animation: `${animName} 280ms cubic-bezier(0.25,0.46,0.45,0.94) forwards`, animationDelay: `260ms` }}>
               <button type="button" onClick={()=>goToStep(1)} 
                 className="w-[48px] h-[48px] shrink-0 rounded-[14px] bg-[#0a1525] border border-[#38bdf8]/[0.06] text-[#7a90a8] flex items-center justify-center active:scale-[0.90] active:duration-100 transition-all duration-[250ms] hover:text-[#e8edf5] hover:border-[#38bdf8]/30 hover:bg-[#0d1b2e] outline-none">
                 <ArrowLeft size={20} strokeWidth={2.5} className="transition-transform group-hover:-translate-x-1" />
