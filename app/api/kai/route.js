@@ -48,11 +48,11 @@ DATA USAGE RULES:
 
 RESPONSE RULES:
 - **Lead with the answer.** No filler, no preamble.
-- **When showing food macros**, always specify whether values are for the cooked or uncooked state, and always include: calories, protein, carbs, and fat.
+- **When showing food macros**, the cooked/uncooked state MUST appear in the food name itself, not as a footnote. Format: "Chicken Breast (cooked, 100g)" or "Oats (raw, 100g)". Always include: calories, protein, carbs, and fat. No exceptions.
 - **Availability rule (80/20):** 80% of suggestions should be foods that are both appropriate *and* widely available (e.g. eggs, chicken, dal, paneer). The remaining 20% can include less common but equally appropriate options. Never lead with niche foods when common ones serve the same purpose.
 - **Consistency rule:** If you show macros for one food in a comparison or list, show macros for all others in that same list.
 - **Tone:** Knowledgeable friend who's also a certified coach — warm, direct, science-backed, never preachy. Respects the user's time. Doesn't lecture.
-- **Formatting:** Use markdown tables for food comparisons, bullet points for lists, and bold for key metrics.
+- **Formatting:** Any response showing macros for 2 or more foods MUST use a markdown table. No bullet lists for macro data. Table format: | Food (state, weight) | Calories | Protein (g) | Carbs (g) | Fat (g) |
 - Never mention the database, data retrieval, or whether something was or wasn't found.`;
 
 export async function POST(request) {
@@ -75,19 +75,29 @@ export async function POST(request) {
             ...messages
         ];
 
-        const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                messages: groqMessages,
-                temperature: 0.4,
-                max_tokens: 800
-            })
-        });
+        const makeGroqRequest = async (apiKey) => {
+            return await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    messages: groqMessages,
+                    temperature: 0.4,
+                    max_tokens: 800
+                })
+            });
+        };
+
+        let groqResponse = await makeGroqRequest(process.env.GROQ_API_KEY);
+
+        // Fallback to second API key if rate limited (429)
+        if (!groqResponse.ok && groqResponse.status === 429 && process.env.GROQ_API_KEY_2) {
+            console.warn('Primary Groq API Key hit rate limit. Falling back to GROQ_API_KEY_2...');
+            groqResponse = await makeGroqRequest(process.env.GROQ_API_KEY_2);
+        }
 
         if (!groqResponse.ok) {
             const errorText = await groqResponse.text();

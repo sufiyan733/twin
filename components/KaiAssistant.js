@@ -28,7 +28,7 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
     const interval = setInterval(() => {
       setDisplayedText((prev) => {
         // Slower generation: 1 character per 16ms (approx 60 chars/sec)
-        const nextLen = prev.length + 1; 
+        const nextLen = prev.length + 1;
         if (nextLen >= content.length) {
           clearInterval(interval);
           setIsTyping(false);
@@ -48,21 +48,21 @@ const TypewriterMarkdown = ({ content, animateInit, onType }) => {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-          ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 last:mb-0" {...props} />,
-          ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
-          li: ({node, ...props}) => <li className="mb-1" {...props} />,
-          strong: ({node, ...props}) => <strong className="font-semibold text-white" {...props} />,
-          table: ({node, ...props}) => (
+          p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+          ul: ({ node, ...props }) => <ul className="list-disc pl-4 mb-2 last:mb-0" {...props} />,
+          ol: ({ node, ...props }) => <ol className="list-decimal pl-4 mb-2 last:mb-0" {...props} />,
+          li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+          strong: ({ node, ...props }) => <strong className="font-semibold text-white" {...props} />,
+          table: ({ node, ...props }) => (
             <div className="w-full my-4 overflow-x-auto custom-scrollbar rounded-xl border border-white/[0.08] bg-black/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
               <table className="w-full text-[12.5px] border-collapse min-w-[280px]" {...props} />
             </div>
           ),
-          thead: ({node, ...props}) => <thead className="bg-white/[0.03]" {...props} />,
-          th: ({node, ...props}) => <th className="text-left text-[9px] font-bold uppercase tracking-[0.08em] text-white/50 py-2.5 px-2.5 border-b border-white/[0.08]" {...props} />,
-          td: ({node, ...props}) => <td className="text-[#e2e8f0] py-3 px-2.5 border-b border-white/[0.03] align-top tabular-nums tracking-tight leading-snug group-last:border-0" {...props} />,
-          tr: ({node, ...props}) => <tr className="group even:bg-white/[0.01]" {...props} />,
-          code: ({node, inline, children, ...props}) => {
+          thead: ({ node, ...props }) => <thead className="bg-white/[0.03]" {...props} />,
+          th: ({ node, ...props }) => <th className="text-left text-[9px] font-bold uppercase tracking-[0.08em] text-white/50 py-2.5 px-2.5 border-b border-white/[0.08]" {...props} />,
+          td: ({ node, ...props }) => <td className="text-[#e2e8f0] py-3 px-2.5 border-b border-white/[0.03] align-top tabular-nums tracking-tight leading-snug group-last:border-0" {...props} />,
+          tr: ({ node, ...props }) => <tr className="group even:bg-white/[0.01]" {...props} />,
+          code: ({ node, inline, children, ...props }) => {
             if (children && children[0] === 'ᑢ') {
               return <span className="inline-cursor" />;
             }
@@ -81,7 +81,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
   const userName = session?.user?.name?.split(" ")[0] || "there";
 
   const { messages: kaiMessages, loading: isLoading, error: kaiError, sendMessage: kaiSendMessage } = useKai();
-  
+
   const displayMessages = [
     { role: 'assistant', content: `${userName} wassup` },
     ...kaiMessages
@@ -134,7 +134,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     const distanceToBottom = scrollHeight - scrollTop - clientHeight;
-    
+
     // If we naturally hit the bottom, unlock auto-scroll
     if (distanceToBottom <= 5) {
       userScrolledUpRef.current = false;
@@ -310,10 +310,10 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
       />
 
       {/* Card Modal */}
-      <div 
+      <div
         className="relative w-full max-w-[380px] rounded-[32px] px-6 pt-6 pb-6 animate-in zoom-in-95 fade-in duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
-        style={{ 
-          background: "linear-gradient(160deg, rgba(21,23,29,0.9) 0%, rgba(6,7,10,0.95) 100%)", 
+        style={{
+          background: "linear-gradient(160deg, rgba(21,23,29,0.9) 0%, rgba(6,7,10,0.95) 100%)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           boxShadow: "0 24px 80px -12px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1), inset 0 0 0 1px rgba(255,255,255,0.02)"
@@ -322,19 +322,19 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
         {/* Ultra-Premium Edge Bloom */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)", boxShadow: "0 1px 25px 2px rgba(255,255,255,0.15)" }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-[1px] pointer-events-none z-[2]" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)", boxShadow: "0 1px 15px 1px rgba(255,255,255,0.25)" }} />
-        
+
         {/* Dynamic Drag Handle Pill */}
         <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-[5px] rounded-full bg-white/10 hover:bg-white/20 transition-colors z-[10]" />
 
         {/* Ambient Background Glow */}
         <div className="absolute top-1/4 -right-1/4 w-[250px] h-[250px] bg-white/[0.02] rounded-full mix-blend-overlay pointer-events-none blur-[60px] animate-pulse" style={{ animationDuration: '8s' }} />
-        
+
         {/* Metallic Grain overlay */}
         <div className="absolute inset-0 pointer-events-none mix-blend-overlay z-0" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")" }} />
 
         {/* Nutrition Toast */}
         <div className={`absolute top-4 left-1/2 -translate-x-1/2 z-30 transition-all duration-500 ${nutritionToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'}`}>
-          <div 
+          <div
             className="flex items-center gap-3 backdrop-blur-xl rounded-full px-5 py-2.5"
             style={{
               background: "rgba(6,7,10,0.85)",
@@ -383,7 +383,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   You entered a weight but didn't specify if it's raw or cooked. Macros differ significantly!
                 </p>
                 <div className="flex gap-3 mt-2">
-                  <button 
+                  <button
                     onClick={() => {
                       const finalMsg = pendingMessage + " (raw)";
                       setPendingMessage(null);
@@ -393,7 +393,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   >
                     Raw
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       const finalMsg = pendingMessage + " (cooked)";
                       setPendingMessage(null);
@@ -404,7 +404,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                     Cooked
                   </button>
                 </div>
-                <button 
+                <button
                   onClick={() => setPendingMessage(null)}
                   className="mt-1 text-[12px] text-white/40 hover:text-white/70 py-2 transition-colors"
                 >
@@ -414,7 +414,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             </div>
           )}
           {/* Chat Display */}
-          <div 
+          <div
             ref={scrollContainerRef}
             onScroll={handleScroll}
             onWheel={(e) => {
@@ -435,15 +435,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
 
             {displayMessages.map((msg, idx) => (
               msg.role === "assistant" ? (
-                <div key={idx} className="flex items-end gap-3 max-w-[98%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-                  <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
-                    <Sparkles size={12} className="text-white" />
-                  </div>
+                <div key={idx} className="flex flex-col items-start gap-1 max-w-[98%] animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
                   <div className="flex flex-col gap-1.5 min-w-0">
-                    <div 
-                      className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5 transition-transform hover:scale-[0.99]"
-                      style={{ 
-                        background: "linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)", 
+                    <div
+                      className="rounded-[20px] rounded-bl-[8px] px-4 py-3.5"
+                      style={{
+                        background: "linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
                         border: "1px solid rgba(148,163,184,0.08)",
                         borderTop: "1px solid rgba(255,255,255,0.06)",
                         boxShadow: "inset 0 1px 1px rgba(255,255,255,0.04), 0 4px 15px rgba(0,0,0,0.3)",
@@ -451,38 +448,41 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                       }}
                     >
                       <div className="text-[15px] font-normal text-[#f8fafc] leading-[1.6] break-words tracking-[0.01em]">
-                        <TypewriterMarkdown 
-                          content={msg.content} 
-                          animateInit={idx === displayMessages.length - 1 && idx > 0} 
+                        <TypewriterMarkdown
+                          content={msg.content}
+                          animateInit={idx === displayMessages.length - 1 && idx > 0}
                           onType={() => scrollToBottom("auto")}
                         />
                       </div>
                     </div>
                   </div>
+                  <div className="shrink-0 grid place-items-center h-7 w-7 rounded-full ml-1" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)", boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05)" }}>
+                    <Sparkles size={14} className="text-white/90" />
+                  </div>
                 </div>
               ) : (
                 <div key={idx} className="flex flex-col items-end self-end max-w-[92%] group animate-in slide-in-from-bottom-2 fade-in duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-                  <div className="flex items-center gap-1.5 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-                    <button 
+                  <div className="flex items-center gap-1.5 mb-2 opacity-80">
+                    <button
                       onClick={() => handleCopy(msg.content, idx)}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white backdrop-blur-md border border-white/5 hover:border-white/10 transition-all active:scale-[0.95]"
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 text-white/70 backdrop-blur-md border border-white/5 transition-all active:scale-[0.95] active:bg-white/10"
                     >
                       {copiedIndex === idx ? <Check size={11} className="text-white" /> : <Copy size={11} />}
                       <span className="text-[9px] font-bold tracking-wider uppercase leading-none mt-0.5">{copiedIndex === idx ? 'Copied' : 'Copy'}</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleEdit(msg.content)}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white backdrop-blur-md border border-white/5 hover:border-white/10 transition-all active:scale-[0.95]"
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 text-white/70 backdrop-blur-md border border-white/5 transition-all active:scale-[0.95] active:bg-white/10"
                     >
                       <Edit2 size={11} />
                       <span className="text-[9px] font-bold tracking-wider uppercase leading-none mt-0.5">Edit</span>
                     </button>
                   </div>
-                  <div 
-                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0 transition-transform active:scale-[0.98] hover:scale-[0.99]"
-                    style={{ 
-                      background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)", 
-                      boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.05)" 
+                  <div
+                    className="rounded-[20px] rounded-br-[8px] px-4 py-3.5 min-w-0"
+                    style={{
+                      background: "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)",
+                      boxShadow: "0 4px 15px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 4px rgba(0,0,0,0.05)"
                     }}
                   >
                     <p className="text-[15px] font-medium text-[#0f172a] leading-[1.6] whitespace-pre-wrap break-words tracking-[0.01em]">
@@ -500,10 +500,10 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                 <div className="shrink-0 grid place-items-center h-7 w-7 rounded-[10px] border" style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}>
                   <Sparkles size={12} className="text-[#f8fafc]/70" />
                 </div>
-                <div 
+                <div
                   className="rounded-[16px] rounded-bl-[4px] px-5 py-4 flex items-center gap-1.5"
-                  style={{ 
-                    background: "#06070a", 
+                  style={{
+                    background: "#06070a",
                     border: "1px solid rgba(255,255,255,0.08)",
                     boxShadow: "none"
                   }}
@@ -535,7 +535,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
             <div className="flex flex-col gap-2.5">
               <div className="flex items-center justify-between px-1">
                 <label className="text-[11px] font-semibold tracking-[0.15em] uppercase text-white/40" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>Message Kai</label>
-                
+
                 {/* Ultra-Compact Mode Pill */}
                 <button
                   onClick={() => setTrackFood(v => !v)}
@@ -568,15 +568,14 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   </button>
                   <button
                     onClick={toggleRecording}
-                    className={`grid place-items-center h-[36px] w-[36px] rounded-[10px] transition-all active:scale-[0.97] ${
-                      isRecording ? "text-[#f87171] bg-[#f87171]/10 animate-pulse" : "text-white/40 hover:text-white hover:bg-white/[0.05]"
-                    }`}
+                    className={`grid place-items-center h-[36px] w-[36px] rounded-[10px] transition-all active:scale-[0.97] ${isRecording ? "text-[#f87171] bg-[#f87171]/10 animate-pulse" : "text-white/40 hover:text-white hover:bg-white/[0.05]"
+                      }`}
                   >
                     <Mic size={16} strokeWidth={1.8} />
                   </button>
                 </div>
 
-                  <textarea
+                <textarea
                   ref={textareaRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -588,7 +587,7 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   }}
                   placeholder={trackFood ? "Tell Kai what you ate..." : "Ask Kai..."}
                   className="w-full rounded-[20px] pl-[96px] pr-14 py-[16px] text-[16px] outline-none transition-all duration-100 placeholder:text-white/40 resize-none overflow-y-auto custom-scrollbar"
-                  style={{ 
+                  style={{
                     height: "56px",
                     background: "rgba(0,0,0,0.3)",
                     color: "#ffffff",
@@ -603,12 +602,12 @@ export default function KaiAssistant({ isOpen, onClose, consumed, calorieTarget,
                   onClick={sendMessage}
                   disabled={isLoading || transcribing || (!inputValue.trim() && !attachedImage)}
                   className="absolute right-2.5 bottom-[8px] grid place-items-center h-[40px] w-[40px] rounded-[14px] transition-all duration-300 active:scale-[0.92] disabled:opacity-20 disabled:scale-100 disabled:pointer-events-none group"
-                  style={{ 
-                    background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)", 
-                    color: "#020617", 
-                    boxShadow: (isLoading || transcribing || (!inputValue.trim() && !attachedImage)) 
-                      ? "none" 
-                      : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15), 0 0 20px rgba(255,255,255,0.25), 0 0 40px rgba(255,255,255,0.12)" 
+                  style={{
+                    background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)",
+                    color: "#020617",
+                    boxShadow: (isLoading || transcribing || (!inputValue.trim() && !attachedImage))
+                      ? "none"
+                      : "0 6px 16px rgba(255,255,255,0.15), inset 0 -2px 4px rgba(0,0,0,0.15), 0 0 20px rgba(255,255,255,0.25), 0 0 40px rgba(255,255,255,0.12)"
                   }}
                 >
                   <Send size={16} className={`mr-0.5 transition-transform duration-300 ${(isLoading || transcribing || (!inputValue.trim() && !attachedImage)) ? "" : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-black"}`} strokeWidth={2.5} />
