@@ -57,12 +57,24 @@ export function FriendActionButton({ userId, initialStatus, onViewProfile }) {
 
   if (status === "accepted") {
     return (
-      <div 
-        className="group-hover:bg-white/10" 
-        style={{ ...baseStyle, background: "rgba(255,255,255,0.06)" }}
-        onClick={(e) => { e.stopPropagation(); onViewProfile(); }}
-      >
-        View Profile
+      <div className="flex items-center gap-2 relative z-10" onClick={(e) => e.stopPropagation()}>
+        <button 
+          className="group-hover:bg-white/10 active:scale-95 transition-all" 
+          style={{ ...baseStyle, background: "rgba(20, 184, 166, 0.15)", color: "#2dd4bf", borderColor: "rgba(20, 184, 166, 0.3)" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/chat/${userId}`;
+          }}
+        >
+          Message
+        </button>
+        <button 
+          className="group-hover:bg-white/10 active:scale-95 transition-all" 
+          style={{ ...baseStyle, background: "rgba(255,255,255,0.06)" }}
+          onClick={(e) => { e.stopPropagation(); onViewProfile(); }}
+        >
+          Profile
+        </button>
       </div>
     )
   }

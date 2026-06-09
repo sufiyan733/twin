@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 
 // Routes where the bottom nav must NOT appear
-const HIDDEN_ROUTES = ["/login", "/onboarding", "/notes", "/workout-record"];
+const HIDDEN_ROUTES = ["/login", "/onboarding", "/notes", "/workout-record", "/chat"];
 
 export default function NavShell() {
   const pathname = usePathname();
