@@ -85,6 +85,7 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
       }}
       onFocus={() => setActiveInput(id)}
       onPointerDown={(e) => {
+        e.stopPropagation();
         if (!activeInput) setActiveInput(id);
         if (onScrub) {
           setIsScrubbing(true);
@@ -130,6 +131,20 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
         )}
         {children}
       </div>
+
+      {isFaded && (
+        <div
+          className="absolute inset-0 z-50 cursor-pointer"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {
+              document.activeElement.blur();
+            }
+            setActiveInput(null);
+          }}
+        />
+      )}
     </motion.div>
   );
 };
@@ -293,6 +308,9 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         return;
       }
       e.preventDefault();
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
       setIsAnyScrubbing(true);
       setActiveInput(id);
 
@@ -358,6 +376,12 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
         className="fixed inset-0 z-[9999] flex items-center justify-center p-[12px] bg-[#010614]/90 backdrop-blur-[40px] selection:bg-[#00d0ff]/30 font-sans"
+        onPointerDown={(e) => {
+          if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+          }
+          setActiveInput(null);
+        }}
       >
         <style>{`
           .no-spin::-webkit-inner-spin-button,
@@ -516,7 +540,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                   </CardBox>
 
                   <CardBox id="gender" activeInput={activeInput} setActiveInput={setActiveInput} colSpan={2} label="Biological Sex" icon={User} isError={showErrors && !gender} shakeKey={shakeKey}>
-                    <div className="flex w-full p-[2px] mt-[6px] bg-black/40 rounded-[10px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
+                    <div className="flex w-full p-[2px] mt-[6px] bg-black/40 rounded-[10px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)] pointer-events-auto">
                       {['M', 'F', 'O'].map(g => {
                         const isActive = gender === g.toLowerCase();
                         return (
@@ -539,7 +563,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                   </CardBox>
 
                   <CardBox id="workouts" activeInput={activeInput} setActiveInput={setActiveInput} colSpan={2} label="Workouts / Wk" icon={CalendarDays}>
-                    <div className="flex justify-between w-full mt-[12px] relative p-[2px] bg-black/40 rounded-[14px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
+                    <div className="flex justify-between w-full mt-[12px] relative p-[2px] bg-black/40 rounded-[14px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)] pointer-events-auto">
                       {[1, 2, 3, 4, 5, 6, 7].map(d => {
                         const isActive = workoutDays === d;
                         return (
