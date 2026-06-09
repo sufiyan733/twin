@@ -68,7 +68,6 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
 
   return (
     <motion.div
-      layout
       variants={cardVariants}
       animate={{
         ...(isError && shakeKey > 0 ? { x: [-8, 8, -6, 6, -4, 4, 0] } : { x: 0 }),
@@ -77,7 +76,7 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
       }}
       transition={isFaded ? { duration: 0.4 } : fastSpring}
       whileTap={{ scale: 0.98, transition: fastSpring }}
-      className={`bg-[#121214]/70 backdrop-blur-xl rounded-[16px] p-[12px] flex flex-col group relative overflow-hidden ${colSpan === 2 ? 'col-span-2' : ''} ${className} ${onScrub ? 'cursor-ew-resize' : ''}`}
+      className={`bg-[#121214]/70 rounded-[16px] p-[12px] flex flex-col group relative overflow-hidden ${colSpan === 2 ? 'col-span-2' : ''} ${className} ${onScrub ? 'cursor-ew-resize' : ''}`}
       style={{
         border: isError ? `1px solid rgba(239,68,68,0.3)` : '1px solid rgba(255,255,255,0.04)',
         boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)'
@@ -374,7 +373,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
-        className="fixed inset-0 z-[9999] flex items-center justify-center p-[12px] bg-[#010614]/90 backdrop-blur-[40px] selection:bg-[#00d0ff]/30 font-sans"
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-[12px] bg-[#010614]/95 selection:bg-[#00d0ff]/30 font-sans"
         onPointerDown={(e) => {
           if (document.activeElement && typeof document.activeElement.blur === 'function') {
             document.activeElement.blur();
@@ -475,7 +474,6 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           <AnimatePresence mode="wait" custom={navDir}>
             {step === 1 ? (
               <motion.div
-                layout
                 key="step1" custom={navDir} variants={stepVariants} initial="enter" animate="center" exit="exit"
                 className="w-full flex flex-col gap-[16px]"
               >
@@ -599,11 +597,10 @@ export default function OnboardingModal({ isOpen, onComplete }) {
               </motion.div>
             ) : (
               <motion.div
-                layout
                 key="step2" custom={navDir} variants={stepVariants} initial="enter" animate="center" exit="exit"
                 className="w-full flex flex-col gap-[16px]"
               >
-                <motion.div layout variants={cardVariants} className="flex flex-col gap-[8px]">
+                <motion.div variants={cardVariants} className="flex flex-col gap-[8px]">
                   <div className="flex items-center gap-[4px] px-[6px]">
                     <motion.div animate={{ color: themeColor }}><Target size={12} className="opacity-80 drop-shadow-[0_0_8px_currentColor]" /></motion.div>
                     <span className="text-[10px] font-[800] tracking-[0.1em] uppercase text-white/50">Focus</span>
