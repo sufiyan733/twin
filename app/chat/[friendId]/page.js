@@ -233,7 +233,7 @@ export default function ChatPage({ params }) {
 
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-6 pb-[60px] flex flex-col gap-[3px] [&::-webkit-scrollbar]:hidden relative z-10" 
+        className="flex-1 overflow-y-auto px-4 py-6 pb-[86px] flex flex-col gap-[3px] [&::-webkit-scrollbar]:hidden relative z-10" 
         style={{ scrollbarWidth: "none", overscrollBehavior: "contain" }}
       >
         <AnimatePresence initial={false}>
