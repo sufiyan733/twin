@@ -141,49 +141,56 @@ export default function ChatPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#020617] flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans relative" style={{ background: "radial-gradient(circle at top, #0f172a 0%, #020617 100%)" }}>
       {/* Header */}
-      <header className="flex-none pt-12 pb-4 px-6 border-b border-white/10 bg-[#0f172a]/50 backdrop-blur-xl sticky top-0 z-10 flex items-center gap-4">
+      <header className="flex-none pt-8 pb-3 px-5 border-b border-white/5 bg-[#020617]/70 backdrop-blur-3xl sticky top-0 z-10 flex items-center gap-3">
         <button 
           onClick={() => router.back()}
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center active:scale-95 transition-transform hover:bg-white/10"
+          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center active:scale-95 transition-transform hover:bg-white/10 shrink-0"
         >
-          <ChevronLeft size={20} className="text-white" />
+          <ChevronLeft size={18} className="text-white ml-[-2px]" />
         </button>
         
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/15 to-white/5 flex items-center justify-center overflow-hidden border border-white/10 shadow-lg">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 rounded-[14px] bg-gradient-to-br from-white/15 to-white/5 flex items-center justify-center overflow-hidden border border-white/10 shadow-lg shrink-0">
             {friend?.image ? (
               <img src={friend.image} alt={friend.name} className="w-full h-full object-cover" />
             ) : (
-              <User size={20} className="text-white" />
+              <User size={18} className="text-white" />
             )}
           </div>
-          <div>
-            <h1 className="text-white font-display font-semibold text-lg leading-tight">
+          <div className="min-w-0 truncate">
+            <h1 className="text-white font-display font-semibold text-[16px] leading-tight truncate">
               {friend?.name || "Loading..."}
             </h1>
-            <p className="text-white/40 text-xs font-medium">Friend</p>
+            <p className="text-[#14b8a6] text-[11px] font-semibold tracking-wide">Online</p>
           </div>
         </div>
       </header>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {messages.map((m) => {
+      <div 
+        className="flex-1 overflow-y-auto p-5 flex flex-col gap-5 [&::-webkit-scrollbar]:hidden" 
+        style={{ scrollbarWidth: "none" }}
+      >
+        {messages.map((m, index) => {
           const isMine = m.senderId === currentUserId
+          
           return (
-            <div key={m._id} className={`flex flex-col max-w-[80%] ${isMine ? "self-end items-end" : "self-start items-start"}`}>
+            <div key={m._id} className={`flex flex-col max-w-[75%] ${isMine ? "self-end items-end" : "self-start items-start"}`}>
               <div 
-                className={`px-4 py-2.5 rounded-2xl ${
+                className={`px-4 py-3 ${
                   isMine 
-                    ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/20 rounded-tr-sm" 
-                    : "bg-white/10 text-white rounded-tl-sm border border-white/5 shadow-xl backdrop-blur-md"
+                    ? "bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white shadow-lg shadow-teal-900/40 rounded-[20px] rounded-br-[4px] border border-teal-400/20" 
+                    : "bg-[#1e293b]/70 text-white rounded-[20px] rounded-bl-[4px] border border-white/10 shadow-xl backdrop-blur-md"
                 }`}
+                style={{
+                  boxShadow: isMine ? "inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.3)" : "inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.3)"
+                }}
               >
-                <p className="text-[15px] leading-relaxed">{m.text}</p>
+                <p className="text-[15px] leading-relaxed tracking-wide">{m.text}</p>
               </div>
-              <span className="text-[10px] text-white/30 font-medium mt-1 px-1">
+              <span className="text-[10px] text-white/30 font-medium mt-1.5 px-1 tracking-wider">
                 {new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </span>
             </div>
@@ -202,24 +209,24 @@ export default function ChatPage({ params }) {
       </div>
 
       {/* Input Area */}
-      <footer className="flex-none p-4 pb-8 bg-gradient-to-t from-[#020617] to-transparent sticky bottom-0">
+      <footer className="flex-none p-4 pb-8 bg-gradient-to-t from-[#020617] via-[#020617]/90 to-transparent sticky bottom-0 z-10">
         <form 
           onSubmit={handleSend}
-          className="relative flex items-center bg-black/40 border border-white/10 rounded-2xl p-1 shadow-2xl backdrop-blur-xl"
+          className="relative flex items-center bg-[#0f172a]/80 border border-white/10 rounded-full p-1.5 shadow-2xl backdrop-blur-xl"
         >
           <input 
             type="text"
             value={inputText}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="flex-1 bg-transparent border-none text-white px-4 h-11 focus:outline-none placeholder:text-white/30 text-[15px]"
+            className="flex-1 bg-transparent border-none text-white px-4 h-11 focus:outline-none placeholder:text-white/30 text-[15px] tracking-wide"
           />
           <button 
             type="submit"
             disabled={!inputText.trim()}
-            className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center disabled:opacity-50 disabled:bg-white/5 active:scale-95 transition-all mr-0.5 border border-teal-500/30"
+            className="w-11 h-11 rounded-full bg-gradient-to-br from-[#14b8a6] to-[#0f766e] flex items-center justify-center disabled:opacity-50 disabled:from-white/10 disabled:to-white/5 active:scale-95 transition-all shadow-lg"
           >
-            <Send size={18} className="text-teal-400 disabled:text-white/30" />
+            <Send size={18} className="text-white disabled:text-white/30 ml-0.5" />
           </button>
         </form>
       </footer>
