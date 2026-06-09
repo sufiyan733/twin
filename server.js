@@ -1,6 +1,6 @@
-import { createServer } from "http"
-import { Server } from "socket.io"
-import next from "next"
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const next = require("next");
 
 const dev = process.env.NODE_ENV !== "production"
 const port = parseInt(process.env.PORT || "3000", 10)
@@ -40,7 +40,7 @@ app.prepare().then(() => {
     // Receive a message and broadcast to the room
     socket.on("message:send", ({ roomId, message }) => {
       // message shape: { id, senderId, text, createdAt }
-      io.to(roomId).emit("message:receive", message)
+      socket.to(roomId).emit("message:receive", message)
     })
 
     // Typing indicators
