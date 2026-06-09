@@ -453,11 +453,8 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           <div className="flex justify-between items-end mb-[16px] mt-[4px]">
             <div>
               <div className="flex items-center gap-[6px] mb-[4px]">
-                <div className="flex items-center justify-center w-[18px] h-[18px] rounded-[6px] bg-white/5 border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
-                  <span className="text-[10px] font-bold text-white tracking-tighter">OS</span>
-                </div>
-                <span className="text-[11px] font-[700] tracking-[0.15em] uppercase text-white/90">
-                  Twin OS
+                <span className="text-[10px] font-[700] tracking-[0.1em] uppercase text-white/50">
+                  Complete your profile
                 </span>
               </div>
               <AnimatePresence mode="wait">
