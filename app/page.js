@@ -146,6 +146,8 @@ export default function Page() {
   const [isKaiOpen, setIsKaiOpen] = useState(false);
   const [isTasksManagerOpen, setIsTasksManagerOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [friendSearchQuery, setFriendSearchQuery] = useState("");
   const [viewingProfile, setViewingProfile] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [calorieTarget, setCalorieTarget] = useState(null);
@@ -514,6 +516,17 @@ export default function Page() {
       router.replace("/login");
     }
   }, [session, isPending, router]);
+
+  useEffect(() => {
+    if (isMenuOpen && friends.length === 0) {
+      fetch('/api/friends')
+        .then(r => r.json())
+        .then(d => {
+          if (d.friends) setFriends(d.friends);
+        })
+        .catch(console.error);
+    }
+  }, [isMenuOpen, friends.length]);
 
   useEffect(() => {
     const handler = () => setIsKaiOpen(true);
@@ -1284,6 +1297,8 @@ export default function Page() {
                       </div>
                       <input
                         type="text"
+                        value={friendSearchQuery}
+                        onChange={(e) => setFriendSearchQuery(e.target.value)}
                         placeholder="Search friends..."
                         style={{
                           width: "100%", height: "36px", paddingLeft: "34px", paddingRight: "14px",
@@ -1296,64 +1311,27 @@ export default function Page() {
                     </div>
 
                     <div
-                      className="flex flex-col gap-[6px] relative z-10"
+                      className="flex flex-col gap-[6px] relative z-10 overflow-y-auto"
+                      style={{ height: "210px" }}
                     >
-                      {/* Friend Card 1 */}
-                      <button onClick={() => setViewingProfile({ name: "Alex Chen", macros: { protein: 120, carbs: 180, fats: 55 }, consumed: { protein: 90, carbs: 140, fats: 40, calories: 1550 }, calorieTarget: 2200 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                          <User size={16} strokeWidth={2.5} />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Alex Chen</div>
-                        </div>
-                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                          View Profile
-                        </div>
-                      </button>
-
-                      {/* Friend Card 2 */}
-                      <button onClick={() => setViewingProfile({ name: "Sarah Miller", macros: { protein: 110, carbs: 150, fats: 50 }, consumed: { protein: 110, carbs: 130, fats: 40, calories: 1400 }, calorieTarget: 2000 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                          <User size={16} strokeWidth={2.5} />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Sarah Miller</div>
-                        </div>
-                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                          View Profile
-                        </div>
-                      </button>
-
-                      {/* Friend Card 3 */}
-                      <button onClick={() => setViewingProfile({ name: "Mike Ross", macros: { protein: 180, carbs: 250, fats: 70 }, consumed: { protein: 160, carbs: 200, fats: 60, calories: 2400 }, calorieTarget: 2800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                          <User size={16} strokeWidth={2.5} />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Mike Ross</div>
-                        </div>
-                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                          View Profile
-                        </div>
-                      </button>
-
-                      {/* Friend Card 4 */}
-                      <button onClick={() => setViewingProfile({ name: "Emma Stone", macros: { protein: 100, carbs: 130, fats: 45 }, consumed: { protein: 80, carbs: 100, fats: 30, calories: 1200 }, calorieTarget: 1800 })} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
-                        <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1 }}>
-                          <User size={16} strokeWidth={2.5} />
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                          <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>Emma Stone</div>
-                        </div>
-                        <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
-                          View Profile
-                        </div>
-                      </button>
-
+                      {friends.length === 0 ? (
+                        <div className="text-center py-4 text-white/50 text-[13px]">Loading friends...</div>
+                      ) : (
+                        friends.filter(f => f.name.toLowerCase().includes(friendSearchQuery.toLowerCase())).map((friend) => (
+                          <button key={friend.id} onClick={() => setViewingProfile(friend)} className="w-full text-left press-scale group shrink-0" style={{ borderRadius: "14px", background: "rgba(255,255,255,0.02)", padding: "8px 10px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden", transition: "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}>
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.06), transparent)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }} />
+                            <div style={{ width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ffffff", position: "relative", zIndex: 1, overflow: "hidden" }}>
+                              {friend.image ? <img src={friend.image} alt={friend.name} className="w-full h-full object-cover" /> : <User size={16} strokeWidth={2.5} />}
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                              <div style={{ fontFamily: "var(--font-display)", fontSize: "15px", letterSpacing: "0.01em", color: "#ffffff", lineHeight: 1.2, fontWeight: 600 }}>{friend.name}</div>
+                            </div>
+                            <div className="group-hover:bg-white/10 transition-colors" style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", color: "#ffffff", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)", position: "relative", zIndex: 1 }}>
+                              View Profile
+                            </div>
+                          </button>
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
