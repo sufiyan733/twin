@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
 import { getSocket } from "@/lib/socket"
-import { ChevronLeft, Send, User } from "lucide-react"
+import { ChevronLeft, Send, User, Sparkles, Mic, Loader2 } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function ChatPage({ params }) {
   const unwrappedParams = React.use(params)
@@ -18,10 +19,15 @@ export default function ChatPage({ params }) {
   const [messages, setMessages] = useState([])
   const [inputText, setInputText] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isTranscribing, setIsTranscribing] = useState(false)
   
+  const scrollRef = useRef(null)
   const messagesEndRef = useRef(null)
   const socketRef = useRef(null)
   const typingTimeoutRef = useRef(null)
+  const mediaRecorderRef = useRef(null)
+  const audioChunksRef = useRef([])
 
   const roomId = currentUserId ? [currentUserId, friendId].sort().join("_") : null
 
@@ -122,6 +128,53 @@ export default function ChatPage({ params }) {
     }
   }
 
+  const toggleRecording = async () => {
+    if (isRecording) {
+      mediaRecorderRef.current?.stop();
+      setIsRecording(false);
+    } else {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunksRef.current = [];
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunksRef.current.push(e.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+          const formData = new FormData();
+          formData.append("file", audioBlob, "recording.webm");
+
+          setIsTranscribing(true);
+          try {
+            const res = await fetch("/api/transcribe", {
+              method: "POST",
+              body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.text) {
+              setInputText(prev => prev + (prev ? " " : "") + data.text);
+            }
+          } catch (err) {
+            console.error("Transcription failed", err);
+          } finally {
+            setIsTranscribing(false);
+          }
+
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+        setIsRecording(true);
+      } catch (err) {
+        console.error("Error accessing microphone", err);
+      }
+    }
+  };
+
   const handleInputChange = (e) => {
     setInputText(e.target.value)
     
@@ -134,102 +187,141 @@ export default function ChatPage({ params }) {
         socketRef.current?.emit("typing:stop", { roomId, userId: currentUserId })
       }, 2000)
     }
-  }
+  };
 
   if (isPending || !currentUserId) {
-    return <div className="min-h-screen bg-[#020617] flex items-center justify-center text-white/50">Loading...</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#020617] text-white">
+        Loading...
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen flex flex-col font-sans relative" style={{ background: "radial-gradient(circle at top, #0f172a 0%, #020617 100%)" }}>
-      {/* Header */}
-      <header className="flex-none pt-8 pb-3 px-5 border-b border-white/5 bg-[#020617]/70 backdrop-blur-3xl sticky top-0 z-10 flex items-center gap-3">
+    <div className="h-full flex-1 w-full flex flex-col font-sans relative overflow-hidden bg-black selection:bg-[#38bdf8]/30">
+      
+      <header className="flex-none pt-4 pb-2 px-2 bg-black/70 backdrop-blur-[30px] border-b border-white/[0.08] sticky top-0 z-20 flex items-center gap-1">
         <button 
           onClick={() => router.back()}
-          className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center active:scale-95 transition-transform hover:bg-white/10 shrink-0"
+          className="w-10 h-10 flex items-center justify-center active:opacity-50 transition-opacity shrink-0"
         >
-          <ChevronLeft size={18} className="text-white ml-[-2px]" />
+          <ChevronLeft size={28} className="text-[#38bdf8]" strokeWidth={2.5} />
         </button>
         
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-[14px] bg-gradient-to-br from-white/15 to-white/5 flex items-center justify-center overflow-hidden border border-white/10 shadow-lg shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 rounded-full bg-[#1c1c1e] flex items-center justify-center overflow-hidden shrink-0">
             {friend?.image ? (
               <img src={friend.image} alt={friend.name} className="w-full h-full object-cover" />
             ) : (
-              <User size={18} className="text-white" />
+              <User size={20} className="text-white/50" />
             )}
           </div>
-          <div className="min-w-0 truncate">
-            <h1 className="text-white font-display font-semibold text-[16px] leading-tight truncate">
+          <div className="min-w-0 flex flex-col justify-center">
+            <h1 className="text-white font-medium text-[17px] leading-tight truncate tracking-tight">
               {friend?.name || "Loading..."}
             </h1>
-            <p className="text-[#14b8a6] text-[11px] font-semibold tracking-wide">Online</p>
+            <p className="text-white/50 text-[13px] tracking-tight mt-[1px]">Online</p>
           </div>
         </div>
       </header>
 
-      {/* Chat Area */}
       <div 
-        className="flex-1 overflow-y-auto p-5 flex flex-col gap-5 [&::-webkit-scrollbar]:hidden" 
-        style={{ scrollbarWidth: "none" }}
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto p-5 pb-[60px] flex flex-col gap-6 [&::-webkit-scrollbar]:hidden relative z-10" 
+        style={{ scrollbarWidth: "none", overscrollBehavior: "contain" }}
       >
-        {messages.map((m, index) => {
-          const isMine = m.senderId === currentUserId
-          
-          return (
-            <div key={m._id} className={`flex flex-col max-w-[75%] ${isMine ? "self-end items-end" : "self-start items-start"}`}>
-              <div 
-                className={`px-4 py-3 ${
-                  isMine 
-                    ? "bg-gradient-to-br from-[#14b8a6] to-[#0f766e] text-white shadow-lg shadow-teal-900/40 rounded-[20px] rounded-br-[4px] border border-teal-400/20" 
-                    : "bg-[#1e293b]/70 text-white rounded-[20px] rounded-bl-[4px] border border-white/10 shadow-xl backdrop-blur-md"
-                }`}
-                style={{
-                  boxShadow: isMine ? "inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.3)" : "inset 0 1px 1px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.3)"
-                }}
+        <AnimatePresence initial={false}>
+          {messages.map((m, idx) => {
+            const isMine = m.senderId === session?.user?.id;
+            return (
+              <motion.div
+                key={m.id || idx}
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className={`flex flex-col max-w-[78%] ${isMine ? "self-end items-end" : "self-start items-start"}`}
               >
-                <p className="text-[15px] leading-relaxed tracking-wide">{m.text}</p>
-              </div>
-              <span className="text-[10px] text-white/30 font-medium mt-1.5 px-1 tracking-wider">
+                <div 
+                  className={`px-[16px] py-[10px] max-w-full ${
+                    isMine 
+                      ? "bg-[#38bdf8] text-white rounded-[20px] rounded-br-[4px]" 
+                      : "bg-[#262628] text-[#e8edf5] rounded-[20px] rounded-bl-[4px]"
+                  }`}
+                >
+                  <p className="text-[16px] leading-[22px] tracking-[-0.3px] whitespace-pre-wrap break-words">{m.text}</p>
+                </div>
+                <span className={`text-[11px] text-white/30 font-medium mt-1 px-1 tracking-tight ${isMine ? "text-right" : "text-left"}`}>
                 {new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </span>
-            </div>
-          )
-        })}
-        {isTyping && (
-          <div className="self-start items-start flex flex-col max-w-[80%]">
-             <div className="px-4 py-3 rounded-2xl bg-white/10 rounded-tl-sm border border-white/5 backdrop-blur-md flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "300ms" }} />
-             </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+        
+        <AnimatePresence>
+          {isTyping && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="self-start items-start flex flex-col max-w-[80%] mb-1"
+            >
+              <div className="px-4 py-3.5 rounded-[20px] bg-[#262628] rounded-tl-[4px] flex gap-1.5 items-center">
+                <span className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "0ms", animationDuration: "1s" }} />
+                <span className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "150ms", animationDuration: "1s" }} />
+                <span className="w-2 h-2 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: "300ms", animationDuration: "1s" }} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div ref={messagesEndRef} className="h-2" />
       </div>
-
       {/* Input Area */}
-      <footer className="flex-none p-4 pb-8 bg-gradient-to-t from-[#020617] via-[#020617]/90 to-transparent sticky bottom-0 z-10">
+      <footer className="fixed bottom-0 left-0 right-0 px-3 py-2 pb-6 bg-[#0a0a0a]/95 backdrop-blur-3xl border-t border-white/[0.08] z-20">
         <form 
           onSubmit={handleSend}
-          className="relative flex items-center bg-[#0f172a]/80 border border-white/10 rounded-full p-1.5 shadow-2xl backdrop-blur-xl"
+          className="relative flex items-center gap-2"
         >
-          <input 
-            type="text"
-            value={inputText}
-            onChange={handleInputChange}
-            placeholder="Type a message..."
-            className="flex-1 bg-transparent border-none text-white px-4 h-11 focus:outline-none placeholder:text-white/30 text-[15px] tracking-wide"
-          />
-          <button 
-            type="submit"
-            disabled={!inputText.trim()}
-            className="w-11 h-11 rounded-full bg-gradient-to-br from-[#14b8a6] to-[#0f766e] flex items-center justify-center disabled:opacity-50 disabled:from-white/10 disabled:to-white/5 active:scale-95 transition-all shadow-lg"
+          {/* Mic Button on the Left */}
+          <button
+            type="button"
+            onClick={toggleRecording}
+            disabled={isTranscribing}
+            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shrink-0 ${
+              isRecording 
+                ? "bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.4)] animate-pulse" 
+                : "bg-transparent text-[#7a90a8] hover:bg-white/5 active:scale-95"
+            }`}
           >
-            <Send size={18} className="text-white disabled:text-white/30 ml-0.5" />
+            {isTranscribing ? (
+              <Loader2 size={18} className="animate-spin text-white" />
+            ) : (
+              <Mic size={18} strokeWidth={isRecording ? 2.5 : 2} />
+            )}
           </button>
+
+          {/* Input Pill */}
+          <div className={`flex-1 flex items-center bg-[#1c1c1e] rounded-full p-[3px] pl-4 border ${isRecording ? 'border-red-500/30 bg-red-500/5' : 'border-transparent'} transition-colors duration-300`}>
+            <input 
+              type="text"
+              value={inputText}
+              onChange={handleInputChange}
+              placeholder={isRecording ? "Listening..." : "iMessage"}
+              className={`flex-1 bg-transparent border-none h-[34px] focus:outline-none text-[16px] tracking-tight leading-none ${isRecording ? 'text-red-400 placeholder:text-red-400/70' : 'text-[#e8edf5] placeholder:text-[#7a90a8]'}`}
+              disabled={isRecording || isTranscribing}
+            />
+            
+            {/* Send Button on the Right */}
+            <button 
+              type="submit"
+              disabled={!inputText.trim()}
+              className="w-[34px] h-[34px] rounded-full bg-[#38bdf8] flex items-center justify-center disabled:opacity-0 disabled:scale-50 active:scale-90 transition-all duration-300 shrink-0 ml-1 mr-0.5"
+            >
+              <Send size={15} className="text-white ml-[1px] mt-[1px]" strokeWidth={2.5} />
+            </button>
+          </div>
         </form>
       </footer>
     </div>
-  )
+  );
 }
