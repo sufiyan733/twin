@@ -78,10 +78,18 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
       }}
       transition={isFaded ? { duration: 0.4 } : fastSpring}
       whileTap={{ scale: 0.98, transition: fastSpring }}
-      className={`bg-[#121214]/70 backdrop-blur-xl rounded-[16px] p-[12px] flex flex-col group relative overflow-hidden ${colSpan === 2 ? 'col-span-2' : ''} ${className}`}
+      className={`bg-[#121214]/70 backdrop-blur-xl rounded-[16px] p-[12px] flex flex-col group relative overflow-hidden ${colSpan === 2 ? 'col-span-2' : ''} ${className} ${onScrub ? 'cursor-ew-resize' : ''}`}
       style={{
         border: isError ? `1px solid rgba(239,68,68,0.3)` : '1px solid rgba(255,255,255,0.04)',
         boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)'
+      }}
+      onFocus={() => setActiveInput(id)}
+      onPointerDown={(e) => {
+        if (!activeInput) setActiveInput(id);
+        if (onScrub) {
+          setIsScrubbing(true);
+          onScrub(e, () => setIsScrubbing(false));
+        }
       }}
     >
       <motion.div
@@ -95,19 +103,11 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
         className={`absolute inset-0 pointer-events-none rounded-[16px] ${isError ? '!opacity-100' : 'group-focus-within:opacity-100'}`}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col justify-center">
+      <div className="relative z-10 w-full h-full flex flex-col justify-center pointer-events-none">
         {(label || rightElement) && (
-          <div className="flex justify-between items-center mb-[8px]">
+          <div className="flex justify-between items-center mb-[8px] pointer-events-auto">
             {label && (
-              <div
-                className={`flex items-center gap-[6px] transition-all duration-300 ${onScrub ? 'cursor-ew-resize select-none active:opacity-70' : ''}`}
-                onPointerDown={(e) => {
-                  if (onScrub) {
-                    setIsScrubbing(true);
-                    onScrub(e, () => setIsScrubbing(false));
-                  }
-                }}
-              >
+              <div className={`flex items-center gap-[6px] transition-all duration-300 ${onScrub ? 'select-none active:opacity-70' : ''}`}>
                 {Icon && (
                   <div className={`transition-all duration-300 ${isError ? 'text-[#ef4444]' : 'text-white/40 group-focus-within:text-[var(--focus-color)]'}`} style={{ '--focus-color': activeHex }}>
                     <Icon size={14} strokeWidth={2.5} color="currentColor" />
@@ -464,65 +464,74 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                 <div className="grid grid-cols-2 gap-[8px]">
 
                   <CardBox id="age" activeInput={activeInput} setActiveInput={setActiveInput} onScrub={createScrubber('age', age, setAge, 12, 120)} label="Age" icon={User} isError={!!errs.age} errorMsg={errs.age} shakeKey={shakeKey}>
-                    <input type="number" value={age} onChange={e => setAge(e.target.value)} onFocus={() => setActiveInput('age')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.age)} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="25" />
+                    <input type="number" value={age} onChange={e => setAge(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('age')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.age)} pointer-events-auto`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="25" />
                   </CardBox>
 
                   <CardBox id="weight" activeInput={activeInput} setActiveInput={setActiveInput} onScrub={createScrubber('weight', weight, setWeight, 30, 300)} label="Weight" icon={Scale} isError={!!errs.weight} errorMsg={errs.weight} shakeKey={shakeKey}>
-                    <div className="flex items-baseline gap-[4px]">
-                      <input type="number" value={weight} onChange={e => setWeight(e.target.value)} onFocus={() => setActiveInput('weight')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.weight)} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="75" />
+                    <div className="flex items-baseline gap-[4px] pointer-events-auto">
+                      <input type="number" value={weight} onChange={e => setWeight(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('weight')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.weight)} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="75" />
                       <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.weight ? 'text-[#ef4444]' : 'text-white/40'}`}>KG</span>
                     </div>
                   </CardBox>
 
                   <CardBox id="height" activeInput={activeInput} setActiveInput={setActiveInput} colSpan={2} label="Height" icon={Ruler} isError={!!errs.heightCm || !!errs.heightFt || !!errs.heightIn} errorMsg={errs.heightCm || errs.heightFt || errs.heightIn} shakeKey={shakeKey} rightElement={
-                    <motion.button whileTap={{ scale: 0.9 }} onClick={() => { triggerHaptic(10); setHeightUnit(heightUnit === 'ft' ? 'cm' : 'ft'); }} className={`text-[10px] font-semibold tracking-widest text-white/50 bg-[#1c1c1e] border px-[10px] py-[4px] rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#00d0ff] ${(errs.heightCm || errs.heightFt || errs.heightIn) ? 'border-[#ef4444]/40 text-[#ef4444]' : 'border-white/10'} shadow-sm`}>{heightUnit.toUpperCase()}</motion.button>
+                    <div className="flex bg-black/40 rounded-full p-[2px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
+                      <button type="button" onClick={() => { triggerHaptic(10); setHeightUnit('ft'); }} className={`relative text-[9.5px] font-[800] tracking-widest px-[10px] py-[4px] rounded-full transition-colors z-10 ${heightUnit === 'ft' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
+                        {heightUnit === 'ft' && <motion.div layoutId="height-pill" transition={{ type: "spring", stiffness: 400, damping: 30 }} className="absolute inset-0 bg-[#2c2c2e] rounded-full -z-10 shadow-[0_1px_2px_rgba(0,0,0,0.3),_inset_0_1px_1px_rgba(255,255,255,0.08)] border border-white/10" />}
+                        FT
+                      </button>
+                      <button type="button" onClick={() => { triggerHaptic(10); setHeightUnit('cm'); }} className={`relative text-[9.5px] font-[800] tracking-widest px-[10px] py-[4px] rounded-full transition-colors z-10 ${heightUnit === 'cm' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
+                        {heightUnit === 'cm' && <motion.div layoutId="height-pill" transition={{ type: "spring", stiffness: 400, damping: 30 }} className="absolute inset-0 bg-[#2c2c2e] rounded-full -z-10 shadow-[0_1px_2px_rgba(0,0,0,0.3),_inset_0_1px_1px_rgba(255,255,255,0.08)] border border-white/10" />}
+                        CM
+                      </button>
+                    </div>
                   }>
                     {heightUnit === 'cm' ? (
-                      <div className="flex items-baseline gap-[4px] justify-center mt-[4px]">
-                        <input type="number" value={heightCm} onChange={e => setHeightCm(e.target.value)} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightCm)} text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="175" />
+                      <div className="flex items-baseline gap-[4px] justify-center mt-[4px] pointer-events-auto">
+                        <input type="number" value={heightCm} onChange={e => setHeightCm(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightCm)} text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="175" />
                         <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.heightCm ? 'text-[#ef4444]' : 'text-white/40'}`}>CM</span>
                       </div>
                     ) : (
-                      <div className="flex items-baseline justify-center mt-[4px]">
-                        <input type="number" value={heightFt} onChange={e => setHeightFt(e.target.value)} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightFt)} w-[40px] text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="5" />
+                      <div className="flex items-baseline justify-center mt-[4px] pointer-events-auto">
+                        <input type="number" value={heightFt} onChange={e => setHeightFt(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightFt)} w-[40px] text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="5" />
                         <span className={`text-[20px] font-medium ml-[2px] mr-[8px] transition-colors ${errs.heightFt ? 'text-[#ef4444]' : 'text-white/40'}`}>'</span>
-                        <input type="number" value={heightIn} onChange={e => setHeightIn(e.target.value)} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightIn)} w-[44px] text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="10" />
+                        <input type="number" value={heightIn} onChange={e => setHeightIn(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('height')} onBlur={() => setActiveInput(null)} className={`${getInpClass(errs.heightIn)} w-[44px] text-center`} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="10" />
                         <span className={`text-[20px] font-medium ml-[2px] transition-colors ${errs.heightIn ? 'text-[#ef4444]' : 'text-white/40'}`}>"</span>
                       </div>
                     )}
                   </CardBox>
 
                   <CardBox id="protein" activeInput={activeInput} setActiveInput={setActiveInput} focusHex={MACRO_COLORS.protein} onScrub={createScrubber('protein', proteinBudget, setProteinBudget, 30, 400)} label="Protein" icon={Flame} isError={!!errs.protein} errorMsg={errs.protein} shakeKey={shakeKey}>
-                    <div className="flex items-baseline gap-[4px]">
-                      <input type="number" value={proteinBudget} onChange={e => setProteinBudget(e.target.value)} onFocus={() => setActiveInput('protein')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.protein)} style={{ '--focus-color': MACRO_COLORS.protein }} placeholder="150" />
+                    <div className="flex items-baseline gap-[4px] pointer-events-auto">
+                      <input type="number" value={proteinBudget} onChange={e => setProteinBudget(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('protein')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.protein)} style={{ '--focus-color': MACRO_COLORS.protein }} placeholder="150" />
                       <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.protein ? 'text-[#ef4444]' : 'text-white/40'}`}>G</span>
                     </div>
                   </CardBox>
 
                   <CardBox id="bodyfat" activeInput={activeInput} setActiveInput={setActiveInput} focusHex={MACRO_COLORS.fat} onScrub={createScrubber('bodyfat', bodyFat, setBodyFat, 3, 60)} label="Body Fat" icon={Activity} isError={!!errs.bodyFat} errorMsg={errs.bodyFat} shakeKey={shakeKey}>
-                    <div className="flex items-baseline gap-[4px]">
-                      <input type="number" value={bodyFat} onChange={e => setBodyFat(e.target.value)} onFocus={() => setActiveInput('bodyfat')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.bodyFat)} style={{ '--focus-color': MACRO_COLORS.fat }} placeholder="15" />
+                    <div className="flex items-baseline gap-[4px] pointer-events-auto">
+                      <input type="number" value={bodyFat} onChange={e => setBodyFat(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('bodyfat')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.bodyFat)} style={{ '--focus-color': MACRO_COLORS.fat }} placeholder="15" />
                       <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.bodyFat ? 'text-[#ef4444]' : 'text-white/40'}`}>%</span>
                     </div>
                   </CardBox>
 
                   <CardBox id="gender" activeInput={activeInput} setActiveInput={setActiveInput} colSpan={2} label="Biological Sex" icon={User} isError={showErrors && !gender} shakeKey={shakeKey}>
-                    <div className="flex w-full p-[4px] mt-[6px] bg-[#121214] rounded-[10px] border border-white/[0.04]">
+                    <div className="flex w-full p-[2px] mt-[6px] bg-black/40 rounded-[10px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
                       {['M', 'F', 'O'].map(g => {
                         const isActive = gender === g.toLowerCase();
                         return (
                           <motion.button key={g} type="button" whileTap={{ scale: 0.9 }} onClick={() => { triggerHaptic(15); setGender(g.toLowerCase()); }}
                             className="relative flex-1 h-[40px] rounded-[8px] text-[14px] font-semibold outline-none z-10 transition-colors duration-300"
-                            style={{ color: isActive ? '#000000' : 'rgba(255,255,255,0.5)' }}
+                            style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.4)' }}
                           >
                             {isActive && (
                               <motion.div
                                 layoutId="gender-pill"
                                 transition={springConfig}
-                                className="absolute inset-0 rounded-[8px] z-[-1] shadow-sm bg-white"
+                                className="absolute inset-0 bg-[#2c2c2e] rounded-[8px] z-[-1] shadow-[0_1px_2px_rgba(0,0,0,0.3),_inset_0_1px_1px_rgba(255,255,255,0.08)] border border-white/10"
                               />
                             )}
-                            {g === 'M' ? 'Male' : g === 'F' ? 'Female' : 'Other'}
+                            <span className="relative z-10">{g === 'M' ? 'Male' : g === 'F' ? 'Female' : 'Other'}</span>
                           </motion.button>
                         )
                       })}
@@ -530,23 +539,21 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                   </CardBox>
 
                   <CardBox id="workouts" activeInput={activeInput} setActiveInput={setActiveInput} colSpan={2} label="Workouts / Wk" icon={CalendarDays}>
-                    <div className="flex justify-between w-full mt-[12px] relative px-[4px]">
-                      <div className="absolute top-1/2 left-[16px] right-[16px] h-[4px] -translate-y-1/2 bg-[#121214] rounded-full z-0" />
+                    <div className="flex justify-between w-full mt-[12px] relative p-[2px] bg-black/40 rounded-[14px] border border-white/[0.04] shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
                       {[1, 2, 3, 4, 5, 6, 7].map(d => {
                         const isActive = workoutDays === d;
                         return (
                           <motion.button key={d} type="button" whileTap={{ scale: 0.85 }} onClick={() => { triggerHaptic(15); setWorkoutDays(d); }}
-                            className="relative z-10 w-[36px] h-[36px] rounded-full text-[15px] font-semibold flex items-center justify-center outline-none transition-colors duration-300"
+                            className="relative z-10 w-[36px] h-[36px] rounded-[12px] text-[15px] font-semibold flex items-center justify-center outline-none transition-colors duration-300 hover:text-white/70"
                             style={{ 
-                              color: isActive ? '#000000' : 'rgba(255,255,255,0.5)',
-                              backgroundColor: isActive ? 'transparent' : '#121214'
+                              color: isActive ? '#ffffff' : 'rgba(255,255,255,0.4)',
                             }}
                           >
                             {isActive && (
                               <motion.div
                                 layoutId="workout-pill"
                                 transition={springConfig}
-                                className="absolute inset-0 rounded-full z-[-1] bg-white shadow-sm"
+                                className="absolute inset-0 bg-[#2c2c2e] rounded-[12px] z-[-1] shadow-[0_1px_2px_rgba(0,0,0,0.3),_inset_0_1px_1px_rgba(255,255,255,0.08)] border border-white/10"
                               />
                             )}
                             <span className="relative z-10">{d}</span>
@@ -619,15 +626,15 @@ export default function OnboardingModal({ isOpen, onComplete }) {
 
                 <div className="grid grid-cols-2 gap-[8px]">
                   <CardBox id="goalweight" activeInput={activeInput} setActiveInput={setActiveInput} onScrub={createScrubber('goalweight', goalWeight, setGoalWeight, 30, 300)} label="Goal Wt" icon={Scale} isError={!!errs.goalWeight} errorMsg={errs.goalWeight} shakeKey={shakeKey}>
-                    <div className="flex items-baseline gap-[4px]">
-                      <input type="number" value={goalWeight} onChange={e => setGoalWeight(e.target.value)} onFocus={() => setActiveInput('goalweight')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.goalWeight)} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="70" />
+                    <div className="flex items-baseline gap-[4px] pointer-events-auto">
+                      <input type="number" value={goalWeight} onChange={e => setGoalWeight(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('goalweight')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.goalWeight)} style={{ '--focus-color': MACRO_COLORS.brand }} placeholder="70" />
                       <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.goalWeight ? 'text-[#ef4444]' : 'text-white/40'}`}>KG</span>
                     </div>
                   </CardBox>
 
                   <CardBox id="goalbodyfat" activeInput={activeInput} setActiveInput={setActiveInput} focusHex={MACRO_COLORS.fat} onScrub={createScrubber('goalbodyfat', goalBodyFat, setGoalBodyFat, 4, 50)} label="Body Fat" icon={Activity} isError={!!errs.goalFat} errorMsg={errs.goalFat} shakeKey={shakeKey}>
-                    <div className="flex items-baseline gap-[4px]">
-                      <input type="number" value={goalBodyFat} onChange={e => setGoalBodyFat(e.target.value)} onFocus={() => setActiveInput('goalbodyfat')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.goalFat)} style={{ '--focus-color': MACRO_COLORS.fat }} placeholder="15" />
+                    <div className="flex items-baseline gap-[4px] pointer-events-auto">
+                      <input type="number" value={goalBodyFat} onChange={e => setGoalBodyFat(e.target.value)} onPointerDown={e => e.stopPropagation()} onFocus={() => setActiveInput('goalbodyfat')} onBlur={() => setActiveInput(null)} className={getInpClass(errs.goalFat)} style={{ '--focus-color': MACRO_COLORS.fat }} placeholder="15" />
                       <span className={`text-[13px] font-medium uppercase tracking-widest transition-colors ${errs.goalFat ? 'text-[#ef4444]' : 'text-white/40'}`}>%</span>
                     </div>
                   </CardBox>
@@ -670,23 +677,22 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                           />
                         </svg>
 
-                        <motion.input
-                          key={goalPeriod}
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                        <input
                           type="number" value={goalPeriod}
                           onChange={(e) => {
                             if (e.target.value === "") setGoalPeriod("");
                             else setGoalPeriod(parseInt(e.target.value, 10));
                           }}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onFocus={() => setActiveInput && setActiveInput('timeline')}
                           onBlur={() => {
+                            setActiveInput && setActiveInput(null);
                             let val = parseInt(goalPeriod, 10);
                             if (isNaN(val) || val < currLimit.min) val = currLimit.min;
                             if (val > currLimit.max) val = currLimit.max;
                             setGoalPeriod(val);
                           }}
-                          className="no-spin w-[70px] bg-transparent text-center text-[36px] font-[800] text-white tabular-nums tracking-tighter leading-none outline-none relative z-10 pointer-events-none selection:bg-transparent"
+                          className="no-spin w-[70px] bg-transparent text-center text-[36px] font-[800] text-white tabular-nums tracking-tighter leading-none outline-none relative z-10 selection:bg-white/20 transition-colors focus:text-white pointer-events-auto"
                         />
                       </motion.div>
 
