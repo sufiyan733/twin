@@ -10,9 +10,16 @@ export async function GET(req) {
 
     const db = await getDb();
     
-    // Fetch users (exclude current user)
+    // Fetch current user's profile to get friendIds array
+    let currentUserFriendIds = [];
+    if (currentUserId) {
+      const currentUserProfile = await db.collection("profiles").findOne({ userId: currentUserId });
+      currentUserFriendIds = currentUserProfile?.friendIds || [];
+    }
+
+    // Fetch users (exclude current user, NO LIMIT)
     const query = currentUserId ? { id: { $ne: currentUserId } } : {};
-    const users = await db.collection("user").find(query).limit(10).toArray();
+    const users = await db.collection("user").find(query).toArray();
 
     const friendsData = await Promise.all(users.map(async (u) => {
       const profile = await db.collection("profiles").findOne({ userId: u.id });
@@ -31,10 +38,13 @@ export async function GET(req) {
       const calorieTarget = profile?.calorieTarget || 2000;
       const proteinTarget = profile?.proteinBudget || 150;
       
+      const isFriend = currentUserFriendIds.includes(u.id);
+
       return {
         id: u.id,
         name: u.name || "Unknown User",
         image: u.image,
+        isFriend,
         calorieTarget,
         macros: {
           protein: proteinTarget,
