@@ -240,11 +240,11 @@ export default function ChatPage({ params }) {
             
             // Adjust borders for consecutive messages (iOS style grouping)
             const roundedClasses = isMine 
-              ? `rounded-[20px] ${isNextMine ? 'rounded-br-[5px]' : 'rounded-br-[20px]'} ${isPrevMine ? 'rounded-tr-[5px]' : 'rounded-tr-[20px]'}`
-              : `rounded-[20px] ${isNextMine ? 'rounded-bl-[5px]' : 'rounded-bl-[20px]'} ${isPrevMine ? 'rounded-tl-[5px]' : 'rounded-tl-[20px]'}`;
+              ? `rounded-[20px] ${isNextMine ? 'rounded-br-[2px]' : 'rounded-br-[20px]'} ${isPrevMine ? 'rounded-tr-[2px]' : 'rounded-tr-[20px]'}`
+              : `rounded-[20px] ${isNextMine ? 'rounded-bl-[2px]' : 'rounded-bl-[20px]'} ${isPrevMine ? 'rounded-tl-[2px]' : 'rounded-tl-[20px]'}`;
               
             // Add margin bottom if the next message is from someone else (to separate groups)
-            const marginBottom = isNextMine ? "mb-[2px]" : "mb-3";
+            const marginBottom = isNextMine ? "mb-[1px]" : "mb-[14px]";
 
             return (
               <motion.div
@@ -257,7 +257,7 @@ export default function ChatPage({ params }) {
                 <div 
                   className={`px-[16px] py-[8px] max-w-full ${roundedClasses} ${
                     isMine 
-                      ? "bg-gradient-to-br from-[#148EFF] to-[#007AFF] text-white shadow-sm" 
+                      ? "bg-gradient-to-b from-[#47A1FF] to-[#007AFF] text-white shadow-sm" 
                       : "bg-[#262628] text-[#e8edf5]"
                   }`}
                 >
@@ -318,7 +318,7 @@ export default function ChatPage({ params }) {
               value={inputText}
               onChange={handleInputChange}
               placeholder={isRecording ? "Listening..." : "iMessage"}
-              className={`flex-1 bg-transparent border-none h-[32px] focus:outline-none text-[16px] tracking-tight leading-none ${isRecording ? 'text-red-400 placeholder:text-red-400/70' : 'text-[#e8edf5] placeholder:text-[#7a90a8]'}`}
+              className={`flex-1 bg-transparent border-none h-[34px] focus:outline-none text-[17px] tracking-tight leading-none ${isRecording ? 'text-red-400 placeholder:text-red-400/70' : 'text-[#e8edf5] placeholder:text-[#7a90a8]'}`}
               disabled={isRecording || isTranscribing}
             />
             
