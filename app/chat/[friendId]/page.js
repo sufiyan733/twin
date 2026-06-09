@@ -21,6 +21,7 @@ export default function ChatPage({ params }) {
   const [isTyping, setIsTyping] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [isTranscribing, setIsTranscribing] = useState(false)
+  const [isFriendOnline, setIsFriendOnline] = useState(false)
   
   const scrollRef = useRef(null)
   const messagesEndRef = useRef(null)
@@ -87,14 +88,25 @@ export default function ChatPage({ params }) {
       if (userId === friendId) setIsTyping(false)
     }
 
+    const handleStatus = ({ userId, isOnline }) => {
+      if (userId === friendId) {
+        setIsFriendOnline(isOnline)
+      }
+    }
+
     socket.on("message:receive", handleReceive)
     socket.on("typing:start", handleTypingStart)
     socket.on("typing:stop", handleTypingStop)
+    socket.on("user:status", handleStatus)
+
+    // Initial check
+    socket.emit("user:check_status", friendId)
 
     return () => {
       socket.off("message:receive", handleReceive)
       socket.off("typing:start", handleTypingStart)
       socket.off("typing:stop", handleTypingStop)
+      socket.off("user:status", handleStatus)
     }
   }, [currentUserId, roomId, friendId])
 
@@ -219,13 +231,17 @@ export default function ChatPage({ params }) {
                   <User size={18} className="text-white/50" />
                 )}
               </div>
-              <div className="absolute bottom-0 right-0 w-[11px] h-[11px] bg-emerald-400 border-2 border-[#02040A] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+              {isFriendOnline && (
+                <div className="absolute bottom-0 right-0 w-[11px] h-[11px] bg-emerald-400 border-2 border-[#02040A] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+              )}
             </div>
             <div className="min-w-0 flex flex-col justify-center">
               <h1 className="text-white font-semibold text-[16px] leading-tight tracking-tight truncate drop-shadow-sm">
                 {friend?.name || "Loading..."}
               </h1>
-              <p className="text-emerald-400/90 text-[12px] font-medium tracking-tight mt-[1px]">Active now</p>
+              <p className={`text-[12px] font-medium tracking-tight mt-[1px] transition-colors duration-300 ${isFriendOnline ? "text-emerald-400/90" : "text-white/40"}`}>
+                {isFriendOnline ? "Active now" : "Offline"}
+              </p>
             </div>
           </div>
         </div>

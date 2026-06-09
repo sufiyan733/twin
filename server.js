@@ -29,6 +29,13 @@ app.prepare().then(() => {
     socket.on("user:register", (userId) => {
       onlineUsers.set(userId, socket.id)
       socket.data.userId = userId
+      io.emit("user:status", { userId, isOnline: true })
+    })
+
+    socket.on("user:check_status", (userId) => {
+      if (onlineUsers.has(userId)) {
+        socket.emit("user:status", { userId, isOnline: true })
+      }
     })
 
     // Join a private room for a conversation
@@ -54,6 +61,7 @@ app.prepare().then(() => {
     socket.on("disconnect", () => {
       if (socket.data.userId) {
         onlineUsers.delete(socket.data.userId)
+        io.emit("user:status", { userId: socket.data.userId, isOnline: false })
       }
     })
   })
