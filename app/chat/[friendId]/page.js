@@ -198,33 +198,37 @@ export default function ChatPage({ params }) {
   }
 
   return (
-    <div className="h-full flex-1 w-full flex flex-col font-sans relative overflow-hidden bg-black selection:bg-[#38bdf8]/30">
+    <div className="h-full flex-1 w-full flex flex-col font-sans relative overflow-hidden bg-[#02040A] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111827] via-[#02040A] to-black selection:bg-blue-500/30">
       
-      <header className="flex-none pt-4 pb-2 px-2 bg-[#0a0a0a]/85 backdrop-blur-[50px] border-b border-white/[0.08] sticky top-0 z-20 flex items-center justify-between">
-        <div className="flex items-center gap-1">
+      {/* Premium Glass Header */}
+      <header className="flex-none pt-4 pb-3 px-3 bg-[#02040A]/50 backdrop-blur-2xl border-b border-white/[0.04] sticky top-0 z-20 flex items-center justify-between shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center gap-2">
           <button 
             onClick={() => router.back()}
-            className="w-10 h-10 flex items-center justify-center active:opacity-50 transition-opacity shrink-0"
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 active:bg-white/10 transition-colors shrink-0"
           >
-            <ChevronLeft size={30} className="text-[#0B84FF]" strokeWidth={2.5} />
+            <ChevronLeft size={28} className="text-white/90" strokeWidth={2.5} />
           </button>
           
-          <div className="flex items-center gap-2 min-w-0 ml-1">
-            <div className="w-8 h-8 rounded-full bg-[#1c1c1e] flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_0_1px_rgba(255,255,255,0.06)]">
-              {friend?.image ? (
-                <img src={friend.image} alt={friend.name} className="w-full h-full object-cover" />
-              ) : (
-                <User size={18} className="text-white/50" />
-              )}
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="relative w-[38px] h-[38px] rounded-full p-[2px] bg-gradient-to-br from-white/20 to-white/0 shrink-0 shadow-lg shadow-black/20">
+              <div className="w-full h-full rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+                {friend?.image ? (
+                  <img src={friend.image} alt={friend.name} className="w-full h-full object-cover" />
+                ) : (
+                  <User size={18} className="text-white/50" />
+                )}
+              </div>
+              <div className="absolute bottom-0 right-0 w-[11px] h-[11px] bg-emerald-400 border-2 border-[#02040A] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
             </div>
-            <h1 className="text-[#FFFFFF] font-semibold text-[17px] tracking-tight truncate">
-              {friend?.name || "Loading..."}
-            </h1>
+            <div className="min-w-0 flex flex-col justify-center">
+              <h1 className="text-white font-semibold text-[16px] leading-tight tracking-tight truncate drop-shadow-sm">
+                {friend?.name || "Loading..."}
+              </h1>
+              <p className="text-emerald-400/90 text-[12px] font-medium tracking-tight mt-[1px]">Active now</p>
+            </div>
           </div>
         </div>
-        
-        {/* Placeholder for trailing actions like FaceTime/Call icons */}
-        <div className="w-10 h-10" />
       </header>
 
       <div 
@@ -238,30 +242,29 @@ export default function ChatPage({ params }) {
             const isNextMine = messages[idx + 1]?.senderId === m.senderId;
             const isPrevMine = messages[idx - 1]?.senderId === m.senderId;
             
-            // Adjust borders for consecutive messages (iOS style grouping)
+            // Adjust borders for consecutive messages
             const roundedClasses = isMine 
-              ? `rounded-[20px] ${isNextMine ? 'rounded-br-[2px]' : 'rounded-br-[20px]'} ${isPrevMine ? 'rounded-tr-[2px]' : 'rounded-tr-[20px]'}`
-              : `rounded-[20px] ${isNextMine ? 'rounded-bl-[2px]' : 'rounded-bl-[20px]'} ${isPrevMine ? 'rounded-tl-[2px]' : 'rounded-tl-[20px]'}`;
+              ? `rounded-[22px] ${isNextMine ? 'rounded-br-[4px]' : 'rounded-br-[22px]'} ${isPrevMine ? 'rounded-tr-[4px]' : 'rounded-tr-[22px]'}`
+              : `rounded-[22px] ${isNextMine ? 'rounded-bl-[4px]' : 'rounded-bl-[22px]'} ${isPrevMine ? 'rounded-tl-[4px]' : 'rounded-tl-[22px]'}`;
               
-            // Add margin bottom if the next message is from someone else (to separate groups)
-            const marginBottom = isNextMine ? "mb-[1px]" : "mb-[14px]";
+            const marginBottom = isNextMine ? "mb-[2px]" : "mb-5";
 
             return (
               <motion.div
                 key={m.id || idx}
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                initial={{ opacity: 0, y: 15, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className={`flex flex-col max-w-[75%] ${isMine ? "self-end items-end" : "self-start items-start"} ${marginBottom}`}
+                transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                className={`flex flex-col max-w-[80%] ${isMine ? "self-end items-end" : "self-start items-start"} ${marginBottom}`}
               >
                 <div 
-                  className={`px-[16px] py-[8px] max-w-full ${roundedClasses} ${
+                  className={`px-[18px] py-[10px] max-w-full ${roundedClasses} ${
                     isMine 
-                      ? "bg-gradient-to-b from-[#47A1FF] to-[#007AFF] text-white shadow-sm" 
-                      : "bg-[#262628] text-[#e8edf5]"
+                      ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_4px_16px_-4px_rgba(59,130,246,0.4)] border border-blue-400/20" 
+                      : "bg-white/[0.06] backdrop-blur-xl border border-white/[0.05] text-[#f1f5f9] shadow-[0_4px_16px_-4px_rgba(0,0,0,0.2)]"
                   }`}
                 >
-                  <p className="text-[16px] leading-[21px] tracking-[-0.3px] whitespace-pre-wrap break-words">{m.text}</p>
+                  <p className="text-[15px] leading-[22px] tracking-wide whitespace-pre-wrap break-words font-normal">{m.text}</p>
                 </div>
                 {/* Timestamps hidden by default inside bubbles in true iOS, keeping clean */}
               </motion.div>
@@ -288,47 +291,47 @@ export default function ChatPage({ params }) {
         <div ref={messagesEndRef} className="h-2" />
       </div>
       {/* Input Area */}
-      <footer className="fixed bottom-0 left-0 right-0 px-3 py-2 pb-6 bg-[#0a0a0a]/95 backdrop-blur-3xl border-t border-white/[0.08] z-20">
+      <footer className="fixed bottom-0 left-0 right-0 px-4 py-3 pb-8 bg-[#02040A]/50 backdrop-blur-3xl border-t border-white/[0.04] z-20">
         <form 
           onSubmit={handleSend}
-          className="relative flex items-center gap-2"
+          className="relative flex items-center gap-3"
         >
-          {/* Mic Button on the Left */}
+          {/* Mic Button */}
           <button
             type="button"
             onClick={toggleRecording}
             disabled={isTranscribing}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shrink-0 ${
+            className={`w-[42px] h-[42px] rounded-full flex items-center justify-center transition-all duration-300 shrink-0 border ${
               isRecording 
-                ? "bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.4)] animate-pulse" 
-                : "bg-transparent text-[#7a90a8] hover:bg-white/5 active:scale-95"
+                ? "bg-red-500/20 border-red-500/40 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.3)] animate-pulse" 
+                : "bg-white/[0.03] border-white/[0.06] text-white/50 hover:bg-white/[0.08] hover:text-white active:scale-95 shadow-sm"
             }`}
           >
             {isTranscribing ? (
-              <Loader2 size={18} className="animate-spin text-white" />
+              <Loader2 size={20} className="animate-spin text-white" />
             ) : (
-              <Mic size={18} strokeWidth={isRecording ? 2.5 : 2} />
+              <Mic size={20} strokeWidth={isRecording ? 2.5 : 2} />
             )}
           </button>
 
-          {/* Input Pill */}
-          <div className={`flex-1 flex items-center bg-[#1c1c1e] rounded-full p-[3px] pl-4 border ${isRecording ? 'border-red-500/30 bg-red-500/5' : 'border-white/[0.06] shadow-inner'} transition-all duration-300`}>
+          {/* Premium Glass Input Pill */}
+          <div className={`flex-1 flex items-center rounded-full p-[4px] pl-5 border ${isRecording ? 'border-red-500/30 bg-red-500/5' : 'bg-white/[0.04] border-white/[0.08] focus-within:border-white/20 focus-within:bg-white/[0.07]'} backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.03)] transition-all duration-300`}>
             <input 
               type="text"
               value={inputText}
               onChange={handleInputChange}
-              placeholder={isRecording ? "Listening..." : "iMessage"}
-              className={`flex-1 bg-transparent border-none h-[34px] focus:outline-none text-[17px] tracking-tight leading-none ${isRecording ? 'text-red-400 placeholder:text-red-400/70' : 'text-[#e8edf5] placeholder:text-[#7a90a8]'}`}
+              placeholder={isRecording ? "Listening..." : "Type a message..."}
+              className={`flex-1 bg-transparent border-none h-[40px] focus:outline-none text-[15px] font-medium tracking-wide ${isRecording ? 'text-red-400 placeholder:text-red-400/50' : 'text-white placeholder:text-white/30'}`}
               disabled={isRecording || isTranscribing}
             />
             
-            {/* Send Button on the Right */}
+            {/* Send Button */}
             <button 
               type="submit"
               disabled={!inputText.trim()}
-              className="w-[30px] h-[30px] rounded-full bg-[#0B84FF] flex items-center justify-center disabled:opacity-0 disabled:scale-50 active:scale-90 transition-all duration-300 shrink-0 ml-2 mr-1"
+              className="w-[40px] h-[40px] rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-[0_2px_12px_rgba(59,130,246,0.5)] flex items-center justify-center disabled:opacity-0 disabled:scale-50 active:scale-90 transition-all duration-300 shrink-0 ml-2"
             >
-              <ArrowUp size={18} className="text-white" strokeWidth={2.5} />
+              <ArrowUp size={20} className="text-white drop-shadow-md" strokeWidth={2.5} />
             </button>
           </div>
         </form>
