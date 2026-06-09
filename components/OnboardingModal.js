@@ -73,8 +73,7 @@ const CardBox = ({ children, className = "", focusHex = MACRO_COLORS.brand, colS
       animate={{
         ...(isError && shakeKey > 0 ? { x: [-8, 8, -6, 6, -4, 4, 0] } : { x: 0 }),
         opacity: isFaded ? 0.3 : 1,
-        scale: isFaded ? 0.96 : 1,
-        filter: isFaded ? 'blur(2px)' : 'blur(0px)'
+        scale: isFaded ? 0.96 : 1
       }}
       transition={isFaded ? { duration: 0.4 } : fastSpring}
       whileTap={{ scale: 0.98, transition: fastSpring }}
@@ -411,24 +410,22 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           }
         `}</style>
 
-        {/* Ambient Animated Mesh Background */}
+        {/* Ambient Mesh Background (Optimized) */}
         <motion.div
           animate={{ opacity: step === 2 ? 0.7 : 0.5 }}
           transition={{ duration: 1 }}
           className="absolute inset-0 z-0 pointer-events-none overflow-hidden mix-blend-screen"
         >
           <div
-            className="absolute inset-[-50%] bg-[length:200%_200%]"
+            className="absolute inset-[-50%] bg-[length:100%_100%]"
             style={{
-              background: `radial-gradient(circle at 30% 30%, rgba(${hex2rgb(themeColor)}, 0.15) 0%, transparent 40%), radial-gradient(circle at 70% 70%, rgba(${hex2rgb(MACRO_COLORS.protein)}, 0.1) 0%, transparent 40%)`,
-              filter: 'blur(60px)',
-              animation: 'morphBg 15s ease infinite, spinSlow 40s linear infinite'
+              background: `radial-gradient(circle at 20% 30%, rgba(${hex2rgb(themeColor)}, 0.15) 0%, transparent 60%), radial-gradient(circle at 80% 70%, rgba(${hex2rgb(MACRO_COLORS.protein)}, 0.1) 0%, transparent 60%)`,
             }}
           />
         </motion.div>
 
-        {/* Ambient Noise Overlay */}
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+        {/* Ambient Noise Overlay (Optimized) */}
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
 
         <motion.div
           initial={{ scale: 0.95, y: 20, opacity: 0 }}
@@ -437,8 +434,8 @@ export default function OnboardingModal({ isOpen, onComplete }) {
           className="relative w-full max-w-[340px] bg-[#000000]/90 backdrop-blur-3xl rounded-[32px] p-[24px] shadow-[0_30px_100px_rgba(0,0,0,0.9),_inset_0_1px_1px_rgba(255,255,255,0.08)] mx-auto z-10 overflow-hidden"
           style={{ border: `1px solid rgba(255,255,255,0.08)` }}
         >
-          {/* Glass Grain Texture */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.06] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+          {/* Glass Grain Texture (Optimized) */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
           {/* Top Progress Bar */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-transparent overflow-hidden rounded-t-[24px]">
             <motion.div
