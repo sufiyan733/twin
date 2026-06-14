@@ -6,9 +6,9 @@
     "node": ">=20.9.0"
   },
   "scripts": {
-    "dev": "node --require ./dns-preload.cjs server.js",
+    "dev": "node --require ./dns-preload.cjs node_modules/next/dist/bin/next dev",
     "build": "next build",
-    "start": "node server.js",
+    "start": "next start",
     "lint": "eslint",
     "postinstall": "node -e \"const fs=require('fs');const p='node_modules/better-auth/node_modules/kysely';if(fs.existsSync(p)){fs.rmSync(p,{recursive:true});console.log('Removed nested kysely (using top-level 0.28.1)');}\""
   },
